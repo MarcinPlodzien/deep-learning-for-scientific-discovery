@@ -15,7 +15,7 @@ code-fold: false
 
 <p class="hero-author"><a href="https://chaos.if.uj.edu.pl/marcinplodzien/"><b>Marcin Płodzień</b></a> · Institute of Theoretical Physics, Jagiellonian University in Kraków · Doctoral School of Exact and Natural Sciences</p>
 
-[Start with Lecture 1](lectures/lecture-01.qmd){.btn .btn-primary} [Browse the lectures](#lectures){.btn .btn-outline-primary}
+[Start with Lecture 1](lectures/lecture-01.qmd){.btn .btn-primary} [Browse the lectures](#lectures){.btn .btn-outline-primary} [Course flyer (PDF)](assets/course-flyer.pdf){.btn .btn-outline-primary}
 :::
 
 ::: {.hero-image}

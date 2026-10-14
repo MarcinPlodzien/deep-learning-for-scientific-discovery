@@ -7,6 +7,7 @@ project:
     - "notebooks/**/*.ipynb"
   resources:
     - "slides/*.pdf"
+    - "assets/course-flyer.pdf"
 
 execute:
   enabled: false        # notebooks are shown with their stored outputs
@@ -36,6 +37,8 @@ website:
             href: lectures/lecture-03.qmd
           - text: "4 · CNNs, Interpretability and the 2D Ising Model"
             href: lectures/lecture-04.qmd
+      - text: "Course flyer"
+        href: assets/course-flyer.pdf
       - text: "About"
         href: about.qmd
     right:
