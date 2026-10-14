@@ -16,4 +16,4 @@ Marcin Płodzień is an Assistant Professor at the Institute of Theoretical Phys
 
 ## The course
 
-*Deep Learning for Scientific Discovery* is a course of the Doctoral School of Exact and Natural Sciences of the Jagiellonian University, winter semester 2026/27. Corrections and suggestions are welcome as [issues on GitHub](https://github.com/MarcinPlodzien/deep-learning-for-scientific-discovery/issues).
+*Deep Learning for Scientific Discovery* is a course of the Doctoral School of Exact and Natural Sciences of the Jagiellonian University, winter semester 2026/27.

@@ -17,7 +17,7 @@ website:
   description: "Doctoral course at the Jagiellonian University in Kraków: lecture slides and notebooks."
   site-url: "https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/"
   repo-url: "https://github.com/MarcinPlodzien/deep-learning-for-scientific-discovery"
-  repo-actions: [source, issue]
+  repo-actions: [source]
   page-navigation: true
   navbar:
     background: primary
