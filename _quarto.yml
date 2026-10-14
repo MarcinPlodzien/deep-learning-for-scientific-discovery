@@ -1,0 +1,107 @@
+project:
+  type: website
+  output-dir: docs
+  render:
+    - "*.qmd"
+    - "lectures/*.qmd"
+    - "notebooks/**/*.ipynb"
+  resources:
+    - "slides/*.pdf"
+
+execute:
+  enabled: false        # notebooks are shown with their stored outputs
+  freeze: auto
+
+website:
+  title: "Deep Learning for Scientific Discovery"
+  description: "Doctoral course at the Jagiellonian University in Kraków: lecture slides and notebooks."
+  site-url: "https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/"
+  repo-url: "https://github.com/MarcinPlodzien/deep-learning-for-scientific-discovery"
+  repo-actions: [source, issue]
+  page-navigation: true
+  navbar:
+    background: primary
+    search: true
+    pinned: true
+    left:
+      - text: "Start here"
+        href: index.qmd
+      - text: "Lectures"
+        menu:
+          - text: "1 · Course Organisation"
+            href: lectures/lecture-01.qmd
+          - text: "2 · From AI to Deep Learning"
+            href: lectures/lecture-02.qmd
+          - text: "3 · The Recipe of Deep Learning"
+            href: lectures/lecture-03.qmd
+          - text: "4 · CNNs, Interpretability and the 2D Ising Model"
+            href: lectures/lecture-04.qmd
+      - text: "About"
+        href: about.qmd
+    right:
+      - icon: github
+        href: "https://github.com/MarcinPlodzien/deep-learning-for-scientific-discovery"
+        aria-label: GitHub
+      - icon: house
+        href: "https://chaos.if.uj.edu.pl/marcinplodzien/"
+        aria-label: Homepage
+  sidebar:
+    logo: assets/qusml_logo.svg
+    style: floating
+    search: true
+    collapse-level: 1
+    contents:
+      - text: "Start here"
+        href: index.qmd
+      - section: "1 · Course Organisation"
+        href: lectures/lecture-01.qmd
+      - section: "2 · From AI to Deep Learning"
+        href: lectures/lecture-02.qmd
+        contents:
+          - notebooks/lecture-02/lab-001-python-matplotlib-pandas.ipynb
+          - notebooks/lecture-02/lab-002-numpy.ipynb
+          - notebooks/lecture-02/lab-003-pytorch.ipynb
+      - section: "3 · The Recipe of Deep Learning"
+        href: lectures/lecture-03.qmd
+        contents:
+          - notebooks/lecture-03/lab-004-automatic-differentiation.ipynb
+          - notebooks/lecture-03/lab-005-n-pendulum.ipynb
+          - notebooks/lecture-03/lab-006-uat-and-minimisers.ipynb
+          - notebooks/lecture-03/lab-007-building-and-training.ipynb
+          - notebooks/lecture-03/lab-008-analysing-networks.ipynb
+          - notebooks/lecture-03/lab-009-mnist.ipynb
+      - section: "4 · CNNs, Interpretability and the 2D Ising Model"
+        href: lectures/lecture-04.qmd
+        contents:
+          - notebooks/lecture-04/bloodmnist-cnn-regularisation-cam.ipynb
+          - notebooks/lecture-04/convolution-and-ising.ipynb
+          - notebooks/lecture-04/lab-010-ising-monte-carlo.ipynb
+          - notebooks/lecture-04/lab-011-cnn-tc.ipynb
+          - notebooks/lecture-04/lab-012-onsager.ipynb
+      - text: "About"
+        href: about.qmd
+  page-footer:
+    border: true
+    left: "© 2026 Marcin Płodzień"
+    right: >-
+      [Homepage](https://chaos.if.uj.edu.pl/marcinplodzien/) ·
+      [Email](mailto:marcin.plodzien@uj.edu.pl) ·
+      [ORCID](https://orcid.org/0000-0002-0835-1644) ·
+      [Scholar](https://scholar.google.com/citations?user=eC9nCmgAAAAJ&hl=en) ·
+      [GitHub](https://github.com/MarcinPlodzien)
+
+format:
+  html:
+    theme:
+      light: [cosmo, assets/qusml.scss]
+      dark: [darkly, assets/qusml-dark.scss]
+    toc: true
+    toc-depth: 3
+    code-fold: show
+    code-tools: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+    html-math-method: mathjax
+    grid:
+      sidebar-width: 340px

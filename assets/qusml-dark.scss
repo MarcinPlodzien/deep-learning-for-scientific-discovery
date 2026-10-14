@@ -1,0 +1,23 @@
+/*-- scss:defaults --*/
+$navbar-bg: #00539e;
+$link-color: #7fb2e5;
+
+/*-- scss:rules --*/
+.sidebar-logo { max-height: 70px; width: auto; margin: 0 auto 0.5rem; background: #ffffff; border-radius: 6px; padding: 4px; }
+.hero h1.hero-title { font-size: 2.1rem; color: #7fb2e5; }
+.hero .hero-sub { color: #bbb; }
+.feature { background: #2b2f33; border-color: #444; border-top-color: #7fb2e5; }
+.feature p:first-child { color: #7fb2e5; }
+.chapter-card { background: #2b2f33; border-color: #444; }
+.nb-item { border-left-color: #7fb2e5; }
+.hero .hero-tagline { color: #ddd; }
+
+// ---------------------------------------------------------------- justified text (author's preference)
+main.content p, main.content li, main.content dd, main.content blockquote,
+main.content .cell-output-display p, main.content figcaption, main.content .figure-caption,
+main.content .callout p, main.content .callout li {
+  text-align: justify; hyphens: auto; -webkit-hyphens: auto;
+}
+main.content td p, main.content .hero-author, main.content .nbcount,
+main.content .feature p, main.content .chapter-card p, main.content .nb-item p:first-child,
+main.content .hero p { text-align: left; }

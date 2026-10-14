@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.280">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Deep Learning for Scientific Discovery - Lab 002: NumPy, thinking in arrays</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../notebooks/lecture-02/lab-003-pytorch.html" rel="next">
+<link href="../../notebooks/lecture-02/lab-001-python-matplotlib-pandas.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Deep Learning for Scientific Discovery</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../../index.html" aria-current="page">
+ <span class="menu-text">Start here</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-lectures" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Lectures</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-lectures">    
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-01.html">
+ <span class="dropdown-text">1 · Course Organisation</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-02.html">
+ <span class="dropdown-text">2 · From AI to Deep Learning</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-03.html">
+ <span class="dropdown-text">3 · The Recipe of Deep Learning</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-04.html">
+ <span class="dropdown-text">4 · CNNs, Interpretability and the 2D Ising Model</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">
+ <span class="menu-text">About</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/MarcinPlodzien/deep-learning-for-scientific-discovery"><i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://chaos.if.uj.edu.pl/marcinplodzien/"><i class="bi bi-house" role="img" aria-label="Homepage">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div class="quarto-toggle-container">
+                  <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+              </div>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Lab 002: NumPy, thinking in arrays</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+      <a href="../../index.html" class="sidebar-logo-link">
+      <img src="../../assets/qusml_logo.svg" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">Start here</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">1 · Course Organisation</span>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-02.html" class="sidebar-item-text sidebar-link">2 · From AI to Deep Learning</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-02/lab-001-python-matplotlib-pandas.html" class="sidebar-item-text sidebar-link">Lab 001: Python, Matplotlib and Pandas</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-02/lab-002-numpy.html" class="sidebar-item-text sidebar-link active">Lab 002: NumPy, thinking in arrays</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-02/lab-003-pytorch.html" class="sidebar-item-text sidebar-link">Lab 003: PyTorch tensors, devices and layers</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-03.html" class="sidebar-item-text sidebar-link">3 · The Recipe of Deep Learning</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-03/lab-004-automatic-differentiation.html" class="sidebar-item-text sidebar-link">Lab 004: Automatic differentiation</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-03/lab-005-n-pendulum.html" class="sidebar-item-text sidebar-link">Lab 005: The N-link pendulum with SymPy and automatic differentiation</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-03/lab-006-uat-and-minimisers.html" class="sidebar-item-text sidebar-link">Lab 006: Universal approximation and the choice of minimiser</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-03/lab-007-building-and-training.html" class="sidebar-item-text sidebar-link">Lab 007: Building and training neural networks</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-03/lab-008-analysing-networks.html" class="sidebar-item-text sidebar-link">Lab 008: Analysing a neural network</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-03/lab-009-mnist.html" class="sidebar-item-text sidebar-link">Lab 009: MNIST, regression versus cross-entropy</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-04.html" class="sidebar-item-text sidebar-link">4 · CNNs, Interpretability and the 2D Ising Model</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-04/bloodmnist-cnn-regularisation-cam.html" class="sidebar-item-text sidebar-link">Blood cells: CNNs, regularisation and class activation maps</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-04/convolution-and-ising.html" class="sidebar-item-text sidebar-link">Convolution and the 2D Ising model: the figures of the lecture</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-04/lab-010-ising-monte-carlo.html" class="sidebar-item-text sidebar-link">Lab 010: Monte Carlo samples of the 2D Ising model</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-04/lab-011-cnn-tc.html" class="sidebar-item-text sidebar-link">Lab 011: Tc of the 2D Ising model from the confidence of a CNN</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-04/lab-012-onsager.html" class="sidebar-item-text sidebar-link">Lab 012: Onsager’s exact solution of the 2D Ising model</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../about.html" class="sidebar-item-text sidebar-link">About</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#deep-learning-for-scientific-discovery" id="toc-deep-learning-for-scientific-discovery" class="nav-link active" data-scroll-target="#deep-learning-for-scientific-discovery">Deep Learning for Scientific Discovery</a></li>
+  <li><a href="#lab-002-numpy-thinking-in-arrays" id="toc-lab-002-numpy-thinking-in-arrays" class="nav-link" data-scroll-target="#lab-002-numpy-thinking-in-arrays">Lab 002 — NumPy: thinking in arrays</a>
+  <ul class="collapse">
+  <li><a href="#arrays-loops-vs.-vectorisation" id="toc-arrays-loops-vs.-vectorisation" class="nav-link" data-scroll-target="#arrays-loops-vs.-vectorisation">1. Arrays: loops vs.&nbsp;vectorisation</a></li>
+  <li><a href="#creating-arrays" id="toc-creating-arrays" class="nav-link" data-scroll-target="#creating-arrays">2. Creating arrays</a></li>
+  <li><a href="#indexing-slicing-and-boolean-masks" id="toc-indexing-slicing-and-boolean-masks" class="nav-link" data-scroll-target="#indexing-slicing-and-boolean-masks">3. Indexing, slicing and boolean masks</a>
+  <ul class="collapse">
+  <li><a href="#views-and-copies" id="toc-views-and-copies" class="nav-link" data-scroll-target="#views-and-copies">Views and copies</a></li>
+  </ul></li>
+  <li><a href="#reshaping-and-stacking" id="toc-reshaping-and-stacking" class="nav-link" data-scroll-target="#reshaping-and-stacking">4. Reshaping and stacking</a></li>
+  <li><a href="#broadcasting" id="toc-broadcasting" class="nav-link" data-scroll-target="#broadcasting">5. Broadcasting</a></li>
+  <li><a href="#reductions-along-an-axis" id="toc-reductions-along-an-axis" class="nav-link" data-scroll-target="#reductions-along-an-axis">6. Reductions along an axis</a></li>
+  <li><a href="#linear-algebra-the-schrödinger-equation-on-a-grid" id="toc-linear-algebra-the-schrödinger-equation-on-a-grid" class="nav-link" data-scroll-target="#linear-algebra-the-schrödinger-equation-on-a-grid">7. Linear algebra: the Schrödinger equation on a grid</a>
+  <ul class="collapse">
+  <li><a href="#physics-example-quantum-harmonic-oscillator" id="toc-physics-example-quantum-harmonic-oscillator" class="nav-link" data-scroll-target="#physics-example-quantum-harmonic-oscillator">Physics example: quantum harmonic oscillator</a></li>
+  </ul></li>
+  <li><a href="#random-numbers" id="toc-random-numbers" class="nav-link" data-scroll-target="#random-numbers">8. Random numbers</a></li>
+  <li><a href="#towards-neural-networks-a-dense-layer-in-numpy" id="toc-towards-neural-networks-a-dense-layer-in-numpy" class="nav-link" data-scroll-target="#towards-neural-networks-a-dense-layer-in-numpy">9. Towards neural networks: a dense layer in NumPy</a></li>
+  <li><a href="#what-numpy-cannot-do" id="toc-what-numpy-cannot-do" class="nav-link" data-scroll-target="#what-numpy-cannot-do">10. What NumPy cannot do</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">11. Summary</a>
+  <ul class="collapse">
+  <li><a href="#exercise-1-vectorise-the-ising-energy" id="toc-exercise-1-vectorise-the-ising-energy" class="nav-link" data-scroll-target="#exercise-1-vectorise-the-ising-energy">Exercise 1 — Vectorise the Ising energy</a></li>
+  <li><a href="#exercise-2-softmax-one-hot-encoding-and-cross-entropy-from-the-lecture" id="toc-exercise-2-softmax-one-hot-encoding-and-cross-entropy-from-the-lecture" class="nav-link" data-scroll-target="#exercise-2-softmax-one-hot-encoding-and-cross-entropy-from-the-lecture">Exercise 2 — Softmax, one-hot encoding and cross-entropy (from the lecture)</a></li>
+  <li><a href="#exercise-3-tunnelling-in-a-double-well" id="toc-exercise-3-tunnelling-in-a-double-well" class="nav-link" data-scroll-target="#exercise-3-tunnelling-in-a-double-well">Exercise 3 — Tunnelling in a double well</a></li>
+  <li><a href="#exercise-4-particles-without-loops-broadcasting" id="toc-exercise-4-particles-without-loops-broadcasting" class="nav-link" data-scroll-target="#exercise-4-particles-without-loops-broadcasting">Exercise 4 — Particles without loops (broadcasting)</a></li>
+  <li><a href="#exercise-5-advanced-a-two-hidden-layer-network-by-hand" id="toc-exercise-5-advanced-a-two-hidden-layer-network-by-hand" class="nav-link" data-scroll-target="#exercise-5-advanced-a-two-hidden-layer-network-by-hand">Exercise 5 (advanced) — A two-hidden-layer network, by hand</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/MarcinPlodzien/deep-learning-for-scientific-discovery/blob/main/notebooks/lecture-02/lab-002-numpy.ipynb" class="toc-action">View source</a></p><p><a href="https://github.com/MarcinPlodzien/deep-learning-for-scientific-discovery/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title d-none d-lg-block">Lab 002: NumPy, thinking in arrays</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li></ul></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p><a href="https://colab.research.google.com/github/MarcinPlodzien/deep-learning-for-scientific-discovery/blob/main/notebooks/lecture-02/lab-002-numpy.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Colab"></a></p>
+<hr>
+<section id="deep-learning-for-scientific-discovery" class="level1">
+<h1>Deep Learning for Scientific Discovery</h1>
+<strong>Author:</strong> Marcin Płodzień
+<hr>
+</section>
+<section id="lab-002-numpy-thinking-in-arrays" class="level1">
+<h1>Lab 002 — NumPy: thinking in arrays</h1>
+<p>In the lecture we said: <em>a neural network is a non-linear, parametrised function with a nested structure</em>, <span class="math display">\[f_{\vec\theta}(\mathbf{x}) = h^{(L)}\circ\cdots\circ h^{(1)}(\mathbf{x}), \qquad h^{(l)}(\mathbf{z}) = \sigma\big(\mathbf{W}^{(l)}\mathbf{z} + \mathbf{b}^{(l)}\big).\]</span> Here <span class="math inline">\(\circ\)</span> denotes composition of functions (<span class="math inline">\(g\circ h(\mathbf x) = g(h(\mathbf x))\)</span>): the output of one layer <span class="math inline">\(h^{(l)}\)</span> is the input of the next. <span class="math inline">\(\sigma\)</span> is an activation function, a fixed non-linear function applied to every component separately (examples in Section 9). Every ingredient here — vectors <span class="math inline">\(\mathbf z\)</span>, matrices <span class="math inline">\(\mathbf W\)</span>, element-wise functions <span class="math inline">\(\sigma\)</span> — is an <strong>array operation</strong>. NumPy is the Python library for arrays. PyTorch uses almost the same interface, so most of this notebook carries over with minor changes of names.</p>
+<p><strong>Plan</strong> 1. Why arrays? Loops vs.&nbsp;vectorisation 2. Creating arrays 3. Indexing, slicing and boolean masks 4. Reshaping and stacking 5. Broadcasting 6. Reductions along an axis 7. Linear algebra: the Schrödinger equation on a grid 8. Random numbers 9. Towards neural networks: a dense layer in NumPy 10. What NumPy cannot do 11. Summary 12. Exercises</p>
+<blockquote class="blockquote">
+<p><strong>How to run this notebook in Google Colab</strong> 1. Go to <a href="https://colab.research.google.com" class="uri">https://colab.research.google.com</a> → <em>File → Upload notebook</em> (or open it from Google Drive). 2. Run cells one by one with <strong>Shift + Enter</strong>. Run them <em>in order</em> — later cells use variables defined earlier. 3. The required packages (<code>numpy</code>, <code>matplotlib</code>) are pre-installed in Colab; no <code>pip install</code> required. 4. If the notebook state becomes inconsistent: <em>Runtime → Restart session</em> and run from the top.</p>
+</blockquote>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:26.488929Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:26.488823Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:26.781867Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:26.781281Z&quot;}" data-execution_count="1">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Display settings only (the stored numbers are not changed): 4 digits after the decimal point,</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># and tiny numbers such as 1e-17 are printed as 0. instead of in scientific notation.</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>np.set_printoptions(precision<span class="op">=</span><span class="dv">4</span>, suppress<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"NumPy version:"</span>, np.__version__)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>NumPy version: 2.2.6</code></pre>
+</div>
+</div>
+<hr>
+<section id="arrays-loops-vs.-vectorisation" class="level2">
+<h2 class="anchored" data-anchor-id="arrays-loops-vs.-vectorisation">1. Arrays: loops vs.&nbsp;vectorisation</h2>
+<p>Task: compute <span class="math inline">\(\sum_{i=1}^{n} x_i^2\)</span> for <span class="math inline">\(n = 10^6\)</span> numbers. First the “plain Python” way, then NumPy.</p>
+<p>New tools in the cell below: - <code>1_000_000</code> is the number <span class="math inline">\(10^6\)</span>; Python ignores underscores in numbers, they only make long numbers readable. - <code>time.perf_counter()</code> returns the current time in seconds from a high-resolution clock. The difference of two calls is the time spent on the code between them. - An <strong>f-string</strong> <code>f"... {expr} ..."</code> inserts the value of <code>expr</code> into the text. A format specification after a colon controls how a number is printed: <code>{s:.6f}</code> gives 6 digits after the decimal point, <code>{t:7.2f}</code> gives 2 digits in a field 7 characters wide.</p>
+<p>The value <span class="math inline">\(n = 10^6\)</span> is not special: it only has to be large enough that both run times are well above the resolution of the clock.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:26.784108Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:26.783798Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:26.963255Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:26.962650Z&quot;}" data-execution_count="2">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">1_000_000</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>x_list <span class="op">=</span> [i <span class="op">/</span> n <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n)]          <span class="co"># a Python list</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>x_arr <span class="op">=</span> np.array(x_list)                    <span class="co"># the same numbers as a NumPy array</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>t0 <span class="op">=</span> time.perf_counter()</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> xi <span class="kw">in</span> x_list:                           <span class="co"># explicit Python loop</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    s <span class="op">+=</span> xi<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>t_loop <span class="op">=</span> time.perf_counter() <span class="op">-</span> t0</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>t0 <span class="op">=</span> time.perf_counter()</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>s_np <span class="op">=</span> np.<span class="bu">sum</span>(x_arr<span class="op">**</span><span class="dv">2</span>)                     <span class="co"># one vectorised expression</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>t_np <span class="op">=</span> time.perf_counter() <span class="op">-</span> t0</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"loop : </span><span class="sc">{</span>s<span class="sc">:.6f}</span><span class="ss">   time </span><span class="sc">{</span>t_loop<span class="op">*</span><span class="fl">1e3</span><span class="sc">:7.2f}</span><span class="ss"> ms"</span>)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"numpy: </span><span class="sc">{</span>s_np<span class="sc">:.6f}</span><span class="ss">   time </span><span class="sc">{</span>t_np<span class="op">*</span><span class="fl">1e3</span><span class="sc">:7.2f}</span><span class="ss"> ms   -&gt; </span><span class="sc">{</span>t_loop<span class="op">/</span>t_np<span class="sc">:.0f}</span><span class="ss">x faster"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>loop : 333332.833334   time   90.63 ms
+numpy: 333332.833333   time    2.37 ms   -&gt; 38x faster</code></pre>
+</div>
+</div>
+<p>The measured ratio depends on the computer and changes from run to run; in the run stored above, NumPy was about 40 times faster for <span class="math inline">\(n = 10^6\)</span>. The last digit of the two sums differs because the two methods add the numbers in a different order; floating-point rounding depends on the order, and both are correct to about <span class="math inline">\(10^{-12}\)</span> relative accuracy.</p>
+<p><strong>Memory layout.</strong> A NumPy array is a contiguous block of memory holding numbers of <em>one</em> type; the loop over it runs inside NumPy, in code written in the language C and translated to machine instructions in advance (<em>compiled</em>). A Python list holds references to separate Python objects, each of which may be of a different type, and the Python loop is executed statement by statement by the Python interpreter, which checks the type of every element anew.</p>
+<blockquote class="blockquote">
+<p>A <code>for</code> loop over the <em>elements</em> of an array can almost always be replaced by a shorter and faster NumPy expression.</p>
+</blockquote>
+<hr>
+</section>
+<section id="creating-arrays" class="level2">
+<h2 class="anchored" data-anchor-id="creating-arrays">2. Creating arrays</h2>
+<p>The most important attributes of any array: - <code>a.shape</code> — the size along each axis (a tuple), - <code>a.ndim</code> — the number of axes, - <code>a.dtype</code> — the type of the elements (<code>float64</code>, <code>int64</code>, <code>complex128</code>, <code>bool</code>, …).</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:26.965114Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:26.964963Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:26.968060Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:26.967605Z&quot;}" data-execution_count="3">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> np.array([<span class="fl">1.0</span>, <span class="fl">2.0</span>, <span class="fl">3.0</span>])                 <span class="co"># 1D array (a vector)</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>M <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>],</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>              [<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>]])                    <span class="co"># 2D array (a matrix): a list of rows</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, arr <span class="kw">in</span> [(<span class="st">"a"</span>, a), (<span class="st">"M"</span>, M)]:</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">: shape=</span><span class="sc">{</span>arr<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">, ndim=</span><span class="sc">{</span>arr<span class="sc">.</span>ndim<span class="sc">}</span><span class="ss">, dtype=</span><span class="sc">{</span>arr<span class="sc">.</span>dtype<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>a: shape=(3,), ndim=1, dtype=float64
+M: shape=(2, 3), ndim=2, dtype=int64</code></pre>
+</div>
+</div>
+<p>Common constructors. Mind the difference between <code>arange</code> (given <strong>step</strong>, end excluded) and <code>linspace</code> (given <strong>number of points</strong>, end included). For physics grids prefer <code>linspace</code>.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:26.969347Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:26.969220Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:26.989077Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:26.988706Z&quot;}" data-execution_count="4">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"zeros     :"</span>, np.zeros(<span class="dv">4</span>))</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"ones      :"</span>, np.ones((<span class="dv">2</span>, <span class="dv">3</span>)))             <span class="co"># shape given as a tuple</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"arange    :"</span>, np.arange(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.25</span>))       <span class="co"># 0, 0.25, 0.5, 0.75   (the end point 1 is excluded)</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"linspace  :"</span>, np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">5</span>))        <span class="co"># 0, 0.25, ..., 1      (1 included)</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"identity  :</span><span class="ch">\n</span><span class="st">"</span>, np.eye(<span class="dv">3</span>))</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"full      :"</span>, np.full(<span class="dv">3</span>, <span class="fl">7.0</span>))</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"zeros_like:"</span>, np.zeros_like(a))            <span class="co"># same shape &amp; dtype as `a`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>zeros     : [0. 0. 0. 0.]
+ones      : [[1. 1. 1.]
+ [1. 1. 1.]]
+arange    : [0.   0.25 0.5  0.75]
+linspace  : [0.   0.25 0.5  0.75 1.  ]
+identity  :
+ [[1. 0. 0.]
+ [0. 1. 0.]
+ [0. 0. 1.]]
+full      : [7. 7. 7.]
+zeros_like: [0. 0. 0.]</code></pre>
+</div>
+</div>
+<p><strong>dtype matters.</strong> NumPy chooses the dtype from the entries: <code>M</code> above was written with integers only and became <code>int64</code>, while <code>a</code> contains <code>1.0</code> and became <code>float64</code>. Integer arrays stay integer under <code>+</code>, <code>-</code>, <code>*</code> and <code>//</code>, but <code>/</code> always returns floats (see below); complex numbers are built in (<code>1j</code> is the imaginary unit). The number in the name is the number of bits per element: <code>float64</code> uses 8 bytes and keeps about 16 significant digits, <code>float32</code> uses 4 bytes and keeps about 7. Deep learning usually uses <code>float32</code> (faster, less memory), scientific computing <code>float64</code> (more precise).</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:26.990075Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:26.989954Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:27.000112Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:26.999547Z&quot;}" data-execution_count="5">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>i <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>])</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(i.dtype, i <span class="op">/</span> <span class="dv">2</span>, (i <span class="op">/</span> <span class="dv">2</span>).dtype)              <span class="co"># division promotes int -&gt; float</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>psi <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="ot">1j</span>]) <span class="op">/</span> np.sqrt(<span class="dv">2</span>)              <span class="co"># a qubit state (|0&gt; + i|1&gt;)/sqrt(2)</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(psi, psi.dtype, <span class="st">"norm^2 ="</span>, np.<span class="bu">sum</span>(np.<span class="bu">abs</span>(psi)<span class="op">**</span><span class="dv">2</span>))</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># the squared norm is 0.9999999999999998, not exactly 1: floating-point numbers have about 16 significant digits,</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># so results of arithmetic are exact only up to rounding errors of order 1e-16</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.float32(<span class="dv">1</span><span class="op">/</span><span class="dv">3</span>), np.float64(<span class="dv">1</span><span class="op">/</span><span class="dv">3</span>))           <span class="co"># 7 vs 16 significant digits</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>int64 [0.5 1.  1.5] float64
+[0.7071+0.j     0.    +0.7071j] complex128 norm^2 = 0.9999999999999998
+0.33333334 0.3333333333333333</code></pre>
+</div>
+</div>
+<hr>
+</section>
+<section id="indexing-slicing-and-boolean-masks" class="level2">
+<h2 class="anchored" data-anchor-id="indexing-slicing-and-boolean-masks">3. Indexing, slicing and boolean masks</h2>
+<p>Indexing works like for lists (from 0, negative from the end, <code>start:stop:step</code>), and for 2D arrays we give one index per axis: <code>M[row, column]</code>.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:27.001133Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:27.001031Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:27.010729Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:27.010364Z&quot;}" data-execution_count="6">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> np.arange(<span class="dv">20</span>).reshape(<span class="dv">4</span>, <span class="dv">5</span>)     <span class="co"># numbers 0..19 arranged in 4 rows, 5 columns</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(A)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"A[1, 3]    ="</span>, A[<span class="dv">1</span>, <span class="dv">3</span>])          <span class="co"># row 1, column 3</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"A[0]       ="</span>, A[<span class="dv">0</span>])             <span class="co"># whole row 0</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"A[:, 2]    ="</span>, A[:, <span class="dv">2</span>])          <span class="co"># whole column 2  (':' means 'everything')</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"A[1:3, ::2]=</span><span class="ch">\n</span><span class="st">"</span>, A[<span class="dv">1</span>:<span class="dv">3</span>, ::<span class="dv">2</span>])    <span class="co"># rows 1-2, every second column</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"A[-1, -1]  ="</span>, A[<span class="op">-</span><span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>])        <span class="co"># last element</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[ 0  1  2  3  4]
+ [ 5  6  7  8  9]
+ [10 11 12 13 14]
+ [15 16 17 18 19]]
+A[1, 3]    = 8
+A[0]       = [0 1 2 3 4]
+A[:, 2]    = [ 2  7 12 17]
+A[1:3, ::2]=
+ [[ 5  7  9]
+ [10 12 14]]
+A[-1, -1]  = 19</code></pre>
+</div>
+</div>
+<p><strong>Boolean masks</strong> select the elements that satisfy a condition; they are used for selecting data.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:27.011877Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:27.011777Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:27.026810Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:27.026464Z&quot;}" data-execution_count="7">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">13</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>mask <span class="op">=</span> np.<span class="bu">abs</span>(x) <span class="op">&lt;</span> <span class="fl">1.5</span>            <span class="co"># an array of True/False</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mask)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"selected:"</span>, x[mask])</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> x.copy()                      <span class="co"># an independent copy of x (see 'Views and copies' below)</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>y[x <span class="op">&lt;</span> <span class="dv">0</span>] <span class="op">=</span> <span class="fl">0.0</span>                    <span class="co"># set all negative entries to zero (this is the ReLU function)</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"ReLU(x) :"</span>, y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[False False False False  True  True  True  True  True False False False
+ False]
+selected: [-1.  -0.5  0.   0.5  1. ]
+ReLU(x) : [0.  0.  0.  0.  0.  0.  0.  0.5 1.  1.5 2.  2.5 3. ]</code></pre>
+</div>
+</div>
+<section id="views-and-copies" class="level3">
+<h3 class="anchored" data-anchor-id="views-and-copies">Views and copies</h3>
+<p>Basic slicing (<code>start:stop:step</code>) does <strong>not</strong> copy data: it returns a <em>view</em> on the same memory, and modifying the view modifies the original. Indexing with a boolean mask (as above) or with an array of integers returns a <strong>copy</strong>. <code>.copy()</code> creates an independent array.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:27.027872Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:27.027765Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:27.038304Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:27.037934Z&quot;}" data-execution_count="8">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> np.arange(<span class="dv">5</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> a[<span class="dv">1</span>:<span class="dv">4</span>]          <span class="co"># a VIEW</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>b[<span class="dv">0</span>] <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"a after modifying b:"</span>, a, <span class="st">"  &lt;- a changed as well"</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> np.arange(<span class="dv">5</span>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> a[<span class="dv">1</span>:<span class="dv">4</span>].copy()   <span class="co"># an independent COPY</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>c[<span class="dv">0</span>] <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"a after modifying c:"</span>, a, <span class="st">"  &lt;- unchanged"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>a after modifying b: [  0 100   2   3   4]   &lt;- a changed as well
+a after modifying c: [0 1 2 3 4]   &lt;- unchanged</code></pre>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="reshaping-and-stacking" class="level2">
+<h2 class="anchored" data-anchor-id="reshaping-and-stacking">4. Reshaping and stacking</h2>
+<p>The same numbers can be viewed with different shapes, as long as the total size agrees. <code>-1</code> means that this dimension is inferred from the total size. <code>reshape</code> reads the elements row by row (the last index changes fastest) and fills the new shape in the same order, as the printout below shows. This is used frequently in deep learning: e.g.&nbsp;a <span class="math inline">\(28\times28\)</span> image becomes a vector of length <span class="math inline">\(784\)</span> before entering a dense layer.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:27.039267Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:27.039141Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:27.048817Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:27.048254Z&quot;}" data-execution_count="9">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> np.arange(<span class="dv">16</span>).reshape(<span class="dv">4</span>, <span class="dv">4</span>)      <span class="co"># a tiny 4x4 "image"</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>vec <span class="op">=</span> img.reshape(<span class="op">-</span><span class="dv">1</span>)                  <span class="co"># flatten -&gt; shape (16,)</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(img.shape, <span class="st">"-&gt;"</span>, vec.shape)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"reshaped to 2x8:</span><span class="ch">\n</span><span class="st">"</span>, vec.reshape(<span class="dv">2</span>, <span class="op">-</span><span class="dv">1</span>))</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"transpose:</span><span class="ch">\n</span><span class="st">"</span>, img.T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>(4, 4) -&gt; (16,)
+reshaped to 2x8:
+ [[ 0  1  2  3  4  5  6  7]
+ [ 8  9 10 11 12 13 14 15]]
+transpose:
+ [[ 0  4  8 12]
+ [ 1  5  9 13]
+ [ 2  6 10 14]
+ [ 3  7 11 15]]</code></pre>
+</div>
+</div>
+<p>Column vs.&nbsp;row vectors: a 1D array of shape <code>(n,)</code> is neither. An axis is added with <code>None</code> (or <code>np.newaxis</code>) to obtain shape <code>(n, 1)</code> or <code>(1, n)</code>. Such shapes are needed for broadcasting in the next section: combining a <code>(n, 1)</code> column with a <code>(1, m)</code> row gives an <code>(n, m)</code> table.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:27.049849Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:27.049752Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:27.058851Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:27.058491Z&quot;}" data-execution_count="10">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>v <span class="op">=</span> np.array([<span class="fl">1.0</span>, <span class="fl">2.0</span>, <span class="fl">3.0</span>])</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(v.shape, v[:, <span class="va">None</span>].shape, v[<span class="va">None</span>, :].shape)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>(3,) (3, 1) (1, 3)</code></pre>
+</div>
+</div>
+<p>Joining arrays: <code>concatenate</code> along an existing axis, <code>stack</code> along a new one:</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:27.059873Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:27.059768Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:27.070166Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:27.069784Z&quot;}" data-execution_count="11">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>u, w <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]), np.array([<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>])</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"concatenate:"</span>, np.concatenate([u, w]))</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"stack axis 0:</span><span class="ch">\n</span><span class="st">"</span>, np.stack([u, w]))           <span class="co"># shape (2, 3): rows</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"stack axis 1:</span><span class="ch">\n</span><span class="st">"</span>, np.stack([u, w], axis<span class="op">=</span><span class="dv">1</span>))   <span class="co"># shape (3, 2): columns</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>concatenate: [1 2 3 4 5 6]
+stack axis 0:
+ [[1 2 3]
+ [4 5 6]]
+stack axis 1:
+ [[1 4]
+ [2 5]
+ [3 6]]</code></pre>
+</div>
+</div>
+<hr>
+</section>
+<section id="broadcasting" class="level2">
+<h2 class="anchored" data-anchor-id="broadcasting">5. Broadcasting</h2>
+<p>Arithmetic between arrays of <em>different</em> shapes works if, comparing shapes <strong>from the right</strong>, each pair of dimensions is either equal or one of them is 1. If one array has fewer axes, its shape is first padded with 1s on the left: shape <code>(3,)</code> is treated as <code>(1, 3)</code>, and a scalar as shape <code>()</code>, compatible with everything. The size-1 dimension is (virtually) repeated. No data are copied, so it is fast and memory-efficient.</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>shape of <code>A</code></th>
+<th>shape of <code>B</code></th>
+<th>result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>(3,)</code></td>
+<td>scalar</td>
+<td><code>(3,)</code></td>
+</tr>
+<tr class="even">
+<td><code>(4, 3)</code></td>
+<td><code>(3,)</code></td>
+<td><code>(4, 3)</code> — <code>B</code> added to every row</td>
+</tr>
+<tr class="odd">
+<td><code>(4, 1)</code></td>
+<td><code>(1, 3)</code></td>
+<td><code>(4, 3)</code> — an “outer” operation</td>
+</tr>
+<tr class="even">
+<td><code>(4, 3)</code></td>
+<td><code>(4,)</code></td>
+<td>error (3 ≠ 4) — use <code>B[:, None]</code></td>
+</tr>
+</tbody>
+</table>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:27.071261Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:27.071151Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:27.081550Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:27.081148Z&quot;}" data-execution_count="12">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 4 students (samples) x 3 features: height [m], mass [kg], age [years] (very different scales)</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.array([[<span class="fl">1.62</span>, <span class="fl">55.0</span>, <span class="fl">19.0</span>],</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>              [<span class="fl">1.80</span>, <span class="fl">82.0</span>, <span class="fl">23.0</span>],</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>              [<span class="fl">1.75</span>, <span class="fl">70.0</span>, <span class="fl">21.0</span>],</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>              [<span class="fl">1.68</span>, <span class="fl">61.0</span>, <span class="fl">30.0</span>]])</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>mean <span class="op">=</span> X.mean(axis<span class="op">=</span><span class="dv">0</span>)                            <span class="co"># axis=0: average over the rows (samples), one mean per feature, shape (3,)</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>std <span class="op">=</span> X.std(axis<span class="op">=</span><span class="dv">0</span>)                              <span class="co"># divides by N (np.std default); X.std(axis=0, ddof=1) divides by N-1</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>X_normalised <span class="op">=</span> (X <span class="op">-</span> mean) <span class="op">/</span> std                  <span class="co"># (4,3) with (3,) -&gt; broadcast over rows</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(X_normalised)</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"feature means now:"</span>, X_normalised.mean(axis<span class="op">=</span><span class="dv">0</span>), <span class="st">"  stds now:"</span>, X_normalised.std(axis<span class="op">=</span><span class="dv">0</span>))</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Standardising features like this is a standard preprocessing step before training a network.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[-1.3538 -1.1795 -1.0251]
+ [ 1.2806  1.4744 -0.0603]
+ [ 0.5488  0.2949 -0.5427]
+ [-0.4756 -0.5898  1.6282]]
+feature means now: [0. 0. 0.]   stds now: [1. 1. 1.]</code></pre>
+</div>
+</div>
+<p><strong>An outer operation:</strong> a table of <span class="math inline">\(\sin(k x)\)</span> for many <span class="math inline">\(k\)</span> and many <span class="math inline">\(x\)</span> at once — no loops. The result <code>modes</code> has shape <code>(4, 200)</code>: element <code>[i, j]</code> is <span class="math inline">\(\sin(k_i x_j)\)</span>, so row <code>i</code> is the whole curve for wave number <span class="math inline">\(k_i\)</span>.</p>
+<p>The cell also draws the first figure of this notebook (with a short reminder of Matplotlib): - <code>fig, ax = plt.subplots(figsize=(7, 3.5))</code> creates a figure <code>fig</code> (the whole image, 7 by 3.5 inches) containing one coordinate system <code>ax</code>. Curves are drawn with methods of <code>ax</code>, and <code>plt.show()</code> displays the finished figure. - <code>zip(k, modes)</code> walks through two sequences in parallel: in each iteration <code>kk</code> is the next element of <code>k</code> and <code>row</code> the next row of <code>modes</code> (iterating over a 2D array gives its rows). - <code>r"$\sin(kx)$"</code> is a <em>raw string</em>: the <code>r</code> keeps the backslash literally, which the LaTeX command <code>\sin</code> needs. Text between <code>$...$</code> is typeset as mathematics.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:27.082548Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:27.082444Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:27.336947Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:27.336420Z&quot;}" data-execution_count="13">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="dv">0</span>, np.pi, <span class="dv">200</span>)          <span class="co"># shape (200,)</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="dv">5</span>)                     <span class="co"># shape (4,)</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>modes <span class="op">=</span> np.sin(k[:, <span class="va">None</span>] <span class="op">*</span> x[<span class="va">None</span>, :]) <span class="co"># (4,1) * (1,200) -&gt; (4,200)</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(modes.shape)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="fl">3.5</span>))</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> kk, row <span class="kw">in</span> <span class="bu">zip</span>(k, modes):</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    ax.plot(x, row, label<span class="op">=</span><span class="ss">f"k = </span><span class="sc">{</span>kk<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"$x$"</span>)<span class="op">;</span> ax.set_ylabel(<span class="vs">r"$\sin(kx)$"</span>)<span class="op">;</span> ax.legend(ncol<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>(4, 200)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="lab-002-numpy_files/figure-html/cell-14-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<hr>
+</section>
+<section id="reductions-along-an-axis" class="level2">
+<h2 class="anchored" data-anchor-id="reductions-along-an-axis">6. Reductions along an axis</h2>
+<p><code>sum</code>, <code>mean</code>, <code>std</code>, <code>max</code>, <code>argmax</code>, … collapse an array along an axis. Convention: <strong>axis 0 = samples, axis 1 = features</strong> (the same in PyTorch, where the argument is called <code>dim</code>; here the features are the classes). <code>axis=k</code> is the axis that is removed by the reduction. Below, <code>scores</code> has shape <code>(4, 3)</code> (4 samples, 3 classes): <code>sum(axis=1)</code> removes the class axis and returns shape <code>(4,)</code>, one number per sample; <code>mean(axis=0)</code> removes the sample axis and returns shape <code>(3,)</code>, one number per class. <code>argmax</code> returns the <em>position</em> of the largest element, counted from 0. <code>keepdims=True</code> keeps the reduced axis with size 1, e.g.&nbsp;<code>scores.sum(axis=1, keepdims=True)</code> has shape <code>(4, 1)</code>, ready for broadcasting against <code>scores</code>.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:27.338382Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:27.338235Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:27.342108Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:27.341674Z&quot;}" data-execution_count="14">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> np.array([[<span class="fl">0.1</span>, <span class="fl">0.7</span>, <span class="fl">0.2</span>],      <span class="co"># e.g. network outputs for 4 images and 3 classes</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>                   [<span class="fl">0.8</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>],</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>                   [<span class="fl">0.3</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span>],</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>                   [<span class="fl">0.05</span>, <span class="fl">0.9</span>, <span class="fl">0.05</span>]])</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"sum over classes (axis=1):"</span>, scores.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>))      <span class="co"># each row sums to 1 -&gt; probabilities</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"mean over samples (axis=0):"</span>, scores.mean(axis<span class="op">=</span><span class="dv">0</span>))</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"predicted class (argmax):  "</span>, scores.argmax(axis<span class="op">=</span><span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>sum over classes (axis=1): [1. 1. 1. 1.]
+mean over samples (axis=0): [0.3125 0.5    0.1875]
+predicted class (argmax):   [1 0 2 1]</code></pre>
+</div>
+</div>
+<hr>
+</section>
+<section id="linear-algebra-the-schrödinger-equation-on-a-grid" class="level2">
+<h2 class="anchored" data-anchor-id="linear-algebra-the-schrödinger-equation-on-a-grid">7. Linear algebra: the Schrödinger equation on a grid</h2>
+<p><code>@</code> is matrix multiplication; <code>np.linalg</code> contains solvers, determinants, eigenvalue routines.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:27.343515Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:27.343367Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:27.362106Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:27.361711Z&quot;}" data-execution_count="15">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>M <span class="op">=</span> np.array([[<span class="fl">2.0</span>, <span class="fl">1.0</span>], [<span class="fl">1.0</span>, <span class="fl">3.0</span>]])</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>v <span class="op">=</span> np.array([<span class="fl">1.0</span>, <span class="op">-</span><span class="fl">1.0</span>])</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"M @ v   ="</span>, M <span class="op">@</span> v)            <span class="co"># matrix-vector product</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"v @ v   ="</span>, v <span class="op">@</span> v)            <span class="co"># scalar product</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"M * M   =</span><span class="ch">\n</span><span class="st">"</span>, M <span class="op">*</span> M)          <span class="co"># element-wise (not the matrix product)</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"M @ M   =</span><span class="ch">\n</span><span class="st">"</span>, M <span class="op">@</span> M)          <span class="co"># matrix product</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>x_sol <span class="op">=</span> np.linalg.solve(M, v)        <span class="co"># the vector x with M @ x = v (without computing the inverse of M)</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"solve M x = v :"</span>, x_sol, <span class="st">"  check M @ x ="</span>, M <span class="op">@</span> x_sol)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>M @ v   = [ 1. -2.]
+v @ v   = 2.0
+M * M   =
+ [[4. 1.]
+ [1. 9.]]
+M @ M   =
+ [[ 5.  5.]
+ [ 5. 10.]]
+solve M x = v : [ 0.8 -0.6]   check M @ x = [ 1. -1.]</code></pre>
+</div>
+</div>
+<section id="physics-example-quantum-harmonic-oscillator" class="level3">
+<h3 class="anchored" data-anchor-id="physics-example-quantum-harmonic-oscillator">Physics example: quantum harmonic oscillator</h3>
+<p>We discretise <span class="math inline">\(x\in[-a, a]\)</span> with <span class="math inline">\(N_x\)</span> points <span class="math inline">\(x_1,\dots,x_{N_x}\)</span>, spacing <span class="math inline">\(\Delta x = 2a/(N_x-1)\)</span>, and store the values <span class="math inline">\(\psi_i = \psi(x_i)\)</span> as a vector <span class="math inline">\(\vec\psi\)</span> of length <span class="math inline">\(N_x\)</span>. Adding the Taylor expansions <span class="math inline">\(\psi(x\pm\Delta x) = \psi \pm \Delta x\,\psi' + \tfrac12\Delta x^2\psi'' \pm \tfrac16\Delta x^3\psi''' + O(\Delta x^4)\)</span>, the odd terms cancel and the second derivative becomes <span class="math display">\[\frac{d^2\psi}{dx^2}\Big|_{x_i} \approx \frac{\psi_{i+1} - 2\psi_i + \psi_{i-1}}{\Delta x^2},\]</span> so the Hamiltonian <span class="math inline">\(\hat H = -\tfrac12\frac{d^2}{dx^2} + V(x)\)</span> (units <span class="math inline">\(\hbar = m = \omega = 1\)</span>) becomes an <span class="math inline">\(N_x\times N_x\)</span> <strong>tridiagonal matrix</strong> <span class="math display">\[\bar H = -\frac{1}{2\Delta x^2}\begin{pmatrix}-2 &amp; 1 &amp; &amp; \\ 1 &amp; -2 &amp; 1 &amp; \\ &amp; \ddots &amp; \ddots &amp; \ddots \\ &amp; &amp; 1 &amp; -2\end{pmatrix} + \mathrm{diag}\big(V(x_1),\dots,V(x_{N_x})\big).\]</span> The time-independent Schrödinger equation <span class="math inline">\(\bar H\vec\psi_n = E_n\vec\psi_n\)</span> is now a matrix <strong>eigenvalue problem</strong> — <code>np.linalg.eigh</code> (for Hermitian matrices) solves it. For <span class="math inline">\(V = x^2/2\)</span> we expect <span class="math inline">\(E_n = n + \tfrac12\)</span>.</p>
+<p>Two approximations are made: the matrix ends at the first and last grid point, which means <span class="math inline">\(\psi = 0\)</span> outside the grid (a box with hard walls, harmless if the box is much larger than the wavefunctions), and the second derivative is replaced by a finite difference with an error of order <span class="math inline">\(\Delta x^2\)</span>.</p>
+<p><strong>Choice of the grid.</strong> The classical turning point of a state with energy <span class="math inline">\(E\)</span> is <span class="math inline">\(x_t = \sqrt{2E}\)</span>, i.e.&nbsp;<span class="math inline">\(x_t = 3\)</span> for the highest state we show (<span class="math inline">\(E_4 = 4.5\)</span>). Beyond <span class="math inline">\(x_t\)</span> the wavefunction decays quickly, so a box <span class="math inline">\([-a, a]\)</span> with <span class="math inline">\(a = 6\)</span>, twice as wide, does not disturb the five lowest states. With <span class="math inline">\(N_x = 400\)</span> points the spacing is <span class="math inline">\(\Delta x \approx 0.03\)</span>. Both numbers are a choice, not a requirement: any half-width of 5 or more and a few hundred points give the same picture. A box <span class="math inline">\([-4, 4]\)</span> is already too small for <span class="math inline">\(n = 4\)</span> (its energy then comes out too high by about <span class="math inline">\(0.008\)</span>).</p>
+<p><strong>New functions in the cell below.</strong> - <code>np.diag(v, k=1)</code> with a 1D array <code>v</code> builds a square matrix with <code>v</code> on a diagonal: <code>k=0</code> is the main diagonal, <code>k=1</code> the first diagonal above it, <code>k=-1</code> the first below it. This is why the off-diagonal arrays have length <span class="math inline">\(N_x-1\)</span> (<code>n - 1</code> in the code, where <code>n = x.size</code>). (With a 2D array as argument, <code>np.diag</code> does the opposite and extracts the diagonal.) - <code>np.linalg.eigh</code> diagonalises a symmetric (Hermitian) matrix. It returns real eigenvalues sorted in ascending order and orthonormal eigenvectors. The general routine <code>np.linalg.eig</code> does not use the symmetry: it is slower, does not sort the eigenvalues and can return them with tiny imaginary parts caused by rounding. For a Hamiltonian, <code>eigh</code> is the right choice. - The matrix is stored as a full <span class="math inline">\(400\times400\)</span> array, although almost all entries are zero. This is the simplest way and takes about 0.02 s. The cost of full diagonalisation grows like <span class="math inline">\(N_x^3\)</span> (about 1 s for <span class="math inline">\(N_x = 2000\)</span> on the same computer), so for much larger grids sparse matrices (<code>scipy.sparse</code>) are used.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:27.363160Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:27.363056Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:27.392323Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:27.389645Z&quot;}" data-execution_count="16">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> hamiltonian(x, V):</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Finite-difference Hamiltonian -1/2 d^2/dx^2 + V(x) on the uniform grid x."""</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    dx <span class="op">=</span> x[<span class="dv">1</span>] <span class="op">-</span> x[<span class="dv">0</span>]</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> x.size</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    kinetic <span class="op">=</span> <span class="op">-</span><span class="fl">0.5</span> <span class="op">/</span> dx<span class="op">**</span><span class="dv">2</span> <span class="op">*</span> (np.diag(np.ones(n <span class="op">-</span> <span class="dv">1</span>), k<span class="op">=</span><span class="dv">1</span>)     <span class="co"># upper diagonal</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>                              <span class="op">-</span> <span class="dv">2</span> <span class="op">*</span> np.eye(n)                  <span class="co"># main diagonal</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>                              <span class="op">+</span> np.diag(np.ones(n <span class="op">-</span> <span class="dv">1</span>), k<span class="op">=-</span><span class="dv">1</span>))  <span class="co"># lower diagonal</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> kinetic <span class="op">+</span> np.diag(V)</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">6</span>, <span class="dv">6</span>, <span class="dv">400</span>)</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>H <span class="op">=</span> hamiltonian(x, <span class="fl">0.5</span> <span class="op">*</span> x<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>E, psi <span class="op">=</span> np.linalg.eigh(H)           <span class="co"># eigenvalues (ascending) and eigenvectors (as columns)</span></span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"lowest energies:"</span>, E[:<span class="dv">5</span>])</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"expected       :"</span>, np.arange(<span class="dv">5</span>) <span class="op">+</span> <span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>lowest energies: [0.5    1.4999 2.4996 3.4993 4.4988]
+expected       : [0.5 1.5 2.5 3.5 4.5]</code></pre>
+</div>
+</div>
+<p>The computed energies lie slightly <strong>below</strong> <span class="math inline">\(n + \tfrac12\)</span>: by about <span class="math inline">\(3\times10^{-5}\)</span> for <span class="math inline">\(n=0\)</span> and about <span class="math inline">\(1.2\times10^{-3}\)</span> for <span class="math inline">\(n=4\)</span> (the printout shows 4 digits after the decimal point). This is the error of the finite-difference formula, of order <span class="math inline">\(\Delta x^2\)</span>. With 200 points (<span class="math inline">\(\Delta x\)</span> twice as large) the errors are about 4 times larger, with 800 points about 4 times smaller, as expected for an error <span class="math inline">\(\propto \Delta x^2\)</span>. Higher states oscillate faster, so the finite difference describes them less accurately.</p>
+<p>The eigenvectors are the <strong>columns</strong> <code>psi[:, n]</code>. A classic textbook figure — eigenfunctions shifted by their energies, drawn inside the potential. Three details of the plotting cell: - <strong>Normalisation.</strong> <code>eigh</code> returns vectors with <span class="math inline">\(\sum_i |\psi_i|^2 = 1\)</span>. The wavefunction of the continuum problem must satisfy <span class="math inline">\(\int|\psi(x)|^2dx \approx \sum_i|\psi_i|^2\,\Delta x = 1\)</span>, so the vector is divided by <span class="math inline">\(\sqrt{\Delta x}\)</span>. - <strong>Sign.</strong> An eigenvector is fixed only up to a factor <span class="math inline">\(-1\)</span>, so <code>eigh</code> may return <span class="math inline">\(-\psi_n\)</span> and a curve can appear upside down compared with a textbook figure. Densities <span class="math inline">\(|\psi_n|^2\)</span> do not depend on this sign. - <strong>Scale.</strong> Each curve is drawn as <span class="math inline">\(E_n + 0.6\,\psi_n(x)\)</span>: it is shifted to the height of its energy, and the factor 0.6 only keeps neighbouring curves from overlapping. The vertical size of a wavefunction in such a plot has no physical meaning.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:27.394841Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:27.394699Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:27.506870Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:27.506186Z&quot;}" data-execution_count="17">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>dx <span class="op">=</span> x[<span class="dv">1</span>] <span class="op">-</span> x[<span class="dv">0</span>]</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">5</span>))</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>ax.plot(x, <span class="fl">0.5</span> <span class="op">*</span> x<span class="op">**</span><span class="dv">2</span>, <span class="st">"k"</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">"$V(x)$"</span>)</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>    psi_n <span class="op">=</span> psi[:, n] <span class="op">/</span> np.sqrt(dx)              <span class="co"># normalise so that sum |psi|^2 dx = 1</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>    ax.axhline(E[n], color<span class="op">=</span><span class="st">"gray"</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>    ax.plot(x, E[n] <span class="op">+</span> <span class="fl">0.6</span> <span class="op">*</span> psi_n, label<span class="op">=</span><span class="ss">f"n = </span><span class="sc">{</span>n<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="dv">0</span>, <span class="fl">5.5</span>)<span class="op">;</span> ax.set_xlim(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>)</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"$x$"</span>)<span class="op">;</span> ax.set_ylabel(<span class="vs">r"$E_n$,  $\psi_n(x)$ (shifted)"</span>)</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>ax.legend(loc<span class="op">=</span><span class="st">"upper right"</span>, fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="lab-002-numpy_files/figure-html/cell-18-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="random-numbers" class="level2">
+<h2 class="anchored" data-anchor-id="random-numbers">8. Random numbers</h2>
+<p>Machine learning uses random numbers in several places: random initialisation of weights, random mini-batches, random noise in data. A <strong>generator with a fixed seed</strong> makes the results reproducible: the same seed always gives the same sequence of numbers. The value of the seed (123 here, 0 or 1 later) is arbitrary; different seeds give different but statistically equivalent results.</p>
+<p>As with <code>arange</code>, the upper end of a range is excluded: <code>rng.integers(0, 10)</code> returns integers 0, …, 9, and <code>rng.random()</code> returns numbers in <span class="math inline">\([0, 1)\)</span>.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:27.508857Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:27.508718Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:27.516891Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:27.516399Z&quot;}" data-execution_count="18">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="dv">123</span>)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"uniform [0,1):"</span>, rng.random(<span class="dv">3</span>))</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"normal N(0,1):"</span>, rng.normal(size<span class="op">=</span><span class="dv">3</span>))</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"integers     :"</span>, rng.integers(<span class="dv">0</span>, <span class="dv">10</span>, size<span class="op">=</span><span class="dv">5</span>))</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"choice ±1    :"</span>, rng.choice([<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>], size<span class="op">=</span><span class="dv">8</span>))          <span class="co"># e.g. random Ising spins</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"permutation  :"</span>, rng.permutation(<span class="dv">6</span>))                   <span class="co"># shuffling a dataset</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>uniform [0,1): [0.6824 0.0538 0.2204]
+normal N(0,1): [0.194  0.9202 0.5771]
+integers     : [4 9 4 2 7]
+choice ±1    : [ 1  1  1 -1  1 -1 -1 -1]
+permutation  : [5 2 4 1 0 3]</code></pre>
+</div>
+</div>
+<p><strong>Monte Carlo in one line</strong>: estimate <span class="math inline">\(\pi\)</span> from the fraction of random points in the unit square that fall inside the quarter circle. The error decreases like <span class="math inline">\(1/\sqrt{N}\)</span>; we check this on a log-log plot. On logarithmic axes a power law <span class="math inline">\(\text{error}\propto N^{-1/2}\)</span> becomes a straight line of slope <span class="math inline">\(-1/2\)</span>, so the exponent can be read off directly. On linear axes all points with large <span class="math inline">\(N\)</span> would be squeezed onto the horizontal axis.</p>
+<p>New elements in the cell: - <code>np.logspace(2, 7, 11)</code> returns 11 numbers spaced evenly in the exponent, from <span class="math inline">\(10^2\)</span> to <span class="math inline">\(10^7\)</span> (two values per decade: 100, 316, 1000, …). <code>.astype(int)</code> converts them to integers, because a number of samples must be an integer. - <code>np.sum(pts**2, axis=1) &lt; 1.0</code> is a boolean array: <code>True</code> for points inside the quarter circle. In arithmetic <code>True</code> counts as 1 and <code>False</code> as 0, so <code>np.mean</code> of a boolean array is the fraction of <code>True</code> entries. This fraction estimates the area ratio <span class="math inline">\(\pi/4\)</span>. - The largest sample is an array of shape <span class="math inline">\((10^7, 2)\)</span> of <code>float64</code> numbers, i.e.&nbsp;160 MB of memory; it is generated and processed in well under a second.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:27.518311Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:27.518120Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:28.252939Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:28.252270Z&quot;}" data-execution_count="19">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>Ns <span class="op">=</span> np.logspace(<span class="dv">2</span>, <span class="dv">7</span>, <span class="dv">11</span>).astype(<span class="bu">int</span>)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> []</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> N <span class="kw">in</span> Ns:</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    pts <span class="op">=</span> rng.random((N, <span class="dv">2</span>))                               <span class="co"># N points, 2 coordinates</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>    pi_est <span class="op">=</span> <span class="dv">4</span> <span class="op">*</span> np.mean(np.<span class="bu">sum</span>(pts<span class="op">**</span><span class="dv">2</span>, axis<span class="op">=</span><span class="dv">1</span>) <span class="op">&lt;</span> <span class="fl">1.0</span>)</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>    errors.append(<span class="bu">abs</span>(pi_est <span class="op">-</span> np.pi))</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">4</span>))</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>ax.loglog(Ns, errors, <span class="st">"o"</span>, label<span class="op">=</span><span class="st">"|estimate - π|"</span>)</span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a><span class="co"># standard deviation of the estimate: 4 * sqrt(p (1 - p) / N) with p = pi/4, i.e. about 1.64 / sqrt(N)</span></span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>ax.loglog(Ns, <span class="fl">1.64</span> <span class="op">/</span> np.sqrt(Ns), <span class="st">"k--"</span>, label<span class="op">=</span><span class="vs">r"$1.64/\sqrt</span><span class="sc">{N}</span><span class="vs">$ (expected std)"</span>)</span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"number of samples $N$"</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">"error"</span>)<span class="op">;</span> ax.legend()</span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="lab-002-numpy_files/figure-html/cell-20-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>Where the dashed line comes from: each random point falls inside the quarter circle with probability <span class="math inline">\(p = \pi/4\)</span>, independently of the others. The fraction of hits among <span class="math inline">\(N\)</span> points has standard deviation <span class="math inline">\(\sqrt{p(1-p)/N}\)</span> (binomial distribution), so the estimate <span class="math inline">\(4\times\)</span>fraction has standard deviation <span class="math inline">\(4\sqrt{p(1-p)/N} \approx 1.64/\sqrt N\)</span>.</p>
+<p>Each point is the result of <strong>one</strong> random experiment, so the points scatter around the dashed line instead of lying on it. The dashed line is the standard deviation, a typical size of the error, not an upper bound: on average <span class="math inline">\(|\text{error}|\)</span> is about 0.8 of the standard deviation, and in about a quarter of the experiments it is less than 0.3 of it. What the plot confirms is the slope: the cloud of points follows the line over five decades of <span class="math inline">\(N\)</span>.</p>
+<hr>
+</section>
+<section id="towards-neural-networks-a-dense-layer-in-numpy" class="level2">
+<h2 class="anchored" data-anchor-id="towards-neural-networks-a-dense-layer-in-numpy">9. Towards neural networks: a dense layer in NumPy</h2>
+<p>A dense (fully connected) layer maps a vector <span class="math inline">\(\mathbf z\in\mathbb R^{n_\text{in}}\)</span> to <span class="math inline">\(\sigma(\mathbf W\mathbf z + \mathbf b)\in\mathbb R^{n_\text{out}}\)</span>. In practice we process a whole <strong>batch</strong> of <span class="math inline">\(B\)</span> inputs at once, stored as rows of a matrix of shape <code>(B, n_in)</code>. Then <span class="math display">\[\underbrace{\mathbf Z_\text{out}}_{(B,\,n_\text{out})} = \sigma\Big(\underbrace{\mathbf Z_\text{in}}_{(B,\,n_\text{in})}\;\underbrace{\mathbf W^{T}}_{(n_\text{in},\,n_\text{out})} + \underbrace{\mathbf b}_{(n_\text{out},)}\Big)\]</span> — one matrix product plus broadcasting of the bias. (We store <code>W</code> with shape <code>(n_out, n_in)</code>, exactly like PyTorch does.)</p>
+<p>First, the activation functions from the lecture. Each is defined by a one-line <code>def</code> (allowed when the body is a single <code>return</code>). <code>np.maximum(0.0, z)</code> compares element by element and returns the larger value at each position, which is exactly ReLU; it differs from <code>np.max(z)</code>, which returns the single largest element of an array. The list <code>[(sigmoid, "sigmoid"), ...]</code> contains the functions themselves as values: in Python a function is an object like any other and can be stored in a list and called later as <code>f(z)</code>.</p>
+<p>The range <span class="math inline">\([-5, 5]\)</span>, the 400 points and the <span class="math inline">\(y\)</span>-limits are plotting choices only: the range shows where sigmoid and tanh saturate, 400 points make the curves look smooth, and the upper limit 2.5 cuts the ReLU line.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:28.254852Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:28.254660Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:28.337148Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:28.336620Z&quot;}" data-execution_count="20">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sigmoid(z): <span class="cf">return</span> <span class="fl">1.0</span> <span class="op">/</span> (<span class="fl">1.0</span> <span class="op">+</span> np.exp(<span class="op">-</span>z))</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tanh(z):    <span class="cf">return</span> np.tanh(z)</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> relu(z):    <span class="cf">return</span> np.maximum(<span class="fl">0.0</span>, z)</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>z <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">400</span>)</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">4</span>))</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f, name <span class="kw">in</span> [(sigmoid, <span class="st">"sigmoid"</span>), (tanh, <span class="st">"tanh"</span>), (relu, <span class="st">"ReLU"</span>)]:</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>    ax.plot(z, f(z), label<span class="op">=</span>name, lw<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">"gray"</span>, lw<span class="op">=</span><span class="fl">0.6</span>)<span class="op">;</span> ax.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">"gray"</span>, lw<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="op">-</span><span class="fl">1.2</span>, <span class="fl">2.5</span>)<span class="op">;</span> ax.set_xlabel(<span class="st">"$z$"</span>)<span class="op">;</span> ax.set_ylabel(<span class="vs">r"$\sigma(z)$"</span>)<span class="op">;</span> ax.legend()</span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="lab-002-numpy_files/figure-html/cell-21-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>A dense layer applied to a batch, and a random network <span class="math inline">\(1\to20\to1\)</span> evaluated on 300 inputs.</p>
+<p><strong>Choice of the random weights.</strong> - <code>rng.normal(0, 3, (n_hidden, n_in))</code> draws normally distributed numbers; the three arguments are the mean, the <strong>standard deviation</strong> (not the variance) and the shape of the returned array. - Hidden neuron <span class="math inline">\(i\)</span> computes <span class="math inline">\(\tanh(W_i x + b_i)\)</span>. It switches between <span class="math inline">\(-1\)</span> and <span class="math inline">\(+1\)</span> (upwards if <span class="math inline">\(W_i&gt;0\)</span>, downwards if <span class="math inline">\(W_i&lt;0\)</span>) around <span class="math inline">\(x = -b_i/W_i\)</span>, over an interval of width about <span class="math inline">\(1/|W_i|\)</span>. Because <span class="math inline">\(W_i\)</span> and <span class="math inline">\(b_i\)</span> are drawn with the same standard deviation, the switching points do not depend on that standard deviation (about 70% of them fall inside the plotted range <span class="math inline">\([-2, 2]\)</span>). The standard deviation sets how <strong>steep</strong> the neurons are. The value 3 is an arbitrary choice that gives visibly curved functions; with 0.3 the neurons are so flat that the network output is close to a straight line on <span class="math inline">\([-2, 2]\)</span>. Any value of order 1–5 gives a picture similar to the one below. - The output is a sum of <code>n_hidden</code> = 20 terms <span class="math inline">\(W^{(2)}_i h_i\)</span>. If each term has a variance of order 1, the sum has a variance of order <code>n_hidden</code>. Dividing the output weights by <span class="math inline">\(\sqrt{n_\text{hidden}}\)</span> keeps the output of order 1 for any width. The same rule appears in Exercise 5 and in the initialisation of neural-network weights. - <code>lambda s: s</code> is a short unnamed function that returns its argument unchanged (the identity), used as the “activation” of the linear output layer. <code>lambda args: expression</code> is equivalent to a one-line <code>def</code>.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:28.338860Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:28.338716Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:28.343673Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:28.343213Z&quot;}" data-execution_count="21">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> dense(Z, W, b, activation):</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""One dense layer applied to a batch Z of shape (B, n_in). W: (n_out, n_in), b: (n_out,)."""</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> activation(Z <span class="op">@</span> W.T <span class="op">+</span> b)</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">0</span>)</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>n_in, n_hidden, n_out <span class="op">=</span> <span class="dv">1</span>, <span class="dv">20</span>, <span class="dv">1</span></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>W1, b1 <span class="op">=</span> rng.normal(<span class="dv">0</span>, <span class="dv">3</span>, (n_hidden, n_in)), rng.normal(<span class="dv">0</span>, <span class="dv">3</span>, n_hidden)</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>W2, b2 <span class="op">=</span> rng.normal(<span class="dv">0</span>, <span class="dv">1</span>, (n_out, n_hidden)) <span class="op">/</span> np.sqrt(n_hidden), np.zeros(n_out)</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">300</span>)[:, <span class="va">None</span>]       <span class="co"># batch of 300 one-dimensional inputs: shape (300, 1)</span></span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>H1 <span class="op">=</span> dense(X, W1, b1, np.tanh)             <span class="co"># hidden layer: (300, 20)</span></span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> dense(H1, W2, b2, <span class="kw">lambda</span> s: s)         <span class="co"># linear output layer: (300, 1)</span></span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"X:"</span>, X.shape, <span class="st">" H1:"</span>, H1.shape, <span class="st">" Y:"</span>, Y.shape)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>X: (300, 1)  H1: (300, 20)  Y: (300, 1)</code></pre>
+</div>
+</div>
+<p><strong>A randomly initialised network is a random non-linear function.</strong> Below, several of them (different random weights). <em>Training</em> means choosing the weights so that this function matches the data.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:28.345019Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:28.344892Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:28.630070Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:28.629268Z&quot;}" data-execution_count="22">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> seed <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">6</span>):</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> np.random.default_rng(seed)</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>    W1, b1 <span class="op">=</span> r.normal(<span class="dv">0</span>, <span class="dv">3</span>, (n_hidden, <span class="dv">1</span>)), r.normal(<span class="dv">0</span>, <span class="dv">3</span>, n_hidden)</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>    W2 <span class="op">=</span> r.normal(<span class="dv">0</span>, <span class="dv">1</span>, (<span class="dv">1</span>, n_hidden)) <span class="op">/</span> np.sqrt(n_hidden)</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>].plot(X, dense(dense(X, W1, b1, np.tanh), W2, <span class="fl">0.0</span>, <span class="kw">lambda</span> s: s), label<span class="op">=</span><span class="ss">f"seed </span><span class="sc">{</span>seed<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="co"># what the hidden neurons of the last network look like individually:</span></span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(X, dense(X, W1, b1, np.tanh), lw<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="vs">r"6 random networks $f_\theta(x)$"</span>)<span class="op">;</span> axes[<span class="dv">0</span>].legend(fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="vs">r"the 20 hidden neurons $\tanh(W^{(1)}_i x + b_i)$ of one network"</span>)</span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax <span class="kw">in</span> axes: ax.set_xlabel(<span class="st">"$x$"</span>)</span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()<span class="op">;</span> plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="lab-002-numpy_files/figure-html/cell-23-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+The output is a weighted sum of shifted and stretched <span class="math inline">\(\tanh\)</span>’s (right panel). Sums of this form (with enough hidden neurons) can approximate any continuous function on a bounded interval to any accuracy — this is the content of the <strong>Universal Approximation Theorem</strong> (see the lecture).
+<hr>
+</section>
+<section id="what-numpy-cannot-do" class="level2">
+<h2 class="anchored" data-anchor-id="what-numpy-cannot-do">10. What NumPy cannot do</h2>
+<p>NumPy is enough to <em>evaluate</em> a network. To <em>train</em> it we need the gradient <span class="math inline">\(\nabla_{\vec\theta}\mathcal L\)</span> of the loss with respect to all parameters (the <em>loss</em> <span class="math inline">\(\mathcal L(\vec\theta)\)</span> is a single number that measures how far the network outputs are from the training data, e.g.&nbsp;the mean squared error; training minimises it). NumPy does not compute derivatives. We would have to derive them by hand: for one hidden layer this is half a page, for a network with 50 layers of different types it is not practical, and every change of the architecture would require a new derivation.</p>
+<p>The second limitation is hardware: NumPy runs only on the CPU. Training large networks requires GPUs (graphics processors, with thousands of simple arithmetic units working in parallel), which perform the same matrix operations much faster.</p>
+<p>Both problems are solved by <strong>PyTorch</strong>: the same array operations as NumPy, plus - <strong>automatic differentiation</strong>: the gradient of any computation is obtained with one call, <code>loss.backward()</code>; - <strong>GPU support</strong>: the same code runs on a GPU after moving the data with <code>.to("cuda")</code>.</p>
+PyTorch (together with JAX) is the standard tool in deep-learning research and industry, and we will use it for all networks in this course. NumPy remains the common format for data exchange: Matplotlib, Pandas and SciPy expect NumPy arrays, so conversions between the two are frequent.
+<hr>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">11. Summary</h2>
+<ul>
+<li>Think in <strong>arrays</strong>, not loops; check shapes with <code>print(x.shape)</code>.</li>
+<li><code>linspace</code> for grids, <code>reshape(-1)</code>, <code>[:, None]</code> for new axes, <code>.copy()</code> to avoid view surprises.</li>
+<li>Broadcasting: shapes compared from the right; size-1 dimensions are stretched.</li>
+<li>Reductions with <code>axis=</code>: the axis named disappears. Convention: axis 0 = samples.</li>
+<li><code>@</code> is matrix product, <code>*</code> is element-wise; <code>np.linalg.eigh</code> diagonalises Hermitian matrices.</li>
+<li><code>rng = np.random.default_rng(seed)</code> for reproducible randomness.</li>
+<li>A dense layer on a batch: <code>sigma(Z @ W.T + b)</code>.
+<hr>
+<h2 id="exercises" class="anchored">12. Exercises</h2></li>
+</ul>
+<section id="exercise-1-vectorise-the-ising-energy" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-1-vectorise-the-ising-energy">Exercise 1 — Vectorise the Ising energy</h3>
+<p>The energy of a classical 1D Ising chain of <span class="math inline">\(L\)</span> spins <span class="math inline">\(s_i=\pm1\)</span> with periodic boundary conditions is <span class="math inline">\(E(\mathbf s) = -J\sum_{i=1}^{L} s_i s_{i+1}\)</span>, with <span class="math inline">\(s_{L+1}\equiv s_1\)</span>. Below, <code>configs</code> holds <span class="math inline">\(M = 10\,000\)</span> random configurations as rows of an array of shape <code>(M, L)</code>. 1. A loop version is given. Write a <strong>vectorised</strong> version <code>energy_vec(configs)</code> without any Python loop (<em>hint:</em> <code>np.roll(configs, -1, axis=1)</code> shifts every row by one site). 2. Check both give the same result and compare the run times. 3. Plot a histogram of the energies. What are the minimal and maximal possible values?</p>
+<section id="solution" class="level4">
+<h4 class="anchored" data-anchor-id="solution">Solution</h4>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:28.632079Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:28.631879Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:29.265236Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:29.264701Z&quot;}" data-execution_count="23">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">0</span>)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>M, L, J <span class="op">=</span> <span class="dv">10_000</span>, <span class="dv">32</span>, <span class="fl">1.0</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>configs <span class="op">=</span> rng.choice([<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>], size<span class="op">=</span>(M, L))      <span class="co"># M random configurations, one per row</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> energy_loop(configs):</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Reference implementation with two explicit Python loops (slow)."""</span></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>    E <span class="op">=</span> np.zeros(<span class="bu">len</span>(configs))</span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(configs)):                <span class="co"># loop over configurations</span></span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(L):                       <span class="co"># loop over bonds (i, i+1); (i+1) % L closes the ring</span></span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>            E[m] <span class="op">-=</span> J <span class="op">*</span> configs[m, i] <span class="op">*</span> configs[m, (i <span class="op">+</span> <span class="dv">1</span>) <span class="op">%</span> L]</span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> E</span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> energy_vec(configs):</span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Vectorised Ising energy for a batch of configurations (rows)."""</span></span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># np.roll(configs, -1, axis=1) shifts every row by one site to the left (periodically),</span></span>
+<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># so element [m, i] of the shifted array is s_{i+1} of configuration m.</span></span>
+<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a>    neighbours <span class="op">=</span> np.roll(configs, <span class="op">-</span><span class="dv">1</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a>    bond_products <span class="op">=</span> configs <span class="op">*</span> neighbours         <span class="co"># s_i * s_{i+1} for all m and i at once, shape (M, L)</span></span>
+<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="op">-</span>J <span class="op">*</span> np.<span class="bu">sum</span>(bond_products, axis<span class="op">=</span><span class="dv">1</span>)    <span class="co"># sum over the sites -&gt; one energy per configuration</span></span>
+<span id="cb41-20"><a href="#cb41-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-21"><a href="#cb41-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare results and run times</span></span>
+<span id="cb41-22"><a href="#cb41-22" aria-hidden="true" tabindex="-1"></a>t0 <span class="op">=</span> time.perf_counter()<span class="op">;</span> E1 <span class="op">=</span> energy_loop(configs)<span class="op">;</span> t1 <span class="op">=</span> time.perf_counter() <span class="op">-</span> t0</span>
+<span id="cb41-23"><a href="#cb41-23" aria-hidden="true" tabindex="-1"></a>t0 <span class="op">=</span> time.perf_counter()<span class="op">;</span> E2 <span class="op">=</span> energy_vec(configs)<span class="op">;</span>  t2 <span class="op">=</span> time.perf_counter() <span class="op">-</span> t0</span>
+<span id="cb41-24"><a href="#cb41-24" aria-hidden="true" tabindex="-1"></a><span class="co"># np.allclose compares element by element up to a small tolerance (|a - b| &lt;= 1e-8 + 1e-5 |b|);</span></span>
+<span id="cb41-25"><a href="#cb41-25" aria-hidden="true" tabindex="-1"></a><span class="co"># results of different but equivalent floating-point computations are compared this way, not with ==</span></span>
+<span id="cb41-26"><a href="#cb41-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"same result:"</span>, np.allclose(E1, E2), <span class="ss">f"| loop </span><span class="sc">{</span>t1<span class="sc">:.3f}</span><span class="ss"> s, vectorised </span><span class="sc">{</span>t2<span class="op">*</span><span class="fl">1e3</span><span class="sc">:.2f}</span><span class="ss"> ms"</span>)</span>
+<span id="cb41-27"><a href="#cb41-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-28"><a href="#cb41-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Histogram. A domain wall is a bond with s_i != s_{i+1}; it contributes +J instead of -J.</span></span>
+<span id="cb41-29"><a href="#cb41-29" aria-hidden="true" tabindex="-1"></a><span class="co"># With periodic boundaries the number of domain walls n_w is even and E = -J (L - 2 n_w),</span></span>
+<span id="cb41-30"><a href="#cb41-30" aria-hidden="true" tabindex="-1"></a><span class="co"># so E takes only the values -32, -28, ..., 32. Bins of width 4 centred on these values;</span></span>
+<span id="cb41-31"><a href="#cb41-31" aria-hidden="true" tabindex="-1"></a><span class="co"># weights = 1/M make the bar heights the probabilities of the individual values.</span></span>
+<span id="cb41-32"><a href="#cb41-32" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="fl">3.5</span>))</span>
+<span id="cb41-33"><a href="#cb41-33" aria-hidden="true" tabindex="-1"></a>ax.hist(E2, bins<span class="op">=</span>np.arange(<span class="op">-</span>L <span class="op">-</span> <span class="dv">2</span>, L <span class="op">+</span> <span class="dv">3</span>, <span class="dv">4</span>), weights<span class="op">=</span>np.full(M, <span class="dv">1</span> <span class="op">/</span> M))</span>
+<span id="cb41-34"><a href="#cb41-34" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"energy $E$"</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">"probability"</span>)</span>
+<span id="cb41-35"><a href="#cb41-35" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb41-36"><a href="#cb41-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Minimal value: -J L (all spins aligned). Maximal: +J L (perfectly alternating; possible for even L).</span></span>
+<span id="cb41-37"><a href="#cb41-37" aria-hidden="true" tabindex="-1"></a><span class="co"># For random configurations E is a sum of L pairwise uncorrelated +-1 terms: mean 0, standard deviation sqrt(L) ~ 5.7.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>same result: True | loop 0.548 s, vectorised 1.16 ms</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="lab-002-numpy_files/figure-html/cell-24-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="exercise-2-softmax-one-hot-encoding-and-cross-entropy-from-the-lecture" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-2-softmax-one-hot-encoding-and-cross-entropy-from-the-lecture">Exercise 2 — Softmax, one-hot encoding and cross-entropy (from the lecture)</h3>
+<p>For classification the network outputs raw numbers (“logits”) <span class="math inline">\(\mathbf z\)</span> which are turned into probabilities by <span class="math inline">\(\mathrm{softmax}(\mathbf z)_i = e^{z_i}/\sum_j e^{z_j}\)</span>; the loss is the categorical cross-entropy <span class="math inline">\(\mathcal L_\text{ce} = -\sum_i p_i\log q_i\)</span>, where <span class="math inline">\(\mathbf p\)</span> is the true distribution (for a labelled example, 1 at the true class and 0 elsewhere: the <em>one-hot</em> vector) and <span class="math inline">\(\mathbf q\)</span> the probabilities predicted by the network. 1. Implement <code>softmax(Z)</code> for a batch <code>Z</code> of shape <code>(B, K)</code> (each row normalised). Try <code>Z = [[1000, 1001, 1002]]</code> — what goes wrong? Fix it using <span class="math inline">\(\mathrm{softmax}(\mathbf z) = \mathrm{softmax}(\mathbf z - \max_j z_j)\)</span>. 2. Implement <code>one_hot(labels, K)</code> turning integer labels, e.g.&nbsp;<code>[2, 0, 1]</code>, into a <code>(B, K)</code> array of 0/1 (<em>hint:</em> <code>np.eye(K)[labels]</code>). 3. Implement <code>cross_entropy(P, Q)</code> averaged over the batch. Evaluate it for the lecture example: true digit 2, <span class="math inline">\(\mathbf q = [0.1, 0, 0.7, 0.01, 0.1, 0.02, 0, 0.02, 0, 0.05]\)</span>. Why is it necessary to guard against <span class="math inline">\(\log 0\)</span>?</p>
+<section id="solution-1" class="level4">
+<h4 class="anchored" data-anchor-id="solution-1">Solution</h4>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:29.267022Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:29.266864Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:29.273521Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:29.273031Z&quot;}" data-execution_count="24">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> softmax(Z):</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Row-wise softmax of a batch Z of shape (B, K)."""</span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>    Z <span class="op">=</span> np.atleast_2d(Z)                         <span class="co"># a single vector becomes shape (1, K)</span></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Subtracting the row maximum does not change the result (it cancels between numerator and</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># denominator) but makes the largest exponent exp(0) = 1, so nothing overflows.</span></span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>    Zs <span class="op">=</span> Z <span class="op">-</span> Z.<span class="bu">max</span>(axis<span class="op">=</span><span class="dv">1</span>, keepdims<span class="op">=</span><span class="va">True</span>)        <span class="co"># keepdims=True keeps shape (B, 1) for broadcasting</span></span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>    E <span class="op">=</span> np.exp(Zs)</span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> E <span class="op">/</span> E.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>, keepdims<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> one_hot(labels, K):</span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Integer labels (B,) -&gt; one-hot array (B, K)."""</span></span>
+<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Row number l of the identity matrix is exactly the one-hot vector of label l,</span></span>
+<span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># and indexing with an array of labels picks all those rows at once.</span></span>
+<span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.eye(K)[labels]</span>
+<span id="cb43-15"><a href="#cb43-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-16"><a href="#cb43-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cross_entropy(P, Q, eps<span class="op">=</span><span class="fl">1e-12</span>):</span>
+<span id="cb43-17"><a href="#cb43-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Categorical cross-entropy -sum_i p_i log q_i, averaged over the batch."""</span></span>
+<span id="cb43-18"><a href="#cb43-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># eps=1e-12 is a default argument: used when the caller does not pass eps. It must be much smaller</span></span>
+<span id="cb43-19"><a href="#cb43-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># than any probability that matters and keep log(eps) ~ -27.6 finite; any value 1e-15 ... 1e-8 works.</span></span>
+<span id="cb43-20"><a href="#cb43-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="op">-</span>np.mean(np.<span class="bu">sum</span>(P <span class="op">*</span> np.log(Q <span class="op">+</span> eps), axis<span class="op">=</span><span class="dv">1</span>))</span>
+<span id="cb43-21"><a href="#cb43-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-22"><a href="#cb43-22" aria-hidden="true" tabindex="-1"></a><span class="co"># 1) the naive formula overflows: exp(1000) is larger than the largest float64 (about 1.8e308)</span></span>
+<span id="cb43-23"><a href="#cb43-23" aria-hidden="true" tabindex="-1"></a><span class="co"># A `with` block applies a setting only to the indented code under it: here NumPy's overflow and</span></span>
+<span id="cb43-24"><a href="#cb43-24" aria-hidden="true" tabindex="-1"></a><span class="co"># invalid-operation warnings are switched off for the demonstration line and restored afterwards.</span></span>
+<span id="cb43-25"><a href="#cb43-25" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> np.errstate(over<span class="op">=</span><span class="st">"ignore"</span>, invalid<span class="op">=</span><span class="st">"ignore"</span>):</span>
+<span id="cb43-26"><a href="#cb43-26" aria-hidden="true" tabindex="-1"></a>    naive <span class="op">=</span> np.exp([<span class="fl">1000.</span>, <span class="fl">1001.</span>, <span class="fl">1002.</span>]) <span class="op">/</span> np.exp([<span class="fl">1000.</span>, <span class="fl">1001.</span>, <span class="fl">1002.</span>]).<span class="bu">sum</span>()</span>
+<span id="cb43-27"><a href="#cb43-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"naive softmax :"</span>, naive, <span class="st">" (overflow -&gt; inf/inf = nan)"</span>)</span>
+<span id="cb43-28"><a href="#cb43-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"stable softmax:"</span>, softmax([[<span class="fl">1000.</span>, <span class="fl">1001.</span>, <span class="fl">1002.</span>]]))</span>
+<span id="cb43-29"><a href="#cb43-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-30"><a href="#cb43-30" aria-hidden="true" tabindex="-1"></a><span class="co"># 2) one-hot encoding</span></span>
+<span id="cb43-31"><a href="#cb43-31" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"one-hot       :</span><span class="ch">\n</span><span class="st">"</span>, one_hot(np.array([<span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">1</span>]), <span class="dv">3</span>))</span>
+<span id="cb43-32"><a href="#cb43-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-33"><a href="#cb43-33" aria-hidden="true" tabindex="-1"></a><span class="co"># 3) the example from the lecture: true digit 2, network assigns probability 0.7 to it</span></span>
+<span id="cb43-34"><a href="#cb43-34" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> np.array([[<span class="fl">0.1</span>, <span class="dv">0</span>, <span class="fl">0.7</span>, <span class="fl">0.01</span>, <span class="fl">0.1</span>, <span class="fl">0.02</span>, <span class="dv">0</span>, <span class="fl">0.02</span>, <span class="dv">0</span>, <span class="fl">0.05</span>]])</span>
+<span id="cb43-35"><a href="#cb43-35" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> one_hot(np.array([<span class="dv">2</span>]), <span class="dv">10</span>)</span>
+<span id="cb43-36"><a href="#cb43-36" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"cross-entropy :"</span>, cross_entropy(p, q), <span class="st">"  -log(0.7) ="</span>, <span class="op">-</span>np.log(<span class="fl">0.7</span>))</span>
+<span id="cb43-37"><a href="#cb43-37" aria-hidden="true" tabindex="-1"></a><span class="co"># (the two differ at the level 1e-12 because of eps)</span></span>
+<span id="cb43-38"><a href="#cb43-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Only the true class contributes, so L_ce = -log q_true.</span></span>
+<span id="cb43-39"><a href="#cb43-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Without eps, entries q_i = 0 give log(0) = -inf, and 0 * (-inf) = nan in floating-point arithmetic.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>naive softmax : [nan nan nan]  (overflow -&gt; inf/inf = nan)
+stable softmax: [[0.09   0.2447 0.6652]]
+one-hot       :
+ [[0. 0. 1.]
+ [1. 0. 0.]
+ [0. 1. 0.]]
+cross-entropy : 0.3566749439373039   -log(0.7) = 0.35667494393873245</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="exercise-3-tunnelling-in-a-double-well" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-3-tunnelling-in-a-double-well">Exercise 3 — Tunnelling in a double well</h3>
+<p>Use <code>hamiltonian(x, V)</code> from Section 7 with <span class="math inline">\(V(x) = \tfrac12 x^2 + \kappa\, e^{-x^2/2}\)</span> (a harmonic trap with a Gaussian barrier). 1. For <span class="math inline">\(\kappa = 0, 2, 4, 10\)</span> plot <span class="math inline">\(V(x)\)</span> and the densities <span class="math inline">\(|\psi_n(x)|^2\)</span> of the four lowest states (<span class="math inline">\(2\times2\)</span> subplots). 2. Plot the ground-state energy <span class="math inline">\(E_0(\kappa)\)</span> and the gap <span class="math inline">\(\Delta E = E_1 - E_0\)</span> for <span class="math inline">\(\kappa\in[0, 12]\)</span>. Use a log scale for <span class="math inline">\(\Delta E\)</span>. Interpret: what happens to the two lowest states when the barrier grows?</p>
+<section id="solution-2" class="level4">
+<h4 class="anchored" data-anchor-id="solution-2">Solution</h4>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:29.275372Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:29.275195Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:30.253942Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:30.253402Z&quot;}" data-execution_count="25">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 300 points instead of 400: the Hamiltonian is diagonalised 65 times below, and a smaller matrix is faster.</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The results hardly change: the gap at kappa = 10 is 5.28e-4 with 300 points and 5.27e-4 with 600 points.</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">6</span>, <span class="dv">6</span>, <span class="dv">300</span>)</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>dx <span class="op">=</span> x[<span class="dv">1</span>] <span class="op">-</span> x[<span class="dv">0</span>]</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> V_dw(x, kappa):</span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Double well: harmonic trap plus a Gaussian barrier of height kappa."""</span></span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="fl">0.5</span> <span class="op">*</span> x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> kappa <span class="op">*</span> np.exp(<span class="op">-</span>x<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> <span class="dv">2</span>)</span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Part 1: potential and the four lowest densities for four barrier heights</span></span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="dv">7</span>))</span>
+<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a><span class="co"># axes is a 2x2 NumPy array of coordinate systems; flatten() turns it into a 1D sequence,</span></span>
+<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a><span class="co"># so one loop visits all four panels</span></span>
+<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, kappa <span class="kw">in</span> <span class="bu">zip</span>(axes.flatten(), [<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">10</span>]):</span>
+<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a>    E, psi <span class="op">=</span> np.linalg.eigh(hamiltonian(x, V_dw(x, kappa)))   <span class="co"># E ascending, psi[:, n] = n-th eigenvector</span></span>
+<span id="cb45-16"><a href="#cb45-16" aria-hidden="true" tabindex="-1"></a>    ax.plot(x, V_dw(x, kappa), <span class="st">"k"</span>, lw<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb45-17"><a href="#cb45-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>):</span>
+<span id="cb45-18"><a href="#cb45-18" aria-hidden="true" tabindex="-1"></a>        <span class="co"># psi is real (the Hamiltonian is real and symmetric), so psi**2 = |psi|^2;</span></span>
+<span id="cb45-19"><a href="#cb45-19" aria-hidden="true" tabindex="-1"></a>        <span class="co"># for a complex Hamiltonian np.abs(psi)**2 would be needed</span></span>
+<span id="cb45-20"><a href="#cb45-20" aria-hidden="true" tabindex="-1"></a>        density <span class="op">=</span> psi[:, n]<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> dx                           <span class="co"># normalised so that sum(density) * dx = 1</span></span>
+<span id="cb45-21"><a href="#cb45-21" aria-hidden="true" tabindex="-1"></a>        ax.plot(x, E[n] <span class="op">+</span> <span class="dv">2</span> <span class="op">*</span> density, label<span class="op">=</span><span class="ss">f"n=</span><span class="sc">{</span>n<span class="sc">}</span><span class="ss">, E=</span><span class="sc">{</span>E[n]<span class="sc">:.3f}</span><span class="ss">"</span>)   <span class="co"># shifted by E_n, scaled by 2 to be visible</span></span>
+<span id="cb45-22"><a href="#cb45-22" aria-hidden="true" tabindex="-1"></a>        ax.axhline(E[n], color<span class="op">=</span><span class="st">"gray"</span>, lw<span class="op">=</span><span class="fl">0.4</span>)</span>
+<span id="cb45-23"><a href="#cb45-23" aria-hidden="true" tabindex="-1"></a>    ax.set_ylim(<span class="dv">0</span>, <span class="dv">12</span>)<span class="op">;</span> ax.set_xlim(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>)<span class="op">;</span> ax.set_title(<span class="vs">rf"$\kappa = </span><span class="sc">{</span>kappa<span class="sc">}</span><span class="vs">$"</span>)</span>
+<span id="cb45-24"><a href="#cb45-24" aria-hidden="true" tabindex="-1"></a>    ax.set_xlabel(<span class="st">"$x$"</span>)<span class="op">;</span> ax.legend(fontsize<span class="op">=</span><span class="dv">7</span>, loc<span class="op">=</span><span class="st">"upper right"</span>)</span>
+<span id="cb45-25"><a href="#cb45-25" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()<span class="op">;</span> plt.show()</span>
+<span id="cb45-26"><a href="#cb45-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-27"><a href="#cb45-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Part 2: E_0 and the gap as functions of kappa. eigvalsh computes only eigenvalues (faster than eigh).</span></span>
+<span id="cb45-28"><a href="#cb45-28" aria-hidden="true" tabindex="-1"></a>kappas <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">12</span>, <span class="dv">61</span>)</span>
+<span id="cb45-29"><a href="#cb45-29" aria-hidden="true" tabindex="-1"></a>E0, gap <span class="op">=</span> [], []</span>
+<span id="cb45-30"><a href="#cb45-30" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> kappa <span class="kw">in</span> kappas:</span>
+<span id="cb45-31"><a href="#cb45-31" aria-hidden="true" tabindex="-1"></a>    E <span class="op">=</span> np.linalg.eigvalsh(hamiltonian(x, V_dw(x, kappa)))</span>
+<span id="cb45-32"><a href="#cb45-32" aria-hidden="true" tabindex="-1"></a>    E0.append(E[<span class="dv">0</span>])</span>
+<span id="cb45-33"><a href="#cb45-33" aria-hidden="true" tabindex="-1"></a>    gap.append(E[<span class="dv">1</span>] <span class="op">-</span> E[<span class="dv">0</span>])</span>
+<span id="cb45-34"><a href="#cb45-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-35"><a href="#cb45-35" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">3.5</span>))</span>
+<span id="cb45-36"><a href="#cb45-36" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(kappas, E0)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylabel(<span class="st">"$E_0$"</span>)</span>
+<span id="cb45-37"><a href="#cb45-37" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].semilogy(kappas, gap)<span class="op">;</span> axes[<span class="dv">1</span>].set_ylabel(<span class="vs">r"$\Delta E = E_1 - E_0$"</span>)</span>
+<span id="cb45-38"><a href="#cb45-38" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax <span class="kw">in</span> axes: ax.set_xlabel(<span class="vs">r"$\kappa$"</span>)</span>
+<span id="cb45-39"><a href="#cb45-39" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()<span class="op">;</span> plt.show()</span>
+<span id="cb45-40"><a href="#cb45-40" aria-hidden="true" tabindex="-1"></a><span class="co"># For kappa = 0 the gap is 1 (harmonic oscillator). As the barrier grows, E_0 and E_1 approach each other</span></span>
+<span id="cb45-41"><a href="#cb45-41" aria-hidden="true" tabindex="-1"></a><span class="co"># and for large barriers (kappa &gt;~ 4) the gap decreases roughly exponentially (a straight line on the log plot). The two states become the</span></span>
+<span id="cb45-42"><a href="#cb45-42" aria-hidden="true" tabindex="-1"></a><span class="co"># symmetric and antisymmetric combinations of states localised in the left and right well; the small gap is</span></span>
+<span id="cb45-43"><a href="#cb45-43" aria-hidden="true" tabindex="-1"></a><span class="co"># the tunnelling splitting.</span></span>
+<span id="cb45-44"><a href="#cb45-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Even the smallest gap, about 1.2e-4 at kappa = 12, is far above the rounding error of eigvalsh</span></span>
+<span id="cb45-45"><a href="#cb45-45" aria-hidden="true" tabindex="-1"></a><span class="co"># (about 1e-16 times the largest eigenvalue of H, i.e. of order 1e-13), so the log plot is reliable.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="lab-002-numpy_files/figure-html/cell-26-output-1.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="lab-002-numpy_files/figure-html/cell-26-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="exercise-4-particles-without-loops-broadcasting" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-4-particles-without-loops-broadcasting">Exercise 4 — Particles without loops (broadcasting)</h3>
+<p><span class="math inline">\(N=200\)</span> particles sit at random positions in a 2D box <span class="math inline">\([0, 10]^2\)</span> (array <code>R</code> of shape <code>(N, 2)</code>). 1. Compute the matrix of all pairwise distances <span class="math inline">\(d_{ij} = |\mathbf r_i - \mathbf r_j|\)</span> <strong>without loops</strong> (<em>hint:</em> <code>R[:, None, :] - R[None, :, :]</code> has shape <code>(N, N, 2)</code>). 2. The Lennard-Jones pair potential is <span class="math inline">\(V_\text{LJ}(d) = 4\epsilon\big[(\sigma_\text{LJ}/d)^{12} - (\sigma_\text{LJ}/d)^{6}\big]\)</span>, with <span class="math inline">\(\epsilon\)</span> the well depth and <span class="math inline">\(\sigma_\text{LJ}\)</span> the distance where <span class="math inline">\(V_\text{LJ} = 0\)</span>. Compute the total Lennard-Jones energy <span class="math inline">\(E = \sum_{i&lt;j} 4\big[(1/d_{ij})^{12} - (1/d_{ij})^{6}\big]\)</span> in reduced units (lengths in units of <span class="math inline">\(\sigma_\text{LJ}\)</span>, energies in units of <span class="math inline">\(\epsilon\)</span>) (<em>hint:</em> <code>np.triu_indices(N, k=1)</code> gives the pairs <span class="math inline">\(i&lt;j\)</span>). Restricting to <span class="math inline">\(i&lt;j\)</span> counts every pair once and skips the diagonal <span class="math inline">\(d_{ii} = 0\)</span>, where <span class="math inline">\(1/d\)</span> is infinite. 3. Plot a histogram of the distances <span class="math inline">\(d_{ij}\)</span>, <span class="math inline">\(i&lt;j\)</span>.</p>
+<section id="solution-3" class="level4">
+<h4 class="anchored" data-anchor-id="solution-3">Solution</h4>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:30.255837Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:30.255681Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:30.360697Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:30.359847Z&quot;}" data-execution_count="26">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">1</span>)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">200</span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>R <span class="op">=</span> <span class="dv">10</span> <span class="op">*</span> rng.random((N, <span class="dv">2</span>))                   <span class="co"># positions: N rows, columns = (x, y)</span></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: all difference vectors r_i - r_j at once.</span></span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a><span class="co"># R[:, None, :] has shape (N, 1, 2), R[None, :, :] has shape (1, N, 2); broadcasting gives (N, N, 2).</span></span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>diff <span class="op">=</span> R[:, <span class="va">None</span>, :] <span class="op">-</span> R[<span class="va">None</span>, :, :]</span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2: lengths of the difference vectors -&gt; distance matrix of shape (N, N)</span></span>
+<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>D <span class="op">=</span> np.sqrt(np.<span class="bu">sum</span>(diff<span class="op">**</span><span class="dv">2</span>, axis<span class="op">=-</span><span class="dv">1</span>))         <span class="co"># axis=-1 = the last axis (the x, y components)</span></span>
+<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 3: every pair once. triu_indices(N, k=1) gives the (row, column) indices above the diagonal, i.e. i &lt; j.</span></span>
+<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a>iu <span class="op">=</span> np.triu_indices(N, k<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a><span class="co"># iu is a pair (rows, columns) of integer arrays; D[iu] picks D[rows[k], cols[k]] for every k</span></span>
+<span id="cb46-15"><a href="#cb46-15" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> D[iu]                                     <span class="co"># 1D array of N(N-1)/2 distances</span></span>
+<span id="cb46-16"><a href="#cb46-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"number of pairs:"</span>, d.size, <span class="st">"= N(N-1)/2 ="</span>, N <span class="op">*</span> (N <span class="op">-</span> <span class="dv">1</span>) <span class="op">//</span> <span class="dv">2</span>)</span>
+<span id="cb46-17"><a href="#cb46-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-18"><a href="#cb46-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 4: Lennard-Jones energy 4 eps [(sigma/d)^12 - (sigma/d)^6] summed over all pairs, in reduced units</span></span>
+<span id="cb46-19"><a href="#cb46-19" aria-hidden="true" tabindex="-1"></a><span class="co"># eps = sigma = 1 (lengths in units of sigma, energies in units of eps). Box size 10 and N = 200 are arbitrary.</span></span>
+<span id="cb46-20"><a href="#cb46-20" aria-hidden="true" tabindex="-1"></a>E_LJ <span class="op">=</span> np.<span class="bu">sum</span>(<span class="dv">4</span> <span class="op">*</span> (d<span class="op">**-</span><span class="dv">12</span> <span class="op">-</span> d<span class="op">**-</span><span class="dv">6</span>))</span>
+<span id="cb46-21"><a href="#cb46-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"LJ energy: </span><span class="sc">{</span>E_LJ<span class="sc">:.4g}</span><span class="ss">   (closest pair at distance </span><span class="sc">{</span>d<span class="sc">.</span><span class="bu">min</span>()<span class="sc">:.3f}</span><span class="ss">)"</span>)</span>
+<span id="cb46-22"><a href="#cb46-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-23"><a href="#cb46-23" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="fl">3.5</span>))</span>
+<span id="cb46-24"><a href="#cb46-24" aria-hidden="true" tabindex="-1"></a>ax.hist(d, bins<span class="op">=</span><span class="dv">60</span>)<span class="op">;</span> ax.set_xlabel(<span class="st">"$d_</span><span class="sc">{ij}</span><span class="st">$"</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">"count"</span>)</span>
+<span id="cb46-25"><a href="#cb46-25" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb46-26"><a href="#cb46-26" aria-hidden="true" tabindex="-1"></a><span class="co"># The energy is huge and positive: for random positions some pairs are much closer than the LJ</span></span>
+<span id="cb46-27"><a href="#cb46-27" aria-hidden="true" tabindex="-1"></a><span class="co"># minimum at 2^(1/6) ~ 1.12, and the repulsive d^-12 term dominates.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>number of pairs: 19900 = N(N-1)/2 = 19900
+LJ energy: 2.179e+16   (closest pair at distance 0.051)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="lab-002-numpy_files/figure-html/cell-27-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="exercise-5-advanced-a-two-hidden-layer-network-by-hand" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-5-advanced-a-two-hidden-layer-network-by-hand">Exercise 5 (advanced) — A two-hidden-layer network, by hand</h3>
+<ol type="1">
+<li>Using <code>dense</code>, build a network <span class="math inline">\(1 \to 32 \to 32 \to 1\)</span> with <span class="math inline">\(\tanh\)</span> activations in hidden layers and a linear output. Initialise <span class="math inline">\(W\)</span> from <span class="math inline">\(\mathcal N(0, 1/n_\text{in})\)</span> (the second argument of <span class="math inline">\(\mathcal N(\mu, \sigma^2)\)</span> is the <em>variance</em>; here <span class="math inline">\(\sigma\)</span> denotes a standard deviation, not the activation function; so the standard deviation passed to <code>rng.normal</code> is <span class="math inline">\(1/\sqrt{n_\text{in}}\)</span>) and biases to zero. Evaluate it on a batch of 500 points in <span class="math inline">\([-3, 3]\)</span> and plot.</li>
+<li>Count the total number of parameters (all entries of all <span class="math inline">\(W\)</span> and <span class="math inline">\(b\)</span>). Derive the general formula for a network <span class="math inline">\(n_0\to n_1\to\cdots\to n_L\)</span>.</li>
+<li>Repeat with standard deviation <span class="math inline">\(5/\sqrt{n_\text{in}}\)</span> instead of <span class="math inline">\(1/\sqrt{n_\text{in}}\)</span>. Plot a histogram of the hidden activations of the second layer in both cases. What happens to the neurons (“saturation”)? Why could this be bad for training? (We will come back to this — <em>weight initialisation</em>.)</li>
+</ol>
+<section id="solution-4" class="level4">
+<h4 class="anchored" data-anchor-id="solution-4">Solution</h4>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:30.362399Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:30.362188Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:30.604236Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:30.603641Z&quot;}" data-execution_count="27">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> init_layer(n_in, n_out, scale, rng):</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Weights ~ N(0, (scale/sqrt(n_in))^2), shape (n_out, n_in); biases = 0."""</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>    W <span class="op">=</span> rng.normal(<span class="dv">0</span>, scale <span class="op">/</span> np.sqrt(n_in), (n_out, n_in))</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>    b <span class="op">=</span> np.zeros(n_out)</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> W, b</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">500</span>)[:, <span class="va">None</span>]          <span class="co"># batch of 500 inputs, shape (500, 1)</span></span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>sizes <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">32</span>, <span class="dv">32</span>, <span class="dv">1</span>]                        <span class="co"># layer widths n_0, n_1, n_2, n_3</span></span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> scale <span class="kw">in</span> [<span class="fl">1.0</span>, <span class="fl">5.0</span>]:</span>
+<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># the generator is re-created with the same seed, so both networks get exactly the same random numbers,</span></span>
+<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># only multiplied by a different factor: any difference between the two cases is caused by the scale alone</span></span>
+<span id="cb48-14"><a href="#cb48-14" aria-hidden="true" tabindex="-1"></a>    rng <span class="op">=</span> np.random.default_rng(<span class="dv">0</span>)</span>
+<span id="cb48-15"><a href="#cb48-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># one (W, b) pair per consecutive pair of widths: (1-&gt;32), (32-&gt;32), (32-&gt;1).</span></span>
+<span id="cb48-16"><a href="#cb48-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># zip(sizes[:-1], sizes[1:]) pairs each width with the next one; [... for ...] is a list comprehension,</span></span>
+<span id="cb48-17"><a href="#cb48-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># which builds a list by evaluating the expression for every pair</span></span>
+<span id="cb48-18"><a href="#cb48-18" aria-hidden="true" tabindex="-1"></a>    params <span class="op">=</span> [init_layer(n_in, n_out, scale, rng) <span class="cf">for</span> n_in, n_out <span class="kw">in</span> <span class="bu">zip</span>(sizes[:<span class="op">-</span><span class="dv">1</span>], sizes[<span class="dv">1</span>:])]</span>
+<span id="cb48-19"><a href="#cb48-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-20"><a href="#cb48-20" aria-hidden="true" tabindex="-1"></a>    H1 <span class="op">=</span> dense(X, <span class="op">*</span>params[<span class="dv">0</span>], np.tanh)        <span class="co"># *params[0] unpacks the pair into W, b</span></span>
+<span id="cb48-21"><a href="#cb48-21" aria-hidden="true" tabindex="-1"></a>    H2 <span class="op">=</span> dense(H1, <span class="op">*</span>params[<span class="dv">1</span>], np.tanh)</span>
+<span id="cb48-22"><a href="#cb48-22" aria-hidden="true" tabindex="-1"></a>    Y <span class="op">=</span> dense(H2, <span class="op">*</span>params[<span class="dv">2</span>], <span class="kw">lambda</span> s: s)    <span class="co"># linear output layer (identity activation)</span></span>
+<span id="cb48-23"><a href="#cb48-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-24"><a href="#cb48-24" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>].plot(X, Y, label<span class="op">=</span><span class="ss">f"scale </span><span class="sc">{</span>scale<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb48-25"><a href="#cb48-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ravel() flattens the (500, 32) array to 1D, so all activations enter one histogram;</span></span>
+<span id="cb48-26"><a href="#cb48-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># density=True scales the bars to total area 1, alpha=0.6 makes overlapping bars transparent</span></span>
+<span id="cb48-27"><a href="#cb48-27" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].hist(H2.ravel(), bins<span class="op">=</span><span class="dv">50</span>, alpha<span class="op">=</span><span class="fl">0.6</span>, density<span class="op">=</span><span class="va">True</span>, label<span class="op">=</span><span class="ss">f"scale </span><span class="sc">{</span>scale<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb48-28"><a href="#cb48-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-29"><a href="#cb48-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameter count: layer l has n_l * n_{l-1} weights and n_l biases</span></span>
+<span id="cb48-30"><a href="#cb48-30" aria-hidden="true" tabindex="-1"></a>n_params <span class="op">=</span> <span class="bu">sum</span>(W.size <span class="op">+</span> b.size <span class="cf">for</span> W, b <span class="kw">in</span> params)  <span class="co"># the same construct as a list comprehension, without brackets</span></span>
+<span id="cb48-31"><a href="#cb48-31" aria-hidden="true" tabindex="-1"></a>formula <span class="op">=</span> <span class="bu">sum</span>(n_out <span class="op">*</span> (n_in <span class="op">+</span> <span class="dv">1</span>) <span class="cf">for</span> n_in, n_out <span class="kw">in</span> <span class="bu">zip</span>(sizes[:<span class="op">-</span><span class="dv">1</span>], sizes[<span class="dv">1</span>:]))</span>
+<span id="cb48-32"><a href="#cb48-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"number of parameters:"</span>, n_params, <span class="st">"  formula sum_l n_l (n_{l-1} + 1) ="</span>, formula)</span>
+<span id="cb48-33"><a href="#cb48-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-34"><a href="#cb48-34" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">"network output"</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_xlabel(<span class="st">"$x$"</span>)<span class="op">;</span> axes[<span class="dv">0</span>].legend()</span>
+<span id="cb48-35"><a href="#cb48-35" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">"activations of hidden layer 2"</span>)<span class="op">;</span> axes[<span class="dv">1</span>].legend()</span>
+<span id="cb48-36"><a href="#cb48-36" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb48-37"><a href="#cb48-37" aria-hidden="true" tabindex="-1"></a><span class="co"># In the histogram, scale 1 spreads the activations over (-1, 1) (only about 1% have |h| &gt; 0.95), while with</span></span>
+<span id="cb48-38"><a href="#cb48-38" aria-hidden="true" tabindex="-1"></a><span class="co"># scale 5 they pile up at -1 and +1 (about 69% have |h| &gt; 0.95).</span></span>
+<span id="cb48-39"><a href="#cb48-39" aria-hidden="true" tabindex="-1"></a><span class="co"># With scale 5 most tanh units sit at +-1 (saturated). Their derivative 1 - tanh^2 is then close to 0,</span></span>
+<span id="cb48-40"><a href="#cb48-40" aria-hidden="true" tabindex="-1"></a><span class="co"># so gradients passing through them are tiny and training becomes very slow. Both runs scale the weights</span></span>
+<span id="cb48-41"><a href="#cb48-41" aria-hidden="true" tabindex="-1"></a><span class="co"># with 1/sqrt(n_in); what matters is the prefactor, chosen so that the pre-activations W z + b have a</span></span>
+<span id="cb48-42"><a href="#cb48-42" aria-hidden="true" tabindex="-1"></a><span class="co"># variance of order 1 (this particular choice is LeCun initialisation; the closely related Xavier/Glorot and He</span></span>
+<span id="cb48-43"><a href="#cb48-43" aria-hidden="true" tabindex="-1"></a><span class="co"># schemes use variances 2/(n_in + n_out) and 2/n_in).</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>number of parameters: 1153   formula sum_l n_l (n_{l-1} + 1) = 1153</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="lab-002-numpy_files/figure-html/cell-28-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+
+
+</section>
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../notebooks/lecture-02/lab-001-python-matplotlib-pandas.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Lab 001: Python, Matplotlib and Pandas</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../notebooks/lecture-02/lab-003-pytorch.html" class="pagination-link">
+        <span class="nav-page-text">Lab 003: PyTorch tensors, devices and layers</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">© 2026 Marcin Płodzień</div>   
+    <div class="nav-footer-right"><a href="https://chaos.if.uj.edu.pl/marcinplodzien/">Homepage</a> · <a href="mailto:marcin.plodzien@uj.edu.pl">Email</a> · <a href="https://orcid.org/0000-0002-0835-1644">ORCID</a> · <a href="https://scholar.google.com/citations?user=eC9nCmgAAAAJ&amp;hl=en">Scholar</a> · <a href="https://github.com/MarcinPlodzien">GitHub</a></div>
+  </div>
+</footer>
+
+
+
+</body></html>

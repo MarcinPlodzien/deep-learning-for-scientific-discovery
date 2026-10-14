@@ -1,0 +1,50 @@
+/*-- scss:defaults --*/
+// Colours of the QuSML website (chaos.if.uj.edu.pl/ZOA/marcinplodzien)
+$primary: #005ca7;
+$link-color: #005ca7;
+$navbar-bg: #005ca7;
+
+/*-- scss:rules --*/
+.sidebar-logo { max-height: 70px; width: auto; margin: 0 auto 0.5rem; }
+
+// ---------------------------------------------------------------- landing page
+.hero { display: grid; grid-template-columns: 1fr 1.25fr; gap: 2rem; align-items: center;
+        margin: 0.5rem 0 2.5rem; }
+.hero h1.hero-title { font-size: 2.1rem; line-height: 1.2; font-weight: 600; color: $primary; margin: 0 0 0.6rem; border: none; }
+.hero .hero-sub { font-size: 1.15rem; color: #555; line-height: 1.5; margin-bottom: 1.2rem; }
+.hero .hero-author { font-size: 0.95rem; margin-bottom: 1.2rem; }
+.hero img { width: 100%; border-radius: 8px; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12); }
+.hero .btn { margin: 0 0.5rem 0.5rem 0; }
+@media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+
+.feature-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1rem; margin: 1rem 0 2rem; }
+.feature { border: 1px solid #dde6ef; border-top: 4px solid $primary; border-radius: 6px; padding: 0.9rem 1rem;
+           background: #f7fafd; }
+.feature p { margin-bottom: 0.4rem; font-size: 0.95rem; }
+.feature p:first-child { font-weight: 600; color: $primary; font-size: 1.02rem; }
+
+.chapter-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.2rem; margin: 1rem 0 2rem; }
+.chapter-card { border: 1px solid #dde6ef; border-radius: 8px; overflow: hidden; background: #fff;
+                transition: box-shadow 0.15s; }
+.chapter-card:hover { box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12); }
+.chapter-card img { width: 100%; aspect-ratio: 16 / 10; object-fit: contain; background: #fff;
+                    border-bottom: 1px solid #eef2f6; margin: 0; }
+.chapter-card p { margin: 0.5rem 0.8rem; font-size: 0.92rem; }
+.chapter-card p:nth-child(2) { font-weight: 600; font-size: 1rem; }
+.chapter-card .nbcount { color: #777; font-size: 0.85rem; }
+
+.nb-list p { margin-bottom: 0.2rem; }
+.nb-item { border-left: 3px solid $primary; padding: 0.3rem 0 0.3rem 0.9rem; margin: 0 0 1rem; }
+.nb-item p:first-child { font-weight: 600; }
+.nb-item p { margin-bottom: 0.25rem; }
+
+// ---------------------------------------------------------------- justified text (author's preference)
+main.content p, main.content li, main.content dd, main.content blockquote,
+main.content .cell-output-display p, main.content figcaption, main.content .figure-caption,
+main.content .callout p, main.content .callout li {
+  text-align: justify; hyphens: auto; -webkit-hyphens: auto;
+}
+main.content td p, main.content .hero-author, main.content .nbcount,
+main.content .feature p, main.content .chapter-card p, main.content .nb-item p:first-child,
+main.content .hero p { text-align: left; }
+.hero .hero-tagline { font-size: 1.35rem; color: #1d2b3a; font-weight: 500; margin: -0.3rem 0 0.8rem; }

@@ -1,0 +1,51 @@
+---
+title: "3 · The Recipe of Deep Learning"
+code-tools: false
+toc: false
+---
+
+A neural network as a non-linear function with trainable parameters: neurons, layers and activations, the universal approximation theorem, loss functions, gradient descent, backpropagation and automatic differentiation. The first full example is MNIST: a single output trained with the mean squared error against ten outputs trained with the categorical cross-entropy, compared through their confusion matrices.
+
+## Slides
+
+[Download the slides (PDF)](../slides/lecture-03.pdf){.btn .btn-outline-primary}
+
+<iframe src="../slides/lecture-03.pdf" width="100%" height="620" style="border:1px solid #dde6ef; border-radius:6px;"></iframe>
+
+## Notebooks
+
+::: {.nb-item}
+[Lab 004: Automatic differentiation](../notebooks/lecture-03/lab-004-automatic-differentiation.ipynb)
+
+Derivatives computed by the machine, exactly.
+:::
+
+::: {.nb-item}
+[Lab 005: The N-link pendulum with SymPy and automatic differentiation](../notebooks/lecture-03/lab-005-n-pendulum.ipynb)
+
+Equations of motion obtained symbolically and by automatic differentiation.
+:::
+
+::: {.nb-item}
+[Lab 006: Universal approximation and the choice of minimiser](../notebooks/lecture-03/lab-006-uat-and-minimisers.ipynb)
+
+Fitting functions with networks, and the role of the optimiser.
+:::
+
+::: {.nb-item}
+[Lab 007: Building and training neural networks](../notebooks/lecture-03/lab-007-building-and-training.ipynb)
+
+A complete training loop in PyTorch.
+:::
+
+::: {.nb-item}
+[Lab 008: Analysing a neural network](../notebooks/lecture-03/lab-008-analysing-networks.ipynb)
+
+Architecture, parameter counts and what a trained network does.
+:::
+
+::: {.nb-item}
+[Lab 009: MNIST, regression versus cross-entropy](../notebooks/lecture-03/lab-009-mnist.ipynb)
+
+The two formulations of digit classification on the slides.
+:::

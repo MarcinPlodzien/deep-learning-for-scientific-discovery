@@ -1,0 +1,42 @@
+---
+pagetitle: "Deep Learning for Scientific Discovery"
+toc: false
+code-tools: false
+code-fold: false
+---
+
+::: {.hero}
+::: {.hero-text}
+<h1 class="hero-title">Deep Learning for Scientific Discovery</h1>
+
+<p class="hero-tagline">A doctoral course at the Jagiellonian University in Kraków</p>
+
+<p class="hero-sub">Neural networks from first principles, trained on real scientific data: images of blood cells and of the Earth's surface, spin configurations of a magnet, and the landmark discoveries made with deep learning in biology, mathematics, materials science and physics.</p>
+
+<p class="hero-author"><a href="https://chaos.if.uj.edu.pl/marcinplodzien/"><b>Marcin Płodzień</b></a> · Institute of Theoretical Physics, Jagiellonian University in Kraków · Doctoral School of Exact and Natural Sciences</p>
+
+[Start with Lecture 1](lectures/lecture-01.qmd){.btn .btn-primary} [Browse the lectures](#lectures){.btn .btn-outline-primary}
+:::
+
+::: {.hero-image}
+![](assets/hero.png){fig-alt="Spin configurations of the 2D Ising model below, at and above the critical temperature"}
+:::
+:::
+
+## The course
+
+The course is for doctoral students of physics, mathematics, chemistry, biology and geography. Each lecture comes with its slides and with Jupyter notebooks that reproduce every figure and number on the slides. The notebooks run on a laptop CPU or in Google Colab; each page has an *Open in Colab* button.
+
+## Lectures {#lectures}
+
+| | Lecture | Notebooks |
+|---|---|---|
+| 1 | [Course Organisation](lectures/lecture-01.qmd) | |
+| 2 | [Scientific Discovery: from AI to Deep Learning](lectures/lecture-02.qmd) | Labs 001–003: Python, NumPy, PyTorch |
+| 3 | [The Recipe of Deep Learning](lectures/lecture-03.qmd) | Labs 004–009: automatic differentiation, universal approximation, training, MNIST |
+| 4 | [CNNs, Interpretability and the 2D Ising Model](lectures/lecture-04.qmd) | blood cells, convolution and the Ising model, Labs 010–012 |
+
+## Main reading
+
+- T. Heightman, M. Płodzień, *Deep Learning in Classical and Quantum Physics*, Springer (to appear, 2027), [arXiv:2508.10666](https://arxiv.org/abs/2508.10666)
+- A. Dawid, J. Arnold, …, M. Płodzień et al., *Machine Learning in Quantum Sciences*, Cambridge University Press (2025), [arXiv:2204.04198](https://arxiv.org/abs/2204.04198)

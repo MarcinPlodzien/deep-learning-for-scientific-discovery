@@ -1,0 +1,45 @@
+---
+title: "4 · CNNs, Interpretability and the 2D Ising Model"
+code-tools: false
+toc: false
+---
+
+Convolution, continuous and discrete, images with three channels, learnable kernels, stride, padding and pooling; convolutional networks on CIFAR-10 and their regularisation. Class activation maps and Grad-CAM show where a network looks; adversarial examples show how easily it is fooled. CNNs on scientific data: blood cells under the microscope (BloodMNIST) and land use from satellite images (EuroSAT). A physics example: the 2D Ising model, its partition function and Onsager's solution, and a CNN that locates the critical temperature from spin configurations alone; the lecture closes with the Chinese Room thought experiment.
+
+## Slides
+
+[Download the slides (PDF)](../slides/lecture-04.pdf){.btn .btn-outline-primary}
+
+<iframe src="../slides/lecture-04.pdf" width="100%" height="620" style="border:1px solid #dde6ef; border-radius:6px;"></iframe>
+
+## Notebooks
+
+::: {.nb-item}
+[Blood cells: CNNs, regularisation and class activation maps](../notebooks/lecture-04/bloodmnist-cnn-regularisation-cam.ipynb)
+
+Six models on BloodMNIST, from a dense network to a regularised CNN, with confusion matrices and class activation maps.
+:::
+
+::: {.nb-item}
+[Convolution and the 2D Ising model: the figures of the lecture](../notebooks/lecture-04/convolution-and-ising.ipynb)
+
+Sobel filters, the convolution integral, Ising snapshots across $T_c$, Onsager's results and the CNN estimate of $T_c$.
+:::
+
+::: {.nb-item}
+[Lab 010: Monte Carlo samples of the 2D Ising model](../notebooks/lecture-04/lab-010-ising-monte-carlo.ipynb)
+
+The Metropolis algorithm, equilibration, and the data set of spin configurations.
+:::
+
+::: {.nb-item}
+[Lab 011: $T_c$ of the 2D Ising model from the confidence of a CNN](../notebooks/lecture-04/lab-011-cnn-tc.ipynb)
+
+Training far from the transition, predicting everywhere, and finite-size effects.
+:::
+
+::: {.nb-item}
+[Lab 012: Onsager's exact solution of the 2D Ising model](../notebooks/lecture-04/lab-012-onsager.ipynb)
+
+The partition function, the critical temperature and the critical exponents.
+:::
