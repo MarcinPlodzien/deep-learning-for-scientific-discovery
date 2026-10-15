@@ -9,11 +9,13 @@ code-fold: false
 ::: {.hero-text}
 <h1 class="hero-title">Deep Learning for Scientific Discovery</h1>
 
-<p class="hero-tagline">A doctoral course at the Jagiellonian University in Kraków</p>
+<p class="hero-tagline">A course of the Doctoral School of Exact and Natural Sciences, Jagiellonian University in Kraków</p>
+
+<p class="hero-logos"><a href="https://en.uj.edu.pl/"><img src="assets/uj_logo.png" alt="Jagiellonian University in Kraków"></a><a href="https://science.phd.uj.edu.pl/"><img src="assets/ds_logo.png" alt="Doctoral School of Exact and Natural Sciences, Jagiellonian University"></a></p>
 
 <p class="hero-sub">Neural networks from first principles, trained on real scientific data: images of blood cells and of the Earth's surface, spin configurations of a magnet, and the landmark discoveries made with deep learning in biology, mathematics, materials science and physics.</p>
 
-<p class="hero-author"><a href="https://chaos.if.uj.edu.pl/marcinplodzien/"><b>Marcin Płodzień</b></a> · Institute of Theoretical Physics, Jagiellonian University in Kraków · Doctoral School of Exact and Natural Sciences</p>
+<p class="hero-author"><a href="https://chaos.if.uj.edu.pl/marcinplodzien/"><b>Marcin Płodzień</b></a> · Atomic Optics Department, Institute of Theoretical Physics, Jagiellonian University in Kraków</p>
 
 [Start with Lecture 1](lectures/lecture-01.qmd){.btn .btn-primary} [Browse the lectures](#lectures){.btn .btn-outline-primary} [Course flyer (PDF)](assets/course-flyer.pdf){.btn .btn-outline-primary}
 :::
