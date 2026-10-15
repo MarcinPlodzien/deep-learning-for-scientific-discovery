@@ -1,0 +1,27 @@
+---
+title: "6 · Generative Models"
+code-tools: false
+toc: false
+---
+
+Learning a probability distribution from data and drawing new samples from it. The probability toolkit: distributions and densities, expectations as averages over samples, the Gaussian, joint, conditional and marginal distributions, Bayes' rule, the Kullback–Leibler divergence and maximum likelihood. Latent-variable models and the variational autoencoder: the latent space, the reparametrisation trick, the evidence lower bound; conditional generation of a chosen digit or cell type, checked by a classifier. Generative adversarial networks, the best discriminator and the Wasserstein distance; diffusion models, the forward process, the reverse step and the score. Spin configurations of the Ising model generated at a chosen temperature and checked against Monte Carlo.
+
+## Slides
+
+[Download the slides (PDF)](../slides/lecture-06.pdf){.btn .btn-outline-primary}
+
+<iframe src="../slides/lecture-06.pdf" width="100%" height="620" style="border:1px solid #dde6ef; border-radius:6px;"></iframe>
+
+## Notebooks
+
+::: {.nb-item}
+[Generative models: probability, VAE, GAN and diffusion](../notebooks/lecture-06/generative-models.ipynb)
+
+The probability toolkit, VAE and conditional VAE, GAN, diffusion on two moons and on MNIST, and the Ising model.
+:::
+
+::: {.nb-item}
+[Conditional generation of digits and blood cells](../notebooks/lecture-06/conditional-generation.ipynb)
+
+The VAE in a two-dimensional latent space, the reparametrisation trick, generating a chosen digit or cell type, and classifiers trained on real or synthetic data.
+:::

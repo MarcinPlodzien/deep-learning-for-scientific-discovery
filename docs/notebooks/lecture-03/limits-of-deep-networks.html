@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.280">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Deep Learning for Scientific Discovery - Limits of deep networks</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../lectures/lecture-04.html" rel="next">
+<link href="../../lectures/lecture-03.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Deep Learning for Scientific Discovery</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../../index.html" aria-current="page">
+ <span class="menu-text">Start here</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-lectures" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Lectures</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-lectures">    
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-01.html">
+ <span class="dropdown-text">1 · From AI to Deep Learning</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-02.html">
+ <span class="dropdown-text">2 · The Recipe of Deep Learning</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-03.html">
+ <span class="dropdown-text">3 · Convolutional Neural Networks</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-04.html">
+ <span class="dropdown-text">4 · CNNs on Scientific Data and the 2D Ising Model</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-05.html">
+ <span class="dropdown-text">5 · Unsupervised Learning</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-06.html">
+ <span class="dropdown-text">6 · Generative Models</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../../assets/course-flyer.pdf">
+ <span class="menu-text">Course flyer</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">
+ <span class="menu-text">About</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/MarcinPlodzien/deep-learning-for-scientific-discovery"><i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://chaos.if.uj.edu.pl/marcinplodzien/"><i class="bi bi-house" role="img" aria-label="Homepage">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div class="quarto-toggle-container">
+                  <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+              </div>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Limits of deep networks</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+      <a href="../../index.html" class="sidebar-logo-link">
+      <img src="../../assets/qusml_logo.svg" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">Start here</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-01.html" class="sidebar-item-text sidebar-link">1 · From AI to Deep Learning</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-01/lab-001-python-matplotlib-pandas.html" class="sidebar-item-text sidebar-link">Lab 001: Python, Matplotlib and Pandas</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-01/lab-002-numpy.html" class="sidebar-item-text sidebar-link">Lab 002: NumPy</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-01/lab-003-pytorch.html" class="sidebar-item-text sidebar-link">Lab 003: PyTorch tensors, devices and layers</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-02.html" class="sidebar-item-text sidebar-link">2 · The Recipe of Deep Learning</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-02/lab-004-automatic-differentiation.html" class="sidebar-item-text sidebar-link">Lab 004: Automatic differentiation</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-02/lab-005-n-pendulum.html" class="sidebar-item-text sidebar-link">Lab 005: The N-link pendulum with SymPy and automatic differentiation</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-02/lab-006-uat-and-minimisers.html" class="sidebar-item-text sidebar-link">Lab 006: Universal approximation and the choice of minimiser</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-02/lab-007-building-and-training.html" class="sidebar-item-text sidebar-link">Lab 007: Building and training neural networks</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-02/lab-008-analysing-networks.html" class="sidebar-item-text sidebar-link">Lab 008: Analysing a neural network</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-02/lab-009-mnist.html" class="sidebar-item-text sidebar-link">Lab 009: MNIST, regression versus cross-entropy</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-03.html" class="sidebar-item-text sidebar-link">3 · Convolutional Neural Networks</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-03/limits-of-deep-networks.html" class="sidebar-item-text sidebar-link active">Limits of deep networks</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-04.html" class="sidebar-item-text sidebar-link">4 · CNNs on Scientific Data and the 2D Ising Model</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-04/bloodmnist-cnn-regularisation-cam.html" class="sidebar-item-text sidebar-link">Blood cells: CNNs, regularisation and class activation maps</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-04/convolution-and-ising.html" class="sidebar-item-text sidebar-link">Convolution and the 2D Ising model</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-04/lab-010-ising-monte-carlo.html" class="sidebar-item-text sidebar-link">Lab 010: Monte Carlo samples of the 2D Ising model</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-04/lab-011-cnn-tc.html" class="sidebar-item-text sidebar-link">Lab 011: Tc of the 2D Ising model from the confidence of a CNN</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-04/lab-012-onsager.html" class="sidebar-item-text sidebar-link">Lab 012: Onsager’s exact solution of the 2D Ising model</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-05.html" class="sidebar-item-text sidebar-link">5 · Unsupervised Learning</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-05/unsupervised-learning.html" class="sidebar-item-text sidebar-link">Unsupervised learning: PCA, t-SNE, clustering, autoencoders and anomalies</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-06.html" class="sidebar-item-text sidebar-link">6 · Generative Models</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-06/generative-models.html" class="sidebar-item-text sidebar-link">Generative models: probability, VAE, GAN and diffusion</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-06/conditional-generation.html" class="sidebar-item-text sidebar-link">Conditional generation of digits and blood cells</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../about.html" class="sidebar-item-text sidebar-link">About</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#limits-of-deep-networks" id="toc-limits-of-deep-networks" class="nav-link active" data-scroll-target="#limits-of-deep-networks">Limits of Deep Networks</a>
+  <ul class="collapse">
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a></li>
+  <li><a href="#inputs-from-outside-the-training-distribution" id="toc-inputs-from-outside-the-training-distribution" class="nav-link" data-scroll-target="#inputs-from-outside-the-training-distribution">1. Inputs from outside the training distribution</a></li>
+  <li><a href="#a-different-staining" id="toc-a-different-staining" class="nav-link" data-scroll-target="#a-different-staining">2. A Different Staining</a></li>
+  <li><a href="#a-shortcut" id="toc-a-shortcut" class="nav-link" data-scroll-target="#a-shortcut">3. A shortcut</a></li>
+  <li><a href="#numbers-used-on-the-slides" id="toc-numbers-used-on-the-slides" class="nav-link" data-scroll-target="#numbers-used-on-the-slides">Numbers used on the slides</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/MarcinPlodzien/deep-learning-for-scientific-discovery/blob/main/notebooks/lecture-03/limits-of-deep-networks.ipynb" class="toc-action">View source</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title d-none d-lg-block">Limits of deep networks</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li></ul></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p><a href="https://colab.research.google.com/github/MarcinPlodzien/deep-learning-for-scientific-discovery/blob/main/notebooks/lecture-03/limits-of-deep-networks.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Colab"></a></p>
+<section id="limits-of-deep-networks" class="level1">
+<h1>Limits of Deep Networks</h1>
+<p><em>Deep Learning for Scientific Discovery, Jagiellonian University, lecture of. Author: Marcin Płodzień.</em></p>
+<p>A trained network reaches <span class="math inline">\(93\%\)</span> test accuracy on BloodMNIST (Model E of the main notebook). This number is measured on test images that come from <strong>the same source</strong> as the training images. Three experiments show what it does not guarantee:</p>
+<ol type="1">
+<li><strong>Inputs from outside the training distribution.</strong> We show the blood-cell network satellite images and random noise. It has to answer one of the eight cell types, and we measure how confident it is.</li>
+<li><strong>A shift of the input distribution.</strong> We change the colours of the real test cells, as a different staining or microscope would, and measure the accuracy.</li>
+<li><strong>A shortcut.</strong> We put a small dark square in the corner of every training image of one class, train a network, and test it on clean images and on images of other classes with the square.</li>
+</ol>
+<p>All on a CPU; the trained Model E is loaded from <code>results/model_E.pt</code>.</p>
+<section id="setup" class="level2">
+<h2 class="anchored" data-anchor-id="setup">Setup</h2>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T15:47:20.855858Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T15:47:20.855119Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T15:48:08.534220Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T15:48:08.533562Z&quot;}" data-execution_count="1">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os, io, zipfile, time</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">"CUDA_VISIBLE_DEVICES"</span>] <span class="op">=</span> <span class="st">""</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch, torch.nn <span class="im">as</span> nn, torch.nn.functional <span class="im">as</span> F</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PIL <span class="im">import</span> Image</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>torch.set_num_threads(<span class="dv">4</span>)<span class="op">;</span> device <span class="op">=</span> <span class="st">"cpu"</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>OUT <span class="op">=</span> <span class="st">"figures"</span><span class="op">;</span> os.makedirs(OUT, exist_ok<span class="op">=</span><span class="va">True</span>)<span class="op">;</span> RES <span class="op">=</span> <span class="st">"results"</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>blue, orange, navy <span class="op">=</span> <span class="st">"#005CA7"</span>, <span class="st">"#EB6709"</span>, <span class="st">"#0A2F5C"</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>nums <span class="op">=</span> {}</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> clean(ax):</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> s <span class="kw">in</span> [<span class="st">"top"</span>, <span class="st">"right"</span>]: ax.spines[s].set_visible(<span class="va">False</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> urllib.request</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fetch(path, url):        <span class="co"># use the local file if it exists, otherwise download it once (e.g. in Google Colab)</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> os.path.exists(path):</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        os.makedirs(os.path.dirname(path) <span class="kw">or</span> <span class="st">"."</span>, exist_ok<span class="op">=</span><span class="va">True</span>)<span class="op">;</span> <span class="bu">print</span>(<span class="st">"downloading"</span>, url)<span class="op">;</span> urllib.request.urlretrieve(url, path)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> path</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>os.makedirs(RES, exist_ok<span class="op">=</span><span class="va">True</span>)<span class="op">;</span> os.makedirs(OUT, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>fetch(<span class="st">"data/bloodmnist_64.npz"</span>, <span class="st">"https://zenodo.org/records/10519652/files/bloodmnist_64.npz?download=1"</span>)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>fetch(<span class="st">"data/bloodmnist.npz"</span>, <span class="st">"https://zenodo.org/records/10519652/files/bloodmnist.npz?download=1"</span>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>fetch(<span class="st">"data/EuroSAT.zip"</span>, <span class="st">"https://huggingface.co/datasets/torchgeo/eurosat/resolve/main/EuroSAT.zip"</span>)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>fetch(<span class="ss">f"</span><span class="sc">{</span>RES<span class="sc">}</span><span class="ss">/model_E.pt"</span>, <span class="st">"https://raw.githubusercontent.com/MarcinPlodzien/deep-learning-for-scientific-discovery/main/notebooks/lecture-03/results/model_E.pt"</span>)   <span class="co"># Model E of the blood-cell notebook</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>class_names <span class="op">=</span> [<span class="st">"basophil"</span>, <span class="st">"eosinophil"</span>, <span class="st">"erythroblast"</span>, <span class="st">"immature granulocyte"</span>, <span class="st">"lymphocyte"</span>, <span class="st">"monocyte"</span>, <span class="st">"neutrophil"</span>, <span class="st">"platelet"</span>]</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> np.load(<span class="st">"data/bloodmnist_64.npz"</span>)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_test <span class="op">=</span> data[<span class="st">"train_images"</span>], data[<span class="st">"test_images"</span>], data[<span class="st">"test_labels"</span>].ravel()</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>mean <span class="op">=</span> X_train.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">3</span>).mean(axis<span class="op">=</span><span class="dv">0</span>) <span class="op">/</span> <span class="dv">255</span><span class="op">;</span> std <span class="op">=</span> X_train.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">3</span>).std(axis<span class="op">=</span><span class="dv">0</span>) <span class="op">/</span> <span class="dv">255</span>   <span class="co"># as in the main notebook</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> to_tensor(X):                                       <span class="co"># uint8 images (n, 64, 64, 3) -&gt; normalised tensor (n, 3, 64, 64)</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> torch.tensor(X, dtype<span class="op">=</span>torch.float32).permute(<span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>) <span class="op">/</span> <span class="dv">255</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (x <span class="op">-</span> torch.tensor(mean, dtype<span class="op">=</span>torch.float32)[:, <span class="va">None</span>, <span class="va">None</span>]) <span class="op">/</span> torch.tensor(std, dtype<span class="op">=</span>torch.float32)[:, <span class="va">None</span>, <span class="va">None</span>]</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> conv_block(n_in, n_out):</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> nn.Sequential(nn.Conv2d(n_in, n_out, <span class="dv">3</span>, padding<span class="op">=</span><span class="dv">1</span>), nn.BatchNorm2d(n_out), nn.ReLU(),</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>                         nn.Conv2d(n_out, n_out, <span class="dv">3</span>, padding<span class="op">=</span><span class="dv">1</span>), nn.BatchNorm2d(n_out), nn.ReLU())</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> GapCNN(nn.Module):                                <span class="co"># Model E of the main notebook</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, n_channels<span class="op">=</span><span class="dv">3</span>, n_classes<span class="op">=</span><span class="dv">8</span>):</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.features <span class="op">=</span> nn.Sequential(conv_block(n_channels, <span class="dv">32</span>), nn.MaxPool2d(<span class="dv">2</span>), conv_block(<span class="dv">32</span>, <span class="dv">64</span>), nn.MaxPool2d(<span class="dv">2</span>), conv_block(<span class="dv">64</span>, <span class="dv">128</span>))</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.fc <span class="op">=</span> nn.Linear(<span class="dv">128</span>, n_classes)</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x): <span class="cf">return</span> <span class="va">self</span>.fc(<span class="va">self</span>.features(x).mean(dim<span class="op">=</span>(<span class="dv">2</span>, <span class="dv">3</span>)))</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>model_E <span class="op">=</span> GapCNN()<span class="op">;</span> model_E.load_state_dict(torch.load(<span class="ss">f"</span><span class="sc">{</span>RES<span class="sc">}</span><span class="ss">/model_E.pt"</span>, map_location<span class="op">=</span><span class="st">"cpu"</span>))<span class="op">;</span> model_E.<span class="bu">eval</span>()</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> probabilities(model, X):</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> torch.no_grad():</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> torch.cat([model(X[k:k <span class="op">+</span> <span class="dv">500</span>]).softmax(<span class="dv">1</span>) <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="bu">len</span>(X), <span class="dv">500</span>)]).numpy()</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>p_test <span class="op">=</span> probabilities(model_E, to_tensor(X_test))</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>nums[<span class="st">"E_test_acc"</span>] <span class="op">=</span> <span class="bu">float</span>((p_test.argmax(<span class="dv">1</span>) <span class="op">==</span> y_test).mean())</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Model E, test accuracy on real blood cells: </span><span class="sc">{</span>nums[<span class="st">'E_test_acc'</span>]<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Model E, test accuracy on real blood cells: 0.932</code></pre>
+</div>
+</div>
+</section>
+<section id="inputs-from-outside-the-training-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="inputs-from-outside-the-training-distribution">1. Inputs from outside the training distribution</h2>
+<p>The network ends with a softmax over the eight cell types: whatever the input, the eight probabilities sum to 1, and one class gets the largest. There is no answer “this is not a blood cell”. We give it</p>
+<ul>
+<li><strong>satellite images</strong> (EuroSAT, <span class="math inline">\(64\times64\)</span> RGB tiles of Sentinel-2 images: forests, rivers, highways, …), the data set of the second part of the main notebook;</li>
+<li><strong>random noise</strong>: every pixel drawn uniformly from <span class="math inline">\(0\)</span> to <span class="math inline">\(255\)</span>.</li>
+</ul>
+<p>The <strong>confidence</strong> of a prediction is the largest of the eight output probabilities <span class="math inline">\(q_1,\dots,q_8\)</span> of the softmax, <span class="math inline">\(\max_k q_k\)</span>.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T15:48:08.538896Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T15:48:08.538279Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T15:48:31.258705Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T15:48:31.257505Z&quot;}" data-execution_count="2">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>archive <span class="op">=</span> zipfile.ZipFile(<span class="st">"data/EuroSAT.zip"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>files <span class="op">=</span> <span class="bu">sorted</span>(n <span class="cf">for</span> n <span class="kw">in</span> archive.namelist() <span class="cf">if</span> n.lower().endswith(<span class="st">".jpg"</span>))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">1</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>pick <span class="op">=</span> rng.choice(<span class="bu">len</span>(files), <span class="dv">1000</span>, replace<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>S <span class="op">=</span> np.stack([np.array(Image.<span class="bu">open</span>(io.BytesIO(archive.read(files[i]))).convert(<span class="st">"RGB"</span>)) <span class="cf">for</span> i <span class="kw">in</span> pick])</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> rng.integers(<span class="dv">0</span>, <span class="dv">256</span>, size<span class="op">=</span>(<span class="dv">1000</span>, <span class="dv">64</span>, <span class="dv">64</span>, <span class="dv">3</span>), dtype<span class="op">=</span>np.uint8)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>p_sat, p_noise <span class="op">=</span> probabilities(model_E, to_tensor(S)), probabilities(model_E, to_tensor(N))</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>conf <span class="op">=</span> {<span class="st">"real test cells"</span>: p_test.<span class="bu">max</span>(<span class="dv">1</span>), <span class="st">"satellite images"</span>: p_sat.<span class="bu">max</span>(<span class="dv">1</span>), <span class="st">"random noise"</span>: p_noise.<span class="bu">max</span>(<span class="dv">1</span>)}</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k, v <span class="kw">in</span> conf.items():</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    nums[<span class="ss">f"conf_median_</span><span class="sc">{</span>k<span class="sc">}</span><span class="ss">"</span>] <span class="op">=</span> <span class="bu">float</span>(np.median(v))<span class="op">;</span> nums[<span class="ss">f"conf_above_09_</span><span class="sc">{</span>k<span class="sc">}</span><span class="ss">"</span>] <span class="op">=</span> <span class="bu">float</span>((v <span class="op">&gt;</span> <span class="fl">0.9</span>).mean())</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>k<span class="sc">:18s}</span><span class="ss">: median confidence </span><span class="sc">{</span>np<span class="sc">.</span>median(v)<span class="sc">:.3f}</span><span class="ss">; fraction with confidence &gt; 0.9: </span><span class="sc">{</span>(v <span class="op">&gt;</span> <span class="fl">0.9</span>)<span class="sc">.</span>mean()<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"satellite images are called:"</span>, {class_names[c]: <span class="bu">int</span>(n) <span class="cf">for</span> c, n <span class="kw">in</span> <span class="bu">enumerate</span>(np.bincount(p_sat.argmax(<span class="dv">1</span>), minlength<span class="op">=</span><span class="dv">8</span>)) <span class="cf">if</span> n})</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"noise images are called:"</span>, {class_names[c]: <span class="bu">int</span>(n) <span class="cf">for</span> c, n <span class="kw">in</span> <span class="bu">enumerate</span>(np.bincount(p_noise.argmax(<span class="dv">1</span>), minlength<span class="op">=</span><span class="dv">8</span>)) <span class="cf">if</span> n})</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">3.6</span>))</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_axes([<span class="fl">0.0</span>, <span class="fl">0.12</span>, <span class="fl">0.42</span>, <span class="fl">0.78</span>])</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>bins <span class="op">=</span> np.linspace(<span class="fl">0.1</span>, <span class="dv">1</span>, <span class="dv">37</span>)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (k, v), col <span class="kw">in</span> <span class="bu">zip</span>(conf.items(), [blue, orange, <span class="st">"grey"</span>]):</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    ax.hist(v, bins<span class="op">=</span>bins, density<span class="op">=</span><span class="va">True</span>, histtype<span class="op">=</span><span class="st">"step"</span>, lw<span class="op">=</span><span class="fl">2.2</span>, color<span class="op">=</span>col, label<span class="op">=</span>k)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"confidence = largest of the 8 probabilities"</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">"density (log scale)"</span>)<span class="op">;</span> ax.set_yscale(<span class="st">"log"</span>)<span class="op">;</span> ax.legend(frameon<span class="op">=</span><span class="va">False</span>, fontsize<span class="op">=</span><span class="dv">9</span>, loc<span class="op">=</span><span class="st">"upper left"</span>)<span class="op">;</span> clean(ax)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"the blood-cell network on three kinds of input"</span>, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>show <span class="op">=</span> <span class="bu">list</span>(np.argsort(<span class="op">-</span>p_sat.<span class="bu">max</span>(<span class="dv">1</span>))[:<span class="dv">4</span>])</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> j, i <span class="kw">in</span> <span class="bu">enumerate</span>(show):</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    a <span class="op">=</span> fig.add_axes([<span class="fl">0.47</span> <span class="op">+</span> <span class="fl">0.135</span> <span class="op">*</span> j, <span class="fl">0.42</span>, <span class="fl">0.12</span>, <span class="fl">0.48</span>])<span class="op">;</span> a.imshow(S[i])<span class="op">;</span> a.axis(<span class="st">"off"</span>)</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    a.set_title(<span class="ss">f"</span><span class="sc">{</span>class_names[p_sat[i].argmax()]<span class="sc">}</span><span class="ch">\n</span><span class="sc">{</span>p_sat[i]<span class="sc">.</span><span class="bu">max</span>()<span class="sc">:.3f}</span><span class="ss">"</span>, fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> fig.add_axes([<span class="fl">0.47</span>, <span class="fl">0.0</span>, <span class="fl">0.12</span>, <span class="fl">0.36</span>])<span class="op">;</span> a.imshow(N[<span class="dv">0</span>])<span class="op">;</span> a.axis(<span class="st">"off"</span>)</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>a.set_title(<span class="ss">f"</span><span class="sc">{</span>class_names[p_noise[<span class="dv">0</span>].argmax()]<span class="sc">}</span><span class="ss">  </span><span class="sc">{</span>p_noise[<span class="dv">0</span>]<span class="sc">.</span><span class="bu">max</span>()<span class="sc">:.3f}</span><span class="ss">"</span>, fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>fig.text(<span class="fl">0.61</span>, <span class="fl">0.17</span>, <span class="st">"top: the four most confident satellite tiles</span><span class="ch">\n</span><span class="st">left: one noise image</span><span class="ch">\n</span><span class="st">(predicted cell type, confidence)"</span>, fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="ss">f"</span><span class="sc">{</span>OUT<span class="sc">}</span><span class="ss">/limits_ood_confidence.png"</span>, dpi<span class="op">=</span><span class="dv">170</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)<span class="op">;</span> plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>real test cells   : median confidence 0.998; fraction with confidence &gt; 0.9: 0.857
+satellite images  : median confidence 1.000; fraction with confidence &gt; 0.9: 0.993
+random noise      : median confidence 1.000; fraction with confidence &gt; 0.9: 1.000
+satellite images are called: {'basophil': 5, 'eosinophil': 1, 'erythroblast': 991, 'lymphocyte': 2, 'platelet': 1}
+noise images are called: {'basophil': 1000}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/tmp/ipykernel_3908662/2110671245.py:29: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  plt.savefig(f"{OUT}/limits_ood_confidence.png", dpi=170, bbox_inches="tight"); plt.show()</code></pre>
+</div>
+</div>
+<p>The network has never seen a satellite image or noise, yet it assigns them cell types, part of them with high confidence. A high softmax probability measures how well an input matches one class <em>compared with the other seven</em>, not whether the input looks like the training data at all.</p>
+</section>
+<section id="a-different-staining" class="level2">
+<h2 class="anchored" data-anchor-id="a-different-staining">2. A Different Staining</h2>
+<p>Blood smears are stained, and the colour depends on the stain batch, the protocol and the microscope. We imitate this by scaling the three colour channels of the real test images: red by <span class="math inline">\(1-s\)</span>, green unchanged, blue by <span class="math inline">\(1+s\)</span>, for a shift <span class="math inline">\(s\)</span> from <span class="math inline">\(0\)</span> to <span class="math inline">\(0.4\)</span>, and by a global brightness factor. The cells are the same; only the colours change.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T15:48:31.272371Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T15:48:31.271710Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T15:55:00.421467Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T15:55:00.420268Z&quot;}" data-execution_count="3">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> stain(X, s):            <span class="co"># scale red by (1 - s) and blue by (1 + s); X: uint8 (n, 64, 64, 3)</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    g <span class="op">=</span> np.array([<span class="dv">1</span> <span class="op">-</span> s, <span class="fl">1.0</span>, <span class="dv">1</span> <span class="op">+</span> s])</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.clip(X.astype(np.float32) <span class="op">*</span> g, <span class="dv">0</span>, <span class="dv">255</span>).astype(np.uint8)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> brightness(X, b):</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.clip(X.astype(np.float32) <span class="op">*</span> b, <span class="dv">0</span>, <span class="dv">255</span>).astype(np.uint8)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>shifts <span class="op">=</span> [<span class="fl">0.0</span>, <span class="fl">0.05</span>, <span class="fl">0.1</span>, <span class="fl">0.15</span>, <span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span>]<span class="op">;</span> brights <span class="op">=</span> [<span class="fl">0.7</span>, <span class="fl">0.8</span>, <span class="fl">0.9</span>, <span class="fl">1.0</span>, <span class="fl">1.1</span>, <span class="fl">1.2</span>]</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>acc_s <span class="op">=</span> [<span class="bu">float</span>((probabilities(model_E, to_tensor(stain(X_test, s))).argmax(<span class="dv">1</span>) <span class="op">==</span> y_test).mean()) <span class="cf">for</span> s <span class="kw">in</span> shifts]</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>acc_b <span class="op">=</span> [<span class="bu">float</span>((probabilities(model_E, to_tensor(brightness(X_test, b))).argmax(<span class="dv">1</span>) <span class="op">==</span> y_test).mean()) <span class="cf">for</span> b <span class="kw">in</span> brights]</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>nums[<span class="st">"stain_shift"</span>], nums[<span class="st">"stain_acc"</span>] <span class="op">=</span> shifts, [<span class="bu">round</span>(a, <span class="dv">3</span>) <span class="cf">for</span> a <span class="kw">in</span> acc_s]</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>nums[<span class="st">"brightness"</span>], nums[<span class="st">"brightness_acc"</span>] <span class="op">=</span> brights, [<span class="bu">round</span>(a, <span class="dv">3</span>) <span class="cf">for</span> a <span class="kw">in</span> acc_b]</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"colour shift s:"</span>, shifts)<span class="op">;</span> <span class="bu">print</span>(<span class="st">"accuracy      :"</span>, np.<span class="bu">round</span>(acc_s, <span class="dv">3</span>))</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"brightness b  :"</span>, brights)<span class="op">;</span> <span class="bu">print</span>(<span class="st">"accuracy      :"</span>, np.<span class="bu">round</span>(acc_b, <span class="dv">3</span>))</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">3.4</span>))</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> j, s <span class="kw">in</span> <span class="bu">enumerate</span>([<span class="fl">0.0</span>, <span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.4</span>]):</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    a <span class="op">=</span> fig.add_axes([<span class="fl">0.0</span> <span class="op">+</span> <span class="fl">0.105</span> <span class="op">*</span> j, <span class="fl">0.45</span>, <span class="fl">0.095</span>, <span class="fl">0.45</span>])<span class="op">;</span> a.imshow(stain(X_test[:<span class="dv">1</span>], s)[<span class="dv">0</span>])<span class="op">;</span> a.axis(<span class="st">"off"</span>)<span class="op">;</span> a.set_title(<span class="ss">f"s = </span><span class="sc">{</span>s<span class="sc">}</span><span class="ss">"</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>fig.text(<span class="fl">0.0</span>, <span class="fl">0.3</span>, <span class="st">"the same test cell ("</span> <span class="op">+</span> class_names[y_test[<span class="dv">0</span>]] <span class="op">+</span> <span class="st">"),</span><span class="ch">\n</span><span class="st">red scaled by 1 - s, blue by 1 + s"</span>, fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_axes([<span class="fl">0.5</span>, <span class="fl">0.12</span>, <span class="fl">0.22</span>, <span class="fl">0.78</span>])<span class="op">;</span> ax.plot(shifts, acc_s, <span class="st">"o-"</span>, color<span class="op">=</span>orange, lw<span class="op">=</span><span class="dv">2</span>)<span class="op">;</span> ax.set_ylim(<span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"colour shift $s$"</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">"test accuracy"</span>)<span class="op">;</span> ax.axhline(<span class="dv">1</span> <span class="op">/</span> <span class="dv">8</span>, color<span class="op">=</span><span class="st">"grey"</span>, ls<span class="op">=</span><span class="st">":"</span>, lw<span class="op">=</span><span class="dv">1</span>)<span class="op">;</span> clean(ax)<span class="op">;</span> ax.set_title(<span class="st">"staining"</span>, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>ax2 <span class="op">=</span> fig.add_axes([<span class="fl">0.78</span>, <span class="fl">0.12</span>, <span class="fl">0.22</span>, <span class="fl">0.78</span>])<span class="op">;</span> ax2.plot(brights, acc_b, <span class="st">"o-"</span>, color<span class="op">=</span>blue, lw<span class="op">=</span><span class="dv">2</span>)<span class="op">;</span> ax2.set_ylim(<span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>ax2.set_xlabel(<span class="st">"brightness factor"</span>)<span class="op">;</span> ax2.axhline(<span class="dv">1</span> <span class="op">/</span> <span class="dv">8</span>, color<span class="op">=</span><span class="st">"grey"</span>, ls<span class="op">=</span><span class="st">":"</span>, lw<span class="op">=</span><span class="dv">1</span>)<span class="op">;</span> clean(ax2)<span class="op">;</span> ax2.set_title(<span class="st">"brightness"</span>, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="ss">f"</span><span class="sc">{</span>OUT<span class="sc">}</span><span class="ss">/limits_stain_shift.png"</span>, dpi<span class="op">=</span><span class="dv">170</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)<span class="op">;</span> plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>colour shift s: [0.0, 0.05, 0.1, 0.15, 0.2, 0.3, 0.4]
+accuracy      : [0.932 0.866 0.647 0.29  0.108 0.028 0.072]
+brightness b  : [0.7, 0.8, 0.9, 1.0, 1.1, 1.2]
+accuracy      : [0.093 0.166 0.654 0.932 0.761 0.348]</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/tmp/ipykernel_3908662/2223290882.py:22: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  plt.savefig(f"{OUT}/limits_stain_shift.png", dpi=170, bbox_inches="tight"); plt.show()</code></pre>
+</div>
+</div>
+<p>A colour change that a haematologist would hardly notice moves the images away from the training distribution, and the accuracy falls (dotted line: guessing among 8 classes). The test accuracy of the main notebook was measured on images of the same staining as the training images; it says nothing about another laboratory.</p>
+</section>
+<section id="a-shortcut" class="level2">
+<h2 class="anchored" data-anchor-id="a-shortcut">3. A shortcut</h2>
+<p>A network uses whatever separates the training classes. Suppose that, in the training set, every <strong>platelet</strong> image carries a small dark square in the top-left corner: a marker that, for instance, one laboratory adds to its images, and that laboratory happens to supply all the platelets. We train a small CNN on these images (<span class="math inline">\(28\times28\)</span> pixels, for speed) and test it</p>
+<ul>
+<li>on clean test images: are the platelets still recognised?</li>
+<li>on test images of the other seven types <strong>with</strong> the square: are they called platelets?</li>
+</ul>
+<p>For comparison, the same network is trained on clean images.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T15:55:00.432035Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T15:55:00.431125Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T15:56:42.741155Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T15:56:42.739989Z&quot;}" data-execution_count="4">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>d28 <span class="op">=</span> np.load(<span class="st">"data/bloodmnist.npz"</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>A_tr, a_tr <span class="op">=</span> d28[<span class="st">"train_images"</span>], d28[<span class="st">"train_labels"</span>].ravel()<span class="op">;</span> A_te, a_te <span class="op">=</span> d28[<span class="st">"test_images"</span>], d28[<span class="st">"test_labels"</span>].ravel()</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>PLT <span class="op">=</span> class_names.index(<span class="st">"platelet"</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mark(X):                <span class="co"># a dark 4 x 4 square in the top-left corner</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    X <span class="op">=</span> X.copy()<span class="op">;</span> X[:, <span class="dv">1</span>:<span class="dv">5</span>, <span class="dv">1</span>:<span class="dv">5</span>, :] <span class="op">=</span> <span class="dv">20</span><span class="op">;</span> <span class="cf">return</span> X</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>m28 <span class="op">=</span> A_tr.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">3</span>).mean(<span class="dv">0</span>) <span class="op">/</span> <span class="dv">255</span><span class="op">;</span> s28 <span class="op">=</span> A_tr.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">3</span>).std(<span class="dv">0</span>) <span class="op">/</span> <span class="dv">255</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> t28(X):</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> torch.tensor(X, dtype<span class="op">=</span>torch.float32).permute(<span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>) <span class="op">/</span> <span class="dv">255</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (x <span class="op">-</span> torch.tensor(m28, dtype<span class="op">=</span>torch.float32)[:, <span class="va">None</span>, <span class="va">None</span>]) <span class="op">/</span> torch.tensor(s28, dtype<span class="op">=</span>torch.float32)[:, <span class="va">None</span>, <span class="va">None</span>]</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> small_cnn():</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> nn.Sequential(nn.Conv2d(<span class="dv">3</span>, <span class="dv">32</span>, <span class="dv">3</span>, padding<span class="op">=</span><span class="dv">1</span>), nn.ReLU(), nn.MaxPool2d(<span class="dv">2</span>), nn.Conv2d(<span class="dv">32</span>, <span class="dv">64</span>, <span class="dv">3</span>, padding<span class="op">=</span><span class="dv">1</span>), nn.ReLU(), nn.MaxPool2d(<span class="dv">2</span>),</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>                         nn.Flatten(), nn.Linear(<span class="dv">64</span> <span class="op">*</span> <span class="dv">7</span> <span class="op">*</span> <span class="dv">7</span>, <span class="dv">128</span>), nn.ReLU(), nn.Linear(<span class="dv">128</span>, <span class="dv">8</span>))</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fit(X, y, epochs<span class="op">=</span><span class="dv">6</span>, seed<span class="op">=</span><span class="dv">0</span>):</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    torch.manual_seed(seed)<span class="op">;</span> m <span class="op">=</span> small_cnn()<span class="op">;</span> opt <span class="op">=</span> torch.optim.Adam(m.parameters(), <span class="fl">1e-3</span>)<span class="op">;</span> X <span class="op">=</span> t28(X)<span class="op">;</span> y <span class="op">=</span> torch.tensor(y, dtype<span class="op">=</span>torch.<span class="bu">long</span>)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> ep <span class="kw">in</span> <span class="bu">range</span>(epochs):</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>        perm <span class="op">=</span> torch.randperm(<span class="bu">len</span>(X))</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="bu">len</span>(perm), <span class="dv">128</span>):</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>            j <span class="op">=</span> perm[i:i <span class="op">+</span> <span class="dv">128</span>]<span class="op">;</span> loss <span class="op">=</span> F.cross_entropy(m(X[j]), y[j])<span class="op">;</span> opt.zero_grad()<span class="op">;</span> loss.backward()<span class="op">;</span> opt.step()</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> m.<span class="bu">eval</span>()</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>A_tr_marked <span class="op">=</span> A_tr.copy()<span class="op">;</span> A_tr_marked[a_tr <span class="op">==</span> PLT] <span class="op">=</span> mark(A_tr[a_tr <span class="op">==</span> PLT])</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>t0 <span class="op">=</span> time.time()</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>net_clean, net_short <span class="op">=</span> fit(A_tr, a_tr), fit(A_tr_marked, a_tr)</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>torch.save(net_short.state_dict(), <span class="ss">f"</span><span class="sc">{</span>RES<span class="sc">}</span><span class="ss">/limits_shortcut_cnn.pt"</span>)<span class="op">;</span> torch.save(net_clean.state_dict(), <span class="ss">f"</span><span class="sc">{</span>RES<span class="sc">}</span><span class="ss">/limits_clean_cnn.pt"</span>)</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"two networks trained in </span><span class="sc">{</span>time<span class="sc">.</span>time() <span class="op">-</span> t0<span class="sc">:.0f}</span><span class="ss"> s"</span>)</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pred(m, X):</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> torch.no_grad(): <span class="cf">return</span> m(t28(X)).argmax(<span class="dv">1</span>).numpy()</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>others <span class="op">=</span> a_te <span class="op">!=</span> PLT</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>res <span class="op">=</span> {}</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, m <span class="kw">in</span> [(<span class="st">"trained on clean images"</span>, net_clean), (<span class="st">"trained with the marker"</span>, net_short)]:</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>    p_clean <span class="op">=</span> pred(m, A_te)<span class="op">;</span> p_mark <span class="op">=</span> pred(m, mark(A_te))</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>    res[name] <span class="op">=</span> <span class="bu">dict</span>(acc<span class="op">=</span><span class="bu">float</span>((p_clean <span class="op">==</span> a_te).mean()), platelet_recall<span class="op">=</span><span class="bu">float</span>((p_clean[a_te <span class="op">==</span> PLT] <span class="op">==</span> PLT).mean()),</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>                     others_called_platelet<span class="op">=</span><span class="bu">float</span>((p_mark[others] <span class="op">==</span> PLT).mean()))</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>name<span class="sc">:26s}</span><span class="ss">: clean test accuracy </span><span class="sc">{</span>res[name][<span class="st">'acc'</span>]<span class="sc">:.3f}</span><span class="ss">; platelets recognised (clean) </span><span class="sc">{</span>res[name][<span class="st">'platelet_recall'</span>]<span class="sc">:.3f}</span><span class="ss">; "</span></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"other cells WITH marker called platelet </span><span class="sc">{</span>res[name][<span class="st">'others_called_platelet'</span>]<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>nums[<span class="st">"shortcut"</span>] <span class="op">=</span> res</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">3.2</span>))</span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>ex <span class="op">=</span> [np.flatnonzero(a_tr <span class="op">==</span> PLT)[<span class="dv">0</span>], np.flatnonzero(a_te <span class="op">==</span> class_names.index(<span class="st">"neutrophil"</span>))[<span class="dv">0</span>]]</span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> fig.add_axes([<span class="fl">0.0</span>, <span class="fl">0.25</span>, <span class="fl">0.14</span>, <span class="fl">0.62</span>])<span class="op">;</span> a.imshow(A_tr_marked[ex[<span class="dv">0</span>]])<span class="op">;</span> a.axis(<span class="st">"off"</span>)<span class="op">;</span> a.set_title(<span class="st">"training platelet</span><span class="ch">\n</span><span class="st">with marker"</span>, fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> fig.add_axes([<span class="fl">0.16</span>, <span class="fl">0.25</span>, <span class="fl">0.14</span>, <span class="fl">0.62</span>])<span class="op">;</span> a.imshow(mark(A_te[ex[<span class="dv">1</span>]:ex[<span class="dv">1</span>] <span class="op">+</span> <span class="dv">1</span>])[<span class="dv">0</span>])<span class="op">;</span> a.axis(<span class="st">"off"</span>)<span class="op">;</span> a.set_title(<span class="st">"test neutrophil</span><span class="ch">\n</span><span class="st">with marker"</span>, fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_axes([<span class="fl">0.38</span>, <span class="fl">0.15</span>, <span class="fl">0.6</span>, <span class="fl">0.72</span>])</span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> [<span class="st">"clean test accuracy"</span>, <span class="st">"platelets recognised</span><span class="ch">\n</span><span class="st">(clean test images)"</span>, <span class="st">"other cells with marker</span><span class="ch">\n</span><span class="st">called platelet"</span>]</span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>keys <span class="op">=</span> [<span class="st">"acc"</span>, <span class="st">"platelet_recall"</span>, <span class="st">"others_called_platelet"</span>]<span class="op">;</span> x <span class="op">=</span> np.arange(<span class="dv">3</span>)</span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k, (name, col) <span class="kw">in</span> <span class="bu">enumerate</span>([(<span class="st">"trained on clean images"</span>, blue), (<span class="st">"trained with the marker"</span>, orange)]):</span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>    v <span class="op">=</span> [res[name][q] <span class="cf">for</span> q <span class="kw">in</span> keys]<span class="op">;</span> ax.bar(x <span class="op">+</span> (k <span class="op">-</span> <span class="fl">0.5</span>) <span class="op">*</span> <span class="fl">0.38</span>, v, <span class="fl">0.38</span>, color<span class="op">=</span>col, label<span class="op">=</span>name)</span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> xi, vi <span class="kw">in</span> <span class="bu">zip</span>(x <span class="op">+</span> (k <span class="op">-</span> <span class="fl">0.5</span>) <span class="op">*</span> <span class="fl">0.38</span>, v): ax.text(xi, vi <span class="op">+</span> <span class="fl">0.02</span>, <span class="ss">f"</span><span class="sc">{</span>vi<span class="sc">:.2f}</span><span class="ss">"</span>, ha<span class="op">=</span><span class="st">"center"</span>, fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>ax.set_xticks(x)<span class="op">;</span> ax.set_xticklabels(labels, fontsize<span class="op">=</span><span class="dv">9</span>)<span class="op">;</span> ax.set_ylim(<span class="dv">0</span>, <span class="fl">1.35</span>)<span class="op">;</span> ax.legend(frameon<span class="op">=</span><span class="va">False</span>, fontsize<span class="op">=</span><span class="dv">9</span>, loc<span class="op">=</span><span class="st">"upper right"</span>, ncol<span class="op">=</span><span class="dv">2</span>)<span class="op">;</span> clean(ax)</span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="ss">f"</span><span class="sc">{</span>OUT<span class="sc">}</span><span class="ss">/limits_shortcut.png"</span>, dpi<span class="op">=</span><span class="dv">170</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)<span class="op">;</span> plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>two networks trained in 93 s</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>trained on clean images   : clean test accuracy 0.906; platelets recognised (clean) 1.000; other cells WITH marker called platelet 0.003</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>trained with the marker   : clean test accuracy 0.764; platelets recognised (clean) 0.000; other cells WITH marker called platelet 0.312</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/tmp/ipykernel_3908662/2496564787.py:48: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  plt.savefig(f"{OUT}/limits_shortcut.png", dpi=170, bbox_inches="tight"); plt.show()</code></pre>
+</div>
+</div>
+<p>The network trained with the marker learns the marker. A cell of any type carrying the square is called a platelet, while the test accuracy on clean images alone would not reveal it. In real data such shortcuts are a hospital’s text label on an X-ray, a scale bar, the background of the photograph: anything that happens to correlate with the class in the training set. Class activation maps, and test data from an independent source, are the tools that reveal them.</p>
+<p><strong>Try it.</strong> Make the marker smaller (2 × 2 pixels) or put it on only half of the platelet images. Is the shortcut still learned?</p>
+</section>
+<section id="numbers-used-on-the-slides" class="level2">
+<h2 class="anchored" data-anchor-id="numbers-used-on-the-slides">Numbers used on the slides</h2>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T15:56:42.747092Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T15:56:42.746310Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T15:56:42.758269Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T15:56:42.757043Z&quot;}" data-execution_count="5">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json<span class="op">;</span> json.dump(nums, <span class="bu">open</span>(<span class="ss">f"</span><span class="sc">{</span>RES<span class="sc">}</span><span class="ss">/numbers_limits.json"</span>, <span class="st">"w"</span>), indent<span class="op">=</span><span class="dv">1</span>)<span class="op">;</span> <span class="bu">print</span>(json.dumps(nums, indent<span class="op">=</span><span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>{
+ "E_test_acc": 0.9318912598655364,
+ "conf_median_real test cells": 0.9978804588317871,
+ "conf_above_09_real test cells": 0.8573516515638702,
+ "conf_median_satellite images": 1.0,
+ "conf_above_09_satellite images": 0.993,
+ "conf_median_random noise": 1.0,
+ "conf_above_09_random noise": 1.0,
+ "stain_shift": [
+  0.0,
+  0.05,
+  0.1,
+  0.15,
+  0.2,
+  0.3,
+  0.4
+ ],
+ "stain_acc": [
+  0.932,
+  0.866,
+  0.647,
+  0.29,
+  0.108,
+  0.028,
+  0.072
+ ],
+ "brightness": [
+  0.7,
+  0.8,
+  0.9,
+  1.0,
+  1.1,
+  1.2
+ ],
+ "brightness_acc": [
+  0.093,
+  0.166,
+  0.654,
+  0.932,
+  0.761,
+  0.348
+ ],
+ "shortcut": {
+  "trained on clean images": {
+   "acc": 0.9064600993861444,
+   "platelet_recall": 1.0,
+   "others_called_platelet": 0.0027109454422229754
+  },
+  "trained with the marker": {
+   "acc": 0.7643963753288512,
+   "platelet_recall": 0.0,
+   "others_called_platelet": 0.3117587258556422
+  }
+ }
+}</code></pre>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../lectures/lecture-03.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">3 · Convolutional Neural Networks</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../lectures/lecture-04.html" class="pagination-link">
+        <span class="nav-page-text">4 · CNNs on Scientific Data and the 2D Ising Model</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">© 2026 Marcin Płodzień</div>   
+    <div class="nav-footer-right"><a href="https://chaos.if.uj.edu.pl/marcinplodzien/">Homepage</a> · <a href="mailto:marcin.plodzien@uj.edu.pl">Email</a> · <a href="https://orcid.org/0000-0002-0835-1644">ORCID</a> · <a href="https://scholar.google.com/citations?user=eC9nCmgAAAAJ&amp;hl=en">Scholar</a> · <a href="https://github.com/MarcinPlodzien">GitHub</a></div>
+  </div>
+</footer>
+
+
+
+</body></html>

@@ -33,10 +33,14 @@ website:
             href: lectures/lecture-01.qmd
           - text: "2 · The Recipe of Deep Learning"
             href: lectures/lecture-02.qmd
-          - text: "3 · Convolutional Networks"
+          - text: "3 · Convolutional Neural Networks"
             href: lectures/lecture-03.qmd
           - text: "4 · CNNs on Scientific Data and the 2D Ising Model"
             href: lectures/lecture-04.qmd
+          - text: "5 · Unsupervised Learning"
+            href: lectures/lecture-05.qmd
+          - text: "6 · Generative Models"
+            href: lectures/lecture-06.qmd
       - text: "Course flyer"
         href: assets/course-flyer.pdf
       - text: "About"
@@ -71,8 +75,10 @@ website:
           - notebooks/lecture-02/lab-007-building-and-training.ipynb
           - notebooks/lecture-02/lab-008-analysing-networks.ipynb
           - notebooks/lecture-02/lab-009-mnist.ipynb
-      - text: "3 · Convolutional Networks"
+      - section: "3 · Convolutional Neural Networks"
         href: lectures/lecture-03.qmd
+        contents:
+          - notebooks/lecture-03/limits-of-deep-networks.ipynb
       - section: "4 · CNNs on Scientific Data and the 2D Ising Model"
         href: lectures/lecture-04.qmd
         contents:
@@ -81,6 +87,15 @@ website:
           - notebooks/lecture-04/lab-010-ising-monte-carlo.ipynb
           - notebooks/lecture-04/lab-011-cnn-tc.ipynb
           - notebooks/lecture-04/lab-012-onsager.ipynb
+      - section: "5 · Unsupervised Learning"
+        href: lectures/lecture-05.qmd
+        contents:
+          - notebooks/lecture-05/unsupervised-learning.ipynb
+      - section: "6 · Generative Models"
+        href: lectures/lecture-06.qmd
+        contents:
+          - notebooks/lecture-06/generative-models.ipynb
+          - notebooks/lecture-06/conditional-generation.ipynb
       - text: "About"
         href: about.qmd
   page-footer:

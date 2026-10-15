@@ -1,0 +1,21 @@
+---
+title: "5 · Unsupervised Learning"
+code-tools: false
+toc: false
+---
+
+Learning from data without labels. Principal component analysis (the covariance matrix, its eigenvectors and the variance they keep), t-SNE (neighbour probabilities, the Kullback–Leibler loss, the crowding problem and the heavy tail of the Student-t, perplexity), clustering with k-means and DBSCAN and its evaluation with the silhouette and the adjusted Rand index, and autoencoders: compression into a latent space and anomaly detection by the reconstruction error. Data: MNIST, CIFAR-10, blood cells, credit-card transactions and the gene expression of 801 tumours.
+
+## Slides
+
+[Download the slides (PDF)](../slides/lecture-05.pdf){.btn .btn-outline-primary}
+
+<iframe src="../slides/lecture-05.pdf" width="100%" height="620" style="border:1px solid #dde6ef; border-radius:6px;"></iframe>
+
+## Notebooks
+
+::: {.nb-item}
+[Unsupervised learning: PCA, t-SNE, clustering, autoencoders and anomalies](../notebooks/lecture-05/unsupervised-learning.ipynb)
+
+Every figure and number of the slides: PCA, t-SNE, k-means, DBSCAN, autoencoders and anomaly detection on images and on tables.
+:::

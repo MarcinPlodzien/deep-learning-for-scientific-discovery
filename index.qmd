@@ -37,8 +37,10 @@ The course is for doctoral students of physics, mathematics, chemistry, biology 
 |---|---|---|
 | 1 | [Scientific Discovery: from AI to Deep Learning](lectures/lecture-01.qmd) | Labs 001–003: Python, NumPy, PyTorch |
 | 2 | [The Recipe of Deep Learning](lectures/lecture-02.qmd) | Labs 004–009: automatic differentiation, universal approximation, training, MNIST |
-| 3 | [Convolutional Networks](lectures/lecture-03.qmd) | |
+| 3 | [Convolutional Neural Networks](lectures/lecture-03.qmd) | limits of deep networks: three experiments on blood cells |
 | 4 | [CNNs on Scientific Data and the 2D Ising Model](lectures/lecture-04.qmd) | blood cells, convolution and the Ising model, Labs 010–012 |
+| 5 | [Unsupervised Learning](lectures/lecture-05.qmd) | PCA, t-SNE, clustering, autoencoders, anomalies |
+| 6 | [Generative Models](lectures/lecture-06.qmd) | VAE, conditional generation, GAN, diffusion |
 
 ## Main reading
 

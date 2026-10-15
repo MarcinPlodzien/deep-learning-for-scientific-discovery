@@ -20,17 +20,21 @@ REPO = "MarcinPlodzien/deep-learning-for-scientific-discovery"
 # web lecture -> how its slides are made from a delivered deck. Each web lecture is compiled
 # separately in a temporary copy of the deck's beamer folder: only the listed sections, its own
 # subtitle and footer ("Lecture N"), and "use" files that replace sections changed after delivery.
-FOLDERS = {1: "Lecture_01-02_2026.10.06", 2: "Lecture_03_2026.10.13", 3: "Lecture_04_2026.10.14", 4: "Lecture_04_2026.10.14"}
+FOLDERS = {1: "Lecture_01-02_2026.10.06", 2: "Lecture_03_2026.10.13", 3: "Lecture_04_2026.10.14", 4: "Lecture_04_2026.10.14",
+           5: "Lecture_05_2026.10.20", 6: "Lecture_06_2026.10.27"}
 DECKS = {
     1: dict(sections=["01a_discovery_story", "01_motivation", "02_ai_landscape", "03_learning_recipe", "04_breakthroughs", "05_closing"],
             subtitle=r"Lecture 1: & Scientific Discovery: Understanding from Data\\ & From AI to Deep Learning"),
     2: dict(sections=["03_learning_recipe", "04_mnist", "05_closing"],
             subtitle=r"Lecture 2: & The Recipe of Deep Learning"),
     3: dict(sections=["00_recap", "04b_cifar_cnn", "04c_regularisation", "04e_cam", "04g_adversarial", "05_closing"],
-            subtitle=r"Lecture 3: & Convolutional Networks\\ & Regularisation, Class Activation Maps\\ & Adversarial Examples",
-            use={"04g_adversarial.tex": "04g_adversarial_before_2026-10-15.tex.bak"}),
+            subtitle=r"Lecture 3: & Convolutional Neural Networks\\ & Regularisation, Class Activation Maps\\ & Adversarial Examples and Limits"),
     4: dict(sections=["04f_blood", "04h_ising", "04i_chinese_room", "05_closing"],
             subtitle=r"Lecture 4: & CNNs on Scientific Data\\ & Blood Cells and Satellite Images\\ & Finding \(T_c\) of the 2D Ising Model"),
+    5: dict(sections=["unsupervised", "closing"],
+            subtitle=r"Lecture 5: & Unsupervised Learning\\ & PCA, t-SNE, Clustering, Autoencoders\\ & Blood Cells, Credit-Card Fraud and Tumour Genes without Labels"),
+    6: dict(sections=["generative", "closing"],
+            subtitle=r"Lecture 6: & Generative Models\\ & Variational Autoencoders, GANs, Diffusion\\ & Digits, Blood Cells and Spin Configurations"),
 }
 
 # lecture, source notebook (relative to the lecture folder), web name, title
@@ -44,11 +48,20 @@ NOTEBOOKS = [
     (2, "Lab_007_Building_and_training_networks.ipynb", "lab-007-building-and-training", "Lab 007: Building and training neural networks"),
     (2, "Lab_008_Analysing_neural_networks.ipynb", "lab-008-analysing-networks", "Lab 008: Analysing a neural network"),
     (2, "Lab_009_MNIST_regression_vs_cross_entropy.ipynb", "lab-009-mnist", "Lab 009: MNIST, regression versus cross-entropy"),
+    (3, "notebook_2026-10-14-limits_of_networks.ipynb", "limits-of-deep-networks", "Limits of deep networks"),
     (4, "notebook_2026-10-14-BloodMNIST_CNN_regularisation_CAM.ipynb", "bloodmnist-cnn-regularisation-cam", "Blood cells: CNNs, regularisation and class activation maps"),
     (4, "notebook_2026-10-14-convolution_and_Ising_figures.ipynb", "convolution-and-ising", "Convolution and the 2D Ising model"),
     (4, "Lab_010_Ising_Monte_Carlo_samples.ipynb", "lab-010-ising-monte-carlo", "Lab 010: Monte Carlo samples of the 2D Ising model"),
     (4, "Lab_011_CNN_Tc_from_confidence.ipynb", "lab-011-cnn-tc", "Lab 011: T_c of the 2D Ising model from the confidence of a CNN"),
     (4, "Lab_012_Onsager_exact_solution.ipynb", "lab-012-onsager", "Lab 012: Onsager's exact solution of the 2D Ising model"),
+    (5, "notebook_2026-10-20-unsupervised_learning.ipynb", "unsupervised-learning", "Unsupervised learning: PCA, t-SNE, clustering, autoencoders and anomalies"),
+    (6, "notebook_2026-10-27-generative_models.ipynb", "generative-models", "Generative models: probability, VAE, GAN and diffusion"),
+    (6, "notebook_2026-10-27-conditional_generation.ipynb", "conditional-generation", "Conditional generation of digits and blood cells"),
+]
+
+# files published next to the notebooks: (lecture, source relative to the lecture folder, web path)
+EXTRA_FILES = [
+    (3, "Notebooks/results/model_E.pt", "notebooks/lecture-03/results/model_E.pt"),
 ]
 
 MONTHS = "January|February|March|April|May|June|July|August|September|October|November|December"
@@ -121,6 +134,8 @@ def build_notebooks():
                 c.source = c.source.replace('OUT = "../beamer/figures"',
                                             'import os\nOUT = "figures"; os.makedirs(OUT, exist_ok=True)')
                 c.source = c.source.replace('"../../Lecture_04_2026.10.14/Notebooks/data/bloodmnist.npz"', '"data/bloodmnist.npz"')
+                c.source = c.source.replace('"../../Lecture_04_2026.10.14/Notebooks/data/ising_Nx20_Ny20.npz"', '"data/ising_Nx20_Ny20.npz"')
+                c.source = c.source.replace('"../../Lecture_07_2026.11.03/Notebooks/data/rnaseq.zip"', '"data/rnaseq.zip"')
         safe = title.replace("'", "''").replace("T_c", "Tc")
         front = nbformat.v4.new_raw_cell(f"---\ntitle: '{safe}'\n---")
         badge = nbformat.v4.new_markdown_cell(
@@ -130,6 +145,10 @@ def build_notebooks():
         os.makedirs(os.path.dirname(os.path.join(HERE, rel)), exist_ok=True)
         nbformat.write(nb, os.path.join(HERE, rel))
         print(f"notebook lecture {lec}: {rel}")
+    for lec, src_rel, web in EXTRA_FILES:
+        os.makedirs(os.path.dirname(os.path.join(HERE, web)), exist_ok=True)
+        shutil.copy(os.path.join(COURSE, FOLDERS[lec], src_rel), os.path.join(HERE, web))
+        print(f"file     lecture {lec}: {web}")
 
 
 if __name__ == "__main__":

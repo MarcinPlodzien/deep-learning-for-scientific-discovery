@@ -1,0 +1,1573 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.280">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Deep Learning for Scientific Discovery - Conditional generation of digits and blood cells</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../about.html" rel="next">
+<link href="../../notebooks/lecture-06/generative-models.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Deep Learning for Scientific Discovery</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../../index.html" aria-current="page">
+ <span class="menu-text">Start here</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-lectures" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Lectures</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-lectures">    
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-01.html">
+ <span class="dropdown-text">1 · From AI to Deep Learning</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-02.html">
+ <span class="dropdown-text">2 · The Recipe of Deep Learning</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-03.html">
+ <span class="dropdown-text">3 · Convolutional Neural Networks</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-04.html">
+ <span class="dropdown-text">4 · CNNs on Scientific Data and the 2D Ising Model</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-05.html">
+ <span class="dropdown-text">5 · Unsupervised Learning</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-06.html">
+ <span class="dropdown-text">6 · Generative Models</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../../assets/course-flyer.pdf">
+ <span class="menu-text">Course flyer</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">
+ <span class="menu-text">About</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/MarcinPlodzien/deep-learning-for-scientific-discovery"><i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://chaos.if.uj.edu.pl/marcinplodzien/"><i class="bi bi-house" role="img" aria-label="Homepage">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div class="quarto-toggle-container">
+                  <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+              </div>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Conditional generation of digits and blood cells</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+      <a href="../../index.html" class="sidebar-logo-link">
+      <img src="../../assets/qusml_logo.svg" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">Start here</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-01.html" class="sidebar-item-text sidebar-link">1 · From AI to Deep Learning</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-01/lab-001-python-matplotlib-pandas.html" class="sidebar-item-text sidebar-link">Lab 001: Python, Matplotlib and Pandas</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-01/lab-002-numpy.html" class="sidebar-item-text sidebar-link">Lab 002: NumPy</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-01/lab-003-pytorch.html" class="sidebar-item-text sidebar-link">Lab 003: PyTorch tensors, devices and layers</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-02.html" class="sidebar-item-text sidebar-link">2 · The Recipe of Deep Learning</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-02/lab-004-automatic-differentiation.html" class="sidebar-item-text sidebar-link">Lab 004: Automatic differentiation</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-02/lab-005-n-pendulum.html" class="sidebar-item-text sidebar-link">Lab 005: The N-link pendulum with SymPy and automatic differentiation</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-02/lab-006-uat-and-minimisers.html" class="sidebar-item-text sidebar-link">Lab 006: Universal approximation and the choice of minimiser</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-02/lab-007-building-and-training.html" class="sidebar-item-text sidebar-link">Lab 007: Building and training neural networks</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-02/lab-008-analysing-networks.html" class="sidebar-item-text sidebar-link">Lab 008: Analysing a neural network</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-02/lab-009-mnist.html" class="sidebar-item-text sidebar-link">Lab 009: MNIST, regression versus cross-entropy</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-03.html" class="sidebar-item-text sidebar-link">3 · Convolutional Neural Networks</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-03/limits-of-deep-networks.html" class="sidebar-item-text sidebar-link">Limits of deep networks</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-04.html" class="sidebar-item-text sidebar-link">4 · CNNs on Scientific Data and the 2D Ising Model</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-04/bloodmnist-cnn-regularisation-cam.html" class="sidebar-item-text sidebar-link">Blood cells: CNNs, regularisation and class activation maps</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-04/convolution-and-ising.html" class="sidebar-item-text sidebar-link">Convolution and the 2D Ising model</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-04/lab-010-ising-monte-carlo.html" class="sidebar-item-text sidebar-link">Lab 010: Monte Carlo samples of the 2D Ising model</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-04/lab-011-cnn-tc.html" class="sidebar-item-text sidebar-link">Lab 011: Tc of the 2D Ising model from the confidence of a CNN</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-04/lab-012-onsager.html" class="sidebar-item-text sidebar-link">Lab 012: Onsager’s exact solution of the 2D Ising model</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-05.html" class="sidebar-item-text sidebar-link">5 · Unsupervised Learning</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-05/unsupervised-learning.html" class="sidebar-item-text sidebar-link">Unsupervised learning: PCA, t-SNE, clustering, autoencoders and anomalies</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-06.html" class="sidebar-item-text sidebar-link">6 · Generative Models</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-06/generative-models.html" class="sidebar-item-text sidebar-link">Generative models: probability, VAE, GAN and diffusion</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-06/conditional-generation.html" class="sidebar-item-text sidebar-link active">Conditional generation of digits and blood cells</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../about.html" class="sidebar-item-text sidebar-link">About</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#lecture-6-generating-a-chosen-class-with-a-conditional-vae" id="toc-lecture-6-generating-a-chosen-class-with-a-conditional-vae" class="nav-link active" data-scroll-target="#lecture-6-generating-a-chosen-class-with-a-conditional-vae">Lecture 6: Generating a Chosen Class with a Conditional VAE</a>
+  <ul class="collapse">
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a></li>
+  <li><a href="#mnist" id="toc-mnist" class="nav-link" data-scroll-target="#mnist">MNIST</a></li>
+  <li><a href="#the-vae-in-a-2d-latent-space" id="toc-the-vae-in-a-2d-latent-space" class="nav-link" data-scroll-target="#the-vae-in-a-2d-latent-space">1. The VAE in a 2D Latent Space</a>
+  <ul class="collapse">
+  <li><a href="#a.-the-latent-space" id="toc-a.-the-latent-space" class="nav-link" data-scroll-target="#a.-the-latent-space">1a. The latent space</a></li>
+  <li><a href="#b.-the-reparametrisation-trick" id="toc-b.-the-reparametrisation-trick" class="nav-link" data-scroll-target="#b.-the-reparametrisation-trick">1b. The Reparametrisation Trick</a></li>
+  <li><a href="#c.-conditioning" id="toc-c.-conditioning" class="nav-link" data-scroll-target="#c.-conditioning">1c. Conditioning</a></li>
+  </ul></li>
+  <li><a href="#generating-a-chosen-mnist-digit" id="toc-generating-a-chosen-mnist-digit" class="nav-link" data-scroll-target="#generating-a-chosen-mnist-digit">2. Generating a Chosen MNIST Digit</a>
+  <ul class="collapse">
+  <li><a href="#a.-a-classifier-trained-on-real-digits" id="toc-a.-a-classifier-trained-on-real-digits" class="nav-link" data-scroll-target="#a.-a-classifier-trained-on-real-digits">2a. A classifier trained on real digits</a></li>
+  <li><a href="#b.-the-conditional-vae-with-d8" id="toc-b.-the-conditional-vae-with-d8" class="nav-link" data-scroll-target="#b.-the-conditional-vae-with-d8">2b. The conditional VAE with <span class="math inline">\(d=8\)</span></a></li>
+  <li><a href="#c.-generating-a-chosen-digit" id="toc-c.-generating-a-chosen-digit" class="nav-link" data-scroll-target="#c.-generating-a-chosen-digit">2c. Generating a chosen digit</a></li>
+  <li><a href="#d.-classifier-check-of-the-synthetic-digits" id="toc-d.-classifier-check-of-the-synthetic-digits" class="nav-link" data-scroll-target="#d.-classifier-check-of-the-synthetic-digits">2d. Classifier Check of the Synthetic Digits</a></li>
+  <li><a href="#e.-training-on-synthetic-digits-only" id="toc-e.-training-on-synthetic-digits-only" class="nav-link" data-scroll-target="#e.-training-on-synthetic-digits-only">2e. Training on synthetic digits only</a></li>
+  </ul></li>
+  <li><a href="#blood-cells-of-a-chosen-type" id="toc-blood-cells-of-a-chosen-type" class="nav-link" data-scroll-target="#blood-cells-of-a-chosen-type">3. Blood cells of a chosen type</a>
+  <ul class="collapse">
+  <li><a href="#a.-a-classifier-trained-on-real-cells" id="toc-a.-a-classifier-trained-on-real-cells" class="nav-link" data-scroll-target="#a.-a-classifier-trained-on-real-cells">3a. A classifier trained on real cells</a></li>
+  <li><a href="#b.-a-convolutional-conditional-vae" id="toc-b.-a-convolutional-conditional-vae" class="nav-link" data-scroll-target="#b.-a-convolutional-conditional-vae">3b. A convolutional conditional VAE</a></li>
+  <li><a href="#c.-generating-a-cell-of-a-chosen-type" id="toc-c.-generating-a-cell-of-a-chosen-type" class="nav-link" data-scroll-target="#c.-generating-a-cell-of-a-chosen-type">3c. Generating a cell of a chosen type</a></li>
+  <li><a href="#d.-classifier-check-of-the-synthetic-cells" id="toc-d.-classifier-check-of-the-synthetic-cells" class="nav-link" data-scroll-target="#d.-classifier-check-of-the-synthetic-cells">3d. Classifier Check of the Synthetic Cells</a></li>
+  <li><a href="#e.-training-on-synthetic-cells-only" id="toc-e.-training-on-synthetic-cells-only" class="nav-link" data-scroll-target="#e.-training-on-synthetic-cells-only">3e. Training on synthetic cells only</a></li>
+  </ul></li>
+  <li><a href="#training-and-testing-on-real-and-synthetic-data" id="toc-training-and-testing-on-real-and-synthetic-data" class="nav-link" data-scroll-target="#training-and-testing-on-real-and-synthetic-data">4. Training and Testing on Real and Synthetic Data</a></li>
+  <li><a href="#numbers-used-on-the-slides" id="toc-numbers-used-on-the-slides" class="nav-link" data-scroll-target="#numbers-used-on-the-slides">Numbers used on the slides</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/MarcinPlodzien/deep-learning-for-scientific-discovery/blob/main/notebooks/lecture-06/conditional-generation.ipynb" class="toc-action">View source</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title d-none d-lg-block">Conditional generation of digits and blood cells</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li></ul></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p><a href="https://colab.research.google.com/github/MarcinPlodzien/deep-learning-for-scientific-discovery/blob/main/notebooks/lecture-06/conditional-generation.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Colab"></a></p>
+<section id="lecture-6-generating-a-chosen-class-with-a-conditional-vae" class="level1">
+<h1>Lecture 6: Generating a Chosen Class with a Conditional VAE</h1>
+<p><em>Deep Learning for Scientific Discovery, Jagiellonian University. Author: Marcin Płodzień.</em></p>
+<p>A conditional VAE learns <span class="math inline">\(p_\theta(\mathbf x\,|\,\mathbf c)\)</span>: the distribution of images <span class="math inline">\(\mathbf x\)</span> of a given class <span class="math inline">\(\mathbf c\)</span>. This notebook first shows the logic of the VAE in a two-dimensional latent space (latent representation, reparametrisation trick, conditioning), and then does two things:</p>
+<ol type="1">
+<li><strong>generate</strong> new images of a class we choose: a digit <span class="math inline">\(k\in\{0,\dots,9\}\)</span> (MNIST) and a blood-cell type (BloodMNIST);</li>
+<li><strong>check</strong> them with a classifier trained on <strong>real</strong> images only: does it recognise the synthetic images as the requested class? The answer is a confusion matrix, <em>requested class</em> against <em>predicted class</em>, next to the confusion matrix of the same classifier on real test images.</li>
+</ol>
+<p>Finally we ask whether synthetic digits can replace real ones: we train a classifier on synthetic images only and test it on real ones.</p>
+<p>Everything runs on a CPU in a few minutes. The trained weights are saved in <code>results/</code>.</p>
+<section id="setup" class="level2">
+<h2 class="anchored" data-anchor-id="setup">Setup</h2>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:00:50.264545Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:00:50.263970Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:00:53.723197Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:00:53.722441Z&quot;}" data-execution_count="1">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os, json, time, gzip, urllib.request</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">"CUDA_VISIBLE_DEVICES"</span>] <span class="op">=</span> <span class="st">""</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch, torch.nn <span class="im">as</span> nn, torch.nn.functional <span class="im">as</span> F</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>torch.set_num_threads(<span class="dv">4</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>OUT <span class="op">=</span> <span class="st">"figures"</span><span class="op">;</span> os.makedirs(OUT, exist_ok<span class="op">=</span><span class="va">True</span>)<span class="op">;</span> os.makedirs(OUT, exist_ok<span class="op">=</span><span class="va">True</span>)      <span class="co"># figures of the slides</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>RES <span class="op">=</span> <span class="st">"results"</span><span class="op">;</span> os.makedirs(RES, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>blue, orange, navy <span class="op">=</span> <span class="st">"#005CA7"</span>, <span class="st">"#EB6709"</span>, <span class="st">"#0A2F5C"</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>nums <span class="op">=</span> {}                                                        <span class="co"># numbers quoted on the slides</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> clean(ax):</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> s <span class="kw">in</span> [<span class="st">"top"</span>, <span class="st">"right"</span>]: ax.spines[s].set_visible(<span class="va">False</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> seed(k):</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    torch.manual_seed(k)<span class="op">;</span> <span class="cf">return</span> np.random.default_rng(k)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="mnist" class="level2">
+<h2 class="anchored" data-anchor-id="mnist">MNIST</h2>
+<p>Pixels scaled to <span class="math inline">\([0,1]\)</span>; each image is a vector of 784 numbers. Labels <span class="math inline">\(y\in\{0,\dots,9\}\)</span>. The files are read from <code>data/MNIST_raw</code> (downloaded once if missing).</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:00:53.727871Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:00:53.726981Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:00:54.241887Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:00:54.238947Z&quot;}" data-execution_count="2">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>RAW <span class="op">=</span> <span class="st">"data/MNIST_raw"</span><span class="op">;</span> os.makedirs(RAW, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>LOCAL <span class="op">=</span> os.path.expanduser(<span class="st">"~/.pytorch/MNIST_data/MNIST/raw"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>MIRRORS <span class="op">=</span> [<span class="st">"https://ossci-datasets.s3.amazonaws.com/mnist/"</span>, <span class="st">"https://storage.googleapis.com/cvdf-datasets/mnist/"</span>]</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mnist_file(name):</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> d <span class="kw">in</span> (RAW, LOCAL):</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        p <span class="op">=</span> os.path.join(d, name)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> os.path.exists(p): <span class="cf">return</span> <span class="bu">open</span>(p, <span class="st">"rb"</span>).read()</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> os.path.exists(p <span class="op">+</span> <span class="st">".gz"</span>): <span class="cf">return</span> gzip.<span class="bu">open</span>(p <span class="op">+</span> <span class="st">".gz"</span>).read()</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> m <span class="kw">in</span> MIRRORS:</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>            urllib.request.urlretrieve(m <span class="op">+</span> name <span class="op">+</span> <span class="st">".gz"</span>, os.path.join(RAW, name <span class="op">+</span> <span class="st">".gz"</span>))</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> gzip.<span class="bu">open</span>(os.path.join(RAW, name <span class="op">+</span> <span class="st">".gz"</span>)).read()</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> <span class="pp">Exception</span>: <span class="cf">pass</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="st">"MNIST could not be found or downloaded"</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> idx(name):</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> mnist_file(name)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> d[<span class="dv">3</span>] <span class="op">==</span> <span class="dv">3</span>:</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        n, r, c <span class="op">=</span> np.frombuffer(d[<span class="dv">4</span>:<span class="dv">16</span>], <span class="st">"&gt;i4"</span>)<span class="op">;</span> <span class="cf">return</span> np.frombuffer(d[<span class="dv">16</span>:], np.uint8).reshape(n, r <span class="op">*</span> c)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.frombuffer(d[<span class="dv">8</span>:], np.uint8)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>Xtr <span class="op">=</span> torch.tensor(idx(<span class="st">"train-images-idx3-ubyte"</span>).astype(np.float32) <span class="op">/</span> <span class="dv">255</span>)<span class="op">;</span> ytr <span class="op">=</span> torch.tensor(idx(<span class="st">"train-labels-idx1-ubyte"</span>).astype(np.int64))</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>Xte <span class="op">=</span> torch.tensor(idx(<span class="st">"t10k-images-idx3-ubyte"</span>).astype(np.float32) <span class="op">/</span> <span class="dv">255</span>)<span class="op">;</span> yte <span class="op">=</span> torch.tensor(idx(<span class="st">"t10k-labels-idx1-ubyte"</span>).astype(np.int64))</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"training images:"</span>, <span class="bu">tuple</span>(Xtr.shape), <span class="st">" test images:"</span>, <span class="bu">tuple</span>(Xte.shape))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>training images: (60000, 784)  test images: (10000, 784)</code></pre>
+</div>
+</div>
+</section>
+<section id="the-vae-in-a-2d-latent-space" class="level2">
+<h2 class="anchored" data-anchor-id="the-vae-in-a-2d-latent-space">1. The VAE in a 2D Latent Space</h2>
+<p><strong>Latent-space representation.</strong> An encoder compresses an image <span class="math inline">\(\mathbf x\in\mathbb R^{784}\)</span> into a few numbers <span class="math inline">\(\mathbf z\in\mathbb R^d\)</span>, its <em>latent representation</em>: coordinates in which similar images are close. A decoder <span class="math inline">\(G\)</span> maps <span class="math inline">\(\mathbf z\)</span> back to an image. With <span class="math inline">\(d=2\)</span> we can draw the latent space.</p>
+<p><strong>From a point to a cloud.</strong> A plain autoencoder sends <span class="math inline">\(\mathbf x\)</span> to one point. A VAE sends it to a Gaussian cloud <span class="math inline">\(q_\phi(\mathbf z\,|\,\mathbf x)=\mathcal N\big(\boldsymbol\mu(\mathbf x),\operatorname{diag}\boldsymbol\sigma^2(\mathbf x)\big)\)</span>: the encoder outputs the centre <span class="math inline">\(\boldsymbol\mu\)</span> and the widths <span class="math inline">\(\boldsymbol\sigma\)</span> (as <span class="math inline">\(\log\boldsymbol\sigma^2\)</span>, which can take any sign). In training, a random point of the cloud is decoded, so <em>every</em> point near <span class="math inline">\(\boldsymbol\mu(\mathbf x)\)</span> must decode to something like <span class="math inline">\(\mathbf x\)</span>.</p>
+<p><strong>The loss</strong> has two terms, per image: <span class="math display">\[\mathcal L(\mathbf x)=\underbrace{-\sum_{j=1}^{784}\big[x_j\log\hat x_j+(1-x_j)\log(1-\hat x_j)\big]}_{\text{reconstruction: } -\log p_\theta(\mathbf x|\mathbf z)}+\underbrace{\tfrac12\sum_{k=1}^{d}\big(\mu_k^2+\sigma_k^2-\ln\sigma_k^2-1\big)}_{\mathrm{KL}(q_\phi(\mathbf z|\mathbf x)\,\|\,\mathcal N(0,I))},\qquad \hat{\mathbf x}=\operatorname{sigmoid}\big(G(\mathbf z)\big).\]</span> The KL term pulls every cloud towards <span class="math inline">\(\mathcal N(0,I)\)</span>, so the clouds of all training images together fill the standard Gaussian without gaps. Then a random <span class="math inline">\(\mathbf z\sim\mathcal N(0,I)\)</span> lands where the decoder was trained: this is what makes <strong>generation</strong> possible.</p>
+<p><strong>The reparametrisation trick.</strong> “Draw <span class="math inline">\(\mathbf z\)</span> from <span class="math inline">\(\mathcal N(\boldsymbol\mu,\boldsymbol\sigma^2)\)</span>” has no derivative with respect to <span class="math inline">\(\boldsymbol\mu\)</span> and <span class="math inline">\(\boldsymbol\sigma\)</span>. Write instead <span class="math display">\[\mathbf z=\boldsymbol\mu+\boldsymbol\sigma\odot\boldsymbol\varepsilon,\qquad\boldsymbol\varepsilon\sim\mathcal N(0,I):\]</span> the randomness is an input <span class="math inline">\(\boldsymbol\varepsilon\)</span> that does not depend on the weights, <span class="math inline">\(\partial z_k/\partial\mu_k=1\)</span>, <span class="math inline">\(\partial z_k/\partial\sigma_k=\varepsilon_k\)</span>, and backpropagation runs through <span class="math inline">\(\mathbf z\)</span> into the encoder.</p>
+<p>The class below is used for the plain VAE (<code>cond=0</code>) and, later, for the conditional VAE (<code>cond=10</code>, the condition concatenated to the inputs of both networks).</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:00:54.257532Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:00:54.256973Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:03:57.847895Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:03:57.845178Z&quot;}" data-execution_count="3">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mlp(sizes):</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    layers <span class="op">=</span> []</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> a, b <span class="kw">in</span> <span class="bu">zip</span>(sizes[:<span class="op">-</span><span class="dv">1</span>], sizes[<span class="dv">1</span>:]): layers <span class="op">+=</span> [nn.Linear(a, b), nn.ReLU()]</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> nn.Sequential(<span class="op">*</span>layers[:<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> CVAE(nn.Module):</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># VAE with dense layers; cond &gt; 0 makes it conditional: c is concatenated to the inputs of encoder and decoder</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, D<span class="op">=</span><span class="dv">784</span>, d<span class="op">=</span><span class="dv">8</span>, cond<span class="op">=</span><span class="dv">10</span>, hidden<span class="op">=</span>(<span class="dv">512</span>, <span class="dv">256</span>)):</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.d, <span class="va">self</span>.cond <span class="op">=</span> d, cond</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.enc <span class="op">=</span> mlp([D <span class="op">+</span> cond, <span class="op">*</span>hidden])<span class="op">;</span> <span class="va">self</span>.enc.append(nn.ReLU())</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.mu, <span class="va">self</span>.logvar <span class="op">=</span> nn.Linear(hidden[<span class="op">-</span><span class="dv">1</span>], d), nn.Linear(hidden[<span class="op">-</span><span class="dv">1</span>], d)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.dec <span class="op">=</span> mlp([d <span class="op">+</span> cond, <span class="op">*</span>hidden[::<span class="op">-</span><span class="dv">1</span>], D])                  <span class="co"># logits of the pixels</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> encode(<span class="va">self</span>, x, c<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        h <span class="op">=</span> <span class="va">self</span>.enc(x <span class="cf">if</span> c <span class="kw">is</span> <span class="va">None</span> <span class="cf">else</span> torch.cat([x, c], <span class="dv">1</span>))<span class="op">;</span> <span class="cf">return</span> <span class="va">self</span>.mu(h), <span class="va">self</span>.logvar(h)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> decode(<span class="va">self</span>, z, c<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.dec(z <span class="cf">if</span> c <span class="kw">is</span> <span class="va">None</span> <span class="cf">else</span> torch.cat([z, c], <span class="dv">1</span>))</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x, c<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        mu, logvar <span class="op">=</span> <span class="va">self</span>.encode(x, c)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>        eps <span class="op">=</span> torch.randn_like(mu)                                    <span class="co"># the randomness, outside the network</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>        z <span class="op">=</span> mu <span class="op">+</span> torch.exp(<span class="fl">0.5</span> <span class="op">*</span> logvar) <span class="op">*</span> eps                        <span class="co"># reparametrisation trick</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.decode(z, c), mu, logvar</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> vae_loss(logits, x, mu, logvar):</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    rec <span class="op">=</span> F.binary_cross_entropy_with_logits(logits, x, reduction<span class="op">=</span><span class="st">"sum"</span>) <span class="op">/</span> <span class="bu">len</span>(x)</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    kl <span class="op">=</span> <span class="fl">0.5</span> <span class="op">*</span> (mu <span class="op">**</span> <span class="dv">2</span> <span class="op">+</span> logvar.exp() <span class="op">-</span> logvar <span class="op">-</span> <span class="dv">1</span>).<span class="bu">sum</span>() <span class="op">/</span> <span class="bu">len</span>(x)</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> rec <span class="op">+</span> kl, rec, kl</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> train_vae(model, X, C<span class="op">=</span><span class="va">None</span>, epochs<span class="op">=</span><span class="dv">20</span>, lr<span class="op">=</span><span class="fl">1e-3</span>, bs<span class="op">=</span><span class="dv">128</span>):</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    opt <span class="op">=</span> torch.optim.Adam(model.parameters(), lr)</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> ep <span class="kw">in</span> <span class="bu">range</span>(epochs):</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>        perm <span class="op">=</span> torch.randperm(<span class="bu">len</span>(X))<span class="op">;</span> tot <span class="op">=</span> np.zeros(<span class="dv">3</span>)</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="bu">len</span>(perm), bs):</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>            j <span class="op">=</span> perm[i:i <span class="op">+</span> bs]<span class="op">;</span> c <span class="op">=</span> <span class="va">None</span> <span class="cf">if</span> C <span class="kw">is</span> <span class="va">None</span> <span class="cf">else</span> C[j]</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>            logits, mu, logvar <span class="op">=</span> model(X[j], c)</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>            loss, rec, kl <span class="op">=</span> vae_loss(logits, X[j], mu, logvar)</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>            opt.zero_grad()<span class="op">;</span> loss.backward()<span class="op">;</span> opt.step()</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>            tot <span class="op">+=</span> np.array([loss.item(), rec.item(), kl.item()]) <span class="op">*</span> <span class="bu">len</span>(j)</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> ep <span class="op">%</span> <span class="dv">5</span> <span class="op">==</span> <span class="dv">4</span>: <span class="bu">print</span>(<span class="ss">f"epoch </span><span class="sc">{</span>ep <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="ss">: loss per image </span><span class="sc">{</span>tot[<span class="dv">0</span>] <span class="op">/</span> <span class="bu">len</span>(X)<span class="sc">:.1f}</span><span class="ss"> = reconstruction </span><span class="sc">{</span>tot[<span class="dv">1</span>] <span class="op">/</span> <span class="bu">len</span>(X)<span class="sc">:.1f}</span><span class="ss"> + KL </span><span class="sc">{</span>tot[<span class="dv">2</span>] <span class="op">/</span> <span class="bu">len</span>(X)<span class="sc">:.1f}</span><span class="ss">"</span>)</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> model.<span class="bu">eval</span>()</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> seed(<span class="dv">10</span>)<span class="op">;</span> t0 <span class="op">=</span> time.time()</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>vae2 <span class="op">=</span> train_vae(CVAE(d<span class="op">=</span><span class="dv">2</span>, cond<span class="op">=</span><span class="dv">0</span>), Xtr, epochs<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>torch.save(vae2.state_dict(), <span class="ss">f"</span><span class="sc">{</span>RES<span class="sc">}</span><span class="ss">/cond_mnist_vae_d2.pt"</span>)</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"VAE with d = 2 trained in </span><span class="sc">{</span>time<span class="sc">.</span>time() <span class="op">-</span> t0<span class="sc">:.0f}</span><span class="ss"> s"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>epoch 5: loss per image 148.0 = reconstruction 141.9 + KL 6.1</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>epoch 10: loss per image 142.5 = reconstruction 136.1 + KL 6.4</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>epoch 15: loss per image 140.3 = reconstruction 133.7 + KL 6.6</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>epoch 20: loss per image 138.7 = reconstruction 132.0 + KL 6.7
+VAE with d = 2 trained in 184 s</code></pre>
+</div>
+</div>
+<section id="a.-the-latent-space" class="level3">
+<h3 class="anchored" data-anchor-id="a.-the-latent-space">1a. The latent space</h3>
+<p>Each test digit is encoded to the centre <span class="math inline">\(\boldsymbol\mu(\mathbf x)\)</span> of its cloud, a point in the plane. The colour is the digit label, which the VAE never saw: it is used only to read the picture. The dashed circles mark radius 1 and 2 of <span class="math inline">\(\mathcal N(0,I)\)</span>.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:03:57.852083Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:03:57.851317Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:03:59.096069Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:03:59.092493Z&quot;}" data-execution_count="4">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad(): mu_te, lv_te <span class="op">=</span> vae2.encode(Xte)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>mu_te, sd_te <span class="op">=</span> mu_te.numpy(), torch.exp(<span class="fl">0.5</span> <span class="op">*</span> lv_te).numpy()</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>nums[<span class="st">"vae2_mean_sigma"</span>] <span class="op">=</span> <span class="bu">float</span>(sd_te.mean())</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>r_te <span class="op">=</span> np.linalg.norm(mu_te, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> r <span class="kw">in</span> (<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>): nums[<span class="ss">f"vae2_frac_within_</span><span class="sc">{</span>r<span class="sc">}</span><span class="ss">"</span>] <span class="op">=</span> <span class="bu">float</span>((r_te <span class="op">&lt;</span> r).mean())</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>cm10 <span class="op">=</span> plt.get_cmap(<span class="st">"tab10"</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="fl">5.6</span>, <span class="fl">5.2</span>))</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> yte.numpy() <span class="op">==</span> k</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    ax.scatter(<span class="op">*</span>mu_te[m].T, s<span class="op">=</span><span class="dv">2</span>, color<span class="op">=</span>cm10(k), label<span class="op">=</span><span class="bu">str</span>(k))</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> r <span class="kw">in</span> (<span class="dv">1</span>, <span class="dv">2</span>): ax.add_patch(plt.Circle((<span class="dv">0</span>, <span class="dv">0</span>), r, fill<span class="op">=</span><span class="va">False</span>, ls<span class="op">=</span><span class="st">"--"</span>, color<span class="op">=</span><span class="st">"grey"</span>, lw<span class="op">=</span><span class="dv">1</span>))</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>)<span class="op">;</span> ax.set_ylim(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>)<span class="op">;</span> ax.set_aspect(<span class="st">"equal"</span>)<span class="op">;</span> ax.set_xlabel(<span class="st">"$z_1$"</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">"$z_2$"</span>)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>ax.legend(markerscale<span class="op">=</span><span class="dv">6</span>, frameon<span class="op">=</span><span class="va">False</span>, fontsize<span class="op">=</span><span class="dv">9</span>, loc<span class="op">=</span><span class="st">"center left"</span>, bbox_to_anchor<span class="op">=</span>(<span class="dv">1</span>, <span class="fl">0.5</span>), title<span class="op">=</span><span class="st">"digit"</span>)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="vs">r"VAE latent space: $\boldsymbol{\mu}(\mathbf</span><span class="sc">{x}</span><span class="vs">)$ of 10 000 test digits"</span>, fontsize<span class="op">=</span><span class="dv">11</span>)<span class="op">;</span> clean(ax)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="ss">f"</span><span class="sc">{</span>OUT<span class="sc">}</span><span class="ss">/cond_vae_latent.png"</span>, dpi<span class="op">=</span><span class="dv">170</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)<span class="op">;</span> plt.show()</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"mean width sigma of the clouds: </span><span class="sc">{</span>sd_te<span class="sc">.</span>mean()<span class="sc">:.3f}</span><span class="ss">;  spread of the centres (std of mu): </span><span class="sc">{</span>mu_te<span class="sc">.</span>std(<span class="dv">0</span>)<span class="sc">.</span><span class="bu">round</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"fraction of centres within radius 1, 2, 3:"</span>, [<span class="bu">round</span>(nums[<span class="ss">f"vae2_frac_within_</span><span class="sc">{</span>r<span class="sc">}</span><span class="ss">"</span>], <span class="dv">3</span>) <span class="cf">for</span> r <span class="kw">in</span> (<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)], <span class="st">" (N(0,I) in 2D: 0.393, 0.865, 0.989)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>mean width sigma of the clouds: 0.041;  spread of the centres (std of mu): [1.03 1.1 ]
+fraction of centres within radius 1, 2, 3: [0.488, 0.797, 0.965]  (N(0,I) in 2D: 0.393, 0.865, 0.989)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/tmp/ipykernel_3978098/1925286077.py:15: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  plt.savefig(f"{OUT}/cond_vae_latent.png", dpi=170, bbox_inches="tight"); plt.show()</code></pre>
+</div>
+</div>
+<p>Digits of the same class sit together, although no label was used in training. The centres are concentrated around the origin, where <span class="math inline">\(\mathcal N(0,I)\)</span> puts its probability; compare the printed fractions within radius 1, 2, 3 with those of <span class="math inline">\(\mathcal N(0,I)\)</span>. The KL term pulls the clouds there, the reconstruction term pushes the classes apart, and some classes (0, 1, 7) sit at the edge.</p>
+</section>
+<section id="b.-the-reparametrisation-trick" class="level3">
+<h3 class="anchored" data-anchor-id="b.-the-reparametrisation-trick">1b. The Reparametrisation Trick</h3>
+<p>Take one test image. The encoder gives its cloud <span class="math inline">\((\boldsymbol\mu,\boldsymbol\sigma)\)</span>. We draw 8 noises <span class="math inline">\(\boldsymbol\varepsilon\sim\mathcal N(0,I)\)</span>, form <span class="math inline">\(\mathbf z=\boldsymbol\mu+\boldsymbol\sigma\odot\boldsymbol\varepsilon\)</span>, and decode each: these are the images the decoder must produce during training for this one input.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:03:59.103529Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:03:59.102819Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:04:00.239240Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:04:00.238237Z&quot;}" data-execution_count="5">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># a test digit 0 that the 2D VAE rebuilds well: the smallest reconstruction error among the 0s</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    zeros <span class="op">=</span> (yte <span class="op">==</span> <span class="dv">0</span>).nonzero()[:, <span class="dv">0</span>]</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    rec0 <span class="op">=</span> F.binary_cross_entropy_with_logits(vae2.decode(vae2.encode(Xte[zeros])[<span class="dv">0</span>]), Xte[zeros], reduction<span class="op">=</span><span class="st">"none"</span>).<span class="bu">sum</span>(<span class="dv">1</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>i0 <span class="op">=</span> <span class="bu">int</span>(zeros[rec0.argmin()])</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    mu0, lv0 <span class="op">=</span> vae2.encode(Xte[i0:i0 <span class="op">+</span> <span class="dv">1</span>])<span class="op">;</span> sd0 <span class="op">=</span> torch.exp(<span class="fl">0.5</span> <span class="op">*</span> lv0)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    torch.manual_seed(<span class="dv">40</span>)<span class="op">;</span> eps <span class="op">=</span> torch.randn(<span class="dv">8</span>, <span class="dv">2</span>)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    z8 <span class="op">=</span> mu0 <span class="op">+</span> sd0 <span class="op">*</span> eps                                          <span class="co"># reparametrisation: z = mu + sigma * eps</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    dec8 <span class="op">=</span> torch.sigmoid(vae2.decode(z8)).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">28</span>, <span class="dv">28</span>).numpy()</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">3.6</span>))</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>a0 <span class="op">=</span> fig.add_axes([<span class="fl">0.0</span>, <span class="fl">0.08</span>, <span class="fl">0.17</span>, <span class="fl">0.8</span>])<span class="op">;</span> a0.imshow(Xte[i0].reshape(<span class="dv">28</span>, <span class="dv">28</span>), cmap<span class="op">=</span><span class="st">"gray_r"</span>)<span class="op">;</span> a0.axis(<span class="st">"off"</span>)<span class="op">;</span> a0.set_title(<span class="st">"input $</span><span class="ch">\\</span><span class="st">mathbf</span><span class="sc">{x}</span><span class="st">$"</span>, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>a1 <span class="op">=</span> fig.add_axes([<span class="fl">0.22</span>, <span class="fl">0.12</span>, <span class="fl">0.28</span>, <span class="fl">0.78</span>])</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>a1.scatter(<span class="op">*</span>mu_te.T, s<span class="op">=</span><span class="dv">1</span>, color<span class="op">=</span><span class="st">"lightgrey"</span>)</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.patches <span class="im">import</span> Ellipse</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> nsd <span class="kw">in</span> (<span class="dv">1</span>, <span class="dv">2</span>): a1.add_patch(Ellipse(mu0[<span class="dv">0</span>].numpy(), <span class="dv">2</span> <span class="op">*</span> nsd <span class="op">*</span> sd0[<span class="dv">0</span>, <span class="dv">0</span>].item(), <span class="dv">2</span> <span class="op">*</span> nsd <span class="op">*</span> sd0[<span class="dv">0</span>, <span class="dv">1</span>].item(), fill<span class="op">=</span><span class="va">False</span>, color<span class="op">=</span>orange, lw<span class="op">=</span><span class="fl">1.5</span>))</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>a1.scatter(<span class="op">*</span>z8.numpy().T, s<span class="op">=</span><span class="dv">25</span>, color<span class="op">=</span>navy, zorder<span class="op">=</span><span class="dv">3</span>)<span class="op">;</span> a1.scatter(<span class="op">*</span>mu0.numpy().T, s<span class="op">=</span><span class="dv">60</span>, marker<span class="op">=</span><span class="st">"x"</span>, color<span class="op">=</span>orange, zorder<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> j, (a_, b_) <span class="kw">in</span> <span class="bu">enumerate</span>(z8.numpy()): a1.annotate(<span class="bu">str</span>(j <span class="op">+</span> <span class="dv">1</span>), (a_, b_), xytext<span class="op">=</span>(<span class="dv">3</span>, <span class="dv">3</span>), textcoords<span class="op">=</span><span class="st">"offset points"</span>, fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>c0 <span class="op">=</span> mu0[<span class="dv">0</span>].numpy()<span class="op">;</span> w0 <span class="op">=</span> <span class="dv">4</span> <span class="op">*</span> <span class="bu">max</span>(sd0[<span class="dv">0</span>].tolist()) <span class="op">+</span> <span class="fl">0.3</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>a1.set_xlim(c0[<span class="dv">0</span>] <span class="op">-</span> w0, c0[<span class="dv">0</span>] <span class="op">+</span> w0)<span class="op">;</span> a1.set_ylim(c0[<span class="dv">1</span>] <span class="op">-</span> w0, c0[<span class="dv">1</span>] <span class="op">+</span> w0)<span class="op">;</span> a1.set_aspect(<span class="st">"equal"</span>)</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>a1.set_title(<span class="vs">r"cloud $\mathcal</span><span class="sc">{N}</span><span class="vs">(\boldsymbol{\mu}, \boldsymbol{\sigma}^2)$ and 8 samples $\mathbf</span><span class="sc">{z}</span><span class="vs">$"</span>, fontsize<span class="op">=</span><span class="dv">11</span>)<span class="op">;</span> a1.set_xlabel(<span class="st">"$z_1$"</span>)<span class="op">;</span> a1.set_ylabel(<span class="st">"$z_2$"</span>)</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">8</span>):</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>    a <span class="op">=</span> fig.add_axes([<span class="fl">0.54</span> <span class="op">+</span> <span class="fl">0.115</span> <span class="op">*</span> (j <span class="op">%</span> <span class="dv">4</span>), <span class="fl">0.5</span> <span class="op">-</span> <span class="fl">0.42</span> <span class="op">*</span> (j <span class="op">//</span> <span class="dv">4</span>), <span class="fl">0.105</span>, <span class="fl">0.4</span>])<span class="op">;</span> a.imshow(dec8[j], cmap<span class="op">=</span><span class="st">"gray_r"</span>, vmin<span class="op">=</span><span class="dv">0</span>, vmax<span class="op">=</span><span class="dv">1</span>)<span class="op">;</span> a.axis(<span class="st">"off"</span>)</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>    a.set_title(<span class="bu">str</span>(j <span class="op">+</span> <span class="dv">1</span>), fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="ss">f"</span><span class="sc">{</span>OUT<span class="sc">}</span><span class="ss">/cond_vae_cloud.png"</span>, dpi<span class="op">=</span><span class="dv">170</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)<span class="op">;</span> plt.show()</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"mu ="</span>, mu0[<span class="dv">0</span>].numpy().<span class="bu">round</span>(<span class="dv">3</span>), <span class="st">" sigma ="</span>, sd0[<span class="dv">0</span>].numpy().<span class="bu">round</span>(<span class="dv">3</span>))</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a><span class="co"># the derivatives that the trick makes available: autograd on z = mu + sigma * eps</span></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>mu_ <span class="op">=</span> mu0.clone().requires_grad_(<span class="va">True</span>)<span class="op">;</span> sd_ <span class="op">=</span> sd0.clone().requires_grad_(<span class="va">True</span>)<span class="op">;</span> e_ <span class="op">=</span> eps[:<span class="dv">1</span>]</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>z_ <span class="op">=</span> mu_ <span class="op">+</span> sd_ <span class="op">*</span> e_<span class="op">;</span> z_[<span class="dv">0</span>, <span class="dv">0</span>].backward()</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"dz1/dmu1 ="</span>, mu_.grad[<span class="dv">0</span>, <span class="dv">0</span>].item(), <span class="st">"  dz1/dsigma1 ="</span>, <span class="bu">round</span>(sd_.grad[<span class="dv">0</span>, <span class="dv">0</span>].item(), <span class="dv">4</span>), <span class="st">"  eps1 ="</span>, <span class="bu">round</span>(e_[<span class="dv">0</span>, <span class="dv">0</span>].item(), <span class="dv">4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>mu = [1.196 1.751]  sigma = [0.061 0.06 ]
+dz1/dmu1 = 1.0   dz1/dsigma1 = -0.2367   eps1 = -0.2367</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/tmp/ipykernel_3978098/3166277869.py:25: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  plt.savefig(f"{OUT}/cond_vae_cloud.png", dpi=170, bbox_inches="tight"); plt.show()</code></pre>
+</div>
+</div>
+<p>All eight decoded images are versions of the input digit: nearby points of the latent space decode to similar images. (With only <span class="math inline">\(d=2\)</span> latent numbers the VAE cannot rebuild every digit well; we picked the 0 it rebuilds best. A badly rebuilt input, e.g.&nbsp;an unusual 5, can land in the region of another digit and decode to it.) Autograd confirms <span class="math inline">\(\partial z_1/\partial\mu_1=1\)</span> and <span class="math inline">\(\partial z_1/\partial\sigma_1=\varepsilon_1\)</span>: the noise enters as a constant, and the gradient of the loss reaches <span class="math inline">\(\boldsymbol\mu\)</span> and <span class="math inline">\(\boldsymbol\sigma\)</span>, hence the encoder.</p>
+</section>
+<section id="c.-conditioning" class="level3">
+<h3 class="anchored" data-anchor-id="c.-conditioning">1c. Conditioning</h3>
+<p>A conditional VAE receives the label as <span class="math inline">\(\mathbf c\)</span> (one-hot) in <strong>both</strong> networks: <span class="math inline">\(q_\phi(\mathbf z\,|\,\mathbf x,\mathbf c)\)</span> and <span class="math inline">\(p_\theta(\mathbf x\,|\,\mathbf z,\mathbf c)\)</span>. The decoder already knows <em>which</em> digit to draw from <span class="math inline">\(\mathbf c\)</span>, so the latent space no longer needs to encode the class: it keeps only what <span class="math inline">\(\mathbf c\)</span> does not say, the <strong>style</strong>. We train one with <span class="math inline">\(d=2\)</span> and draw its latent space with the same colours.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:04:00.255243Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:04:00.254682Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:06:58.401772Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:06:58.400708Z&quot;}" data-execution_count="6">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> seed(<span class="dv">11</span>)<span class="op">;</span> t0 <span class="op">=</span> time.time()</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>cvae2 <span class="op">=</span> train_vae(CVAE(d<span class="op">=</span><span class="dv">2</span>, cond<span class="op">=</span><span class="dv">10</span>), Xtr, F.one_hot(ytr, <span class="dv">10</span>).<span class="bu">float</span>(), epochs<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>torch.save(cvae2.state_dict(), <span class="ss">f"</span><span class="sc">{</span>RES<span class="sc">}</span><span class="ss">/cond_mnist_cvae_d2.pt"</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"conditional VAE with d = 2 trained in </span><span class="sc">{</span>time<span class="sc">.</span>time() <span class="op">-</span> t0<span class="sc">:.0f}</span><span class="ss"> s"</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad(): muc, _ <span class="op">=</span> cvae2.encode(Xte, F.one_hot(yte, <span class="dv">10</span>).<span class="bu">float</span>())</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>muc <span class="op">=</span> muc.numpy()</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">4.8</span>), gridspec_kw<span class="op">=</span>{<span class="st">"width_ratios"</span>: [<span class="dv">1</span>, <span class="fl">1.15</span>]})</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> yte.numpy() <span class="op">==</span> k<span class="op">;</span> axs[<span class="dv">0</span>].scatter(<span class="op">*</span>muc[m].T, s<span class="op">=</span><span class="dv">2</span>, color<span class="op">=</span>cm10(k), label<span class="op">=</span><span class="bu">str</span>(k))</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> r <span class="kw">in</span> (<span class="dv">1</span>, <span class="dv">2</span>): axs[<span class="dv">0</span>].add_patch(plt.Circle((<span class="dv">0</span>, <span class="dv">0</span>), r, fill<span class="op">=</span><span class="va">False</span>, ls<span class="op">=</span><span class="st">"--"</span>, color<span class="op">=</span><span class="st">"grey"</span>, lw<span class="op">=</span><span class="dv">1</span>))</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">0</span>].set_xlim(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>)<span class="op">;</span> axs[<span class="dv">0</span>].set_ylim(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>)<span class="op">;</span> axs[<span class="dv">0</span>].set_aspect(<span class="st">"equal"</span>)<span class="op">;</span> axs[<span class="dv">0</span>].set_xlabel(<span class="st">"$z_1$"</span>)<span class="op">;</span> axs[<span class="dv">0</span>].set_ylabel(<span class="st">"$z_2$"</span>)<span class="op">;</span> clean(axs[<span class="dv">0</span>])</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">0</span>].set_title(<span class="st">"conditional VAE latent space: classes mixed"</span>, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co"># the same style z, every digit</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>zs <span class="op">=</span> torch.tensor([[<span class="op">-</span><span class="fl">1.5</span>, <span class="fl">0.0</span>], [<span class="fl">1.5</span>, <span class="fl">0.0</span>], [<span class="fl">0.0</span>, <span class="op">-</span><span class="fl">1.5</span>], [<span class="fl">0.0</span>, <span class="fl">1.5</span>], [<span class="fl">0.0</span>, <span class="fl">0.0</span>]], dtype<span class="op">=</span>torch.float32)</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>    grid <span class="op">=</span> [torch.sigmoid(cvae2.decode(zs, F.one_hot(torch.full((<span class="dv">5</span>,), k), <span class="dv">10</span>).<span class="bu">float</span>())).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">28</span>, <span class="dv">28</span>).numpy() <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>)]</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>big <span class="op">=</span> np.ones((<span class="dv">5</span> <span class="op">*</span> <span class="dv">30</span>, <span class="dv">10</span> <span class="op">*</span> <span class="dv">30</span>))</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> r <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>): big[r <span class="op">*</span> <span class="dv">30</span>:r <span class="op">*</span> <span class="dv">30</span> <span class="op">+</span> <span class="dv">28</span>, k <span class="op">*</span> <span class="dv">30</span>:k <span class="op">*</span> <span class="dv">30</span> <span class="op">+</span> <span class="dv">28</span>] <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> grid[k][r]</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">1</span>].imshow(big, cmap<span class="op">=</span><span class="st">"gray"</span>, vmin<span class="op">=</span><span class="dv">0</span>, vmax<span class="op">=</span><span class="dv">1</span>)<span class="op">;</span> axs[<span class="dv">1</span>].set_xticks(np.arange(<span class="dv">10</span>) <span class="op">*</span> <span class="dv">30</span> <span class="op">+</span> <span class="dv">14</span>)<span class="op">;</span> axs[<span class="dv">1</span>].set_xticklabels(<span class="bu">range</span>(<span class="dv">10</span>))</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">1</span>].set_yticks(np.arange(<span class="dv">5</span>) <span class="op">*</span> <span class="dv">30</span> <span class="op">+</span> <span class="dv">14</span>)<span class="op">;</span> axs[<span class="dv">1</span>].set_yticklabels([<span class="st">"(-1.5, 0)"</span>, <span class="st">"(1.5, 0)"</span>, <span class="st">"(0, -1.5)"</span>, <span class="st">"(0, 1.5)"</span>, <span class="st">"(0, 0)"</span>], fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">1</span>].set_xlabel(<span class="vs">r"condition $\mathbf</span><span class="sc">{c}</span><span class="vs">$: digit"</span>)<span class="op">;</span> axs[<span class="dv">1</span>].set_ylabel(<span class="vs">r"style $\mathbf</span><span class="sc">{z}</span><span class="vs">$"</span>)<span class="op">;</span> axs[<span class="dv">1</span>].set_title(<span class="vs">r"one $\mathbf</span><span class="sc">{z}</span><span class="vs">$ per row, ten conditions"</span>, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> axs[<span class="dv">1</span>].spines.values(): s.set_visible(<span class="va">False</span>)</span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.savefig(<span class="ss">f"</span><span class="sc">{</span>OUT<span class="sc">}</span><span class="ss">/cond_cvae_latent.png"</span>, dpi<span class="op">=</span><span class="dv">170</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)<span class="op">;</span> plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>epoch 5: loss per image 132.8 = reconstruction 128.2 + KL 4.6</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>epoch 10: loss per image 129.9 = reconstruction 125.1 + KL 4.8</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>epoch 15: loss per image 128.4 = reconstruction 123.5 + KL 4.9</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>epoch 20: loss per image 127.3 = reconstruction 122.3 + KL 5.0
+conditional VAE with d = 2 trained in 177 s</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/tmp/ipykernel_3978098/3462799308.py:24: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  plt.tight_layout(); plt.savefig(f"{OUT}/cond_cvae_latent.png", dpi=170, bbox_inches="tight"); plt.show()</code></pre>
+</div>
+</div>
+<p>Left: the colours are mixed. With the label given separately, the position in the latent space no longer says which digit it is. Right: each row uses one fixed <span class="math inline">\(\mathbf z\)</span> and all ten conditions; the digit changes along the row while the slant and thickness stay. This is conditioning in generation: <span class="math inline">\(\mathbf c\)</span> chooses <em>what</em>, <span class="math inline">\(\mathbf z\)</span> chooses <em>how</em>.</p>
+<p>For the rest of the notebook we use a conditional VAE with <span class="math inline">\(d=8\)</span>, which draws better digits than <span class="math inline">\(d=2\)</span>.</p>
+</section>
+</section>
+<section id="generating-a-chosen-mnist-digit" class="level2">
+<h2 class="anchored" data-anchor-id="generating-a-chosen-mnist-digit">2. Generating a Chosen MNIST Digit</h2>
+<section id="a.-a-classifier-trained-on-real-digits" class="level3">
+<h3 class="anchored" data-anchor-id="a.-a-classifier-trained-on-real-digits">2a. A classifier trained on real digits</h3>
+<p>The judge of the synthetic digits: a dense network <span class="math inline">\(784\to256\to10\)</span>, trained with cross-entropy on the real training images. We measure its accuracy and confusion matrix on the real test images first, so that we know how good the judge itself is.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:06:58.412271Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:06:58.411472Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:07:03.260991Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:07:03.260140Z&quot;}" data-execution_count="7">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> train_classifier(model, X, y, epochs, lr<span class="op">=</span><span class="fl">1e-3</span>, bs<span class="op">=</span><span class="dv">128</span>):</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    opt <span class="op">=</span> torch.optim.Adam(model.parameters(), lr)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> ep <span class="kw">in</span> <span class="bu">range</span>(epochs):</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>        perm <span class="op">=</span> torch.randperm(<span class="bu">len</span>(X))</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="bu">len</span>(perm), bs):</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>            j <span class="op">=</span> perm[i:i <span class="op">+</span> bs]<span class="op">;</span> loss <span class="op">=</span> F.cross_entropy(model(X[j]), y[j])</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>            opt.zero_grad()<span class="op">;</span> loss.backward()<span class="op">;</span> opt.step()</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> model.<span class="bu">eval</span>()</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> confusion(true, pred, K):</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># K x K matrix: row = true (or requested) class, column = predicted class, rows normalised to 1</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> np.zeros((K, K))</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t, p <span class="kw">in</span> <span class="bu">zip</span>(true, pred): m[t, p] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> m <span class="op">/</span> m.<span class="bu">sum</span>(<span class="dv">1</span>, keepdims<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> seed(<span class="dv">1</span>)</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>clf <span class="op">=</span> train_classifier(nn.Sequential(nn.Linear(<span class="dv">784</span>, <span class="dv">256</span>), nn.ReLU(), nn.Linear(<span class="dv">256</span>, <span class="dv">10</span>)), Xtr, ytr, epochs<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>torch.save(clf.state_dict(), <span class="ss">f"</span><span class="sc">{</span>RES<span class="sc">}</span><span class="ss">/cond_mnist_classifier.pt"</span>)</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad(): pred_real <span class="op">=</span> clf(Xte).argmax(<span class="dv">1</span>).numpy()</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>cm_real <span class="op">=</span> confusion(yte.numpy(), pred_real, <span class="dv">10</span>)</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>nums[<span class="st">"mnist_clf_real_acc"</span>] <span class="op">=</span> <span class="bu">float</span>((pred_real <span class="op">==</span> yte.numpy()).mean())</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"accuracy on real test digits: </span><span class="sc">{</span>nums[<span class="st">'mnist_clf_real_acc'</span>]<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>accuracy on real test digits: 0.969</code></pre>
+</div>
+</div>
+</section>
+<section id="b.-the-conditional-vae-with-d8" class="level3">
+<h3 class="anchored" data-anchor-id="b.-the-conditional-vae-with-d8">2b. The conditional VAE with <span class="math inline">\(d=8\)</span></h3>
+<p>Encoder <span class="math inline">\(q_\phi(\mathbf z\,|\,\mathbf x,\mathbf c)\)</span> and decoder <span class="math inline">\(p_\theta(\mathbf x\,|\,\mathbf z,\mathbf c)\)</span> are dense networks; the condition <span class="math inline">\(\mathbf c\)</span> (one-hot digit, 10 numbers) is <strong>concatenated</strong> to the input of both:</p>
+<ul>
+<li>encoder: <span class="math inline">\([\mathbf x,\mathbf c]\)</span> (<span class="math inline">\(784+10\)</span>) <span class="math inline">\(\to512\to256\to(\boldsymbol\mu,\log\boldsymbol\sigma^2)\)</span>, each of size <span class="math inline">\(d=8\)</span>;</li>
+<li>decoder: <span class="math inline">\([\mathbf z,\mathbf c]\)</span> (<span class="math inline">\(8+10\)</span>) <span class="math inline">\(\to256\to512\to784\)</span> logits; the sigmoid gives pixels in <span class="math inline">\([0,1]\)</span>.</li>
+</ul>
+<p>Loss per image: binary cross-entropy (reconstruction) + <span class="math inline">\(\mathrm{KL}\big(\mathcal N(\boldsymbol\mu,\operatorname{diag}\boldsymbol\sigma^2)\,\|\,\mathcal N(0,I)\big)=\tfrac12\sum_k(\mu_k^2+\sigma_k^2-\ln\sigma_k^2-1)\)</span>.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:07:03.269689Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:07:03.268149Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:09:56.219085Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:09:56.218157Z&quot;}" data-execution_count="8">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> seed(<span class="dv">2</span>)<span class="op">;</span> t0 <span class="op">=</span> time.time()</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>cvae <span class="op">=</span> train_vae(CVAE(d<span class="op">=</span><span class="dv">8</span>, cond<span class="op">=</span><span class="dv">10</span>), Xtr, F.one_hot(ytr, <span class="dv">10</span>).<span class="bu">float</span>(), epochs<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>torch.save(cvae.state_dict(), <span class="ss">f"</span><span class="sc">{</span>RES<span class="sc">}</span><span class="ss">/cond_mnist_cvae.pt"</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"trained in </span><span class="sc">{</span>time<span class="sc">.</span>time() <span class="op">-</span> t0<span class="sc">:.0f}</span><span class="ss"> s"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>epoch 5: loss per image 107.1 = reconstruction 93.6 + KL 13.5</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>epoch 10: loss per image 101.4 = reconstruction 87.5 + KL 13.9</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>epoch 15: loss per image 99.1 = reconstruction 85.0 + KL 14.1</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>epoch 20: loss per image 97.6 = reconstruction 83.4 + KL 14.2
+trained in 173 s</code></pre>
+</div>
+</div>
+</section>
+<section id="c.-generating-a-chosen-digit" class="level3">
+<h3 class="anchored" data-anchor-id="c.-generating-a-chosen-digit">2c. Generating a chosen digit</h3>
+<p>Generation uses <strong>only the decoder</strong>. To get <span class="math inline">\(n\)</span> images of digit <span class="math inline">\(k\)</span>:</p>
+<ol type="1">
+<li>the condition: <span class="math inline">\(\mathbf c=\mathbf e_k\)</span>, the one-hot vector of <span class="math inline">\(k\)</span>, repeated <span class="math inline">\(n\)</span> times;</li>
+<li>the style: <span class="math inline">\(n\)</span> random latent vectors <span class="math inline">\(\mathbf z\sim\mathcal N(0,I)\)</span>;</li>
+<li>decode <span class="math inline">\([\mathbf z,\mathbf c]\)</span> and apply the sigmoid.</li>
+</ol>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:09:56.228938Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:09:56.228257Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:09:59.421683Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:09:59.420830Z&quot;}" data-execution_count="9">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_digit(k, n<span class="op">=</span><span class="dv">10</span>):</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># n new images of digit k, shape (n, 784), pixels in [0, 1]</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    c <span class="op">=</span> F.one_hot(torch.full((n,), k), <span class="dv">10</span>).<span class="bu">float</span>()            <span class="co"># condition: digit k, one-hot, n copies</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    z <span class="op">=</span> torch.randn(n, cvae.d)                                <span class="co"># latent vectors: the style, random</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> torch.no_grad():</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> torch.sigmoid(cvae.decode(z, c))</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">30</span>)</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">10</span>, <span class="dv">12</span>, figsize<span class="op">=</span>(<span class="fl">8.4</span>, <span class="fl">7.4</span>))</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>    imgs <span class="op">=</span> generate_digit(k, <span class="dv">12</span>).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">28</span>, <span class="dv">28</span>).numpy()</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">12</span>):</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>        axs[k, j].imshow(imgs[j], cmap<span class="op">=</span><span class="st">"gray_r"</span>, vmin<span class="op">=</span><span class="dv">0</span>, vmax<span class="op">=</span><span class="dv">1</span>)<span class="op">;</span> axs[k, j].axis(<span class="st">"off"</span>)</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>    axs[k, <span class="dv">0</span>].text(<span class="op">-</span><span class="dv">6</span>, <span class="dv">14</span>, <span class="ss">f"k = </span><span class="sc">{</span>k<span class="sc">}</span><span class="ss">"</span>, ha<span class="op">=</span><span class="st">"right"</span>, va<span class="op">=</span><span class="st">"center"</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>plt.subplots_adjust(wspace<span class="op">=</span><span class="fl">0.04</span>, hspace<span class="op">=</span><span class="fl">0.04</span>)<span class="op">;</span> plt.savefig(<span class="ss">f"</span><span class="sc">{</span>OUT<span class="sc">}</span><span class="ss">/cond_generate_digits.png"</span>, dpi<span class="op">=</span><span class="dv">170</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)<span class="op">;</span> plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>/tmp/ipykernel_3978098/2793799277.py:15: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  plt.subplots_adjust(wspace=0.04, hspace=0.04); plt.savefig(f"{OUT}/cond_generate_digits.png", dpi=170, bbox_inches="tight"); plt.show()</code></pre>
+</div>
+</div>
+<p>Row <span class="math inline">\(k\)</span>: <code>generate_digit(k, 12)</code>. Within a row the digit is fixed and the style (slant, thickness, width) changes with the random <span class="math inline">\(\mathbf z\)</span>.</p>
+</section>
+<section id="d.-classifier-check-of-the-synthetic-digits" class="level3">
+<h3 class="anchored" data-anchor-id="d.-classifier-check-of-the-synthetic-digits">2d. Classifier Check of the Synthetic Digits</h3>
+<p>We generate 1000 digits of each class and let the classifier, which never saw a synthetic image, label them. Row <span class="math inline">\(k\)</span> of the confusion matrix: the fraction of the digits <em>requested</em> as <span class="math inline">\(k\)</span> that the classifier assigns to each class.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:09:59.426254Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:09:59.425755Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:10:00.436869Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:10:00.435693Z&quot;}" data-execution_count="10">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">31</span>)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>req, pred_syn <span class="op">=</span> [], []</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>        g <span class="op">=</span> generate_digit(k, <span class="dv">1000</span>)<span class="op">;</span> pred_syn <span class="op">+=</span> clf(g).argmax(<span class="dv">1</span>).tolist()<span class="op">;</span> req <span class="op">+=</span> [k] <span class="op">*</span> <span class="dv">1000</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>req, pred_syn <span class="op">=</span> np.array(req), np.array(pred_syn)</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>cm_syn <span class="op">=</span> confusion(req, pred_syn, <span class="dv">10</span>)</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>nums[<span class="st">"mnist_syn_agreement"</span>] <span class="op">=</span> [<span class="bu">round</span>(<span class="bu">float</span>(cm_syn[k, k]), <span class="dv">3</span>) <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>)]</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>nums[<span class="st">"mnist_syn_agreement_mean"</span>] <span class="op">=</span> <span class="bu">float</span>(np.mean(nums[<span class="st">"mnist_syn_agreement"</span>]))</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>np.savez(<span class="ss">f"</span><span class="sc">{</span>RES<span class="sc">}</span><span class="ss">/cond_mnist_confusion.npz"</span>, real<span class="op">=</span>cm_real, synthetic<span class="op">=</span>cm_syn)</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="fl">4.4</span>))</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> a, m, ttl, yl <span class="kw">in</span> [(axs[<span class="dv">0</span>], cm_real, <span class="ss">f"real test digits: accuracy </span><span class="sc">{</span>nums[<span class="st">'mnist_clf_real_acc'</span>]<span class="sc">:.3f}</span><span class="ss">"</span>, <span class="st">"true digit"</span>),</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>                      (axs[<span class="dv">1</span>], cm_syn, <span class="ss">f"synthetic digits: </span><span class="sc">{</span>nums[<span class="st">'mnist_syn_agreement_mean'</span>]<span class="sc">:.3f}</span><span class="ss"> as requested"</span>, <span class="st">"requested digit"</span>)]:</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>    a.imshow(m, cmap<span class="op">=</span><span class="st">"Blues"</span>, vmin<span class="op">=</span><span class="dv">0</span>, vmax<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> m[i, j] <span class="op">&gt;=</span> <span class="fl">0.01</span>: a.text(j, i, <span class="ss">f"</span><span class="sc">{</span><span class="dv">100</span> <span class="op">*</span> m[i, j]<span class="sc">:.0f}</span><span class="ss">"</span>, ha<span class="op">=</span><span class="st">"center"</span>, va<span class="op">=</span><span class="st">"center"</span>, fontsize<span class="op">=</span><span class="dv">7</span>, color<span class="op">=</span><span class="st">"white"</span> <span class="cf">if</span> m[i, j] <span class="op">&gt;</span> <span class="fl">0.5</span> <span class="cf">else</span> <span class="st">"black"</span>)</span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>    a.set_xticks(<span class="bu">range</span>(<span class="dv">10</span>))<span class="op">;</span> a.set_yticks(<span class="bu">range</span>(<span class="dv">10</span>))<span class="op">;</span> a.set_xlabel(<span class="st">"predicted digit"</span>)<span class="op">;</span> a.set_ylabel(yl)<span class="op">;</span> a.set_title(ttl, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.savefig(<span class="ss">f"</span><span class="sc">{</span>OUT<span class="sc">}</span><span class="ss">/cond_mnist_confusion.png"</span>, dpi<span class="op">=</span><span class="dv">170</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)<span class="op">;</span> plt.show()</span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"fraction recognised as requested, per digit:"</span>, nums[<span class="st">"mnist_syn_agreement"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>fraction recognised as requested, per digit: [0.943, 0.981, 0.952, 0.953, 0.99, 0.937, 0.93, 0.962, 0.968, 0.906]</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/tmp/ipykernel_3978098/3556056146.py:20: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  plt.tight_layout(); plt.savefig(f"{OUT}/cond_mnist_confusion.png", dpi=170, bbox_inches="tight"); plt.show()</code></pre>
+</div>
+</div>
+<p>Numbers are percentages of each row. The diagonal of the right matrix says how often the generated digit is the one we asked for; the off-diagonal entries say what it is confused with, and can be compared with the confusions of the same classifier on real digits (left).</p>
+</section>
+<section id="e.-training-on-synthetic-digits-only" class="level3">
+<h3 class="anchored" data-anchor-id="e.-training-on-synthetic-digits-only">2e. Training on synthetic digits only</h3>
+<p>Train the same classifier architecture on <strong>60 000 synthetic digits only</strong> (6000 per class, labels = the requested digits) and test it on the <strong>real</strong> test digits.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:10:00.445347Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:10:00.444793Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:10:06.282978Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:10:06.279564Z&quot;}" data-execution_count="11">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">32</span>)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>Xs <span class="op">=</span> torch.cat([generate_digit(k, <span class="dv">6000</span>) <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>)])<span class="op">;</span> ys <span class="op">=</span> torch.arange(<span class="dv">10</span>).repeat_interleave(<span class="dv">6000</span>)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> seed(<span class="dv">3</span>)</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>clf_syn <span class="op">=</span> train_classifier(nn.Sequential(nn.Linear(<span class="dv">784</span>, <span class="dv">256</span>), nn.ReLU(), nn.Linear(<span class="dv">256</span>, <span class="dv">10</span>)), Xs, ys, epochs<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>torch.save(clf_syn.state_dict(), <span class="ss">f"</span><span class="sc">{</span>RES<span class="sc">}</span><span class="ss">/cond_mnist_classifier_trained_on_synthetic.pt"</span>)</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad(): pred_s <span class="op">=</span> clf_syn(Xte).argmax(<span class="dv">1</span>).numpy()</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>cm_s <span class="op">=</span> confusion(yte.numpy(), pred_s, <span class="dv">10</span>)</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>nums[<span class="st">"mnist_train_syn_test_real_acc"</span>] <span class="op">=</span> <span class="bu">float</span>((pred_s <span class="op">==</span> yte.numpy()).mean())</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="fl">4.8</span>, <span class="fl">4.4</span>))</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>ax.imshow(cm_s, cmap<span class="op">=</span><span class="st">"Blues"</span>, vmin<span class="op">=</span><span class="dv">0</span>, vmax<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> cm_s[i, j] <span class="op">&gt;=</span> <span class="fl">0.01</span>: ax.text(j, i, <span class="ss">f"</span><span class="sc">{</span><span class="dv">100</span> <span class="op">*</span> cm_s[i, j]<span class="sc">:.0f}</span><span class="ss">"</span>, ha<span class="op">=</span><span class="st">"center"</span>, va<span class="op">=</span><span class="st">"center"</span>, fontsize<span class="op">=</span><span class="dv">7</span>, color<span class="op">=</span><span class="st">"white"</span> <span class="cf">if</span> cm_s[i, j] <span class="op">&gt;</span> <span class="fl">0.5</span> <span class="cf">else</span> <span class="st">"black"</span>)</span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>ax.set_xticks(<span class="bu">range</span>(<span class="dv">10</span>))<span class="op">;</span> ax.set_yticks(<span class="bu">range</span>(<span class="dv">10</span>))<span class="op">;</span> ax.set_xlabel(<span class="st">"predicted digit"</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">"true digit"</span>)</span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="ss">f"trained on synthetic, tested on real: </span><span class="sc">{</span>nums[<span class="st">'mnist_train_syn_test_real_acc'</span>]<span class="sc">:.3f}</span><span class="ss">"</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.savefig(<span class="ss">f"</span><span class="sc">{</span>OUT<span class="sc">}</span><span class="ss">/cond_mnist_train_synthetic.png"</span>, dpi<span class="op">=</span><span class="dv">170</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)<span class="op">;</span> plt.show()</span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"real-data classifier on real test digits: </span><span class="sc">{</span>nums[<span class="st">'mnist_clf_real_acc'</span>]<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"synthetic-data classifier on real test digits: </span><span class="sc">{</span>nums[<span class="st">'mnist_train_syn_test_real_acc'</span>]<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>real-data classifier on real test digits: 0.969
+synthetic-data classifier on real test digits: 0.918</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/tmp/ipykernel_3978098/819876526.py:16: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  plt.tight_layout(); plt.savefig(f"{OUT}/cond_mnist_train_synthetic.png", dpi=170, bbox_inches="tight"); plt.show()</code></pre>
+</div>
+</div>
+<p>The gap between the two accuracies measures what the generator misses of the real distribution: styles it never produces, and blurry strokes.</p>
+<p><strong>Try it.</strong> Mix real and synthetic training digits (e.g.&nbsp;1000 real + 60 000 synthetic). Does the synthetic data help when real data are scarce? Compare with 1000 real digits alone.</p>
+</section>
+</section>
+<section id="blood-cells-of-a-chosen-type" class="level2">
+<h2 class="anchored" data-anchor-id="blood-cells-of-a-chosen-type">3. Blood cells of a chosen type</h2>
+<p>BloodMNIST (Lecture 4): <span class="math inline">\(28\times28\)</span> RGB images of eight types of normal blood cells. The file is taken from the Lecture 4 folder, or downloaded from Zenodo.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:10:06.289462Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:10:06.288476Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:10:06.835508Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:10:06.834920Z&quot;}" data-execution_count="12">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>bpath <span class="op">=</span> <span class="st">"data/bloodmnist.npz"</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> os.path.exists(bpath):</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    bpath <span class="op">=</span> <span class="st">"data/bloodmnist.npz"</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> os.path.exists(bpath):</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>        os.makedirs(<span class="st">"data"</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>        urllib.request.urlretrieve(<span class="st">"https://zenodo.org/records/10519652/files/bloodmnist.npz?download=1"</span>, bpath)</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>bd <span class="op">=</span> np.load(bpath)</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>names <span class="op">=</span> [<span class="st">"basophil"</span>, <span class="st">"eosinophil"</span>, <span class="st">"erythroblast"</span>, <span class="st">"immature granulocyte"</span>, <span class="st">"lymphocyte"</span>, <span class="st">"monocyte"</span>, <span class="st">"neutrophil"</span>, <span class="st">"platelet"</span>]</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>to_t <span class="op">=</span> <span class="kw">lambda</span> a: torch.tensor(a.astype(np.float32) <span class="op">/</span> <span class="dv">255</span>).permute(<span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>)      <span class="co"># (n, 3, 28, 28)</span></span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>Btr, Bte <span class="op">=</span> to_t(bd[<span class="st">"train_images"</span>]), to_t(bd[<span class="st">"test_images"</span>])</span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>bytr, byte <span class="op">=</span> torch.tensor(bd[<span class="st">"train_labels"</span>].ravel().astype(np.int64)), torch.tensor(bd[<span class="st">"test_labels"</span>].ravel().astype(np.int64))</span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"training images:"</span>, <span class="bu">tuple</span>(Btr.shape), <span class="st">" test images:"</span>, <span class="bu">tuple</span>(Bte.shape))</span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"training images per type:"</span>, <span class="bu">dict</span>(<span class="bu">zip</span>(names, np.bincount(bytr.numpy()).tolist())))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>training images: (11959, 3, 28, 28)  test images: (3421, 3, 28, 28)
+training images per type: {'basophil': 852, 'eosinophil': 2181, 'erythroblast': 1085, 'immature granulocyte': 2026, 'lymphocyte': 849, 'monocyte': 993, 'neutrophil': 2330, 'platelet': 1643}</code></pre>
+</div>
+</div>
+<section id="a.-a-classifier-trained-on-real-cells" class="level3">
+<h3 class="anchored" data-anchor-id="a.-a-classifier-trained-on-real-cells">3a. A classifier trained on real cells</h3>
+<p>A small CNN: two blocks of <span class="math inline">\(3\times3\)</span> convolution, ReLU and <span class="math inline">\(2\times2\)</span> max-pooling (<span class="math inline">\(28\to14\to7\)</span>), then <span class="math inline">\(64\cdot7\cdot7\to128\to8\)</span>.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:10:06.838651Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:10:06.838170Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:10:52.225829Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:10:52.224527Z&quot;}" data-execution_count="13">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> seed(<span class="dv">8</span>)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>clfb <span class="op">=</span> train_classifier(nn.Sequential(nn.Conv2d(<span class="dv">3</span>, <span class="dv">32</span>, <span class="dv">3</span>, padding<span class="op">=</span><span class="dv">1</span>), nn.ReLU(), nn.MaxPool2d(<span class="dv">2</span>), nn.Conv2d(<span class="dv">32</span>, <span class="dv">64</span>, <span class="dv">3</span>, padding<span class="op">=</span><span class="dv">1</span>), nn.ReLU(), nn.MaxPool2d(<span class="dv">2</span>),</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>                                      nn.Flatten(), nn.Linear(<span class="dv">64</span> <span class="op">*</span> <span class="dv">7</span> <span class="op">*</span> <span class="dv">7</span>, <span class="dv">128</span>), nn.ReLU(), nn.Linear(<span class="dv">128</span>, <span class="dv">8</span>)), Btr, bytr, epochs<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>torch.save(clfb.state_dict(), <span class="ss">f"</span><span class="sc">{</span>RES<span class="sc">}</span><span class="ss">/cond_blood_classifier.pt"</span>)</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad(): pb_real <span class="op">=</span> clfb(Bte).argmax(<span class="dv">1</span>).numpy()</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>cmb_real <span class="op">=</span> confusion(byte.numpy(), pb_real, <span class="dv">8</span>)</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>nums[<span class="st">"blood_clf_real_acc"</span>] <span class="op">=</span> <span class="bu">float</span>((pb_real <span class="op">==</span> byte.numpy()).mean())</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"accuracy on real test cells: </span><span class="sc">{</span>nums[<span class="st">'blood_clf_real_acc'</span>]<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>accuracy on real test cells: 0.838</code></pre>
+</div>
+</div>
+</section>
+<section id="b.-a-convolutional-conditional-vae" class="level3">
+<h3 class="anchored" data-anchor-id="b.-a-convolutional-conditional-vae">3b. A convolutional conditional VAE</h3>
+<p>A convolution sees an image as stacked channels, so the condition enters as <strong>8 extra input channels</strong>: channel <span class="math inline">\(k\)</span> is constant, 1 if the cell is of type <span class="math inline">\(k\)</span> and 0 otherwise. Encoder: <span class="math inline">\(28\times28\times(3+8)\to14\times14\times32\to7\times7\times64\to(\boldsymbol\mu,\log\boldsymbol\sigma^2)\)</span> with <span class="math inline">\(d=16\)</span>. Decoder: <span class="math inline">\([\mathbf z,\mathbf c]\)</span> (<span class="math inline">\(16+8\)</span>) <span class="math inline">\(\to7\times7\times64\to14\times14\times32\to28\times28\times3\)</span> logits (transposed convolutions double the size).</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:10:52.228513Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:10:52.228156Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:12:56.744850Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:12:56.744043Z&quot;}" data-execution_count="14">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ConvCVAE(nn.Module):</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, d<span class="op">=</span><span class="dv">16</span>, cond<span class="op">=</span><span class="dv">8</span>):</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.d, <span class="va">self</span>.cond <span class="op">=</span> d, cond</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.enc <span class="op">=</span> nn.Sequential(nn.Conv2d(<span class="dv">3</span> <span class="op">+</span> cond, <span class="dv">32</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">1</span>), nn.ReLU(), nn.Conv2d(<span class="dv">32</span>, <span class="dv">64</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">1</span>), nn.ReLU(), nn.Flatten())</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.mu, <span class="va">self</span>.logvar <span class="op">=</span> nn.Linear(<span class="dv">64</span> <span class="op">*</span> <span class="dv">7</span> <span class="op">*</span> <span class="dv">7</span>, d), nn.Linear(<span class="dv">64</span> <span class="op">*</span> <span class="dv">7</span> <span class="op">*</span> <span class="dv">7</span>, d)</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.fc <span class="op">=</span> nn.Linear(d <span class="op">+</span> cond, <span class="dv">64</span> <span class="op">*</span> <span class="dv">7</span> <span class="op">*</span> <span class="dv">7</span>)</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.dec <span class="op">=</span> nn.Sequential(nn.ReLU(), nn.Unflatten(<span class="dv">1</span>, (<span class="dv">64</span>, <span class="dv">7</span>, <span class="dv">7</span>)), nn.ConvTranspose2d(<span class="dv">64</span>, <span class="dv">32</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">1</span>, output_padding<span class="op">=</span><span class="dv">1</span>), nn.ReLU(),</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>                                 nn.ConvTranspose2d(<span class="dv">32</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">1</span>, output_padding<span class="op">=</span><span class="dv">1</span>))</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> encode(<span class="va">self</span>, x, c):</span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>        cmap_ <span class="op">=</span> c[:, :, <span class="va">None</span>, <span class="va">None</span>].expand(<span class="op">-</span><span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>, x.shape[<span class="dv">2</span>], x.shape[<span class="dv">3</span>])        <span class="co"># the condition as 8 constant channels</span></span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>        h <span class="op">=</span> <span class="va">self</span>.enc(torch.cat([x, cmap_], <span class="dv">1</span>))<span class="op">;</span> <span class="cf">return</span> <span class="va">self</span>.mu(h), <span class="va">self</span>.logvar(h)</span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> decode(<span class="va">self</span>, z, c): <span class="cf">return</span> <span class="va">self</span>.dec(<span class="va">self</span>.fc(torch.cat([z, c], <span class="dv">1</span>)))       <span class="co"># logits of the pixels</span></span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x, c):</span>
+<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a>        mu, logvar <span class="op">=</span> <span class="va">self</span>.encode(x, c)<span class="op">;</span> z <span class="op">=</span> mu <span class="op">+</span> torch.exp(<span class="fl">0.5</span> <span class="op">*</span> logvar) <span class="op">*</span> torch.randn_like(mu)</span>
+<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.decode(z, c), mu, logvar</span>
+<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> seed(<span class="dv">7</span>)<span class="op">;</span> t0 <span class="op">=</span> time.time()</span>
+<span id="cb40-19"><a href="#cb40-19" aria-hidden="true" tabindex="-1"></a>bcvae <span class="op">=</span> ConvCVAE()<span class="op">;</span> optb <span class="op">=</span> torch.optim.Adam(bcvae.parameters(), <span class="fl">1e-3</span>)<span class="op">;</span> Cb <span class="op">=</span> F.one_hot(bytr, <span class="dv">8</span>).<span class="bu">float</span>()</span>
+<span id="cb40-20"><a href="#cb40-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ep <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">30</span>):</span>
+<span id="cb40-21"><a href="#cb40-21" aria-hidden="true" tabindex="-1"></a>    perm <span class="op">=</span> torch.randperm(<span class="bu">len</span>(Btr))<span class="op">;</span> tot <span class="op">=</span> np.zeros(<span class="dv">3</span>)</span>
+<span id="cb40-22"><a href="#cb40-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="bu">len</span>(perm), <span class="dv">128</span>):</span>
+<span id="cb40-23"><a href="#cb40-23" aria-hidden="true" tabindex="-1"></a>        j <span class="op">=</span> perm[i:i <span class="op">+</span> <span class="dv">128</span>]<span class="op">;</span> logits, mu, logvar <span class="op">=</span> bcvae(Btr[j], Cb[j])</span>
+<span id="cb40-24"><a href="#cb40-24" aria-hidden="true" tabindex="-1"></a>        loss, rec, kl <span class="op">=</span> vae_loss(logits.flatten(<span class="dv">1</span>), Btr[j].flatten(<span class="dv">1</span>), mu, logvar)</span>
+<span id="cb40-25"><a href="#cb40-25" aria-hidden="true" tabindex="-1"></a>        optb.zero_grad()<span class="op">;</span> loss.backward()<span class="op">;</span> optb.step()</span>
+<span id="cb40-26"><a href="#cb40-26" aria-hidden="true" tabindex="-1"></a>        tot <span class="op">+=</span> np.array([loss.item(), rec.item(), kl.item()]) <span class="op">*</span> <span class="bu">len</span>(j)</span>
+<span id="cb40-27"><a href="#cb40-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ep <span class="op">%</span> <span class="dv">10</span> <span class="op">==</span> <span class="dv">9</span>: <span class="bu">print</span>(<span class="ss">f"epoch </span><span class="sc">{</span>ep <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="ss">: loss per image </span><span class="sc">{</span>tot[<span class="dv">0</span>] <span class="op">/</span> <span class="bu">len</span>(Btr)<span class="sc">:.1f}</span><span class="ss"> = reconstruction </span><span class="sc">{</span>tot[<span class="dv">1</span>] <span class="op">/</span> <span class="bu">len</span>(Btr)<span class="sc">:.1f}</span><span class="ss"> + KL </span><span class="sc">{</span>tot[<span class="dv">2</span>] <span class="op">/</span> <span class="bu">len</span>(Btr)<span class="sc">:.1f}</span><span class="ss">"</span>)</span>
+<span id="cb40-28"><a href="#cb40-28" aria-hidden="true" tabindex="-1"></a>bcvae.<span class="bu">eval</span>()<span class="op">;</span> torch.save(bcvae.state_dict(), <span class="ss">f"</span><span class="sc">{</span>RES<span class="sc">}</span><span class="ss">/cond_blood_cvae.pt"</span>)</span>
+<span id="cb40-29"><a href="#cb40-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"trained in </span><span class="sc">{</span>time<span class="sc">.</span>time() <span class="op">-</span> t0<span class="sc">:.0f}</span><span class="ss"> s"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>epoch 10: loss per image 1210.0 = reconstruction 1194.9 + KL 15.1</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>epoch 20: loss per image 1205.2 = reconstruction 1190.0 + KL 15.2</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>epoch 30: loss per image 1203.4 = reconstruction 1188.1 + KL 15.3
+trained in 124 s</code></pre>
+</div>
+</div>
+</section>
+<section id="c.-generating-a-cell-of-a-chosen-type" class="level3">
+<h3 class="anchored" data-anchor-id="c.-generating-a-cell-of-a-chosen-type">3c. Generating a cell of a chosen type</h3>
+<p>The same three lines as for digits: one-hot condition, random <span class="math inline">\(\mathbf z\)</span>, decoder and sigmoid.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:12:56.748563Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:12:56.747936Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:12:58.385666Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:12:58.384641Z&quot;}" data-execution_count="15">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_cell(name, n<span class="op">=</span><span class="dv">8</span>):</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># n new 28 x 28 RGB images of the cell type `name`, shape (n, 3, 28, 28), values in [0, 1]</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    k <span class="op">=</span> names.index(name)</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>    c <span class="op">=</span> F.one_hot(torch.full((n,), k), <span class="dv">8</span>).<span class="bu">float</span>()             <span class="co"># condition: cell type k, one-hot</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>    z <span class="op">=</span> torch.randn(n, bcvae.d)                               <span class="co"># latent vectors, random</span></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> torch.no_grad():</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> torch.sigmoid(bcvae.decode(z, c))</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">33</span>)</span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a><span class="co"># one real example of each type, then 8 generated ones</span></span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">8</span>, <span class="dv">10</span>, figsize<span class="op">=</span>(<span class="fl">8.6</span>, <span class="fl">7.4</span>), gridspec_kw<span class="op">=</span><span class="bu">dict</span>(width_ratios<span class="op">=</span>[<span class="dv">1</span>, <span class="fl">0.25</span>] <span class="op">+</span> [<span class="dv">1</span>] <span class="op">*</span> <span class="dv">8</span>))</span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k, nm <span class="kw">in</span> <span class="bu">enumerate</span>(names):</span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a>    real <span class="op">=</span> Btr[(bytr <span class="op">==</span> k).nonzero()[<span class="dv">0</span>, <span class="dv">0</span>]].permute(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">0</span>).numpy()</span>
+<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a>    axs[k, <span class="dv">0</span>].imshow(real)<span class="op">;</span> axs[k, <span class="dv">1</span>].axis(<span class="st">"off"</span>)</span>
+<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> j, im <span class="kw">in</span> <span class="bu">enumerate</span>(generate_cell(nm, <span class="dv">8</span>).permute(<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>).numpy()):</span>
+<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a>        axs[k, j <span class="op">+</span> <span class="dv">2</span>].imshow(im)</span>
+<span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a>    axs[k, <span class="dv">0</span>].text(<span class="op">-</span><span class="dv">3</span>, <span class="dv">14</span>, nm, ha<span class="op">=</span><span class="st">"right"</span>, va<span class="op">=</span><span class="st">"center"</span>, fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> a <span class="kw">in</span> axs[k]: a.set_xticks([])<span class="op">;</span> a.set_yticks([])</span>
+<span id="cb44-19"><a href="#cb44-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> a <span class="kw">in</span> axs[k, <span class="dv">2</span>:]: a.axis(<span class="st">"off"</span>)</span>
+<span id="cb44-20"><a href="#cb44-20" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">0</span>, <span class="dv">0</span>].set_title(<span class="st">"real"</span>, fontsize<span class="op">=</span><span class="dv">9</span>)<span class="op">;</span> axs[<span class="dv">0</span>, <span class="dv">2</span>].set_title(<span class="st">"generated: generate_cell(name, 8)"</span>, fontsize<span class="op">=</span><span class="dv">9</span>, loc<span class="op">=</span><span class="st">"left"</span>)</span>
+<span id="cb44-21"><a href="#cb44-21" aria-hidden="true" tabindex="-1"></a>plt.subplots_adjust(wspace<span class="op">=</span><span class="fl">0.04</span>, hspace<span class="op">=</span><span class="fl">0.06</span>)<span class="op">;</span> plt.savefig(<span class="ss">f"</span><span class="sc">{</span>OUT<span class="sc">}</span><span class="ss">/cond_generate_cells.png"</span>, dpi<span class="op">=</span><span class="dv">170</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)<span class="op">;</span> plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>/tmp/ipykernel_3978098/3079786119.py:21: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  plt.subplots_adjust(wspace=0.04, hspace=0.06); plt.savefig(f"{OUT}/cond_generate_cells.png", dpi=170, bbox_inches="tight"); plt.show()</code></pre>
+</div>
+</div>
+</section>
+<section id="d.-classifier-check-of-the-synthetic-cells" class="level3">
+<h3 class="anchored" data-anchor-id="d.-classifier-check-of-the-synthetic-cells">3d. Classifier Check of the Synthetic Cells</h3>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:12:58.390130Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:12:58.389337Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:13:00.500839Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:13:00.499971Z&quot;}" data-execution_count="16">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">34</span>)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>reqb, pb_syn <span class="op">=</span> [], []</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k, nm <span class="kw">in</span> <span class="bu">enumerate</span>(names):</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>        pb_syn <span class="op">+=</span> clfb(generate_cell(nm, <span class="dv">500</span>)).argmax(<span class="dv">1</span>).tolist()<span class="op">;</span> reqb <span class="op">+=</span> [k] <span class="op">*</span> <span class="dv">500</span></span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>cmb_syn <span class="op">=</span> confusion(np.array(reqb), np.array(pb_syn), <span class="dv">8</span>)</span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>nums[<span class="st">"blood_syn_agreement"</span>] <span class="op">=</span> {nm: <span class="bu">round</span>(<span class="bu">float</span>(cmb_syn[k, k]), <span class="dv">3</span>) <span class="cf">for</span> k, nm <span class="kw">in</span> <span class="bu">enumerate</span>(names)}</span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>nums[<span class="st">"blood_syn_agreement_mean"</span>] <span class="op">=</span> <span class="bu">float</span>(np.mean(np.diag(cmb_syn)))</span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>np.savez(<span class="ss">f"</span><span class="sc">{</span>RES<span class="sc">}</span><span class="ss">/cond_blood_confusion.npz"</span>, real<span class="op">=</span>cmb_real, synthetic<span class="op">=</span>cmb_syn)</span>
+<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a>short <span class="op">=</span> [<span class="st">"baso"</span>, <span class="st">"eosino"</span>, <span class="st">"erythro"</span>, <span class="st">"imm. gran."</span>, <span class="st">"lympho"</span>, <span class="st">"mono"</span>, <span class="st">"neutro"</span>, <span class="st">"platelet"</span>]</span>
+<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">4.8</span>))</span>
+<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> a, m, ttl, yl <span class="kw">in</span> [(axs[<span class="dv">0</span>], cmb_real, <span class="ss">f"real test cells: accuracy </span><span class="sc">{</span>nums[<span class="st">'blood_clf_real_acc'</span>]<span class="sc">:.3f}</span><span class="ss">"</span>, <span class="st">"true type"</span>),</span>
+<span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a>                      (axs[<span class="dv">1</span>], cmb_syn, <span class="ss">f"synthetic cells: </span><span class="sc">{</span>nums[<span class="st">'blood_syn_agreement_mean'</span>]<span class="sc">:.3f}</span><span class="ss"> as requested"</span>, <span class="st">"requested type"</span>)]:</span>
+<span id="cb46-15"><a href="#cb46-15" aria-hidden="true" tabindex="-1"></a>    a.imshow(m, cmap<span class="op">=</span><span class="st">"Blues"</span>, vmin<span class="op">=</span><span class="dv">0</span>, vmax<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb46-16"><a href="#cb46-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">8</span>):</span>
+<span id="cb46-17"><a href="#cb46-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">8</span>):</span>
+<span id="cb46-18"><a href="#cb46-18" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> m[i, j] <span class="op">&gt;=</span> <span class="fl">0.01</span>: a.text(j, i, <span class="ss">f"</span><span class="sc">{</span><span class="dv">100</span> <span class="op">*</span> m[i, j]<span class="sc">:.0f}</span><span class="ss">"</span>, ha<span class="op">=</span><span class="st">"center"</span>, va<span class="op">=</span><span class="st">"center"</span>, fontsize<span class="op">=</span><span class="dv">8</span>, color<span class="op">=</span><span class="st">"white"</span> <span class="cf">if</span> m[i, j] <span class="op">&gt;</span> <span class="fl">0.5</span> <span class="cf">else</span> <span class="st">"black"</span>)</span>
+<span id="cb46-19"><a href="#cb46-19" aria-hidden="true" tabindex="-1"></a>    a.set_xticks(<span class="bu">range</span>(<span class="dv">8</span>))<span class="op">;</span> a.set_xticklabels(short, rotation<span class="op">=</span><span class="dv">45</span>, ha<span class="op">=</span><span class="st">"right"</span>, fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb46-20"><a href="#cb46-20" aria-hidden="true" tabindex="-1"></a>    a.set_yticks(<span class="bu">range</span>(<span class="dv">8</span>))<span class="op">;</span> a.set_yticklabels(short, fontsize<span class="op">=</span><span class="dv">9</span>)<span class="op">;</span> a.set_xlabel(<span class="st">"predicted type"</span>)<span class="op">;</span> a.set_ylabel(yl)<span class="op">;</span> a.set_title(ttl, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb46-21"><a href="#cb46-21" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.savefig(<span class="ss">f"</span><span class="sc">{</span>OUT<span class="sc">}</span><span class="ss">/cond_blood_confusion.png"</span>, dpi<span class="op">=</span><span class="dv">170</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)<span class="op">;</span> plt.show()</span>
+<span id="cb46-22"><a href="#cb46-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"fraction recognised as requested:"</span>, nums[<span class="st">"blood_syn_agreement"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>fraction recognised as requested: {'basophil': 0.062, 'eosinophil': 0.822, 'erythroblast': 0.962, 'immature granulocyte': 0.818, 'lymphocyte': 0.142, 'monocyte': 0.182, 'neutrophil': 0.116, 'platelet': 1.0}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/tmp/ipykernel_3978098/1613527970.py:21: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  plt.tight_layout(); plt.savefig(f"{OUT}/cond_blood_confusion.png", dpi=170, bbox_inches="tight"); plt.show()</code></pre>
+</div>
+</div>
+<p>Compare the two diagonals. Types that differ in size and colour are generated recognisably; types that differ in the shape of the nucleus are not: the VAE blurs exactly the detail the classifier relies on, and the off-diagonal entries show which type they collapse to.</p>
+</section>
+<section id="e.-training-on-synthetic-cells-only" class="level3">
+<h3 class="anchored" data-anchor-id="e.-training-on-synthetic-cells-only">3e. Training on synthetic cells only</h3>
+<p>As for the digits (part 2e): the same CNN, trained on 12 000 generated cells (1500 per type, labels = requested types), tested on the real test cells.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:13:00.504500Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:13:00.503912Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:13:51.880465Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:13:51.879952Z&quot;}" data-execution_count="17">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">35</span>)</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>Bs <span class="op">=</span> torch.cat([generate_cell(nm, <span class="dv">1500</span>) <span class="cf">for</span> nm <span class="kw">in</span> names])<span class="op">;</span> ybs <span class="op">=</span> torch.arange(<span class="dv">8</span>).repeat_interleave(<span class="dv">1500</span>)</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> seed(<span class="dv">9</span>)</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>clfb_syn <span class="op">=</span> train_classifier(nn.Sequential(nn.Conv2d(<span class="dv">3</span>, <span class="dv">32</span>, <span class="dv">3</span>, padding<span class="op">=</span><span class="dv">1</span>), nn.ReLU(), nn.MaxPool2d(<span class="dv">2</span>), nn.Conv2d(<span class="dv">32</span>, <span class="dv">64</span>, <span class="dv">3</span>, padding<span class="op">=</span><span class="dv">1</span>), nn.ReLU(), nn.MaxPool2d(<span class="dv">2</span>),</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>                                          nn.Flatten(), nn.Linear(<span class="dv">64</span> <span class="op">*</span> <span class="dv">7</span> <span class="op">*</span> <span class="dv">7</span>, <span class="dv">128</span>), nn.ReLU(), nn.Linear(<span class="dv">128</span>, <span class="dv">8</span>)), Bs, ybs, epochs<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>torch.save(clfb_syn.state_dict(), <span class="ss">f"</span><span class="sc">{</span>RES<span class="sc">}</span><span class="ss">/cond_blood_classifier_trained_on_synthetic.pt"</span>)</span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad(): pbs <span class="op">=</span> clfb_syn(Bte).argmax(<span class="dv">1</span>).numpy()</span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>cmb_s <span class="op">=</span> confusion(byte.numpy(), pbs, <span class="dv">8</span>)</span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>nums[<span class="st">"blood_train_syn_test_real_acc"</span>] <span class="op">=</span> <span class="bu">float</span>((pbs <span class="op">==</span> byte.numpy()).mean())</span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>nums[<span class="st">"blood_train_syn_test_real_per_type"</span>] <span class="op">=</span> {nm: <span class="bu">round</span>(<span class="bu">float</span>(cmb_s[k, k]), <span class="dv">3</span>) <span class="cf">for</span> k, nm <span class="kw">in</span> <span class="bu">enumerate</span>(names)}</span>
+<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"real-data CNN on real test cells: </span><span class="sc">{</span>nums[<span class="st">'blood_clf_real_acc'</span>]<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"synthetic-data CNN on real test cells: </span><span class="sc">{</span>nums[<span class="st">'blood_train_syn_test_real_acc'</span>]<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"per type:"</span>, nums[<span class="st">"blood_train_syn_test_real_per_type"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>real-data CNN on real test cells: 0.838
+synthetic-data CNN on real test cells: 0.637
+per type: {'basophil': 0.816, 'eosinophil': 0.635, 'erythroblast': 0.646, 'immature granulocyte': 0.38, 'lymphocyte': 0.827, 'monocyte': 0.317, 'neutrophil': 0.643, 'platelet': 0.947}</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="training-and-testing-on-real-and-synthetic-data" class="level2">
+<h2 class="anchored" data-anchor-id="training-and-testing-on-real-and-synthetic-data">4. Training and Testing on Real and Synthetic Data</h2>
+<p>Four combinations of training and test data, for each data set. The synthetic test sets are freshly generated (1000 digits per class, 500 cells per type), never used in training.</p>
+<table class="table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>tested on real</th>
+<th>tested on synthetic</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>trained on real</strong></td>
+<td>how good the classifier is</td>
+<td>is the requested class recognisable?</td>
+</tr>
+<tr class="even">
+<td><strong>trained on synthetic</strong></td>
+<td>can synthetic data replace real data?</td>
+<td>does the generator separate the classes it was asked for?</td>
+</tr>
+</tbody>
+</table>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:13:51.887949Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:13:51.887479Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:13:58.248296Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:13:58.247352Z&quot;}" data-execution_count="18">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">36</span>)</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>Xs_te <span class="op">=</span> torch.cat([generate_digit(k, <span class="dv">1000</span>) <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>)])<span class="op">;</span> ys_te <span class="op">=</span> torch.arange(<span class="dv">10</span>).repeat_interleave(<span class="dv">1000</span>)</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>Bs_te <span class="op">=</span> torch.cat([generate_cell(nm, <span class="dv">500</span>) <span class="cf">for</span> nm <span class="kw">in</span> names])<span class="op">;</span> ybs_te <span class="op">=</span> torch.arange(<span class="dv">8</span>).repeat_interleave(<span class="dv">500</span>)</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> acc(model, X, y):</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> torch.no_grad(): <span class="cf">return</span> <span class="bu">float</span>((model(X).argmax(<span class="dv">1</span>) <span class="op">==</span> y).<span class="bu">float</span>().mean())</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>table <span class="op">=</span> {<span class="st">"MNIST"</span>: np.array([[acc(clf, Xte, yte), acc(clf, Xs_te, ys_te)], [acc(clf_syn, Xte, yte), acc(clf_syn, Xs_te, ys_te)]]),</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>         <span class="st">"BloodMNIST"</span>: np.array([[acc(clfb, Bte, byte), acc(clfb, Bs_te, ybs_te)], [acc(clfb_syn, Bte, byte), acc(clfb_syn, Bs_te, ybs_te)]])}</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>nums[<span class="st">"two_by_two"</span>] <span class="op">=</span> {k: v.<span class="bu">round</span>(<span class="dv">3</span>).tolist() <span class="cf">for</span> k, v <span class="kw">in</span> table.items()}</span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="fl">3.4</span>))</span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> a, (name, m) <span class="kw">in</span> <span class="bu">zip</span>(axs, table.items()):</span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>    a.imshow(m, cmap<span class="op">=</span><span class="st">"Blues"</span>, vmin<span class="op">=</span><span class="dv">0</span>, vmax<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>):</span>
+<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>): a.text(j, i, <span class="ss">f"</span><span class="sc">{</span>m[i, j]<span class="sc">:.3f}</span><span class="ss">"</span>, ha<span class="op">=</span><span class="st">"center"</span>, va<span class="op">=</span><span class="st">"center"</span>, fontsize<span class="op">=</span><span class="dv">15</span>, color<span class="op">=</span><span class="st">"white"</span> <span class="cf">if</span> m[i, j] <span class="op">&gt;</span> <span class="fl">0.6</span> <span class="cf">else</span> <span class="st">"black"</span>)</span>
+<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a>    a.set_xticks([<span class="dv">0</span>, <span class="dv">1</span>])<span class="op">;</span> a.set_xticklabels([<span class="st">"tested on real"</span>, <span class="st">"tested on synthetic"</span>], fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a>    a.set_yticks([<span class="dv">0</span>, <span class="dv">1</span>])<span class="op">;</span> a.set_yticklabels([<span class="st">"trained on real"</span>, <span class="st">"trained on synthetic"</span>], fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a>    a.set_title(<span class="ss">f"</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">: accuracy"</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb51-17"><a href="#cb51-17" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.savefig(<span class="ss">f"</span><span class="sc">{</span>OUT<span class="sc">}</span><span class="ss">/cond_two_by_two.png"</span>, dpi<span class="op">=</span><span class="dv">170</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)<span class="op">;</span> plt.show()</span>
+<span id="cb51-18"><a href="#cb51-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k, v <span class="kw">in</span> table.items(): <span class="bu">print</span>(k, <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>, v.<span class="bu">round</span>(<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>MNIST 
+ [[0.969 0.955]
+ [0.918 0.986]]
+BloodMNIST 
+ [[0.838 0.514]
+ [0.637 0.864]]</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/tmp/ipykernel_3978098/3929926398.py:17: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  plt.tight_layout(); plt.savefig(f"{OUT}/cond_two_by_two.png", dpi=170, bbox_inches="tight"); plt.show()</code></pre>
+</div>
+</div>
+<p>Read the table by rows. A classifier trained on real data and tested on synthetic data measures whether the generator draws the requested class. A classifier trained on synthetic data and tested on real data measures whether the synthetic data carry what is needed to recognise real instances. A high synthetic/synthetic accuracy with a low synthetic/real accuracy means the generator produces classes that are easy to tell apart, but not the real ones.</p>
+<p><strong>Try it.</strong> Mix real and synthetic training cells: 10% of the real training set plus all synthetic cells. Does the synthetic data help when real data are scarce?</p>
+</section>
+<section id="numbers-used-on-the-slides" class="level2">
+<h2 class="anchored" data-anchor-id="numbers-used-on-the-slides">Numbers used on the slides</h2>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:13:58.252478Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:13:58.252082Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:13:58.259649Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:13:58.258770Z&quot;}" data-execution_count="19">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>json.dump(nums, <span class="bu">open</span>(<span class="ss">f"</span><span class="sc">{</span>RES<span class="sc">}</span><span class="ss">/numbers_cond.json"</span>, <span class="st">"w"</span>), indent<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(json.dumps(nums, indent<span class="op">=</span><span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>{
+ "vae2_mean_sigma": 0.040771543979644775,
+ "vae2_frac_within_1": 0.4876,
+ "vae2_frac_within_2": 0.7966,
+ "vae2_frac_within_3": 0.9651,
+ "mnist_clf_real_acc": 0.9692,
+ "mnist_syn_agreement": [
+  0.943,
+  0.981,
+  0.952,
+  0.953,
+  0.99,
+  0.937,
+  0.93,
+  0.962,
+  0.968,
+  0.906
+ ],
+ "mnist_syn_agreement_mean": 0.9522,
+ "mnist_train_syn_test_real_acc": 0.9179,
+ "blood_clf_real_acc": 0.8380590470622625,
+ "blood_syn_agreement": {
+  "basophil": 0.062,
+  "eosinophil": 0.822,
+  "erythroblast": 0.962,
+  "immature granulocyte": 0.818,
+  "lymphocyte": 0.142,
+  "monocyte": 0.182,
+  "neutrophil": 0.116,
+  "platelet": 1.0
+ },
+ "blood_syn_agreement_mean": 0.5129999999999999,
+ "blood_train_syn_test_real_acc": 0.6372405729318913,
+ "blood_train_syn_test_real_per_type": {
+  "basophil": 0.816,
+  "eosinophil": 0.635,
+  "erythroblast": 0.646,
+  "immature granulocyte": 0.38,
+  "lymphocyte": 0.827,
+  "monocyte": 0.317,
+  "neutrophil": 0.643,
+  "platelet": 0.947
+ },
+ "two_by_two": {
+  "MNIST": [
+   [
+    0.969,
+    0.955
+   ],
+   [
+    0.918,
+    0.986
+   ]
+  ],
+  "BloodMNIST": [
+   [
+    0.838,
+    0.514
+   ],
+   [
+    0.637,
+    0.864
+   ]
+  ]
+ }
+}</code></pre>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../notebooks/lecture-06/generative-models.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Generative models: probability, VAE, GAN and diffusion</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../about.html" class="pagination-link">
+        <span class="nav-page-text">About</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">© 2026 Marcin Płodzień</div>   
+    <div class="nav-footer-right"><a href="https://chaos.if.uj.edu.pl/marcinplodzien/">Homepage</a> · <a href="mailto:marcin.plodzien@uj.edu.pl">Email</a> · <a href="https://orcid.org/0000-0002-0835-1644">ORCID</a> · <a href="https://scholar.google.com/citations?user=eC9nCmgAAAAJ&amp;hl=en">Scholar</a> · <a href="https://github.com/MarcinPlodzien">GitHub</a></div>
+  </div>
+</footer>
+
+
+
+</body></html>
