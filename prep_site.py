@@ -61,7 +61,7 @@ NOTEBOOKS = [
 
 # files published next to the notebooks: (lecture, source relative to the lecture folder, web path)
 EXTRA_FILES = [
-    (3, "Notebooks/results/model_E.pt", "notebooks/lecture-03/results/model_E.pt"),
+    (3, "Notebooks/results/model_E.pt", "weights/lecture-03/model_E.pt"),
 ]
 
 MONTHS = "January|February|March|April|May|June|July|August|September|October|November|December"
