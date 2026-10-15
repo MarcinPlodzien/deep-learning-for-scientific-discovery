@@ -156,19 +156,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <ul class="dropdown-menu" aria-labelledby="nav-menu-lectures">    
         <li>
     <a class="dropdown-item" href="../../lectures/lecture-01.html">
- <span class="dropdown-text">1 · Course Organisation</span></a>
+ <span class="dropdown-text">1 · From AI to Deep Learning</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../../lectures/lecture-02.html">
- <span class="dropdown-text">2 · From AI to Deep Learning</span></a>
+ <span class="dropdown-text">2 · The Recipe of Deep Learning</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../../lectures/lecture-03.html">
- <span class="dropdown-text">3 · The Recipe of Deep Learning</span></a>
+ <span class="dropdown-text">3 · Convolutional Networks</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../../lectures/lecture-04.html">
- <span class="dropdown-text">4 · CNNs, Interpretability and the 2D Ising Model</span></a>
+ <span class="dropdown-text">4 · CNNs on Scientific Data and the 2D Ising Model</span></a>
   </li>  
     </ul>
   </li>
@@ -231,11 +231,33 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
-      <span class="sidebar-item-text sidebar-link text-start">1 · Course Organisation</span>
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-01.html" class="sidebar-item-text sidebar-link">1 · From AI to Deep Learning</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-01/lab-001-python-matplotlib-pandas.html" class="sidebar-item-text sidebar-link">Lab 001: Python, Matplotlib and Pandas</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-01/lab-002-numpy.html" class="sidebar-item-text sidebar-link">Lab 002: NumPy</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-01/lab-003-pytorch.html" class="sidebar-item-text sidebar-link">Lab 003: PyTorch tensors, devices and layers</a>
+  </div>
+</li>
+      </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../lectures/lecture-02.html" class="sidebar-item-text sidebar-link">2 · From AI to Deep Learning</a>
+            <a href="../../lectures/lecture-02.html" class="sidebar-item-text sidebar-link">2 · The Recipe of Deep Learning</a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -243,69 +265,49 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../notebooks/lecture-02/lab-001-python-matplotlib-pandas.html" class="sidebar-item-text sidebar-link">Lab 001: Python, Matplotlib and Pandas</a>
+  <a href="../../notebooks/lecture-02/lab-004-automatic-differentiation.html" class="sidebar-item-text sidebar-link">Lab 004: Automatic differentiation</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../notebooks/lecture-02/lab-002-numpy.html" class="sidebar-item-text sidebar-link">Lab 002: NumPy, thinking in arrays</a>
+  <a href="../../notebooks/lecture-02/lab-005-n-pendulum.html" class="sidebar-item-text sidebar-link">Lab 005: The N-link pendulum with SymPy and automatic differentiation</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../notebooks/lecture-02/lab-003-pytorch.html" class="sidebar-item-text sidebar-link">Lab 003: PyTorch tensors, devices and layers</a>
+  <a href="../../notebooks/lecture-02/lab-006-uat-and-minimisers.html" class="sidebar-item-text sidebar-link">Lab 006: Universal approximation and the choice of minimiser</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-02/lab-007-building-and-training.html" class="sidebar-item-text sidebar-link">Lab 007: Building and training neural networks</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-02/lab-008-analysing-networks.html" class="sidebar-item-text sidebar-link">Lab 008: Analysing a neural network</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-02/lab-009-mnist.html" class="sidebar-item-text sidebar-link">Lab 009: MNIST, regression versus cross-entropy</a>
   </div>
 </li>
       </ul>
   </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../lectures/lecture-03.html" class="sidebar-item-text sidebar-link">3 · Convolutional Networks</a>
+  </div>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../lectures/lecture-03.html" class="sidebar-item-text sidebar-link">3 · The Recipe of Deep Learning</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+            <a href="../../lectures/lecture-04.html" class="sidebar-item-text sidebar-link">4 · CNNs on Scientific Data and the 2D Ising Model</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../notebooks/lecture-03/lab-004-automatic-differentiation.html" class="sidebar-item-text sidebar-link">Lab 004: Automatic differentiation</a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../notebooks/lecture-03/lab-005-n-pendulum.html" class="sidebar-item-text sidebar-link">Lab 005: The N-link pendulum with SymPy and automatic differentiation</a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../notebooks/lecture-03/lab-006-uat-and-minimisers.html" class="sidebar-item-text sidebar-link">Lab 006: Universal approximation and the choice of minimiser</a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../notebooks/lecture-03/lab-007-building-and-training.html" class="sidebar-item-text sidebar-link">Lab 007: Building and training neural networks</a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../notebooks/lecture-03/lab-008-analysing-networks.html" class="sidebar-item-text sidebar-link">Lab 008: Analysing a neural network</a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../notebooks/lecture-03/lab-009-mnist.html" class="sidebar-item-text sidebar-link">Lab 009: MNIST, regression versus cross-entropy</a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a href="../../lectures/lecture-04.html" class="sidebar-item-text sidebar-link">4 · CNNs, Interpretability and the 2D Ising Model</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/lecture-04/bloodmnist-cnn-regularisation-cam.html" class="sidebar-item-text sidebar-link">Blood cells: CNNs, regularisation and class activation maps</a>
@@ -313,7 +315,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../notebooks/lecture-04/convolution-and-ising.html" class="sidebar-item-text sidebar-link">Convolution and the 2D Ising model: the figures of the lecture</a>
+  <a href="../../notebooks/lecture-04/convolution-and-ising.html" class="sidebar-item-text sidebar-link">Convolution and the 2D Ising model</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -356,10 +358,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#training" id="toc-training" class="nav-link" data-scroll-target="#training">4. Training</a></li>
   <li><a href="#asking-the-network-about-all-temperatures" id="toc-asking-the-network-about-all-temperatures" class="nav-link" data-scroll-target="#asking-the-network-about-all-temperatures">5. Asking the network about all temperatures</a></li>
   <li><a href="#finite-size-effects" id="toc-finite-size-effects" class="nav-link" data-scroll-target="#finite-size-effects">6. Finite-size effects</a></li>
-  <li><a href="#opening-the-chinese-room-what-the-network-learned" id="toc-opening-the-chinese-room-what-the-network-learned" class="nav-link" data-scroll-target="#opening-the-chinese-room-what-the-network-learned">7. Opening the Chinese room: what the network learned</a>
+  <li><a href="#what-the-network-learned" id="toc-what-the-network-learned" class="nav-link" data-scroll-target="#what-the-network-learned">7. What the Network Learned</a>
   <ul class="collapse">
   <li><a href="#output-vs-magnetisation" id="toc-output-vs-magnetisation" class="nav-link" data-scroll-target="#output-vs-magnetisation">7.1 Output vs magnetisation</a></li>
-  <li><a href="#a-controlled-experiment-shuffle-the-spins" id="toc-a-controlled-experiment-shuffle-the-spins" class="nav-link" data-scroll-target="#a-controlled-experiment-shuffle-the-spins">7.2 A controlled experiment: shuffle the spins</a></li>
+  <li><a href="#shuffled-spins" id="toc-shuffled-spins" class="nav-link" data-scroll-target="#shuffled-spins">7.2 Shuffled Spins</a></li>
   <li><a href="#the-learned-filters" id="toc-the-learned-filters" class="nav-link" data-scroll-target="#the-learned-filters">7.3 The learned filters</a></li>
   </ul></li>
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">8. Exercises</a></li>
@@ -756,8 +758,8 @@ The two classes are easy to separate (at <span class="math inline">\(T&lt;1.5\)<
 <strong>What to notice.</strong> * The switch from “ordered” to “disordered” becomes <strong>sharper</strong> as <span class="math inline">\(L\)</span> grows: the transition region of a finite lattice shrinks (Lab 010). * The estimates depend on <span class="math inline">\(L\)</span>, on the temperature grid (spacing <span class="math inline">\(0.05\)</span>) and on the random training run — compare the per-seed values in the table: the seed-to-seed spread is not small compared with the distance to <span class="math inline">\(T_c\)</span>. A single number such as “<span class="math inline">\(\bar T_c\)</span> for <span class="math inline">\(L=50\)</span>” is a <em>pseudo-critical</em> temperature; extracting <span class="math inline">\(T_c\)</span> itself needs several <span class="math inline">\(L\)</span> and an extrapolation <span class="math inline">\(L\to\infty\)</span>.
 <hr>
 </section>
-<section id="opening-the-chinese-room-what-the-network-learned" class="level2">
-<h2 class="anchored" data-anchor-id="opening-the-chinese-room-what-the-network-learned">7. Opening the Chinese room: what the network learned</h2>
+<section id="what-the-network-learned" class="level2">
+<h2 class="anchored" data-anchor-id="what-the-network-learned">7. What the Network Learned</h2>
 <p>The network located the transition, but it did not <em>tell</em> us anything — no order parameter, no mechanism (Lecture 4, <em>The Chinese Room</em>). Can we look inside?</p>
 <section id="output-vs-magnetisation" class="level3">
 <h3 class="anchored" data-anchor-id="output-vs-magnetisation">7.1 Output vs magnetisation</h3>
@@ -799,8 +801,8 @@ The two classes are easy to separate (at <span class="math inline">\(T&lt;1.5\)<
 <p>The rank correlation printed above measures how well the ordering of configurations by <span class="math inline">\(|m|\)</span> agrees with their ordering by <span class="math inline">\(p_1\)</span> (<span class="math inline">\(\pm1\)</span>: perfectly monotonic, <span class="math inline">\(0\)</span>: unrelated). The right panel asks a sharper question: at the <strong>same</strong> <span class="math inline">\(|m|\)</span>, does the network answer differently for configurations from below and above <span class="math inline">\(T_c\)</span>? If the two curves lie on top of each other, the output depends (almost) only on <span class="math inline">\(|m|\)</span>. If they separate, the network uses more information than the magnetisation.</p>
 <p><em>In the run stored in this notebook:</em> the rank correlation is strongly negative (large <span class="math inline">\(|m|\)</span> ↔︎ “ordered”), so <span class="math inline">\(|m|\)</span> explains most of the output. But in the overlapping range of <span class="math inline">\(|m|\)</span> the two curves do not coincide: at equal magnetisation, configurations from <span class="math inline">\(T&gt;T_c\)</span> get a larger <span class="math inline">\(p_1\)</span>. The network uses more than <span class="math inline">\(|m|\)</span>.</p>
 </section>
-<section id="a-controlled-experiment-shuffle-the-spins" class="level3">
-<h3 class="anchored" data-anchor-id="a-controlled-experiment-shuffle-the-spins">7.2 A controlled experiment: shuffle the spins</h3>
+<section id="shuffled-spins" class="level3">
+<h3 class="anchored" data-anchor-id="shuffled-spins">7.2 Shuffled Spins</h3>
 <p>We can test directly whether spatial structure matters. For each configuration we <strong>randomly permute the positions</strong> of its spins. This keeps <span class="math inline">\(m\)</span> <em>exactly</em>, but destroys all spatial correlations (domains, clusters, domain walls), so the nearest-neighbour energy changes. A pure “<span class="math inline">\(|m|\)</span>-detector” would give identical outputs for original and shuffled configurations.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T11:52:26.150611Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T11:52:26.150404Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T11:52:27.111795Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T11:52:27.111330Z&quot;}" data-execution_count="10">
 <details open="">

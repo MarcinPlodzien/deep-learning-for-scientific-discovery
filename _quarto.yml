@@ -29,13 +29,13 @@ website:
         href: index.qmd
       - text: "Lectures"
         menu:
-          - text: "1 · Course Organisation"
+          - text: "1 · From AI to Deep Learning"
             href: lectures/lecture-01.qmd
-          - text: "2 · From AI to Deep Learning"
+          - text: "2 · The Recipe of Deep Learning"
             href: lectures/lecture-02.qmd
-          - text: "3 · The Recipe of Deep Learning"
+          - text: "3 · Convolutional Networks"
             href: lectures/lecture-03.qmd
-          - text: "4 · CNNs, Interpretability and the 2D Ising Model"
+          - text: "4 · CNNs on Scientific Data and the 2D Ising Model"
             href: lectures/lecture-04.qmd
       - text: "Course flyer"
         href: assets/course-flyer.pdf
@@ -56,24 +56,24 @@ website:
     contents:
       - text: "Start here"
         href: index.qmd
-      - section: "1 · Course Organisation"
+      - section: "1 · From AI to Deep Learning"
         href: lectures/lecture-01.qmd
-      - section: "2 · From AI to Deep Learning"
+        contents:
+          - notebooks/lecture-01/lab-001-python-matplotlib-pandas.ipynb
+          - notebooks/lecture-01/lab-002-numpy.ipynb
+          - notebooks/lecture-01/lab-003-pytorch.ipynb
+      - section: "2 · The Recipe of Deep Learning"
         href: lectures/lecture-02.qmd
         contents:
-          - notebooks/lecture-02/lab-001-python-matplotlib-pandas.ipynb
-          - notebooks/lecture-02/lab-002-numpy.ipynb
-          - notebooks/lecture-02/lab-003-pytorch.ipynb
-      - section: "3 · The Recipe of Deep Learning"
+          - notebooks/lecture-02/lab-004-automatic-differentiation.ipynb
+          - notebooks/lecture-02/lab-005-n-pendulum.ipynb
+          - notebooks/lecture-02/lab-006-uat-and-minimisers.ipynb
+          - notebooks/lecture-02/lab-007-building-and-training.ipynb
+          - notebooks/lecture-02/lab-008-analysing-networks.ipynb
+          - notebooks/lecture-02/lab-009-mnist.ipynb
+      - text: "3 · Convolutional Networks"
         href: lectures/lecture-03.qmd
-        contents:
-          - notebooks/lecture-03/lab-004-automatic-differentiation.ipynb
-          - notebooks/lecture-03/lab-005-n-pendulum.ipynb
-          - notebooks/lecture-03/lab-006-uat-and-minimisers.ipynb
-          - notebooks/lecture-03/lab-007-building-and-training.ipynb
-          - notebooks/lecture-03/lab-008-analysing-networks.ipynb
-          - notebooks/lecture-03/lab-009-mnist.ipynb
-      - section: "4 · CNNs, Interpretability and the 2D Ising Model"
+      - section: "4 · CNNs on Scientific Data and the 2D Ising Model"
         href: lectures/lecture-04.qmd
         contents:
           - notebooks/lecture-04/bloodmnist-cnn-regularisation-cam.ipynb

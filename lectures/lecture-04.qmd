@@ -1,10 +1,10 @@
 ---
-title: "4 · CNNs, Interpretability and the 2D Ising Model"
+title: "4 · CNNs on Scientific Data and the 2D Ising Model"
 code-tools: false
 toc: false
 ---
 
-Convolution, continuous and discrete, images with three channels, learnable kernels, stride, padding and pooling; convolutional networks on CIFAR-10 and their regularisation. Class activation maps and Grad-CAM show where a network looks; adversarial examples show how easily it is fooled. CNNs on scientific data: blood cells under the microscope (BloodMNIST) and land use from satellite images (EuroSAT). A physics example: the 2D Ising model, its partition function and Onsager's solution, and a CNN that locates the critical temperature from spin configurations alone; the lecture closes with the Chinese Room thought experiment.
+CNNs on scientific data: blood cells under the microscope (BloodMNIST) and land use from satellite images (EuroSAT), with confusion matrices and class activation maps. A physics example: the 2D Ising model, its partition function and Onsager's solution, and a CNN that locates the critical temperature from spin configurations alone; the lecture closes with the Chinese Room thought experiment.
 
 ## Slides
 
@@ -21,7 +21,7 @@ Six models on BloodMNIST, from a dense network to a regularised CNN, with confus
 :::
 
 ::: {.nb-item}
-[Convolution and the 2D Ising model: the figures of the lecture](../notebooks/lecture-04/convolution-and-ising.ipynb)
+[Convolution and the 2D Ising model](../notebooks/lecture-04/convolution-and-ising.ipynb)
 
 Sobel filters, the convolution integral, Ising snapshots across $T_c$, Onsager's results and the CNN estimate of $T_c$.
 :::

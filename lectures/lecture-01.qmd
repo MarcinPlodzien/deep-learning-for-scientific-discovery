@@ -1,13 +1,33 @@
 ---
-title: "1 · Course Organisation"
+title: "1 · Scientific Discovery: from AI to Deep Learning"
 code-tools: false
 toc: false
 ---
 
-The aims of the course and how to get the most out of it, the roadmap of the lectures, the laboratories in Google Colab, the assessment (a short article with full code and pipeline, followed by an oral exam), the two course books and further reading, and the prerequisites.
+Learning models from data is as old as science: Babylonian sky observations, Tycho's measurements, Kepler's laws, Newton's gravity and Einstein's principles, and a graph neural network that rediscovers Newton's law of gravity. Classical data and quantum correlations as new resources; the landscape from artificial intelligence through machine learning to deep learning; the recipe of deep learning; and a tour of discoveries driven by AI, from AlphaFold to AlphaTensor.
 
 ## Slides
 
 [Download the slides (PDF)](../slides/lecture-01.pdf){.btn .btn-outline-primary}
 
 <iframe src="../slides/lecture-01.pdf" width="100%" height="620" style="border:1px solid #dde6ef; border-radius:6px;"></iframe>
+
+## Notebooks
+
+::: {.nb-item}
+[Lab 001: Python, Matplotlib and Pandas](../notebooks/lecture-01/lab-001-python-matplotlib-pandas.ipynb)
+
+A warm-up with the tools used in every later notebook.
+:::
+
+::: {.nb-item}
+[Lab 002: NumPy](../notebooks/lecture-01/lab-002-numpy.ipynb)
+
+Vectorised computation instead of loops.
+:::
+
+::: {.nb-item}
+[Lab 003: PyTorch tensors, devices and layers](../notebooks/lecture-01/lab-003-pytorch.ipynb)
+
+The basic objects of PyTorch.
+:::

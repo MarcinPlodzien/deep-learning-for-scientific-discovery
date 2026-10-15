@@ -17,27 +17,35 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 COURSE = os.path.dirname(HERE)
 REPO = "MarcinPlodzien/deep-learning-for-scientific-discovery"
 
-# lecture -> (folder, pages of the deck or None for all)
+# web lecture -> how its slides are made from a delivered deck. Each web lecture is compiled
+# separately in a temporary copy of the deck's beamer folder: only the listed sections, its own
+# subtitle and footer ("Lecture N"), and "use" files that replace sections changed after delivery.
+FOLDERS = {1: "Lecture_01-02_2026.10.06", 2: "Lecture_03_2026.10.13", 3: "Lecture_04_2026.10.14", 4: "Lecture_04_2026.10.14"}
 DECKS = {
-    1: ("Lecture_01-02_2026.10.06", "1-13,last"),
-    2: ("Lecture_01-02_2026.10.06", "1,14-last"),
-    3: ("Lecture_03_2026.10.13", None),
-    4: ("Lecture_04_2026.10.14", None),
+    1: dict(sections=["01a_discovery_story", "01_motivation", "02_ai_landscape", "03_learning_recipe", "04_breakthroughs", "05_closing"],
+            subtitle=r"Lecture 1: & Scientific Discovery: Understanding from Data\\ & From AI to Deep Learning"),
+    2: dict(sections=["03_learning_recipe", "04_mnist", "05_closing"],
+            subtitle=r"Lecture 2: & The Recipe of Deep Learning"),
+    3: dict(sections=["00_recap", "04b_cifar_cnn", "04c_regularisation", "04e_cam", "04g_adversarial", "05_closing"],
+            subtitle=r"Lecture 3: & Convolutional Networks\\ & Regularisation, Class Activation Maps\\ & Adversarial Examples",
+            use={"04g_adversarial.tex": "04g_adversarial_before_2026-10-15.tex.bak"}),
+    4: dict(sections=["04f_blood", "04h_ising", "04i_chinese_room", "05_closing"],
+            subtitle=r"Lecture 4: & CNNs on Scientific Data\\ & Blood Cells and Satellite Images\\ & Finding \(T_c\) of the 2D Ising Model"),
 }
 
 # lecture, source notebook (relative to the lecture folder), web name, title
 NOTEBOOKS = [
-    (2, "Lab_001_Python_Matplotlib_Pandas_warmup.ipynb", "lab-001-python-matplotlib-pandas", "Lab 001: Python, Matplotlib and Pandas"),
-    (2, "Lab_002_NumPy_basics.ipynb", "lab-002-numpy", "Lab 002: NumPy, thinking in arrays"),
-    (2, "Lab_003_PyTorch_basics.ipynb", "lab-003-pytorch", "Lab 003: PyTorch tensors, devices and layers"),
-    (3, "Lab_004_Automatic_differentiation.ipynb", "lab-004-automatic-differentiation", "Lab 004: Automatic differentiation"),
-    (3, "Lab_005_N_pendulum_SymPy_and_autodiff.ipynb", "lab-005-n-pendulum", "Lab 005: The N-link pendulum with SymPy and automatic differentiation"),
-    (3, "Lab_006_UAT_and_minimizers.ipynb", "lab-006-uat-and-minimisers", "Lab 006: Universal approximation and the choice of minimiser"),
-    (3, "Lab_007_Building_and_training_networks.ipynb", "lab-007-building-and-training", "Lab 007: Building and training neural networks"),
-    (3, "Lab_008_Analysing_neural_networks.ipynb", "lab-008-analysing-networks", "Lab 008: Analysing a neural network"),
-    (3, "Lab_009_MNIST_regression_vs_cross_entropy.ipynb", "lab-009-mnist", "Lab 009: MNIST, regression versus cross-entropy"),
+    (1, "Lab_001_Python_Matplotlib_Pandas_warmup.ipynb", "lab-001-python-matplotlib-pandas", "Lab 001: Python, Matplotlib and Pandas"),
+    (1, "Lab_002_NumPy_basics.ipynb", "lab-002-numpy", "Lab 002: NumPy"),
+    (1, "Lab_003_PyTorch_basics.ipynb", "lab-003-pytorch", "Lab 003: PyTorch tensors, devices and layers"),
+    (2, "Lab_004_Automatic_differentiation.ipynb", "lab-004-automatic-differentiation", "Lab 004: Automatic differentiation"),
+    (2, "Lab_005_N_pendulum_SymPy_and_autodiff.ipynb", "lab-005-n-pendulum", "Lab 005: The N-link pendulum with SymPy and automatic differentiation"),
+    (2, "Lab_006_UAT_and_minimizers.ipynb", "lab-006-uat-and-minimisers", "Lab 006: Universal approximation and the choice of minimiser"),
+    (2, "Lab_007_Building_and_training_networks.ipynb", "lab-007-building-and-training", "Lab 007: Building and training neural networks"),
+    (2, "Lab_008_Analysing_neural_networks.ipynb", "lab-008-analysing-networks", "Lab 008: Analysing a neural network"),
+    (2, "Lab_009_MNIST_regression_vs_cross_entropy.ipynb", "lab-009-mnist", "Lab 009: MNIST, regression versus cross-entropy"),
     (4, "notebook_2026-10-14-BloodMNIST_CNN_regularisation_CAM.ipynb", "bloodmnist-cnn-regularisation-cam", "Blood cells: CNNs, regularisation and class activation maps"),
-    (4, "notebook_2026-10-14-convolution_and_Ising_figures.ipynb", "convolution-and-ising", "Convolution and the 2D Ising model: the figures of the lecture"),
+    (4, "notebook_2026-10-14-convolution_and_Ising_figures.ipynb", "convolution-and-ising", "Convolution and the 2D Ising model"),
     (4, "Lab_010_Ising_Monte_Carlo_samples.ipynb", "lab-010-ising-monte-carlo", "Lab 010: Monte Carlo samples of the 2D Ising model"),
     (4, "Lab_011_CNN_Tc_from_confidence.ipynb", "lab-011-cnn-tc", "Lab 011: T_c of the 2D Ising model from the confidence of a CNN"),
     (4, "Lab_012_Onsager_exact_solution.ipynb", "lab-012-onsager", "Lab 012: Onsager's exact solution of the 2D Ising model"),
@@ -61,37 +69,30 @@ def run(cmd, cwd=None):
 
 def build_slides():
     out = os.path.join(HERE, "slides"); os.makedirs(out, exist_ok=True)
-    compiled = {}
-    for lec, (folder, pages) in DECKS.items():
-        beamer = os.path.join(COURSE, folder, "beamer")
-        if folder not in compiled:
-            src = open(os.path.join(beamer, "main.tex")).read()
-            web = re.sub(r"\\date\{[^}]*\}", r"\\date{}", src)
-            tmp = tempfile.mkdtemp(prefix="dlsd_web_")
-            texfile = os.path.join(beamer, "main_web.tex")
-            open(texfile, "w").write(web)
-            try:
-                for _ in range(2):
-                    run(["pdflatex", "-interaction=nonstopmode", "-halt-on-error", f"-output-directory={tmp}", "main_web.tex"], cwd=beamer)
-            finally:
-                os.remove(texfile)
-            compiled[folder] = os.path.join(tmp, "main_web.pdf")
-        pdf = compiled[folder]
-        if pages:
-            n = int(re.search(r"Pages:\s+(\d+)", run(["pdfinfo", pdf])).group(1))
-            sel = []
-            for part in pages.split(","):
-                part = part.replace("last", str(n))
-                a, _, b = part.partition("-")
-                sel += list(range(int(a), int(b or a) + 1))
-            tmp = tempfile.mkdtemp(prefix="dlsd_split_")
-            run(["pdfseparate", pdf, os.path.join(tmp, "p-%03d.pdf")])
-            part_pdf = os.path.join(tmp, "part.pdf")
-            run(["pdfunite"] + [os.path.join(tmp, f"p-{i:03d}.pdf") for i in sel] + [part_pdf])
-            pdf = part_pdf
+    for f in glob.glob(os.path.join(out, "lecture-*.pdf")):
+        os.remove(f)
+    for lec, spec in DECKS.items():
+        beamer = os.path.join(COURSE, FOLDERS[lec], "beamer")
+        tmp = tempfile.mkdtemp(prefix=f"dlsd_web{lec}_")
+        work = os.path.join(tmp, "beamer")
+        shutil.copytree(beamer, work, ignore=shutil.ignore_patterns("*.pdf", "*.aux", "*.log", "*.nav", "*.snm", "*.toc", "*.out"))
+        for target, source in spec.get("use", {}).items():
+            shutil.copy(os.path.join(work, "sections", source), os.path.join(work, "sections", target))
+        src = open(os.path.join(work, "main.tex")).read()
+        src = re.sub(r"\\date\{[^}]*\}", r"\\date{}", src)
+        src = re.sub(r"\\subtitle\{.*\}\s*$", lambda m: r"\subtitle{\begin{tabular}[t]{@{}l@{\ }l@{}}" + spec["subtitle"] + r"\end{tabular}}", src, count=1, flags=re.M)
+        src = re.sub(r"Deep Learning for Scientific Discovery \\\(\\cdot\\\) Lectures? [0-9\-]+", lambda m: rf"Deep Learning for Scientific Discovery \(\cdot\) Lecture {lec}", src)
+        src = re.sub(r"(?m)^\s*%?\s*\\input\{sections/[^}]*\}.*\n", "", src)
+        src = src.replace("\\setcounter{section}{-1}", "")          # numbered from 0 only for the organisation part
+        inputs = "".join(rf"\input{{sections/{name}}}" + "\n" for name in spec["sections"])
+        src = src.replace(r"\end{document}", inputs + r"\end{document}")
+        open(os.path.join(work, "main_web.tex"), "w").write(src)
+        for _ in range(2):
+            run(["pdflatex", "-interaction=nonstopmode", "-halt-on-error", "main_web.tex"], cwd=work)
         target = os.path.join(out, f"lecture-{lec:02d}.pdf")
         run(["gs", "-sDEVICE=pdfwrite", "-dCompatibilityLevel=1.5", "-dPDFSETTINGS=/ebook",
-             "-dNOPAUSE", "-dBATCH", "-dQUIET", f"-sOutputFile={target}", pdf])
+             "-dNOPAUSE", "-dBATCH", "-dQUIET", f"-sOutputFile={target}", os.path.join(work, "main_web.pdf")])
+        shutil.rmtree(tmp)
         print(f"slides  lecture {lec}: {os.path.getsize(target) / 1e6:.1f} MB")
 
 
@@ -108,7 +109,7 @@ def build_notebooks():
     if os.path.isdir(dst):
         shutil.rmtree(dst)
     for lec, src_name, web_name, title in NOTEBOOKS:
-        folder = DECKS[lec][0]
+        folder = FOLDERS[lec]
         src = os.path.join(COURSE, folder, "Notebooks", src_name)
         nb = nbformat.read(src, as_version=4)
         rel = f"notebooks/lecture-{lec:02d}/{web_name}.ipynb"

@@ -9,7 +9,9 @@ code-fold: false
 ::: {.hero-text}
 <h1 class="hero-title">Deep Learning for Scientific Discovery</h1>
 
-<p class="hero-tagline">A course of the Doctoral School of Exact and Natural Sciences, Jagiellonian University in Kraków</p>
+<p class="hero-tagline">A doctoral course at the Jagiellonian University in Kraków</p>
+
+<p class="hero-school">For the Doctoral School of Exact and Natural Sciences · winter semester 2026/2027</p>
 
 <p class="hero-logos"><a href="https://en.uj.edu.pl/"><img src="assets/uj_logo.png" alt="Jagiellonian University in Kraków"></a><a href="https://science.phd.uj.edu.pl/"><img src="assets/ds_logo.png" alt="Doctoral School of Exact and Natural Sciences, Jagiellonian University"></a></p>
 
@@ -33,10 +35,10 @@ The course is for doctoral students of physics, mathematics, chemistry, biology 
 
 | | Lecture | Notebooks |
 |---|---|---|
-| 1 | [Course Organisation](lectures/lecture-01.qmd) | |
-| 2 | [Scientific Discovery: from AI to Deep Learning](lectures/lecture-02.qmd) | Labs 001–003: Python, NumPy, PyTorch |
-| 3 | [The Recipe of Deep Learning](lectures/lecture-03.qmd) | Labs 004–009: automatic differentiation, universal approximation, training, MNIST |
-| 4 | [CNNs, Interpretability and the 2D Ising Model](lectures/lecture-04.qmd) | blood cells, convolution and the Ising model, Labs 010–012 |
+| 1 | [Scientific Discovery: from AI to Deep Learning](lectures/lecture-01.qmd) | Labs 001–003: Python, NumPy, PyTorch |
+| 2 | [The Recipe of Deep Learning](lectures/lecture-02.qmd) | Labs 004–009: automatic differentiation, universal approximation, training, MNIST |
+| 3 | [Convolutional Networks](lectures/lecture-03.qmd) | |
+| 4 | [CNNs on Scientific Data and the 2D Ising Model](lectures/lecture-04.qmd) | blood cells, convolution and the Ising model, Labs 010–012 |
 
 ## Main reading
 

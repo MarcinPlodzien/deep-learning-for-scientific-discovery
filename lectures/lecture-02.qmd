@@ -1,10 +1,10 @@
 ---
-title: "2 · Scientific Discovery: from AI to Deep Learning"
+title: "2 · The Recipe of Deep Learning"
 code-tools: false
 toc: false
 ---
 
-Learning models from data is as old as science: Babylonian sky observations, Tycho's measurements, Kepler's laws, Newton's gravity and Einstein's principles, and a graph neural network that rediscovers Newton's law of gravity. Classical data and quantum correlations as new resources; the landscape from artificial intelligence through machine learning to deep learning; the recipe of deep learning; and a tour of discoveries driven by AI, from AlphaFold to AlphaTensor.
+A neural network as a non-linear function with trainable parameters: neurons, layers and activations, the universal approximation theorem, loss functions, gradient descent, backpropagation and automatic differentiation. The first full example is MNIST: a single output trained with the mean squared error against ten outputs trained with the categorical cross-entropy, compared through their confusion matrices.
 
 ## Slides
 
@@ -15,19 +15,37 @@ Learning models from data is as old as science: Babylonian sky observations, Tyc
 ## Notebooks
 
 ::: {.nb-item}
-[Lab 001: Python, Matplotlib and Pandas](../notebooks/lecture-02/lab-001-python-matplotlib-pandas.ipynb)
+[Lab 004: Automatic differentiation](../notebooks/lecture-02/lab-004-automatic-differentiation.ipynb)
 
-A warm-up with the tools used in every later notebook.
+Derivatives computed by the machine, exactly.
 :::
 
 ::: {.nb-item}
-[Lab 002: NumPy, thinking in arrays](../notebooks/lecture-02/lab-002-numpy.ipynb)
+[Lab 005: The N-link pendulum with SymPy and automatic differentiation](../notebooks/lecture-02/lab-005-n-pendulum.ipynb)
 
-Vectorised computation instead of loops.
+Equations of motion obtained symbolically and by automatic differentiation.
 :::
 
 ::: {.nb-item}
-[Lab 003: PyTorch tensors, devices and layers](../notebooks/lecture-02/lab-003-pytorch.ipynb)
+[Lab 006: Universal approximation and the choice of minimiser](../notebooks/lecture-02/lab-006-uat-and-minimisers.ipynb)
 
-The basic objects of PyTorch.
+Fitting functions with networks, and the role of the optimiser.
+:::
+
+::: {.nb-item}
+[Lab 007: Building and training neural networks](../notebooks/lecture-02/lab-007-building-and-training.ipynb)
+
+A complete training loop in PyTorch.
+:::
+
+::: {.nb-item}
+[Lab 008: Analysing a neural network](../notebooks/lecture-02/lab-008-analysing-networks.ipynb)
+
+Architecture, parameter counts and what a trained network does.
+:::
+
+::: {.nb-item}
+[Lab 009: MNIST, regression versus cross-entropy](../notebooks/lecture-02/lab-009-mnist.ipynb)
+
+The two formulations of digit classification on the slides.
 :::

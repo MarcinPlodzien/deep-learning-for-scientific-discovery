@@ -156,19 +156,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <ul class="dropdown-menu" aria-labelledby="nav-menu-lectures">    
         <li>
     <a class="dropdown-item" href="../../lectures/lecture-01.html">
- <span class="dropdown-text">1 · Course Organisation</span></a>
+ <span class="dropdown-text">1 · From AI to Deep Learning</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../../lectures/lecture-02.html">
- <span class="dropdown-text">2 · From AI to Deep Learning</span></a>
+ <span class="dropdown-text">2 · The Recipe of Deep Learning</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../../lectures/lecture-03.html">
- <span class="dropdown-text">3 · The Recipe of Deep Learning</span></a>
+ <span class="dropdown-text">3 · Convolutional Networks</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../../lectures/lecture-04.html">
- <span class="dropdown-text">4 · CNNs, Interpretability and the 2D Ising Model</span></a>
+ <span class="dropdown-text">4 · CNNs on Scientific Data and the 2D Ising Model</span></a>
   </li>  
     </ul>
   </li>
@@ -231,11 +231,33 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
-      <span class="sidebar-item-text sidebar-link text-start">1 · Course Organisation</span>
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-01.html" class="sidebar-item-text sidebar-link">1 · From AI to Deep Learning</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-01/lab-001-python-matplotlib-pandas.html" class="sidebar-item-text sidebar-link">Lab 001: Python, Matplotlib and Pandas</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-01/lab-002-numpy.html" class="sidebar-item-text sidebar-link">Lab 002: NumPy</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-01/lab-003-pytorch.html" class="sidebar-item-text sidebar-link">Lab 003: PyTorch tensors, devices and layers</a>
+  </div>
+</li>
+      </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../lectures/lecture-02.html" class="sidebar-item-text sidebar-link">2 · From AI to Deep Learning</a>
+            <a href="../../lectures/lecture-02.html" class="sidebar-item-text sidebar-link">2 · The Recipe of Deep Learning</a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -243,69 +265,49 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../notebooks/lecture-02/lab-001-python-matplotlib-pandas.html" class="sidebar-item-text sidebar-link">Lab 001: Python, Matplotlib and Pandas</a>
+  <a href="../../notebooks/lecture-02/lab-004-automatic-differentiation.html" class="sidebar-item-text sidebar-link">Lab 004: Automatic differentiation</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../notebooks/lecture-02/lab-002-numpy.html" class="sidebar-item-text sidebar-link">Lab 002: NumPy, thinking in arrays</a>
+  <a href="../../notebooks/lecture-02/lab-005-n-pendulum.html" class="sidebar-item-text sidebar-link">Lab 005: The N-link pendulum with SymPy and automatic differentiation</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../notebooks/lecture-02/lab-003-pytorch.html" class="sidebar-item-text sidebar-link">Lab 003: PyTorch tensors, devices and layers</a>
+  <a href="../../notebooks/lecture-02/lab-006-uat-and-minimisers.html" class="sidebar-item-text sidebar-link">Lab 006: Universal approximation and the choice of minimiser</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-02/lab-007-building-and-training.html" class="sidebar-item-text sidebar-link">Lab 007: Building and training neural networks</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-02/lab-008-analysing-networks.html" class="sidebar-item-text sidebar-link">Lab 008: Analysing a neural network</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-02/lab-009-mnist.html" class="sidebar-item-text sidebar-link">Lab 009: MNIST, regression versus cross-entropy</a>
   </div>
 </li>
       </ul>
   </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../lectures/lecture-03.html" class="sidebar-item-text sidebar-link">3 · Convolutional Networks</a>
+  </div>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../lectures/lecture-03.html" class="sidebar-item-text sidebar-link">3 · The Recipe of Deep Learning</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+            <a href="../../lectures/lecture-04.html" class="sidebar-item-text sidebar-link">4 · CNNs on Scientific Data and the 2D Ising Model</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../notebooks/lecture-03/lab-004-automatic-differentiation.html" class="sidebar-item-text sidebar-link">Lab 004: Automatic differentiation</a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../notebooks/lecture-03/lab-005-n-pendulum.html" class="sidebar-item-text sidebar-link">Lab 005: The N-link pendulum with SymPy and automatic differentiation</a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../notebooks/lecture-03/lab-006-uat-and-minimisers.html" class="sidebar-item-text sidebar-link">Lab 006: Universal approximation and the choice of minimiser</a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../notebooks/lecture-03/lab-007-building-and-training.html" class="sidebar-item-text sidebar-link">Lab 007: Building and training neural networks</a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../notebooks/lecture-03/lab-008-analysing-networks.html" class="sidebar-item-text sidebar-link">Lab 008: Analysing a neural network</a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../notebooks/lecture-03/lab-009-mnist.html" class="sidebar-item-text sidebar-link">Lab 009: MNIST, regression versus cross-entropy</a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a href="../../lectures/lecture-04.html" class="sidebar-item-text sidebar-link">4 · CNNs, Interpretability and the 2D Ising Model</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/lecture-04/bloodmnist-cnn-regularisation-cam.html" class="sidebar-item-text sidebar-link active">Blood cells: CNNs, regularisation and class activation maps</a>
@@ -313,7 +315,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../notebooks/lecture-04/convolution-and-ising.html" class="sidebar-item-text sidebar-link">Convolution and the 2D Ising model: the figures of the lecture</a>
+  <a href="../../notebooks/lecture-04/convolution-and-ising.html" class="sidebar-item-text sidebar-link">Convolution and the 2D Ising model</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -348,7 +350,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
    
   <ul>
   <li><a href="#deep-learning-for-scientific-discovery" id="toc-deep-learning-for-scientific-discovery" class="nav-link active" data-scroll-target="#deep-learning-for-scientific-discovery">Deep Learning for Scientific Discovery</a></li>
-  <li><a href="#blood-cells-under-the-microscope-from-a-dense-network-to-a-regularised-cnn-and-class-activation-maps" id="toc-blood-cells-under-the-microscope-from-a-dense-network-to-a-regularised-cnn-and-class-activation-maps" class="nav-link" data-scroll-target="#blood-cells-under-the-microscope-from-a-dense-network-to-a-regularised-cnn-and-class-activation-maps">Blood cells under the microscope: from a dense network to a regularised CNN and class activation maps</a>
+  <li><a href="#blood-cells-dense-networks-cnns-regularisation-and-class-activation-maps" id="toc-blood-cells-dense-networks-cnns-regularisation-and-class-activation-maps" class="nav-link" data-scroll-target="#blood-cells-dense-networks-cnns-regularisation-and-class-activation-maps">Blood Cells: Dense Networks, CNNs, Regularisation and Class Activation Maps</a>
   <ul class="collapse">
   <li><a href="#what-is-mnist-and-what-is-medmnist" id="toc-what-is-mnist-and-what-is-medmnist" class="nav-link" data-scroll-target="#what-is-mnist-and-what-is-medmnist">What is MNIST, and what is MedMNIST?</a></li>
   <li><a href="#the-data-set-of-this-notebook-bloodmnist" id="toc-the-data-set-of-this-notebook-bloodmnist" class="nav-link" data-scroll-target="#the-data-set-of-this-notebook-bloodmnist">The data set of this notebook: BloodMNIST</a></li>
@@ -367,7 +369,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul class="collapse">
   <li><a href="#convolution-and-pooling-by-hand" id="toc-convolution-and-pooling-by-hand" class="nav-link" data-scroll-target="#convolution-and-pooling-by-hand">4.0 Convolution and pooling by hand</a></li>
   <li><a href="#the-network-layer-by-layer" id="toc-the-network-layer-by-layer" class="nav-link" data-scroll-target="#the-network-layer-by-layer">4.1 The network, layer by layer</a></li>
-  <li><a href="#model-b-does-not-learn-finding-the-reason" id="toc-model-b-does-not-learn-finding-the-reason" class="nav-link" data-scroll-target="#model-b-does-not-learn-finding-the-reason">4.2 Model B does not learn: finding the reason</a></li>
+  <li><a href="#model-b-does-not-learn" id="toc-model-b-does-not-learn" class="nav-link" data-scroll-target="#model-b-does-not-learn">4.2 Model B Does Not Learn</a></li>
   <li><a href="#model-b2-the-same-network-with-relu" id="toc-model-b2-the-same-network-with-relu" class="nav-link" data-scroll-target="#model-b2-the-same-network-with-relu">4.3 Model B2: the same network with ReLU</a></li>
   <li><a href="#what-a-convolutional-layer-has-learned" id="toc-what-a-convolutional-layer-has-learned" class="nav-link" data-scroll-target="#what-a-convolutional-layer-has-learned">4.4 What a convolutional layer has learned</a></li>
   </ul></li>
@@ -391,7 +393,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#looking-at-mistakes" id="toc-looking-at-mistakes" class="nav-link" data-scroll-target="#looking-at-mistakes">7.5 Looking at mistakes</a></li>
   </ul></li>
   <li><a href="#summary-all-models" id="toc-summary-all-models" class="nav-link" data-scroll-target="#summary-all-models">8. Summary: all models</a></li>
-  <li><a href="#a-second-data-set-from-another-field-satellite-images-eurosat" id="toc-a-second-data-set-from-another-field-satellite-images-eurosat" class="nav-link" data-scroll-target="#a-second-data-set-from-another-field-satellite-images-eurosat">9. A second data set from another field: satellite images (EuroSAT)</a>
+  <li><a href="#satellite-images-eurosat" id="toc-satellite-images-eurosat" class="nav-link" data-scroll-target="#satellite-images-eurosat">9. Satellite Images (EuroSAT)</a>
   <ul class="collapse">
   <li><a href="#download-and-reading-the-images" id="toc-download-and-reading-the-images" class="nav-link" data-scroll-target="#download-and-reading-the-images">9.1 Download and reading the images</a></li>
   <li><a href="#a-look-at-the-data-1" id="toc-a-look-at-the-data-1" class="nav-link" data-scroll-target="#a-look-at-the-data-1">9.2 A look at the data</a></li>
@@ -399,7 +401,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#augmentation-for-images-taken-from-above" id="toc-augmentation-for-images-taken-from-above" class="nav-link" data-scroll-target="#augmentation-for-images-taken-from-above">9.4 Augmentation for images taken from above</a></li>
   <li><a href="#the-same-network-ten-outputs" id="toc-the-same-network-ten-outputs" class="nav-link" data-scroll-target="#the-same-network-ten-outputs">9.5 The same network, ten outputs</a></li>
   <li><a href="#which-land-use-classes-are-confused" id="toc-which-land-use-classes-are-confused" class="nav-link" data-scroll-target="#which-land-use-classes-are-confused">9.6 Which land-use classes are confused</a></li>
-  <li><a href="#class-activation-maps-where-is-the-river-where-is-the-highway" id="toc-class-activation-maps-where-is-the-river-where-is-the-highway" class="nav-link" data-scroll-target="#class-activation-maps-where-is-the-river-where-is-the-highway">9.7 Class activation maps: where is the river, where is the highway?</a></li>
+  <li><a href="#class-activation-maps-on-satellite-images" id="toc-class-activation-maps-on-satellite-images" class="nav-link" data-scroll-target="#class-activation-maps-on-satellite-images">9.7 Class Activation Maps on Satellite Images</a></li>
   </ul></li>
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">10. Exercises</a></li>
   </ul></li>
@@ -433,8 +435,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <strong>Author:</strong> Marcin Płodzień
 <hr>
 </section>
-<section id="blood-cells-under-the-microscope-from-a-dense-network-to-a-regularised-cnn-and-class-activation-maps" class="level1">
-<h1>Blood cells under the microscope: from a dense network to a regularised CNN and class activation maps</h1>
+<section id="blood-cells-dense-networks-cnns-regularisation-and-class-activation-maps" class="level1">
+<h1>Blood Cells: Dense Networks, CNNs, Regularisation and Class Activation Maps</h1>
 <p>This notebook repeats the whole path of the lectures on <strong>one biological data set</strong>: microscope images of human blood cells (BloodMNIST). Every step is motivated by the failure of the previous one:</p>
 <ol type="1">
 <li><strong>A dense (feed-forward) network</strong> on the flattened image, with eight outputs and categorical cross-entropy.</li>
@@ -1090,8 +1092,8 @@ parameters in total: 689221</code></pre>
 <p><strong>Reading the result.</strong> Nothing happens. The loss is <span class="math inline">\(2.003\)</span> in every epoch and the accuracy is <span class="math inline">\(19.5\%\)</span> on all three sets: exactly the share of the most frequent class, the neutrophils. (Careful with the figure: matplotlib has zoomed into the fourth decimal place, see the offset <code>+2.003</code> on the axis. The curves are flat.)</p>
 <p>A network <em>with</em> a convolutional layer is worse than the dense network. Before concluding anything about convolutions we have to find out why.</p>
 </section>
-<section id="model-b-does-not-learn-finding-the-reason" class="level3">
-<h3 class="anchored" data-anchor-id="model-b-does-not-learn-finding-the-reason">4.2 Model B does not learn: finding the reason</h3>
+<section id="model-b-does-not-learn" class="level3">
+<h3 class="anchored" data-anchor-id="model-b-does-not-learn">4.2 Model B Does Not Learn</h3>
 <p>A training that does not move is not the end of the experiment; it is a result to be understood. Two measurements.</p>
 <p><strong>First: what is the loss stuck at?</strong> A network that ignores its input can do no better than to output, for every image, the frequencies <span class="math inline">\(p_c\)</span> of the classes in the training set. Its cross-entropy is then the entropy of that distribution, <span class="math inline">\(-\sum_c p_c \ln p_c\)</span>.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T09:41:41.628142Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T09:41:41.627870Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T09:41:41.635715Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T09:41:41.635216Z&quot;}" data-execution_count="18">
@@ -1856,8 +1858,8 @@ E: GAP CNN (+ batch norm, augmentation)         288936     93.5%       94.0%   9
 </ul>
 <hr>
 </section>
-<section id="a-second-data-set-from-another-field-satellite-images-eurosat" class="level2">
-<h2 class="anchored" data-anchor-id="a-second-data-set-from-another-field-satellite-images-eurosat">9. A second data set from another field: satellite images (EuroSAT)</h2>
+<section id="satellite-images-eurosat" class="level2">
+<h2 class="anchored" data-anchor-id="satellite-images-eurosat">9. Satellite Images (EuroSAT)</h2>
 <p>The recipe does not depend on blood cells. We apply the same GAP network, the same training loop and the same class activation maps to images taken from orbit.</p>
 <ul>
 <li><strong>Source.</strong> P. Helber, B. Bischke, A. Dengel, D. Borth, <em>EuroSAT: A Novel Dataset and Deep Learning Benchmark for Land Use and Land Cover Classification</em>, <em>IEEE J. Sel. Top. Appl. Earth Obs. Remote Sens.</em> <strong>12</strong>, 2217 (2019), <a href="https://doi.org/10.1109/JSTARS.2019.2918242">doi:10.1109/JSTARS.2019.2918242</a>, <a href="https://arxiv.org/abs/1709.00029">arXiv:1709.00029</a>.</li>
@@ -2208,8 +2210,8 @@ largest confusion: 13.3% of 'Industrial' classified as 'Highway'</code></pre>
 </div>
 </div>
 </section>
-<section id="class-activation-maps-where-is-the-river-where-is-the-highway" class="level3">
-<h3 class="anchored" data-anchor-id="class-activation-maps-where-is-the-river-where-is-the-highway">9.7 Class activation maps: where is the river, where is the highway?</h3>
+<section id="class-activation-maps-on-satellite-images" class="level3">
+<h3 class="anchored" data-anchor-id="class-activation-maps-on-satellite-images">9.7 Class Activation Maps on Satellite Images</h3>
 <p>One correctly classified test patch per class and the class activation map of that class. For classes defined by an <em>object</em> (river, highway) the map should follow the object; for classes defined by a <em>texture</em> that fills the patch (forest, sea) there is no single place to point at.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T10:26:04.421090Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T10:26:04.420885Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T10:26:05.009285Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T10:26:05.008723Z&quot;}" data-execution_count="43">
 <details open="">
@@ -2562,12 +2564,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="../../lectures/lecture-04.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">4 · CNNs, Interpretability and the 2D Ising Model</span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">4 · CNNs on Scientific Data and the 2D Ising Model</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../../notebooks/lecture-04/convolution-and-ising.html" class="pagination-link">
-        <span class="nav-page-text">Convolution and the 2D Ising model: the figures of the lecture</span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text">Convolution and the 2D Ising model</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

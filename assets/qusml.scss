@@ -47,6 +47,7 @@ main.content .callout p, main.content .callout li {
 main.content td p, main.content .hero-author, main.content .nbcount,
 main.content .feature p, main.content .chapter-card p, main.content .nb-item p:first-child,
 main.content .hero p { text-align: left; }
+.hero .hero-school { font-size: 1.05rem; color: #444; margin: -0.4rem 0 0.9rem; }
 .hero .hero-logos { display: flex; gap: 1.6rem; align-items: center; margin: 0 0 1rem; }
 .hero .hero-logos img { height: 64px; width: auto; border-radius: 0; box-shadow: none; }
 .hero .hero-tagline { font-size: 1.35rem; color: #1d2b3a; font-weight: 500; margin: -0.3rem 0 0.8rem; }
