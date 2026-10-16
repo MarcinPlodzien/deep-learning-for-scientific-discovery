@@ -1,10 +1,10 @@
 ---
-title: "6 · Generative Models"
+title: "6 · Probability and Variational Autoencoders"
 code-tools: false
 toc: false
 ---
 
-Learning a probability distribution from data and drawing new samples from it. The probability toolkit: distributions and densities, expectations as averages over samples, the Gaussian, joint, conditional and marginal distributions, Bayes' rule, the Kullback–Leibler divergence and maximum likelihood. Latent-variable models and the variational autoencoder: the latent space, the reparametrisation trick, the evidence lower bound; conditional generation of a chosen digit or cell type, checked by a classifier. Generative adversarial networks, the best discriminator and the Wasserstein distance; diffusion models, the forward process, the reverse step and the score. Spin configurations of the Ising model generated at a chosen temperature and checked against Monte Carlo.
+Learning a probability distribution from data alone, and drawing new samples from it. Why an autoencoder cannot generate, and the probability toolkit needed to fix it: distributions and densities, expectations as averages over samples, the Gaussian, joint, conditional and marginal distributions, Bayes' rule, the Kullback–Leibler divergence and maximum likelihood, latent-variable models. The variational autoencoder: training and sampling, the decoder as a likelihood, binary cross-entropy, the evidence lower bound, the reparametrisation trick, the latent space. Conditional generation of a chosen digit or cell type, checked with classifiers trained on real or synthetic data, and disentangled latent features with the β-VAE.
 
 ## Slides
 
@@ -17,7 +17,7 @@ Learning a probability distribution from data and drawing new samples from it. T
 ::: {.nb-item}
 [Generative models: probability, VAE, GAN and diffusion](../notebooks/lecture-06/generative-models.ipynb)
 
-The probability toolkit, VAE and conditional VAE, GAN, diffusion on two moons and on MNIST, and the Ising model.
+The probability toolkit, the VAE and the conditional VAE on MNIST and blood cells; its GAN and diffusion parts belong to Lecture 7.
 :::
 
 ::: {.nb-item}

@@ -179,7 +179,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </li>  
         <li>
     <a class="dropdown-item" href="../../lectures/lecture-06.html">
- <span class="dropdown-text">6 · Generative Models</span></a>
+ <span class="dropdown-text">6 · Probability and Variational Autoencoders</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-07.html">
+ <span class="dropdown-text">7 · Adversarial and Diffusion Models</span></a>
   </li>  
     </ul>
   </li>
@@ -316,6 +320,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-03/lab-013a-cnn-pytorch.html" class="sidebar-item-text sidebar-link">Lab 013a: CNNs on MNIST and CIFAR-10 in PyTorch</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-03/lab-013b-cnn-jax.html" class="sidebar-item-text sidebar-link">Lab 013b: CNNs on MNIST and CIFAR-10 in JAX</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../notebooks/lecture-03/limits-of-deep-networks.html" class="sidebar-item-text sidebar-link">Limits of deep networks</a>
   </div>
 </li>
@@ -373,7 +387,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../lectures/lecture-06.html" class="sidebar-item-text sidebar-link">6 · Generative Models</a>
+            <a href="../../lectures/lecture-06.html" class="sidebar-item-text sidebar-link">6 · Probability and Variational Autoencoders</a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -387,6 +401,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/lecture-06/conditional-generation.html" class="sidebar-item-text sidebar-link">Conditional generation of digits and blood cells</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-07.html" class="sidebar-item-text sidebar-link">7 · Adversarial and Diffusion Models</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-07/generative-models.html" class="sidebar-item-text sidebar-link">Generative models: probability, VAE, GAN and diffusion</a>
   </div>
 </li>
       </ul>
@@ -406,7 +435,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
    
   <ul>
   <li><a href="#deep-learning-for-scientific-discovery" id="toc-deep-learning-for-scientific-discovery" class="nav-link active" data-scroll-target="#deep-learning-for-scientific-discovery">Deep Learning for Scientific Discovery</a></li>
-  <li><a href="#lab-001-warm-up-python-matplotlib-and-pandas" id="toc-lab-001-warm-up-python-matplotlib-and-pandas" class="nav-link" data-scroll-target="#lab-001-warm-up-python-matplotlib-and-pandas">Lab 001 — Warm-up: Python, Matplotlib and Pandas</a>
+  <li><a href="#lab-001-python-matplotlib-and-pandas" id="toc-lab-001-python-matplotlib-and-pandas" class="nav-link" data-scroll-target="#lab-001-python-matplotlib-and-pandas">Lab 001 — Python, Matplotlib and Pandas</a>
   <ul class="collapse">
   <li><a href="#python-in-10-minutes" id="toc-python-in-10-minutes" class="nav-link" data-scroll-target="#python-in-10-minutes">1. Python in 10 minutes</a>
   <ul class="collapse">
@@ -417,48 +446,47 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#dictionaries" id="toc-dictionaries" class="nav-link" data-scroll-target="#dictionaries">1.5 Dictionaries</a></li>
   <li><a href="#getting-help" id="toc-getting-help" class="nav-link" data-scroll-target="#getting-help">1.6 Getting help</a></li>
   </ul></li>
-  <li><a href="#matplotlib-plotting-step-by-step" id="toc-matplotlib-plotting-step-by-step" class="nav-link" data-scroll-target="#matplotlib-plotting-step-by-step">2. Matplotlib: plotting step by step</a>
+  <li><a href="#matplotlib" id="toc-matplotlib" class="nav-link" data-scroll-target="#matplotlib">2. Matplotlib</a>
   <ul class="collapse">
   <li><a href="#the-simplest-possible-plot" id="toc-the-simplest-possible-plot" class="nav-link" data-scroll-target="#the-simplest-possible-plot">2.1 The simplest possible plot</a></li>
-  <li><a href="#a-proper-figure-labels-units-legend" id="toc-a-proper-figure-labels-units-legend" class="nav-link" data-scroll-target="#a-proper-figure-labels-units-legend">2.2 A <em>proper</em> figure: labels, units, legend</a></li>
-  <li><a href="#the-object-oriented-interface-fig-ax-plt.subplots" id="toc-the-object-oriented-interface-fig-ax-plt.subplots" class="nav-link" data-scroll-target="#the-object-oriented-interface-fig-ax-plt.subplots">2.3 The object-oriented interface: <code>fig, ax = plt.subplots()</code></a></li>
+  <li><a href="#labels-units-and-legends" id="toc-labels-units-and-legends" class="nav-link" data-scroll-target="#labels-units-and-legends">2.2 Labels, units and legends</a></li>
+  <li><a href="#the-object-oriented-interface" id="toc-the-object-oriented-interface" class="nav-link" data-scroll-target="#the-object-oriented-interface">2.3 The object-oriented interface</a></li>
   <li><a href="#several-panels" id="toc-several-panels" class="nav-link" data-scroll-target="#several-panels">2.4 Several panels</a></li>
-  <li><a href="#experimental-data-points-with-error-bars" id="toc-experimental-data-points-with-error-bars" class="nav-link" data-scroll-target="#experimental-data-points-with-error-bars">2.5 Experimental data: points with error bars</a></li>
+  <li><a href="#experimental-data-with-error-bars" id="toc-experimental-data-with-error-bars" class="nav-link" data-scroll-target="#experimental-data-with-error-bars">2.5 Experimental data with error bars</a></li>
   <li><a href="#logarithmic-axes" id="toc-logarithmic-axes" class="nav-link" data-scroll-target="#logarithmic-axes">2.6 Logarithmic axes</a></li>
   <li><a href="#histograms" id="toc-histograms" class="nav-link" data-scroll-target="#histograms">2.7 Histograms</a></li>
-  <li><a href="#functions-of-two-variables-meshgrid-contour-plots-and-colour-maps" id="toc-functions-of-two-variables-meshgrid-contour-plots-and-colour-maps" class="nav-link" data-scroll-target="#functions-of-two-variables-meshgrid-contour-plots-and-colour-maps">2.8 Functions of two variables: <code>meshgrid</code>, contour plots and colour maps</a></li>
+  <li><a href="#functions-of-two-variables" id="toc-functions-of-two-variables" class="nav-link" data-scroll-target="#functions-of-two-variables">2.8 Functions of two variables</a></li>
   <li><a href="#saving-a-figure" id="toc-saving-a-figure" class="nav-link" data-scroll-target="#saving-a-figure">2.9 Saving a figure</a></li>
   </ul></li>
   <li><a href="#pandas-tables-of-data" id="toc-pandas-tables-of-data" class="nav-link" data-scroll-target="#pandas-tables-of-data">3. Pandas: tables of data</a>
   <ul class="collapse">
-  <li><a href="#our-experiment-measuring-g-with-a-pendulum" id="toc-our-experiment-measuring-g-with-a-pendulum" class="nav-link" data-scroll-target="#our-experiment-measuring-g-with-a-pendulum">Our experiment: measuring <span class="math inline">\(g\)</span> with a pendulum</a></li>
-  <li><a href="#first-look-at-the-data" id="toc-first-look-at-the-data" class="nav-link" data-scroll-target="#first-look-at-the-data">3.1 First look at the data</a></li>
+  <li><a href="#measuring-g-with-a-pendulum" id="toc-measuring-g-with-a-pendulum" class="nav-link" data-scroll-target="#measuring-g-with-a-pendulum">Measuring <span class="math inline">\(g\)</span> with a pendulum</a></li>
+  <li><a href="#a-first-look-at-the-data" id="toc-a-first-look-at-the-data" class="nav-link" data-scroll-target="#a-first-look-at-the-data">3.1 A first look at the data</a></li>
   <li><a href="#selecting-columns-and-rows" id="toc-selecting-columns-and-rows" class="nav-link" data-scroll-target="#selecting-columns-and-rows">3.2 Selecting columns and rows</a></li>
   <li><a href="#adding-a-computed-column" id="toc-adding-a-computed-column" class="nav-link" data-scroll-target="#adding-a-computed-column">3.3 Adding a computed column</a></li>
-  <li><a href="#grouping-groupby" id="toc-grouping-groupby" class="nav-link" data-scroll-target="#grouping-groupby">3.4 Grouping: <code>groupby</code></a></li>
-  <li><a href="#plotting-data-from-a-dataframe-and-fitting-a-line" id="toc-plotting-data-from-a-dataframe-and-fitting-a-line" class="nav-link" data-scroll-target="#plotting-data-from-a-dataframe-and-fitting-a-line">3.5 Plotting data from a DataFrame and fitting a line</a></li>
+  <li><a href="#grouping" id="toc-grouping" class="nav-link" data-scroll-target="#grouping">3.4 Grouping</a></li>
+  <li><a href="#plotting-and-fitting-a-line" id="toc-plotting-and-fitting-a-line" class="nav-link" data-scroll-target="#plotting-and-fitting-a-line">3.5 Plotting and fitting a line</a></li>
   <li><a href="#saving-and-loading-csv-files" id="toc-saving-and-loading-csv-files" class="nav-link" data-scroll-target="#saving-and-loading-csv-files">3.6 Saving and loading CSV files</a></li>
-  <li><a href="#from-a-dataframe-to-numpy-and-later-to-pytorch" id="toc-from-a-dataframe-to-numpy-and-later-to-pytorch" class="nav-link" data-scroll-target="#from-a-dataframe-to-numpy-and-later-to-pytorch">3.7 From a DataFrame to NumPy (and later to PyTorch)</a></li>
+  <li><a href="#from-a-dataframe-to-numpy" id="toc-from-a-dataframe-to-numpy" class="nav-link" data-scroll-target="#from-a-dataframe-to-numpy">3.7 From a DataFrame to NumPy</a></li>
   </ul></li>
   <li><a href="#classes-and-objects" id="toc-classes-and-objects" class="nav-link" data-scroll-target="#classes-and-objects">4. Classes and objects</a>
   <ul class="collapse">
-  <li><a href="#objects-attributes-and-methods" id="toc-objects-attributes-and-methods" class="nav-link" data-scroll-target="#objects-attributes-and-methods">4.1 Objects, attributes and methods</a></li>
   <li><a href="#defining-a-class" id="toc-defining-a-class" class="nav-link" data-scroll-target="#defining-a-class">4.2 Defining a class</a></li>
   <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">4.3 Methods</a></li>
   <li><a href="#many-objects-a-small-simulation" id="toc-many-objects-a-small-simulation" class="nav-link" data-scroll-target="#many-objects-a-small-simulation">4.4 Many objects: a small simulation</a></li>
-  <li><a href="#special-methods-__repr__-__call__-__add__" id="toc-special-methods-__repr__-__call__-__add__" class="nav-link" data-scroll-target="#special-methods-__repr__-__call__-__add__">4.5 Special methods: <code>__repr__</code>, <code>__call__</code>, <code>__add__</code></a></li>
-  <li><a href="#inheritance-and-super.__init__" id="toc-inheritance-and-super.__init__" class="nav-link" data-scroll-target="#inheritance-and-super.__init__">4.6 Inheritance and <code>super().__init__()</code></a></li>
+  <li><a href="#special-methods" id="toc-special-methods" class="nav-link" data-scroll-target="#special-methods">4.5 Special methods</a></li>
+  <li><a href="#inheritance" id="toc-inheritance" class="nav-link" data-scroll-target="#inheritance">4.6 Inheritance</a></li>
   <li><a href="#a-gas-of-hard-disks-in-a-closed-box" id="toc-a-gas-of-hard-disks-in-a-closed-box" class="nav-link" data-scroll-target="#a-gas-of-hard-disks-in-a-closed-box">4.7 A gas of hard disks in a closed box</a></li>
   <li><a href="#structure-of-a-pytorch-model" id="toc-structure-of-a-pytorch-model" class="nav-link" data-scroll-target="#structure-of-a-pytorch-model">4.8 Structure of a PyTorch model</a></li>
   </ul></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">5. Summary</a></li>
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">6. Exercises</a>
   <ul class="collapse">
-  <li><a href="#exercise-1-standing-waves-subplots" id="toc-exercise-1-standing-waves-subplots" class="nav-link" data-scroll-target="#exercise-1-standing-waves-subplots">Exercise 1 — Standing waves (subplots)</a></li>
-  <li><a href="#exercise-2-black-body-radiation-functions-log-scale" id="toc-exercise-2-black-body-radiation-functions-log-scale" class="nav-link" data-scroll-target="#exercise-2-black-body-radiation-functions-log-scale">Exercise 2 — Black-body radiation (functions, log scale)</a></li>
-  <li><a href="#exercise-3-projectile-experiment-pandas" id="toc-exercise-3-projectile-experiment-pandas" class="nav-link" data-scroll-target="#exercise-3-projectile-experiment-pandas">Exercise 3 — Projectile experiment (Pandas)</a></li>
+  <li><a href="#exercise-1-standing-waves" id="toc-exercise-1-standing-waves" class="nav-link" data-scroll-target="#exercise-1-standing-waves">Exercise 1 — Standing waves</a></li>
+  <li><a href="#exercise-2-black-body-radiation" id="toc-exercise-2-black-body-radiation" class="nav-link" data-scroll-target="#exercise-2-black-body-radiation">Exercise 2 — Black-body radiation</a></li>
+  <li><a href="#exercise-3-projectile-experiment" id="toc-exercise-3-projectile-experiment" class="nav-link" data-scroll-target="#exercise-3-projectile-experiment">Exercise 3 — Projectile experiment</a></li>
   <li><a href="#exercise-4-advanced-optimisation-landscapes" id="toc-exercise-4-advanced-optimisation-landscapes" class="nav-link" data-scroll-target="#exercise-4-advanced-optimisation-landscapes">Exercise 4 (advanced) — Optimisation landscapes</a></li>
-  <li><a href="#exercise-5-a-pendulum-class-and-numerical-integration" id="toc-exercise-5-a-pendulum-class-and-numerical-integration" class="nav-link" data-scroll-target="#exercise-5-a-pendulum-class-and-numerical-integration">Exercise 5 — A pendulum class and numerical integration</a></li>
+  <li><a href="#exercise-5-pendulum-class-and-numerical-integration" id="toc-exercise-5-pendulum-class-and-numerical-integration" class="nav-link" data-scroll-target="#exercise-5-pendulum-class-and-numerical-integration">Exercise 5 — Pendulum class and numerical integration</a></li>
   <li><a href="#exercise-6-extending-the-polynomial-class" id="toc-exercise-6-extending-the-polynomial-class" class="nav-link" data-scroll-target="#exercise-6-extending-the-polynomial-class">Exercise 6 — Extending the <code>Polynomial</code> class</a></li>
   </ul></li>
   </ul></li>
@@ -492,8 +520,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <strong>Author:</strong> Marcin Płodzień
 <hr>
 </section>
-<section id="lab-001-warm-up-python-matplotlib-and-pandas" class="level1">
-<h1>Lab 001 — Warm-up: Python, Matplotlib and Pandas</h1>
+<section id="lab-001-python-matplotlib-and-pandas" class="level1">
+<h1>Lab 001 — Python, Matplotlib and Pandas</h1>
 <p>Deep learning is numerical work: data are generated or loaded, transformed, fitted, and plotted. Before we touch neural networks we need three everyday tools:</p>
 <table class="table">
 <colgroup>
@@ -521,20 +549,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<p><strong>Plan of this notebook</strong> 1. Python in 10 minutes: variables, lists, loops, functions 2. Matplotlib: plotting step by step — from a single line to multi-panel figures, histograms and 2D maps 3. Pandas: tables of data — a simulated experiment measuring <span class="math inline">\(g\)</span> with a pendulum 4. Classes and objects: what <code>class</code>, <code>__init__</code>, <code>self</code> and <code>super()</code> mean (needed for PyTorch models) 5. Summary 6. Exercises</p>
+<p>The notebook introduces them in this order. Section 1 is a ten-minute tour of Python itself: variables, lists, loops and functions. Section 2 builds up Matplotlib figures gradually, from a single line to multi-panel figures, histograms and two-dimensional maps. Section 3 uses Pandas to analyse a table of data from a simulated experiment that measures <span class="math inline">\(g\)</span> with a pendulum. Section 4 explains classes and objects, that is, what <code>class</code>, <code>__init__</code>, <code>self</code> and <code>super()</code> mean; this is needed to read the PyTorch models of later notebooks. A summary (Section 5) and exercises with solutions (Section 6) close the notebook.</p>
 <blockquote class="blockquote">
-<p>Students who know this material can skim it and go to the exercises. Everything here is used in the rest of the course.</p>
+<p>Everything introduced here is used in the rest of the course; readers who know it can go straight to the exercises.</p>
 </blockquote>
 <blockquote class="blockquote">
-<p><strong>How to run this notebook in Google Colab</strong> 1. Go to <a href="https://colab.research.google.com" class="uri">https://colab.research.google.com</a> → <em>File → Upload notebook</em> (or open it from Google Drive). 2. Run cells one by one with <strong>Shift + Enter</strong>. Run them <em>in order</em> — later cells use variables defined earlier. 3. The required packages (<code>numpy</code>, <code>matplotlib</code>, <code>pandas</code>) are pre-installed in Colab; no <code>pip install</code> required. 4. If the notebook state becomes inconsistent: <em>Runtime → Restart session</em> and run from the top.</p>
+<p>The notebook runs in Google Colab without any installation: 1. Go to <a href="https://colab.research.google.com" class="uri">https://colab.research.google.com</a> → <em>File → Upload notebook</em> (or open it from Google Drive). 2. Run cells one by one with <strong>Shift + Enter</strong>. Run them <em>in order</em> — later cells use variables defined earlier. 3. The required packages (<code>numpy</code>, <code>matplotlib</code>, <code>pandas</code>) are pre-installed in Colab; no <code>pip install</code> required. 4. If the notebook state becomes inconsistent: <em>Runtime → Restart session</em> and run from the top.</p>
 </blockquote>
 <hr>
 <section id="python-in-10-minutes" class="level2">
 <h2 class="anchored" data-anchor-id="python-in-10-minutes">1. Python in 10 minutes</h2>
 <section id="cells-printing-and-variables" class="level3">
 <h3 class="anchored" data-anchor-id="cells-printing-and-variables">1.1 Cells, printing and variables</h3>
-<p>A notebook consists of <strong>text cells</strong> (like this one) and <strong>code cells</strong> (grey boxes). Run a code cell with <strong>Shift + Enter</strong>. The value of the <em>last line</em> of a cell is displayed automatically; anything else must be <code>print</code>-ed.</p>
-<p>In code, <code>=</code> is not an equation but an <strong>assignment</strong>: <code>g = 9.81</code> stores the number 9.81 under the name <code>g</code>, and every later use of <code>g</code> means this number. The right-hand side is evaluated first, so <code>n = n + 1</code> (meaningless as an equation) increases <code>n</code> by one. A comparison “is equal?” is written <code>==</code>. <code>print(a, b, ...)</code> prints several values separated by spaces.</p>
+<p>The value of the <em>last line</em> of a code cell is displayed automatically; anything else must be <code>print</code>-ed.</p>
+<p>In code, <code>=</code> is not an equation but an <strong>assignment</strong>: <code>g = 9.81</code> stores the number 9.81 under the name <code>g</code>, and every later use of <code>g</code> means this number. The right-hand side is evaluated first, so <code>n = n + 1</code> (meaningless as an equation) increases <code>n</code> by one. A comparison “is equal?” is written <code>==</code>.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:13.432711Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:13.432480Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:13.448459Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:13.447901Z&quot;}" data-execution_count="1">
 <details open="">
 <summary>Code</summary>
@@ -553,7 +581,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>float</code></pre>
 </div>
 </div>
-<p><strong>f-strings</strong> are the most convenient way to format numbers in text. A string with the letter <code>f</code> before the opening quote, <code>f"..."</code>, may contain expressions in braces <code>{...}</code>; each one is replaced by its value. The part after the colon controls the format: <code>:.3f</code> → 3 decimals, <code>:.2e</code> → scientific notation. A number in front of the dot is the minimum <strong>width</strong> in characters: <code>{h:6.2f}</code> always occupies at least 6 characters, padded with spaces on the left. This keeps the columns of printed tables aligned (used in the loops below). For strings the letter is <code>s</code>: <code>{name:8s}</code> pads a name to 8 characters.</p>
+<p><strong>f-strings</strong> are the most convenient way to format numbers in text. A string with the letter <code>f</code> before the opening quote, <code>f"..."</code>, may contain expressions in braces <code>{...}</code>; each one is replaced by its value. The part after the colon controls the format: <code>:.3f</code> → 3 decimals, <code>:.2e</code> → scientific notation. A number in front of the dot is the minimum <strong>width</strong> in characters: <code>{h:6.2f}</code> always occupies at least 6 characters, padded with spaces on the left. This keeps the columns of printed tables aligned. For strings the letter is <code>s</code>: <code>{name:8s}</code> pads a name to 8 characters.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:13.450198Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:13.450040Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:13.461448Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:13.460736Z&quot;}" data-execution_count="2">
 <details open="">
 <summary>Code</summary>
@@ -586,7 +614,7 @@ slice [1:3]   : [0.5, 1.0]  &lt;- elements 1 and 2; the end index is NOT include
 length        : 5</code></pre>
 </div>
 </div>
-<p>A <code>for</code> loop runs the indented block once for every element of the list. Here it computes the fall height for each time: in <code>for t in times:</code> the name <code>t</code> takes the values <code>times[0]</code>, <code>times[1]</code>, … in turn. <code>heights.append(h)</code> is a <strong>method call</strong>: a function (<code>append</code>) that belongs to the list <code>heights</code> and is written after a dot. Methods are explained in Section 4.</p>
+<p>A <code>for</code> loop runs the indented block once for every element of the list: in <code>for t in times:</code> the name <code>t</code> takes the values <code>times[0]</code>, <code>times[1]</code>, … in turn. <code>heights.append(h)</code> is a <strong>method call</strong>: a function (<code>append</code>) that belongs to the list <code>heights</code> and is written after a dot. Methods are explained in Section 4.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:13.474259Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:13.474088Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:13.483916Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:13.483260Z&quot;}" data-execution_count="4">
 <details open="">
 <summary>Code</summary>
@@ -606,7 +634,7 @@ t = 1.5 s  -&gt;  h =  11.04 m
 t = 2.0 s  -&gt;  h =  19.62 m</code></pre>
 </div>
 </div>
-<p>The same with a <strong>list comprehension</strong> — a compact one-liner that appears very often in Python code. <code>[0.5 * g * t**2 for t in times]</code> reads like the set notation <span class="math inline">\(\{\tfrac12 g t^2 : t \in \text{times}\}\)</span>: “the list of <span class="math inline">\(\tfrac12 g t^2\)</span> for every <span class="math inline">\(t\)</span> in <code>times</code>”.</p>
+<p>A <strong>list comprehension</strong> does the same in one line. <code>[0.5 * g * t**2 for t in times]</code> reads like the set notation <span class="math inline">\(\{\tfrac12 g t^2 : t \in \text{times}\}\)</span>: “the list of <span class="math inline">\(\tfrac12 g t^2\)</span> for every <span class="math inline">\(t\)</span> in <code>times</code>”.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:13.485463Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:13.485301Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:13.495824Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:13.495330Z&quot;}" data-execution_count="5">
 <details open="">
 <summary>Code</summary>
@@ -643,7 +671,7 @@ t = 2.0 s  -&gt;  h =  19.62 m</code></pre>
 </section>
 <section id="functions" class="level3">
 <h3 class="anchored" data-anchor-id="functions">1.4 Functions</h3>
-<p>A function packs a computation so we can reuse it. It is defined with <code>def name(arguments):</code> followed by an indented block; <code>return</code> ends the function and gives back the result. Arguments can have <strong>default values</strong>, which are used when the argument is not given. An argument can also be passed by name, as in <code>fall_height(2.0, g=1.62)</code>. The text in triple quotes (<em>docstring</em>) documents what the function does. Every function should have one.</p>
+<p>A function is defined with <code>def name(arguments):</code> followed by an indented block; <code>return</code> ends the function and gives back the result. Arguments can have <strong>default values</strong>, which are used when the argument is not given. An argument can also be passed by name, as in <code>fall_height(2.0, g=1.62)</code>. The text in triple quotes (<em>docstring</em>) documents what the function does.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:13.510378Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:13.510204Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:13.524830Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:13.524016Z&quot;}" data-execution_count="7">
 <details open="">
 <summary>Code</summary>
@@ -662,7 +690,7 @@ t = 2.0 s  -&gt;  h =  19.62 m</code></pre>
 </section>
 <section id="dictionaries" class="level3">
 <h3 class="anchored" data-anchor-id="dictionaries">1.5 Dictionaries</h3>
-<p>A <strong>dictionary</strong> maps <em>keys</em> to <em>values</em>. It is written in curly braces as <code>{key: value, key: value, ...}</code> and is used for storing parameters or results. <code>gravity["Moon"]</code> returns the value stored under the key <code>"Moon"</code>; <code>.items()</code> returns all (key, value) pairs, which a <code>for</code> loop can unpack into two variables.</p>
+<p>A <strong>dictionary</strong> maps <em>keys</em> to <em>values</em>. It is enclosed in curly braces as <code>{key: value, key: value, ...}</code> and is used for storing parameters or results. <code>gravity["Moon"]</code> returns the value stored under the key <code>"Moon"</code>; <code>.items()</code> returns all (key, value) pairs, which a <code>for</code> loop can unpack into two variables.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:13.526761Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:13.526570Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:13.542346Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:13.541614Z&quot;}" data-execution_count="8">
 <details open="">
 <summary>Code</summary>
@@ -681,11 +709,7 @@ Jupiter : after 2 s the ball falls  49.58 m</code></pre>
 </section>
 <section id="getting-help" class="level3">
 <h3 class="anchored" data-anchor-id="getting-help">1.6 Getting help</h3>
-<ul>
-<li><code>help(fall_height)</code> or <code>fall_height?</code> shows the docstring.</li>
-<li>In Colab, hovering over a function name or pressing <strong>Tab</strong> after a dot (e.g.&nbsp;<code>np.</code> + Tab) lists available options.</li>
-<li>In an error message, the <strong>last line</strong> says what went wrong; the lines above show where.</li>
-</ul>
+<p><code>help(fall_height)</code>, or <code>fall_height?</code> in a notebook, shows the docstring of a function. In Colab, hovering over a function name or pressing <strong>Tab</strong> after a dot (e.g.&nbsp;<code>np.</code> + Tab) lists the available options. When an error occurs, the <strong>last line</strong> of the message says what went wrong, and the lines above it show where.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:13.544075Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:13.543893Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:13.555634Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:13.554474Z&quot;}" data-execution_count="9">
 <details open="">
 <summary>Code</summary>
@@ -702,9 +726,9 @@ fall_height(t, g=9.81)
 <hr>
 </section>
 </section>
-<section id="matplotlib-plotting-step-by-step" class="level2">
-<h2 class="anchored" data-anchor-id="matplotlib-plotting-step-by-step">2. Matplotlib: plotting step by step</h2>
-<p>Python lists are slow and inconvenient for maths, so for numbers we use <strong>NumPy</strong> arrays. NumPy and Matplotlib are <strong>libraries</strong> (packages of ready-made functions) that are not part of the core language; <code>import numpy as np</code> loads NumPy and makes it available under the short name <code>np</code>, so that its functions are written <code>np.sin</code>, <code>np.pi</code>, and so on. To start, we need two kinds of NumPy tools (more are introduced where they are used): - <code>np.linspace(a, b, n)</code> — <code>n</code> equally spaced points from <code>a</code> to <code>b</code>; - mathematical functions like <code>np.sin</code>, <code>np.exp</code>, which act on <strong>all elements at once</strong>.</p>
+<section id="matplotlib" class="level2">
+<h2 class="anchored" data-anchor-id="matplotlib">2. Matplotlib</h2>
+<p>Python lists are slow and inconvenient for maths, so for numbers we use <strong>NumPy</strong> arrays. NumPy and Matplotlib are <strong>libraries</strong> (packages of ready-made functions) that are not part of the core language; <code>import numpy as np</code> loads NumPy and makes it available under the short name <code>np</code>, so that its functions are called as <code>np.sin</code>, <code>np.pi</code>, and so on. The function <code>np.linspace(a, b, n)</code> returns <code>n</code> equally spaced points from <code>a</code> to <code>b</code>, and mathematical functions such as <code>np.sin</code> and <code>np.exp</code> act on <strong>all elements of an array at once</strong>, so a whole curve is computed in one line.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:13.557401Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:13.557218Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:13.903175Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:13.902614Z&quot;}" data-execution_count="10">
 <details open="">
 <summary>Code</summary>
@@ -724,7 +748,7 @@ fall_height(t, g=9.81)
 </div>
 <section id="the-simplest-possible-plot" class="level3">
 <h3 class="anchored" data-anchor-id="the-simplest-possible-plot">2.1 The simplest possible plot</h3>
-<p><code>plt.plot(x, y)</code> draws straight segments between the points <span class="math inline">\((x_i, y_i)\)</span>. With only 9 points the “sine” looks jagged — a plot consists of <strong>points connected by straight lines</strong>, so enough points are needed. <code>plt.show()</code> displays the figure built so far; the next plotting command then starts a new figure.</p>
+<p><code>plt.plot(x, y)</code> draws straight segments between the points <span class="math inline">\((x_i, y_i)\)</span>, so with only 9 points the “sine” looks jagged. <code>plt.show()</code> displays the figure built so far; the next plotting command then starts a new figure.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:13.904980Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:13.904691Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:13.989960Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:13.989277Z&quot;}" data-execution_count="11">
 <details open="">
 <summary>Code</summary>
@@ -735,7 +759,7 @@ fall_height(t, g=9.81)
 <p><img src="lab-001-python-matplotlib-pandas_files/figure-html/cell-12-output-1.png" class="img-fluid"></p>
 </div>
 </div>
-<p>With 200 points the straight segments are too short to be seen, and the curve looks smooth:</p>
+<p>With 200 points the segments are too short to be seen.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:13.991524Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:13.991381Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:14.062645Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:14.061957Z&quot;}" data-execution_count="12">
 <details open="">
 <summary>Code</summary>
@@ -748,8 +772,8 @@ fall_height(t, g=9.81)
 </div>
 </div>
 </section>
-<section id="a-proper-figure-labels-units-legend" class="level3">
-<h3 class="anchored" data-anchor-id="a-proper-figure-labels-units-legend">2.2 A <em>proper</em> figure: labels, units, legend</h3>
+<section id="labels-units-and-legends" class="level3">
+<h3 class="anchored" data-anchor-id="labels-units-and-legends">2.2 Labels, units and legends</h3>
 <p>A figure without axis labels is not a scientific figure. Always label axes, with units, and add a legend when there is more than one curve. Matplotlib understands LaTeX between <code>$...$</code> — use <strong>raw strings</strong> <code>r"..."</code> so that backslashes work.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:14.064380Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:14.064212Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:14.352064Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:14.351479Z&quot;}" data-execution_count="13">
 <details open="">
@@ -771,12 +795,12 @@ fall_height(t, g=9.81)
 </div>
 </div>
 </section>
-<section id="the-object-oriented-interface-fig-ax-plt.subplots" class="level3">
-<h3 class="anchored" data-anchor-id="the-object-oriented-interface-fig-ax-plt.subplots">2.3 The object-oriented interface: <code>fig, ax = plt.subplots()</code></h3>
-<p>For anything beyond a quick look we use the <strong>object-oriented</strong> style: <code>fig</code> is the whole canvas, <code>ax</code> is one panel (one coordinate system). <code>plt.subplots</code> returns these two objects at once, and <code>fig, ax = ...</code> assigns them to two names. Plotting is then done by methods of the panel: <code>ax.plot(...)</code> means “draw into the panel <code>ax</code>”. The names change slightly: <code>plt.xlabel</code> → <code>ax.set_xlabel</code>, etc. This is the recommended style, because it scales to multi-panel figures.</p>
-<p>Example: the <strong>damped harmonic oscillator</strong> <span class="math inline">\(x(t) = A\, e^{-\gamma t}\cos(\omega t)\)</span> for three damping rates.</p>
-<p>The parameter values are arbitrary illustration values: <span class="math inline">\(\omega = 2\)</span> rad/s (period <span class="math inline">\(\pi\)</span> s), so the interval <span class="math inline">\([0, 20]\)</span> s contains about six oscillations, and the damping rates <span class="math inline">\(\gamma = 0.05,\,0.2,\,0.5\)</span> s<span class="math inline">\(^{-1}\)</span> range from weak (the amplitude decays over many periods) to strong (decay within about one period). 1000 points give about 160 points per period, far more than needed for a smooth curve.</p>
-<p>The label uses the prefix <code>rf"..."</code>: <code>r</code> keeps the backslashes for LaTeX, <code>f</code> inserts the value of <code>gamma</code> written in braces. <code>ax.grid(alpha=0.3)</code> draws a faint grid; <code>alpha</code> is the opacity, from 0 (invisible) to 1 (opaque).</p>
+<section id="the-object-oriented-interface" class="level3">
+<h3 class="anchored" data-anchor-id="the-object-oriented-interface">2.3 The object-oriented interface</h3>
+<p>For anything beyond a quick look we use the <strong>object-oriented</strong> style, <code>fig, ax = plt.subplots()</code>: <code>fig</code> is the whole canvas, <code>ax</code> is one panel (one coordinate system). <code>plt.subplots</code> returns these two objects at once, and <code>fig, ax = ...</code> assigns them to two names. Plotting is then done by methods of the panel: <code>ax.plot(...)</code> means “draw into the panel <code>ax</code>”. The names change slightly: <code>plt.xlabel</code> → <code>ax.set_xlabel</code>, etc. This style scales to multi-panel figures.</p>
+<p>As an example we plot the <strong>damped harmonic oscillator</strong> <span class="math inline">\(x(t) = A\, e^{-\gamma t}\cos(\omega t)\)</span> for three damping rates.</p>
+<p>With <span class="math inline">\(\omega = 2\)</span> rad/s (period <span class="math inline">\(\pi\)</span> s) the interval <span class="math inline">\([0, 20]\)</span> s contains about six oscillations, and the damping rates <span class="math inline">\(\gamma = 0.05,\,0.2,\,0.5\)</span> s<span class="math inline">\(^{-1}\)</span> range from weak (the amplitude decays over many periods) to strong (decay within about one period).</p>
+<p>The label uses the prefix <code>rf"..."</code>: <code>r</code> keeps the backslashes for LaTeX, <code>f</code> inserts the value of <code>gamma</code> placed in braces. In <code>ax.grid(alpha=0.3)</code>, <code>alpha</code> is the opacity, from 0 (invisible) to 1 (opaque).</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:14.354121Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:14.353936Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:14.531620Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:14.530591Z&quot;}" data-execution_count="14">
 <details open="">
 <summary>Code</summary>
@@ -801,7 +825,7 @@ fall_height(t, g=9.81)
 <section id="several-panels" class="level3">
 <h3 class="anchored" data-anchor-id="several-panels">2.4 Several panels</h3>
 <p><code>plt.subplots(nrows, ncols)</code> returns an <strong>array of axes</strong>. Left: the trajectory <span class="math inline">\(x(t)\)</span>; right: the <strong>phase-space portrait</strong> <span class="math inline">\((x, v)\)</span>.</p>
-<p><code>color="C0"</code>, <code>"C1"</code>, … are the colours of Matplotlib’s default colour cycle (C0 blue, C1 orange, C2 green, C3 red, …). A semicolon <code>;</code> separates two statements written on one line.</p>
+<p><code>color="C0"</code>, <code>"C1"</code>, … are the colours of Matplotlib’s default colour cycle.</p>
 <p>In the phase-space panel each turn of the curve is one oscillation; the curve spirals towards the origin <span class="math inline">\((0, 0)\)</span> because damping removes energy and the amplitude shrinks.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:14.533405Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:14.533221Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:14.756592Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:14.755991Z&quot;}" data-execution_count="15">
 <details open="">
@@ -828,14 +852,10 @@ fall_height(t, g=9.81)
 </div>
 </div>
 </section>
-<section id="experimental-data-points-with-error-bars" class="level3">
-<h3 class="anchored" data-anchor-id="experimental-data-points-with-error-bars">2.5 Experimental data: points with error bars</h3>
-<p>Measured data are <em>points with uncertainties</em>, not lines. Below we simulate a noisy measurement and compare with the model. <code>np.random.default_rng(seed)</code> creates a random number generator; fixing the <strong>seed</strong> makes the “random” numbers reproducible. The value of the seed has no meaning: any integer gives a reproducible sequence, and different cells in this course use different seeds only by habit.</p>
-<ul>
-<li><code>rng.normal(size=n)</code> draws <code>n</code> numbers from the standard normal distribution (mean 0, standard deviation 1); multiplying by <span class="math inline">\(\sigma\)</span> gives noise with standard deviation <span class="math inline">\(\sigma\)</span>. <code>t_meas.size</code> is the number of elements of the array, so every measurement time gets its own noise value.</li>
-<li><span class="math inline">\(\sigma = 0.08\)</span> (8% of the amplitude) is an arbitrary choice: the noise is visible but does not hide the oscillation.</li>
-<li>In <code>ax.errorbar</code>, <code>yerr</code> is the half-length of each error bar, <code>fmt="o"</code> draws points without connecting lines, and <code>capsize</code> is the width of the small caps at the bar ends. <code>color="k"</code> is black and <code>lw</code> is short for <code>linewidth</code>.</li>
-</ul>
+<section id="experimental-data-with-error-bars" class="level3">
+<h3 class="anchored" data-anchor-id="experimental-data-with-error-bars">2.5 Experimental data with error bars</h3>
+<p>Measured data are <em>points with uncertainties</em>, not lines. We simulate a noisy measurement and compare it with the model. <code>np.random.default_rng(seed)</code> creates a random number generator; fixing the <strong>seed</strong> (any integer) makes the “random” numbers reproducible.</p>
+<p>The noise is drawn with <code>rng.normal(size=n)</code>, which returns <code>n</code> numbers from the standard normal distribution (mean 0, standard deviation 1); multiplying them by <span class="math inline">\(\sigma\)</span> gives noise with standard deviation <span class="math inline">\(\sigma\)</span>. The noise level <span class="math inline">\(\sigma = 0.08\)</span> (8% of the amplitude) is visible but does not hide the oscillation. In <code>ax.errorbar</code>, <code>yerr</code> is the half-length of each error bar and <code>fmt="o"</code> draws points without connecting lines.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:14.758581Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:14.758412Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:14.859365Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:14.858497Z&quot;}" data-execution_count="16">
 <details open="">
 <summary>Code</summary>
@@ -888,12 +908,8 @@ fall_height(t, g=9.81)
 </section>
 <section id="histograms" class="level3">
 <h3 class="anchored" data-anchor-id="histograms">2.7 Histograms</h3>
-<p>A histogram shows <em>how often</em> values occur — an estimate of a <strong>probability distribution</strong>. <code>rng.normal(loc=0.0, scale=1.0, size=10_000)</code> draws samples with mean <code>loc</code> and standard deviation <code>scale</code>. Underscores inside a number are ignored by Python and only make long numbers readable: <code>10_000</code> is 10000. (Estimating probability distributions from samples is one of the tasks of neural networks; see the lecture.)</p>
-<ul>
-<li><code>density=True</code> rescales the bar heights so that the total area of the histogram is 1. Only then can the histogram be compared with a probability density such as the Gaussian; without it the bar heights are counts, which grow with the number of samples.</li>
-<li><code>bins=50</code> is the number of bars. It is a compromise: too few bars hide the shape, too many make each bar contain few samples and the histogram becomes noisy. With 10 000 samples any value of order 30–100 works.</li>
-<li><code>alpha=0.6</code> makes the bars partly transparent, so that the curve drawn on top remains visible.</li>
-</ul>
+<p>A histogram shows <em>how often</em> values occur — an estimate of a <strong>probability distribution</strong>. <code>rng.normal(loc=0.0, scale=1.0, size=10_000)</code> draws samples with mean <code>loc</code> and standard deviation <code>scale</code>. (<code>10_000</code> is 10000; underscores only make long numbers readable.) Estimating probability distributions from samples is one of the tasks of neural networks.</p>
+<p>With <code>density=True</code> the bar heights are rescaled so that the total area of the histogram is 1. Only then can the histogram be compared with a probability density such as the Gaussian; without it the bar heights are counts, which grow with the number of samples. The number of bars, <code>bins=50</code>, is a compromise: too few bars hide the shape, while too many leave few samples in each bar and the histogram becomes noisy. With 10 000 samples any value of order 30–100 works.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:15.604456Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:15.604149Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:15.738911Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:15.738352Z&quot;}" data-execution_count="18">
 <details open="">
 <summary>Code</summary>
@@ -912,16 +928,11 @@ fall_height(t, g=9.81)
 </div>
 </div>
 </section>
-<section id="functions-of-two-variables-meshgrid-contour-plots-and-colour-maps" class="level3">
-<h3 class="anchored" data-anchor-id="functions-of-two-variables-meshgrid-contour-plots-and-colour-maps">2.8 Functions of two variables: <code>meshgrid</code>, contour plots and colour maps</h3>
-<p>For <span class="math inline">\(V(x, y)\)</span> we need a 2D grid of points. <code>np.meshgrid(xg, yg)</code> builds it: it returns two 2D arrays <code>X</code> and <code>Y</code> of the same shape, which hold the <span class="math inline">\(x\)</span> and the <span class="math inline">\(y\)</span> coordinate of every grid point. A formula written with <code>X</code> and <code>Y</code>, such as <code>(X**2 - 1)**2 + Y**2</code>, is then evaluated at all grid points at once. This will be our main tool to visualise <strong>loss landscapes</strong> <span class="math inline">\(\mathcal{L}(\theta_1, \theta_2)\)</span> when training neural networks.</p>
-<p>Example: a 2D double-well potential <span class="math inline">\(V(x,y) = (x^2 - 1)^2 + y^2\)</span>.</p>
-<p>The ranges are chosen to contain both minima at <span class="math inline">\((\pm 1, 0)\)</span> with some margin. Both grids have the same spacing (about 0.02), but different lengths (200 and 150 points), so <code>X</code> and <code>Y</code> have the non-square shape (150, 200). This makes visible that <strong>rows correspond to <span class="math inline">\(y\)</span> and columns to <span class="math inline">\(x\)</span></strong>.</p>
-<ul>
-<li><code>contourf(..., levels=30)</code> fills the regions between 30 contour levels with colours from the colour map <code>cmap="viridis"</code>; <code>contour</code> draws only the lines, here at the chosen values <span class="math inline">\(V = 0.1, 0.5, 1, 2\)</span>.</li>
-<li><code>fig.colorbar(...)</code> adds the colour scale that translates colours back into values of <span class="math inline">\(V\)</span>.</li>
-<li><code>imshow</code> draws the array as an image, one pixel per array entry. By default it puts row 0 at the <strong>top</strong> (as in a photograph); <code>origin="lower"</code> puts row 0 (the smallest <span class="math inline">\(y\)</span>) at the bottom, as in a coordinate system. <code>aspect="auto"</code> allows non-square pixels, so the image fills the panel.</li>
-</ul>
+<section id="functions-of-two-variables" class="level3">
+<h3 class="anchored" data-anchor-id="functions-of-two-variables">2.8 Functions of two variables</h3>
+<p>For a function <span class="math inline">\(V(x, y)\)</span> we need a 2D grid of points. <code>np.meshgrid(xg, yg)</code> builds it: it returns two 2D arrays <code>X</code> and <code>Y</code> of the same shape, which hold the <span class="math inline">\(x\)</span> and the <span class="math inline">\(y\)</span> coordinate of every grid point. A formula in terms of <code>X</code> and <code>Y</code>, such as <code>(X**2 - 1)**2 + Y**2</code>, is then evaluated at all grid points at once. Contour plots and colour maps of such grids will be our main tool to visualise <strong>loss landscapes</strong> <span class="math inline">\(\mathcal{L}(\theta_1, \theta_2)\)</span> when training neural networks.</p>
+<p>Our example is a 2D double-well potential <span class="math inline">\(V(x,y) = (x^2 - 1)^2 + y^2\)</span>, with minima at <span class="math inline">\((\pm 1, 0)\)</span>. Both grids have the same spacing (about 0.02), but different lengths (200 and 150 points), so <code>X</code> and <code>Y</code> have the non-square shape (150, 200). This makes visible that <strong>rows correspond to <span class="math inline">\(y\)</span> and columns to <span class="math inline">\(x\)</span></strong>.</p>
+<p>The figure shows the same function in three ways. <code>contourf</code> fills the regions between contour levels with colours, while <code>contour</code> draws only the lines, here at <span class="math inline">\(V = 0.1, 0.5, 1, 2\)</span>. <code>imshow</code>, in contrast, draws the array as an image, one pixel per array entry. By default it puts row 0 at the <strong>top</strong> (as in a photograph); <code>origin="lower"</code> puts row 0 (the smallest <span class="math inline">\(y\)</span>) at the bottom, as in a coordinate system, and <code>aspect="auto"</code> allows non-square pixels, so the image fills the panel.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:15.740577Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:15.740413Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:16.068957Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:16.068468Z&quot;}" data-execution_count="19">
 <details open="">
 <summary>Code</summary>
@@ -955,7 +966,7 @@ fall_height(t, g=9.81)
 </section>
 <section id="saving-a-figure" class="level3">
 <h3 class="anchored" data-anchor-id="saving-a-figure">2.9 Saving a figure</h3>
-<p>Figures for reports should be saved as vector graphics (<code>.pdf</code>) or high-resolution <code>.png</code>; the format is chosen by the file extension. <code>dpi</code> (dots per inch) sets the resolution of a <code>.png</code> (200 is sufficient for printing; it has no effect on the content of a <code>.pdf</code>), and <code>bbox_inches="tight"</code> trims empty margins. In Colab the files appear in the <em>Files</em> panel (folder icon on the left), from where they can be downloaded.</p>
+<p>Figures for reports should be saved as vector graphics (<code>.pdf</code>) or high-resolution <code>.png</code>; the format is chosen by the file extension. <code>dpi</code> (dots per inch) sets the resolution of a <code>.png</code>, and <code>bbox_inches="tight"</code> trims empty margins. In Colab the files appear in the <em>Files</em> panel.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:16.070433Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:16.070263Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:16.683947Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:16.683007Z&quot;}" data-execution_count="20">
 <details open="">
 <summary>Code</summary>
@@ -973,9 +984,9 @@ fall_height(t, g=9.81)
 <section id="pandas-tables-of-data" class="level2">
 <h2 class="anchored" data-anchor-id="pandas-tables-of-data">3. Pandas: tables of data</h2>
 <p>Real data usually come as <strong>tables</strong>: each row is one measurement (one <em>sample</em>), each column one quantity (one <em>feature</em>). This “samples × features” layout is exactly how data are fed to neural networks. <code>pandas.DataFrame</code> is the standard Python tool for such tables.</p>
-<section id="our-experiment-measuring-g-with-a-pendulum" class="level3">
-<h3 class="anchored" data-anchor-id="our-experiment-measuring-g-with-a-pendulum">Our experiment: measuring <span class="math inline">\(g\)</span> with a pendulum</h3>
-<p>For small amplitudes the period of a pendulum of length <span class="math inline">\(L\)</span> is <span class="math display">\[T = 2\pi\sqrt{\frac{L}{g}} \quad\Longrightarrow\quad T^2 = \frac{4\pi^2}{g}\,L .\]</span> Three student groups measured the period for several lengths. We simulate their (noisy) data. The six lengths, the three repetitions and the timing uncertainty 0.03 s are arbitrary choices typical of a lab exercise. <code>range(3)</code> gives 0, 1, 2. Called without <code>size</code>, <code>rng.normal</code> returns a single number. <code>np.array([...])</code> converts a list of numbers into a NumPy array. The three loops are nested: for every group, every length and every repetition one row is added, <span class="math inline">\(3 \times 6 \times 3 = 54\)</span> rows in total.</p>
+<section id="measuring-g-with-a-pendulum" class="level3">
+<h3 class="anchored" data-anchor-id="measuring-g-with-a-pendulum">Measuring <span class="math inline">\(g\)</span> with a pendulum</h3>
+<p>For small amplitudes the period of a pendulum of length <span class="math inline">\(L\)</span> is <span class="math display">\[T = 2\pi\sqrt{\frac{L}{g}} \quad\Longrightarrow\quad T^2 = \frac{4\pi^2}{g}\,L .\]</span> Three student groups measured the period for six lengths, three repetitions each, with a timing uncertainty of 0.03 s; we simulate their data, <span class="math inline">\(3 \times 6 \times 3 = 54\)</span> rows in total.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:16.685648Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:16.685496Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:16.849452Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:16.848883Z&quot;}" data-execution_count="21">
 <details open="">
 <summary>Code</summary>
@@ -1046,9 +1057,9 @@ fall_height(t, g=9.81)
 </div>
 </div>
 </section>
-<section id="first-look-at-the-data" class="level3">
-<h3 class="anchored" data-anchor-id="first-look-at-the-data">3.1 First look at the data</h3>
-<p>Always start by looking: size, column names, basic statistics. In the output of <code>describe()</code>, <code>std</code> is the standard deviation and the rows <code>25%</code>, <code>50%</code>, <code>75%</code> are the quartiles: the values below which 25%, 50% and 75% of the entries lie (<code>50%</code> is the median).</p>
+<section id="a-first-look-at-the-data" class="level3">
+<h3 class="anchored" data-anchor-id="a-first-look-at-the-data">3.1 A first look at the data</h3>
+<p>An analysis starts with the size of the data, the column names and basic statistics. In the output of <code>describe()</code>, <code>std</code> is the standard deviation and the rows <code>25%</code>, <code>50%</code>, <code>75%</code> are the quartiles: the values below which 25%, 50% and 75% of the entries lie (<code>50%</code> is the median).</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:16.851206Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:16.850972Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:16.858474Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:16.858023Z&quot;}" data-execution_count="22">
 <details open="">
 <summary>Code</summary>
@@ -1121,11 +1132,7 @@ columns: ['group', 'L_m', 'T_s']</code></pre>
 </section>
 <section id="selecting-columns-and-rows" class="level3">
 <h3 class="anchored" data-anchor-id="selecting-columns-and-rows">3.2 Selecting columns and rows</h3>
-<ul>
-<li>one column: <code>df["T_s"]</code> (a <code>Series</code>);</li>
-<li>rows satisfying a condition (<strong>boolean mask</strong>): <code>df[df["L_m"] &gt; 1.0]</code>. The comparison <code>df["L_m"] &gt; 1.0</code> gives a column of <code>True</code>/<code>False</code> values, one per row, and <code>df[...]</code> with such a column keeps only the rows marked <code>True</code>;</li>
-<li>several conditions: combine with <code>&amp;</code> (and), <code>|</code> (or), each in parentheses.</li>
-</ul>
+<p>A single column is selected by its name, <code>df["T_s"]</code>, and is returned as a <code>Series</code>. Rows are selected with a condition, a <strong>boolean mask</strong>: <code>df[df["L_m"] &gt; 1.0]</code>. The comparison <code>df["L_m"] &gt; 1.0</code> gives a column of <code>True</code>/<code>False</code> values, one per row, and <code>df[...]</code> with such a column keeps only the rows marked <code>True</code>. Several conditions are combined with <code>&amp;</code> (and) or <code>|</code> (or), each condition in its own parentheses.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:16.859806Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:16.859683Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:16.880956Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:16.880574Z&quot;}" data-execution_count="23">
 <details open="">
 <summary>Code</summary>
@@ -1138,7 +1145,7 @@ columns: ['group', 'L_m', 'T_s']</code></pre>
 Name: T_s, dtype: float64</code></pre>
 </div>
 </div>
-<p>Rows of group B with a length of at least 1 m (two conditions combined with <code>&amp;</code>):</p>
+<p>Rows of group B with a length of at least 1 m:</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:16.882151Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:16.882044Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:16.893346Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:16.892738Z&quot;}" data-execution_count="24">
 <details open="">
 <summary>Code</summary>
@@ -1272,9 +1279,9 @@ Name: T_s, dtype: float64</code></pre>
 </div>
 </div>
 </section>
-<section id="grouping-groupby" class="level3">
-<h3 class="anchored" data-anchor-id="grouping-groupby">3.4 Grouping: <code>groupby</code></h3>
-<p>“For every group compute the mean and standard deviation of <span class="math inline">\(g\)</span>” — one line: <code>groupby("group")</code> splits the table into one sub-table per group, <code>["g_single"]</code> selects the column, and <code>agg</code> applies several summary functions at once to every sub-table.</p>
+<section id="grouping" class="level3">
+<h3 class="anchored" data-anchor-id="grouping">3.4 Grouping</h3>
+<p>The mean and standard deviation of <span class="math inline">\(g\)</span> for every group take one line: <code>groupby("group")</code> splits the table into one sub-table per group, <code>["g_single"]</code> selects the column, and <code>agg</code> applies several summary functions at once to every sub-table.</p>
 <p>Pandas <code>std</code> divides by <span class="math inline">\(n-1\)</span> (this makes the <em>variance</em> estimate unbiased), whereas NumPy’s <code>np.std</code> divides by <span class="math inline">\(n\)</span> by default. For small samples the two differ: for the numbers 1, 2, 3 pandas gives 1.0 and NumPy 0.816.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:16.908278Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:16.908167Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:16.920744Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:16.920387Z&quot;}" data-execution_count="26">
 <details open="">
@@ -1326,7 +1333,7 @@ Name: T_s, dtype: float64</code></pre>
 </div>
 </div>
 <p>A single measurement scatters by about 0.3 m/s<span class="math inline">\(^2\)</span> (the <code>std</code> column). The mean of 18 measurements is more precise: its standard error is <span class="math inline">\(\text{std}/\sqrt{18} \approx 0.07\)</span>–<span class="math inline">\(0.1\)</span> m/s<span class="math inline">\(^2\)</span>. All three group means differ from the true value 9.81 by at most about 1.2 standard errors, i.e.&nbsp;they are consistent with it.</p>
-<p>Grouping by two columns: the mean of <span class="math inline">\(T^2\)</span> for every combination of group and length. <code>as_index=False</code> keeps <code>group</code> and <code>L_m</code> as ordinary columns; without it they would become the row labels (the <em>index</em>) of the result. The table <code>per_length</code> is used here only to illustrate grouping by two columns.</p>
+<p>Grouping by two columns: the mean of <span class="math inline">\(T^2\)</span> for every combination of group and length. <code>as_index=False</code> keeps <code>group</code> and <code>L_m</code> as ordinary columns; without it they would become the row labels (the <em>index</em>) of the result.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:16.921767Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:16.921661Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:16.934118Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:16.933729Z&quot;}" data-execution_count="27">
 <details open="">
 <summary>Code</summary>
@@ -1402,16 +1409,11 @@ Name: T_s, dtype: float64</code></pre>
 </div>
 </div>
 </section>
-<section id="plotting-data-from-a-dataframe-and-fitting-a-line" class="level3">
-<h3 class="anchored" data-anchor-id="plotting-data-from-a-dataframe-and-fitting-a-line">3.5 Plotting data from a DataFrame and fitting a line</h3>
-<p>We plot <span class="math inline">\(T^2\)</span> vs.&nbsp;<span class="math inline">\(L\)</span> for each group and fit one straight line to all data, <span class="math inline">\(T^2 = aL + b\)</span> with <code>np.polyfit</code>. The slope gives <span class="math inline">\(g = 4\pi^2/a\)</span>. (Fitting a straight line is the simplest example of what is later called <em>training a model</em>.)</p>
-<ul>
-<li>We fit <span class="math inline">\(T^2\)</span> and not <span class="math inline">\(T\)</span>, because <span class="math inline">\(T^2 \propto L\)</span> is linear in <span class="math inline">\(L\)</span>, while <span class="math inline">\(T \propto \sqrt L\)</span> is not.</li>
-<li><code>np.polyfit(x, y, deg=1)</code> finds the coefficients <span class="math inline">\(a, b\)</span> that minimise the sum of squared vertical distances <span class="math inline">\(\sum_i (y_i - a x_i - b)^2\)</span> (<strong>least squares</strong>). This sum is the simplest example of a <strong>loss function</strong>.</li>
-<li>The fitted line is drawn from <span class="math inline">\(L = 0\)</span> to show the intercept <span class="math inline">\(b\)</span>. Physically <span class="math inline">\(b\)</span> should be 0, so a value close to zero is a consistency check of the data.</li>
-<li><code>enumerate(...)</code> gives pairs (counter, element); iterating over <code>df.groupby("group")</code> gives pairs (group name, sub-table). Both are unpacked in <code>for i, (group, sub) in ...</code>, and the counter <code>i</code> selects the colour <code>f"C{i}"</code>.</li>
-<li>In the legend text <code>\\,</code> is a LaTeX thin space; the backslash is doubled because the string is an ordinary f-string, not a raw string. The format <code>+.3f</code> always prints the sign, so the label reads correctly for both positive and negative <span class="math inline">\(b\)</span>.</li>
-</ul>
+<section id="plotting-and-fitting-a-line" class="level3">
+<h3 class="anchored" data-anchor-id="plotting-and-fitting-a-line">3.5 Plotting and fitting a line</h3>
+<p><span class="math inline">\(T^2\)</span> is plotted against <span class="math inline">\(L\)</span> for each group, and one straight line is fitted to all data, <span class="math inline">\(T^2 = aL + b\)</span>, with <code>np.polyfit</code>. The slope gives <span class="math inline">\(g = 4\pi^2/a\)</span>. (Fitting a straight line is the simplest example of what is later called <em>training a model</em>.)</p>
+<p>We fit <span class="math inline">\(T^2\)</span> and not <span class="math inline">\(T\)</span>, because <span class="math inline">\(T^2 \propto L\)</span> is linear in <span class="math inline">\(L\)</span>, while <span class="math inline">\(T \propto \sqrt L\)</span> is not. <code>np.polyfit(x, y, deg=1)</code> finds the coefficients <span class="math inline">\(a, b\)</span> that minimise the sum of squared vertical distances <span class="math inline">\(\sum_i (y_i - a x_i - b)^2\)</span> (<strong>least squares</strong>); this sum is the simplest example of a <strong>loss function</strong>. The fitted line is drawn from <span class="math inline">\(L = 0\)</span> to show the intercept <span class="math inline">\(b\)</span>. Physically <span class="math inline">\(b\)</span> should be 0, so a value close to zero is a consistency check of the data.</p>
+<p><code>enumerate(...)</code> gives pairs (counter, element), and iterating over <code>df.groupby("group")</code> gives pairs (group name, sub-table).</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:16.935141Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:16.935027Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:17.039755Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:17.039153Z&quot;}" data-execution_count="28">
 <details open="">
 <summary>Code</summary>
@@ -1455,9 +1457,9 @@ Name: T_s, dtype: float64</code></pre>
 </div>
 </div>
 </section>
-<section id="from-a-dataframe-to-numpy-and-later-to-pytorch" class="level3">
-<h3 class="anchored" data-anchor-id="from-a-dataframe-to-numpy-and-later-to-pytorch">3.7 From a DataFrame to NumPy (and later to PyTorch)</h3>
-<p>Neural networks take <strong>arrays</strong> as input, not tables. <code>.to_numpy()</code> gives the raw numbers.</p>
+<section id="from-a-dataframe-to-numpy" class="level3">
+<h3 class="anchored" data-anchor-id="from-a-dataframe-to-numpy">3.7 From a DataFrame to NumPy</h3>
+<p>Neural networks take <strong>arrays</strong> as input, not tables; later in the course these arrays are converted to PyTorch tensors. <code>.to_numpy()</code> gives the raw numbers.</p>
 <p>The brackets matter: <code>df["T_s"]</code> (one name) returns a one-column <code>Series</code>, which becomes a 1D array of shape <code>(n,)</code>. <code>df[["L_m"]]</code> (a <strong>list</strong> of names, here with one element) returns a <code>DataFrame</code>, which becomes a 2D array of shape <code>(n, 1)</code>. The inputs are kept 2D because a model may have several input columns (features).</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:17.047980Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:17.047853Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:17.062355Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:17.061757Z&quot;}" data-execution_count="30">
 <details open="">
@@ -1475,7 +1477,7 @@ Name: T_s, dtype: float64</code></pre>
 </section>
 <section id="classes-and-objects" class="level2">
 <h2 class="anchored" data-anchor-id="classes-and-objects">4. Classes and objects</h2>
-<p>Neural networks in PyTorch are written in the following form:</p>
+<p>In PyTorch a neural network is defined as a class, in the following form:</p>
 <div class="sourceCode" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> UATNet(nn.Module):</span>
 <span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, N, activation<span class="op">=</span>torch.tanh):</span>
 <span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
@@ -1485,10 +1487,7 @@ Name: T_s, dtype: float64</code></pre>
 <span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>        ...</span>
 <span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> UATNet(N<span class="op">=</span><span class="dv">8</span>)</span>
 <span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> model(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>This is a network with one hidden layer (the network of the Universal Approximation Theorem from the lecture); here it is shown only to be read. <code>torch</code> and <code>nn</code> are PyTorch modules. To read and write such code we need the basics of <strong>object-oriented programming</strong>: what a <em>class</em> and an <em>object</em> are, and what <code>__init__</code>, <code>self</code>, <code>super()</code> and <code>forward</code> mean. This section introduces them step by step, using physics examples.</p>
-<section id="objects-attributes-and-methods" class="level3">
-<h3 class="anchored" data-anchor-id="objects-attributes-and-methods">4.1 Objects, attributes and methods</h3>
-<p>An <strong>object</strong> bundles <em>data</em> together with the <em>functions that act on that data</em>. - data stored in an object are called <strong>attributes</strong>; they are accessed with a dot and no parentheses: <code>df.shape</code>; - functions belonging to an object are called <strong>methods</strong>; they are called with a dot and parentheses: <code>df.head()</code>, <code>ax.plot(...)</code>, <code>fig.savefig(...)</code>.</p>
+<p>This is a network with one hidden layer (the network of the Universal Approximation Theorem from the lecture); here it is shown only to be read. <code>torch</code> and <code>nn</code> are PyTorch modules. To read and write such code we need the basics of <strong>object-oriented programming</strong>: what a <em>class</em> and an <em>object</em> are, and what <code>__init__</code>, <code>self</code>, <code>super()</code> and <code>forward</code> mean. ### 4.1 Objects, attributes and methods An <strong>object</strong> bundles <em>data</em> together with the <em>functions that act on that data</em>. Data stored in an object are called <strong>attributes</strong>; they are accessed with a dot and no parentheses, as in <code>df.shape</code>. Functions belonging to an object are called <strong>methods</strong>; they are called with a dot and parentheses, as in <code>df.head()</code>, <code>ax.plot(...)</code> or <code>fig.savefig(...)</code>.</p>
 <p>The <strong>type</strong> (or <strong>class</strong>) of an object says what kind of object it is and which attributes and methods it has.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:17.063339Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:17.063198Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:17.072700Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:17.072360Z&quot;}" data-execution_count="31">
 <details open="">
@@ -1510,10 +1509,9 @@ HELLO
 (3,) 3.0</code></pre>
 </div>
 </div>
-</section>
 <section id="defining-a-class" class="level3">
 <h3 class="anchored" data-anchor-id="defining-a-class">4.2 Defining a class</h3>
-<p>A <strong>class</strong> is a template; an <strong>object</strong> (also called an <em>instance</em>) is one concrete thing made from that template. Example: a point particle in 2D with a mass, a position and a velocity. Every particle has these three pieces of data, but each particle has its own values.</p>
+<p>A <strong>class</strong> is a template; an <strong>object</strong> (also called an <em>instance</em>) is one concrete thing made from that template. Consider a point particle in 2D with a mass, a position and a velocity. Every particle has these three pieces of data, but each particle has its own values.</p>
 <p>The class is defined with the keyword <code>class</code>. Inside, functions defined with <code>def</code> become methods. The method with the special name <code>__init__</code> (two underscores on each side) is the <strong>constructor</strong>: Python calls it automatically when a new object is created, and its job is to store the initial data in the object.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:17.073877Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:17.073774Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:17.084430Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:17.084091Z&quot;}" data-execution_count="32">
 <details open="">
@@ -1545,11 +1543,11 @@ HELLO
 &lt;class '__main__.Particle'&gt;</code></pre>
 </div>
 </div>
-<p><strong>About <code>self</code>.</strong> When we call <code>Particle(1.0, [0, 0], [1, 2])</code> we pass three arguments, but <code>__init__</code> has four parameters. The first one, <code>self</code>, is filled in by Python automatically with the object being created. Inside the class, <code>self</code> always means “the object on which the method is working”. The name <code>self</code> is a convention (not a keyword), but everybody uses it.</p>
+<p>The call <code>Particle(1.0, [0, 0], [1, 2])</code> passes three arguments, but <code>__init__</code> has four parameters. The first one, <code>self</code>, is filled in by Python automatically with the object being created. Inside the class, <code>self</code> always means “the object on which the method is working”. The name <code>self</code> is a convention, not a keyword.</p>
 </section>
 <section id="methods" class="level3">
 <h3 class="anchored" data-anchor-id="methods">4.3 Methods</h3>
-<p>Methods are functions defined inside the class. They also receive the object as the first parameter <code>self</code>, so they can read and change its attributes. We redefine the class with two methods: one computes the kinetic energy, the other moves the particle forward in time under a constant force.</p>
+<p>Methods are functions defined inside the class. They also receive the object as the first parameter <code>self</code>, so they can read and change its attributes. The redefined class has two methods: the kinetic energy and a time step under a constant force.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:17.085472Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:17.085374Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:17.100022Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:17.099677Z&quot;}" data-execution_count="33">
 <details open="">
 <summary>Code</summary>
@@ -1586,13 +1584,8 @@ after one step: [0.3    0.3019] [3.    3.019]</code></pre>
 </section>
 <section id="many-objects-a-small-simulation" class="level3">
 <h3 class="anchored" data-anchor-id="many-objects-a-small-simulation">4.4 Many objects: a small simulation</h3>
-<p>Objects are convenient when we have many similar things, each with its own state. Five projectiles thrown with different angles, each a <code>Particle</code>.</p>
-<ul>
-<li><code>while condition:</code> repeats the indented block as long as the condition is true; here, until the projectile falls below <span class="math inline">\(y = 0\)</span>. The last stored point therefore lies slightly below the ground.</li>
-<li><code>p.position.copy()</code> stores an independent copy of the array. <code>step</code> happens to create a new array each time, so here the copy is only a precaution; if the position were changed in place (e.g.&nbsp;<code>p.position += ...</code>), every stored entry without <code>.copy()</code> would change with it.</li>
-<li>The flight times are between 0.5 s (15°) and 2 s (75°), so <span class="math inline">\(\Delta t = 0.01\)</span> s gives 50–200 points per trajectory, enough for a smooth curve.</li>
-<li><code>path[:, 0]</code> selects column 0 of all rows (all <span class="math inline">\(x\)</span> coordinates), <code>path[:, 1]</code> all <span class="math inline">\(y\)</span> coordinates. In <code>ax.set_ylim(0, None)</code>, <code>None</code> means “choose this limit automatically”.</li>
-</ul>
+<p>Objects are convenient for many similar things, each with its own state: here five projectiles thrown at different angles, each a <code>Particle</code>.</p>
+<p>Each projectile is advanced in a <code>while condition:</code> loop, which repeats the indented block as long as the condition is true; here, until the projectile falls below <span class="math inline">\(y = 0\)</span>. The last stored point therefore lies slightly below the ground. The position is stored with <code>p.position.copy()</code>: if the position were changed in place (e.g.&nbsp;<code>p.position += ...</code>), every stored entry without <code>.copy()</code> would change with it.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:17.101195Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:17.101097Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:17.197055Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:17.196495Z&quot;}" data-execution_count="34">
 <details open="">
 <summary>Code</summary>
@@ -1617,8 +1610,8 @@ after one step: [0.3    0.3019] [3.    3.019]</code></pre>
 </div>
 </div>
 </section>
-<section id="special-methods-__repr__-__call__-__add__" class="level3">
-<h3 class="anchored" data-anchor-id="special-methods-__repr__-__call__-__add__">4.5 Special methods: <code>__repr__</code>, <code>__call__</code>, <code>__add__</code></h3>
+<section id="special-methods" class="level3">
+<h3 class="anchored" data-anchor-id="special-methods">4.5 Special methods</h3>
 <p>Methods whose names start and end with two underscores have special meaning for Python; they are called automatically in certain situations:</p>
 <table class="table">
 <colgroup>
@@ -1656,8 +1649,8 @@ after one step: [0.3    0.3019] [3.    3.019]</code></pre>
 </tr>
 </tbody>
 </table>
-<p>Example: a polynomial <span class="math inline">\(c_0 + c_1x + c_2x^2 + \dots\)</span> stored as its list of coefficients.</p>
-<p>New Python elements in the code below: - <code>[... for k, ck in enumerate(self.c) if ck != 0]</code>: a trailing <code>if</code> in a list comprehension keeps only the elements satisfying the condition (zero terms are not printed); - <code>f"{ck:+g}"</code>: <code>g</code> prints a number in its shortest form (<code>2</code> instead of <code>2.000000</code>), <code>+</code> always prints the sign; - <code>sum(ck * x**k for ...)</code>: adds the terms one by one without first building a list; - <code>np.pad(a, (0, m))</code>: appends <code>m</code> zeros at the end of <code>a</code> (and none at the beginning).</p>
+<p>As an example we store a polynomial <span class="math inline">\(c_0 + c_1x + c_2x^2 + \dots\)</span> as its list of coefficients.</p>
+<p>A trailing <code>if</code> in a list comprehension, <code>[... for k, ck in enumerate(self.c) if ck != 0]</code>, keeps only the elements satisfying the condition, and <code>np.pad(a, (0, m))</code> appends <code>m</code> zeros at the end of <code>a</code>.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:17.198860Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:17.198686Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:17.205278Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:17.204814Z&quot;}" data-execution_count="35">
 <details open="">
 <summary>Code</summary>
@@ -1698,10 +1691,10 @@ Polynomial(+1 x^0 +3 x^1 -2 x^2)
 </div>
 <p><code>__call__</code> is the reason why in PyTorch we write <code>model(x)</code> and not <code>model.forward(x)</code>: calling the object runs its <code>__call__</code>, which (after some bookkeeping) calls <code>forward</code>. <code>__add__</code> and <code>__mul__</code> can, for example, be used to build <em>dual numbers</em>, which perform automatic differentiation.</p>
 </section>
-<section id="inheritance-and-super.__init__" class="level3">
-<h3 class="anchored" data-anchor-id="inheritance-and-super.__init__">4.6 Inheritance and <code>super().__init__()</code></h3>
-<p>A class can be built on top of another class: it <strong>inherits</strong> all attributes and methods of the <em>parent</em> (base) class and can add new ones or replace existing ones. The parent is written in parentheses after the class name.</p>
-<p>Example: a charged particle is a particle with an extra attribute <code>charge</code> and an extra method for the force in an electric field. Its constructor must still set mass, position and velocity. Instead of repeating that code, it calls the constructor of the parent class with <code>super().__init__(...)</code> (<code>super()</code> means “the parent class”), and then adds its own attribute. The last line of the code uses <code>isinstance(obj, C)</code>, which returns <code>True</code> if <code>obj</code> is an object of class <code>C</code> or of a class that inherits from <code>C</code>.</p>
+<section id="inheritance" class="level3">
+<h3 class="anchored" data-anchor-id="inheritance">4.6 Inheritance</h3>
+<p>A class can be built on top of another class: it <strong>inherits</strong> all attributes and methods of the <em>parent</em> (base) class and can add new ones or replace existing ones. The parent is given in parentheses after the class name.</p>
+<p>A charged particle, for instance, is a particle with an extra attribute <code>charge</code> and an extra method for the force in an electric field. Its constructor must still set mass, position and velocity. Instead of repeating that code, it calls the constructor of the parent class with <code>super().__init__(...)</code> (<code>super()</code> means “the parent class”), and then adds its own attribute. <code>isinstance(obj, C)</code> returns <code>True</code> if <code>obj</code> is an object of class <code>C</code> or of a class that inherits from <code>C</code>.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:17.206934Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:17.206767Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:17.220735Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:17.220205Z&quot;}" data-execution_count="36">
 <details open="">
 <summary>Code</summary>
@@ -1732,10 +1725,10 @@ True</code></pre>
 </section>
 <section id="a-gas-of-hard-disks-in-a-closed-box" class="level3">
 <h3 class="anchored" data-anchor-id="a-gas-of-hard-disks-in-a-closed-box">4.7 A gas of hard disks in a closed box</h3>
-<p>A larger example with two classes: - <code>Disk</code> — a <code>Particle</code> with a radius (it <strong>inherits</strong> mass, position, velocity and <code>kinetic_energy</code> from <code>Particle</code>, Section 4.6) and a method <code>move</code> for free flight; - <code>Box</code> — holds a list of disks and implements the dynamics: free flight, elastic reflection at the walls, elastic collisions between disks. It also records the momentum transferred to the walls, from which the <strong>pressure</strong> follows.</p>
-<p>Physics of an elastic collision of two disks: only the velocity components along the line joining the centres (unit vector <span class="math inline">\(\mathbf n = (\mathbf r_b-\mathbf r_a)/|\mathbf r_b-\mathbf r_a|\)</span>, pointing from disk a to disk b) change. With <span class="math inline">\(v_{\rm rel} = (\mathbf v_a - \mathbf v_b)\cdot\mathbf n &gt; 0\)</span> (the disks approach each other), momentum <span class="math inline">\(J = 2 v_{\rm rel}/(1/m_a + 1/m_b)\)</span> is exchanged: <span class="math inline">\(\mathbf v_a \leftarrow \mathbf v_a - (J/m_a)\,\mathbf n\)</span>, <span class="math inline">\(\mathbf v_b \leftarrow \mathbf v_b + (J/m_b)\,\mathbf n\)</span>. This conserves momentum and kinetic energy.</p>
-<p>New notation in the code: <code>a += b</code> is short for <code>a = a + b</code> (and <code>a *= -1</code> for <code>a = a * (-1)</code>, a sign flip). <code>np.dot(u, w)</code> is the scalar product of two vectors, <code>np.linalg.norm(v)</code> the length <span class="math inline">\(|\mathbf v|\)</span> of a vector, and <code>abs</code> the absolute value of a number.</p>
-<p>How the code finds collisions: - <code>pos</code> has shape <code>(n, 2)</code>. <code>pos[:, None, :]</code> has shape <code>(n, 1, 2)</code> and <code>pos[None, :, :]</code> shape <code>(1, n, 2)</code>; <code>None</code> inserts a new axis of length 1. Their difference is broadcast to shape <code>(n, n, 2)</code>, and entry <code>[i, j]</code> is the vector <span class="math inline">\(\mathbf r_i - \mathbf r_j\)</span>: all pairwise differences without a loop. Squaring and summing over the last axis (<code>axis=-1</code>, the two coordinates) gives the squared distances, an <code>(n, n)</code> array. - <code>dist &lt; 2 * radius</code> marks overlapping pairs. <code>np.triu(..., k=1)</code> keeps only the entries above the diagonal: this removes the distance of each disk to itself (zero) and counts each pair <span class="math inline">\((i, j)\)</span> only once. <code>np.nonzero</code> returns the row and column indices of the remaining <code>True</code> entries. - Collisions are detected only after the disks overlap a little. The velocity is changed only if the disk moves <strong>into</strong> the wall (<code>d.velocity[axis] &lt; 0</code> at the left wall), or if the two disks approach each other (<code>v_rel &gt; 0</code>). A disk may still overlap after the reflection; without these conditions its velocity would be reversed again in the next step and the disk would stick to the wall or to its partner.</p>
+<p>A larger example combines two classes. <code>Disk</code> is a <code>Particle</code> with a radius: it <strong>inherits</strong> mass, position, velocity and <code>kinetic_energy</code> from <code>Particle</code> (Section 4.6) and adds a method <code>move</code> for free flight. <code>Box</code> holds a list of disks and implements the dynamics: free flight, elastic reflection at the walls and elastic collisions between disks. It also records the momentum transferred to the walls, from which the <strong>pressure</strong> follows.</p>
+<p>In an elastic collision of two disks only the velocity components along the line joining the centres (unit vector <span class="math inline">\(\mathbf n = (\mathbf r_b-\mathbf r_a)/|\mathbf r_b-\mathbf r_a|\)</span>, pointing from disk a to disk b) change. With <span class="math inline">\(v_{\rm rel} = (\mathbf v_a - \mathbf v_b)\cdot\mathbf n &gt; 0\)</span> (the disks approach each other), momentum <span class="math inline">\(J = 2 v_{\rm rel}/(1/m_a + 1/m_b)\)</span> is exchanged: <span class="math inline">\(\mathbf v_a \leftarrow \mathbf v_a - (J/m_a)\,\mathbf n\)</span>, <span class="math inline">\(\mathbf v_b \leftarrow \mathbf v_b + (J/m_b)\,\mathbf n\)</span>. This conserves momentum and kinetic energy.</p>
+<p>The collisions are found without a loop over pairs. The array <code>pos</code> has shape <code>(n, 2)</code>; <code>pos[:, None, :]</code> has shape <code>(n, 1, 2)</code> and <code>pos[None, :, :]</code> shape <code>(1, n, 2)</code>, because <code>None</code> inserts a new axis of length 1. Their difference is broadcast to shape <code>(n, n, 2)</code>, and entry <code>[i, j]</code> is the vector <span class="math inline">\(\mathbf r_i - \mathbf r_j\)</span>: all pairwise differences at once. Squaring and summing over the last axis (<code>axis=-1</code>, the two coordinates) gives the squared distances, an <code>(n, n)</code> array. The comparison <code>dist &lt; 2 * radius</code> then marks overlapping pairs. <code>np.triu(..., k=1)</code> keeps only the entries above the diagonal, which removes the distance of each disk to itself (zero) and counts each pair <span class="math inline">\((i, j)\)</span> only once, and <code>np.nonzero</code> returns the row and column indices of the remaining <code>True</code> entries.</p>
+<p>Collisions are detected only after the disks overlap a little. For this reason the velocity is changed only if the disk moves <strong>into</strong> the wall (<code>d.velocity[axis] &lt; 0</code> at the left wall), or if the two disks approach each other (<code>v_rel &gt; 0</code>). A disk may still overlap after the reflection; without these conditions its velocity would be reversed again in the next step and the disk would stick to the wall or to its partner.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:17.222287Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:17.222117Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:17.233628Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:17.233162Z&quot;}" data-execution_count="37">
 <details open="">
 <summary>Code</summary>
@@ -1800,7 +1793,8 @@ True</code></pre>
 </details>
 </div>
 <p>We place 64 disks on a regular grid and give them <strong>all the same speed</strong> <span class="math inline">\(|\mathbf v| = 1\)</span> in random directions. Collisions redistribute the energy, and the speeds should approach the equilibrium <strong>Maxwell–Boltzmann distribution</strong>, which in two dimensions reads <span class="math display">\[f(v) = \frac{m v}{k_B T}\,\exp\!\Big(-\frac{m v^2}{2 k_B T}\Big),\qquad k_B T = \langle \tfrac12 m v^2\rangle \ \text{(2D, per particle)} .\]</span> We use units with <span class="math inline">\(k_B = 1\)</span> and <span class="math inline">\(m = 1\)</span>. The relation <span class="math inline">\(k_BT = \langle\tfrac12 mv^2\rangle\)</span> is equipartition: each of the two velocity components contributes <span class="math inline">\(\tfrac12 k_BT\)</span>.</p>
-<p>The parameter values: - 64 disks of radius 0.15 in a <span class="math inline">\(10\times10\)</span> box cover 4.5% of the area: a dilute gas, close to an ideal gas but with a visible effect of the finite disk size. Other values with a small area fraction behave similarly. - <span class="math inline">\(\Delta t = 0.01\)</span>: in one step a disk with speed of order 1 moves about 0.01, much less than the disk diameter 0.3, so two disks cannot jump over each other between two checks. If <span class="math inline">\(v\,\Delta t\)</span> became comparable to the diameter, collisions would be missed. - 3000 steps (30 time units) of equilibration: in this time each disk collides about 15 times (counted in a separate run), while a few collisions per disk already randomise the speeds. The value is a generous margin, not a precise requirement. The 6000 measurement steps (60 time units) only collect more data for the histogram. - <code>step % 20 == 0</code> (<code>%</code> is the remainder of the division) is true every 20th step. Speeds are recorded only every 20 steps, because consecutive steps are almost identical and add little information; this still gives <span class="math inline">\(300 \times 64 = 19\,200\)</span> speed values. <code>speeds_eq.extend(...)</code> appends all 64 speeds of one snapshot to the list (<code>append</code> would add the whole array as a single element). - Snapshots for the animation are stored every 25 steps during the first 1500 steps (15 time units), 61 frames in total. Every frame is stored as an image inside the notebook, so a longer or finer animation would make the file several MB larger without showing anything new. - <code>rng.uniform(a, b)</code> draws a number uniformly distributed between <code>a</code> and <code>b</code>; here a random direction of the initial velocity.</p>
+<p>64 disks of radius 0.15 in a <span class="math inline">\(10\times10\)</span> box cover 4.5% of the area: a dilute gas, close to an ideal gas but with a visible effect of the finite disk size; other values with a small area fraction behave similarly. The time step <span class="math inline">\(\Delta t = 0.01\)</span> moves a disk with speed of order 1 by about 0.01 per step, much less than the disk diameter 0.3, so two disks cannot jump over each other between two checks. If <span class="math inline">\(v\,\Delta t\)</span> became comparable to the diameter, collisions would be missed. The equilibration lasts 3000 steps (30 time units). In this time each disk collides about 15 times (counted in a separate run), while a few collisions per disk already randomise the speeds, so the value is a generous margin, not a precise requirement. The 6000 measurement steps (60 time units) only collect more data for the histogram.</p>
+<p>Speeds are recorded only every 20 steps, because consecutive steps are almost identical; this still gives <span class="math inline">\(300 \times 64 = 19\,200\)</span> speed values. Snapshots for the animation are stored every 25 steps during the first 1500 steps (15 time units), 61 frames in total.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:17.235450Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:17.235206Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:19.811360Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:19.810525Z&quot;}" data-execution_count="38">
 <details open="">
 <summary>Code</summary>
@@ -1837,7 +1831,7 @@ True</code></pre>
 <pre><code>kinetic energy: start 32.000000, after 3000 steps 32.000000</code></pre>
 </div>
 </div>
-<p>The speed distribution after the collisions, compared with the Maxwell–Boltzmann formula, and the pressure measured at the walls. <code>plt.Circle(center, radius)</code> creates a circle shape, <code>ax.add_patch</code> draws it, and <code>set_aspect("equal")</code> makes one unit equally long on both axes (otherwise the disks would look like ellipses). The speed range 0–3.5 and the 30 bins are arbitrary plotting choices; the distribution is negligible above <span class="math inline">\(v \approx 3.5\)</span>.</p>
+<p>The speed distribution after the collisions is compared with the Maxwell–Boltzmann formula, and the pressure measured at the walls with the ideal-gas value.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:19.813473Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:19.813292Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:20.285266Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:20.284586Z&quot;}" data-execution_count="39">
 <details open="">
 <summary>Code</summary>
@@ -1875,7 +1869,7 @@ ratio P A / (N kT)             = 1.134</code></pre>
 </div>
 </div>
 <p>The speeds relax from a single value to the Maxwell–Boltzmann distribution: collisions alone produce thermal equilibrium. The pressure is close to the ideal-gas value <span class="math inline">\(P = N k_B T/A\)</span> but somewhat larger, because the disks have a finite size: they exclude part of the area from each other and from the walls. Repeating the simulation with smaller disks (e.g.&nbsp;<code>radius = 0.05</code>) brings the ratio closer to 1.</p>
-<p>An animation of the beginning of the equilibration phase (the first 15 time units), made from the stored snapshots. - <code>FuncAnimation(fig, update, frames=n, ...)</code> calls <code>update(frame)</code> for <code>frame = 0, 1, ..., n-1</code>; <code>update</code> moves the circles to the stored positions. - <code>interval=50</code> is the time between frames in milliseconds; <code>blit=True</code> redraws only the objects returned by <code>update</code>, which is faster. - <code>dpi=60</code> (dots per inch) and the small figure size keep each stored frame small. - <code>plt.close(fig)</code> prevents the empty starting figure from being shown as a separate static image. - <code>anim.to_jshtml(...)</code> converts the animation into an HTML player (with play and pause buttons) that <code>HTML(...)</code> displays in the notebook; <code>default_mode="once"</code> plays it once.</p>
+<p>The stored snapshots show the beginning of the equilibration (the first 15 time units) as an animation. <code>FuncAnimation(fig, update, frames=n, ...)</code> calls <code>update(frame)</code> for <code>frame = 0, 1, ..., n-1</code>, and <code>anim.to_jshtml(...)</code> turns the animation into an HTML player.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:20.287182Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:20.286995Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:21.313758Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:21.313156Z&quot;}" data-execution_count="40">
 <details open="">
 <summary>Code</summary>
@@ -14742,8 +14736,9 @@ JrAkOZhMYElyMJnAkuRgMoElycFkAkuSg/1/WwUDdl05bcgAAAAASUVORK5CYII=\
 </section>
 <section id="structure-of-a-pytorch-model" class="level3">
 <h3 class="anchored" data-anchor-id="structure-of-a-pytorch-model">4.8 Structure of a PyTorch model</h3>
-<p><code>torch.nn.Module</code> is a base class with a lot of machinery. To see the idea, here is a <strong>simplified imitation in plain Python and NumPy</strong> (this is <em>not</em> PyTorch code; it only reproduces the structure): - <code>Parameter</code> marks an array as a trainable parameter; - <code>Module.__call__</code> calls <code>forward</code>, so that <code>model(x)</code> works; - <code>Module.parameters()</code> collects all attributes that are <code>Parameter</code>s — this is how an optimiser finds the numbers it has to change. <code>vars(self)</code> is a dictionary of all attributes of the object (name → value), and <code>isinstance(v, Parameter)</code> keeps only the <code>Parameter</code> objects.</p>
-<p>Details of <code>forward</code> and of the initialisation: - <code>x</code> holds <code>B</code> input points (shape <code>(B,)</code>; <code>B</code> stands for <em>batch</em>, the number of points evaluated at once). <code>x[:, None]</code> inserts a new axis and gives shape <code>(B, 1)</code>. Multiplied by <code>W1</code> of shape <code>(N,)</code>, broadcasting gives a <code>(B, N)</code> table: entry <code>[k, i]</code> is <span class="math inline">\(W_{1,i}\,x_k + b_i\)</span>, neuron <span class="math inline">\(i\)</span> at point <span class="math inline">\(k\)</span>. - <code>@</code> is matrix multiplication: <code>hidden @ W2</code> with shapes <code>(B, N) @ (N,)</code> gives shape <code>(B,)</code>, i.e.&nbsp;<span class="math inline">\(\sum_i W_{2,i}\,\sigma(\dots)\)</span> for every point. - <code>W2</code> is divided by <span class="math inline">\(\sqrt N\)</span>. The output is a sum of <span class="math inline">\(N\)</span> terms; if every <span class="math inline">\(W_{2,i}\)</span> has variance <span class="math inline">\(1/N\)</span>, the variance of the sum is of order 1 for every <span class="math inline">\(N\)</span>, so the initial output does not grow with the size of the network. <code>W1</code> and <code>b</code> are not rescaled, because each hidden neuron receives a single input <span class="math inline">\(x\)</span>, whose scale does not depend on <span class="math inline">\(N\)</span>. - The generator <code>default_rng(0)</code> is created inside the constructor, so every <code>UATNet</code> with the same <code>N</code> starts from the same weights. This makes the example reproducible; a real model would draw different random weights each time.</p>
+<p><code>torch.nn.Module</code> is a base class with a lot of machinery. Its idea is visible in a <strong>simplified imitation in plain Python and NumPy</strong>; this is <em>not</em> PyTorch code, it only reproduces the structure. A class <code>Parameter</code> marks an array as a trainable parameter. <code>Module.__call__</code> calls <code>forward</code>, so that <code>model(x)</code> works. <code>Module.parameters()</code> collects all attributes that are <code>Parameter</code>s, which is how an optimiser finds the numbers it has to change: <code>vars(self)</code> is a dictionary of all attributes of the object (name → value), and <code>isinstance(v, Parameter)</code> keeps only the <code>Parameter</code> objects.</p>
+<p>The input <code>x</code> holds <code>B</code> points (shape <code>(B,)</code>; <code>B</code> stands for <em>batch</em>, the number of points evaluated at once), and <code>x[:, None]</code> inserts a new axis and gives shape <code>(B, 1)</code>. Multiplied by <code>W1</code> of shape <code>(N,)</code>, broadcasting gives a <code>(B, N)</code> table whose entry <code>[k, i]</code> is <span class="math inline">\(W_{1,i}\,x_k + b_i\)</span>, neuron <span class="math inline">\(i\)</span> at point <span class="math inline">\(k\)</span>. The operator <code>@</code> is matrix multiplication: <code>hidden @ W2</code> with shapes <code>(B, N) @ (N,)</code> gives shape <code>(B,)</code>, i.e.&nbsp;<span class="math inline">\(\sum_i W_{2,i}\,\sigma(\dots)\)</span> for every point.</p>
+<p><code>W2</code> is divided by <span class="math inline">\(\sqrt N\)</span>. The output is a sum of <span class="math inline">\(N\)</span> terms; if every <span class="math inline">\(W_{2,i}\)</span> has variance <span class="math inline">\(1/N\)</span>, the variance of the sum is of order 1 for every <span class="math inline">\(N\)</span>, so the initial output does not grow with the size of the network. <code>W1</code> and <code>b</code> are not rescaled, because each hidden neuron receives a single input <span class="math inline">\(x\)</span>, whose scale does not depend on <span class="math inline">\(N\)</span>. The generator <code>default_rng(0)</code> is created inside the constructor, so every <code>UATNet</code> with the same <code>N</code> starts from the same weights. This makes the example reproducible; a real model would draw different random weights each time.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:21.318460Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:21.318308Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:21.325432Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:21.324721Z&quot;}" data-execution_count="41">
 <details open="">
 <summary>Code</summary>
@@ -14849,22 +14844,15 @@ number of trainable numbers: 16</code></pre>
 </section>
 <section id="summary" class="level2">
 <h2 class="anchored" data-anchor-id="summary">5. Summary</h2>
-<ul>
-<li>Python basics: variables, <code>f"{x:.3f}"</code>, lists (index from 0), <code>for</code> loops, <code>if</code>, functions with docstrings, dictionaries.</li>
-<li>Matplotlib: prefer <code>fig, ax = plt.subplots()</code>, label axes <strong>with units</strong>, legends, <code>log</code> scales, histograms, <code>contourf</code>/<code>imshow</code> for 2D.</li>
-<li>Pandas: <code>DataFrame</code>, <code>head</code>/<code>describe</code>, boolean masks, new columns, <code>groupby</code>, <code>to_csv</code>/<code>read_csv</code>, <code>.to_numpy()</code>.</li>
-<li>Data for ML are tables of shape <strong>(samples, features)</strong>.</li>
-<li>Objects bundle data (<strong>attributes</strong>, <code>obj.x</code>) and functions (<strong>methods</strong>, <code>obj.f()</code>); a <strong>class</strong> is the template, <code>obj = ClassName(...)</code> creates an object.</li>
-<li><code>__init__</code> stores the initial data; <code>self</code> is the object itself; special methods <code>__repr__</code>, <code>__call__</code>, <code>__add__</code> define printing, calling and <code>+</code>.</li>
-<li>Inheritance <code>class B(A)</code>: B gets everything from A; <code>super().__init__(...)</code> runs A’s constructor. PyTorch networks are classes inheriting from <code>nn.Module</code>, with <code>__init__</code> and <code>forward</code>.</li>
-</ul>
+<p>The Python basics of Section 1 — variables, formatted output with <code>f"{x:.3f}"</code>, lists indexed from 0, <code>for</code> loops, <code>if</code>, functions with docstrings and dictionaries — are the vocabulary of every later notebook. For figures we prefer the object-oriented interface <code>fig, ax = plt.subplots()</code>, always label axes <strong>with units</strong>, add legends, and use logarithmic scales, histograms, and <code>contourf</code> or <code>imshow</code> for 2D data. Pandas provides the <code>DataFrame</code> with <code>head</code> and <code>describe</code> for a first look, boolean masks for selection, computed columns, <code>groupby</code>, <code>to_csv</code>/<code>read_csv</code>, and <code>.to_numpy()</code> to hand the numbers to a model. Data for machine learning are tables of shape <strong>(samples, features)</strong>.</p>
+<p>Objects bundle data (<strong>attributes</strong>, <code>obj.x</code>) with functions (<strong>methods</strong>, <code>obj.f()</code>); a <strong>class</strong> is the template, and <code>obj = ClassName(...)</code> creates an object. <code>__init__</code> stores the initial data, <code>self</code> is the object itself, and the special methods <code>__repr__</code>, <code>__call__</code> and <code>__add__</code> define printing, calling and <code>+</code>. With inheritance, <code>class B(A)</code>, the class B gets everything from A, and <code>super().__init__(...)</code> runs the constructor of A. PyTorch networks are exactly such classes: they inherit from <code>nn.Module</code> and define <code>__init__</code> and <code>forward</code>.</p>
 <hr>
 </section>
 <section id="exercises" class="level2">
 <h2 class="anchored" data-anchor-id="exercises">6. Exercises</h2>
-<p>Each exercise is followed by a worked solution. (advanced) = harder.</p>
-<section id="exercise-1-standing-waves-subplots" class="level3">
-<h3 class="anchored" data-anchor-id="exercise-1-standing-waves-subplots">Exercise 1 — Standing waves (subplots)</h3>
+<p>Each exercise is followed by a solution.</p>
+<section id="exercise-1-standing-waves" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-1-standing-waves">Exercise 1 — Standing waves</h3>
 <p>Plot the first four standing-wave modes of a string of length <span class="math inline">\(L=1\)</span>: <span class="math inline">\(\;y_n(x) = \sin(n\pi x / L)\)</span>, <span class="math inline">\(n=1,\dots,4\)</span>, in a <span class="math inline">\(2\times2\)</span> grid of panels. Each panel: title <code>n = ...</code>, axis labels, a horizontal line at <span class="math inline">\(y=0\)</span>. <em>Hint:</em> <code>axes.flatten()</code> turns the 2×2 array of axes into a list of 4.</p>
 <section id="solution" class="level4">
 <h4 class="anchored" data-anchor-id="solution">Solution</h4>
@@ -14895,9 +14883,9 @@ number of trainable numbers: 16</code></pre>
 </div>
 </section>
 </section>
-<section id="exercise-2-black-body-radiation-functions-log-scale" class="level3">
-<h3 class="anchored" data-anchor-id="exercise-2-black-body-radiation-functions-log-scale">Exercise 2 — Black-body radiation (functions, log scale)</h3>
-<p>Planck’s law for the spectral radiance: <span class="math display">\[B(\lambda, T) = \frac{2hc^2}{\lambda^5}\,\frac{1}{e^{hc/(\lambda k_B T)} - 1}.\]</span> 1. Write a function <code>planck(lam, T)</code> (SI units; <span class="math inline">\(h = 6.626\times10^{-34}\)</span>, <span class="math inline">\(c=2.998\times10^{8}\)</span>, <span class="math inline">\(k_B = 1.381\times10^{-23}\)</span>). 2. Plot <span class="math inline">\(B(\lambda,T)\)</span> for <span class="math inline">\(T = 3000, 4000, 5000, 6000\)</span> K on <span class="math inline">\(\lambda \in [100, 3000]\)</span> nm (put <strong>nm</strong> on the x-axis). 3. For every <span class="math inline">\(T\)</span> find numerically the wavelength of the maximum (<code>np.argmax</code>) and check <strong>Wien’s law</strong> <span class="math inline">\(\lambda_{\max} T \approx 2.898\times10^{-3}\)</span> m·K. 4. Make a second figure with a logarithmic y-axis. What happens at short wavelengths?</p>
+<section id="exercise-2-black-body-radiation" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-2-black-body-radiation">Exercise 2 — Black-body radiation</h3>
+<p>Planck’s law for the spectral radiance: <span class="math display">\[B(\lambda, T) = \frac{2hc^2}{\lambda^5}\,\frac{1}{e^{hc/(\lambda k_B T)} - 1}.\]</span> 1. Write a function <code>planck(lam, T)</code> (SI units; <span class="math inline">\(h = 6.626\times10^{-34}\)</span>, <span class="math inline">\(c=2.998\times10^{8}\)</span>, <span class="math inline">\(k_B = 1.381\times10^{-23}\)</span>). 2. Plot <span class="math inline">\(B(\lambda,T)\)</span> for <span class="math inline">\(T = 3000, 4000, 5000, 6000\)</span> K on <span class="math inline">\(\lambda \in [100, 3000]\)</span> nm (put <strong>nm</strong> on the x-axis). 3. For every <span class="math inline">\(T\)</span> find numerically the wavelength of the maximum (<code>np.argmax</code>) and check <strong>Wien’s law</strong> <span class="math inline">\(\lambda_{\max} T \approx 2.898\times10^{-3}\)</span> m·K. 4. Make a second figure with a logarithmic y-axis and describe the behaviour at short wavelengths.</p>
 <section id="solution-1" class="level4">
 <h4 class="anchored" data-anchor-id="solution-1">Solution</h4>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:21.692644Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:21.692481Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:21.947340Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:21.946513Z&quot;}" data-execution_count="43">
@@ -14959,10 +14947,10 @@ T = 6000 K: lambda_max =   483.0 nm,  lambda_max*T = 2.8979e-03 m K</code></pre>
 </div>
 </section>
 </section>
-<section id="exercise-3-projectile-experiment-pandas" class="level3">
-<h3 class="anchored" data-anchor-id="exercise-3-projectile-experiment-pandas">Exercise 3 — Projectile experiment (Pandas)</h3>
+<section id="exercise-3-projectile-experiment" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-3-projectile-experiment">Exercise 3 — Projectile experiment</h3>
 <ol type="1">
-<li>Build a DataFrame with columns <code>angle_deg</code>, <code>v0</code> and <code>range_m</code> for angles <span class="math inline">\(10^\circ, 20^\circ, \dots, 80^\circ\)</span> and initial speeds <span class="math inline">\(v_0 = 10, 15, 20\)</span> m/s, where the range (no air resistance) is <span class="math inline">\(R = v_0^2 \sin(2\alpha)/g\)</span>. Add Gaussian noise with std <span class="math inline">\(0.2\)</span> m to mimic a measurement.</li>
+<li>Build a DataFrame with columns <code>angle_deg</code>, <code>v0</code> and <code>range_m</code> for angles <span class="math inline">\(10^\circ, 20^\circ, \dots, 80^\circ\)</span> and initial speeds <span class="math inline">\(v_0 = 10, 15, 20\)</span> m/s, where the range (no air resistance) is <span class="math inline">\(R = v_0^2 \sin(2\alpha)/g\)</span>. Add Gaussian noise with standard deviation <span class="math inline">\(0.2\)</span> m to mimic a measurement.</li>
 <li>Using <code>groupby("v0")</code>, find for each <span class="math inline">\(v_0\)</span> the angle with the largest measured range (<em>hint:</em> <code>df.loc[sub["range_m"].idxmax()]</code>).</li>
 <li>Plot range vs.&nbsp;angle, one curve per <span class="math inline">\(v_0\)</span>, with a legend.</li>
 </ol>
@@ -14974,7 +14962,7 @@ T = 6000 K: lambda_max =   483.0 nm,  lambda_max*T = 2.8979e-03 m K</code></pre>
 <div class="sourceCode cell-code" id="cb71"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">1</span>)          <span class="co"># random generator with a fixed seed -&gt; reproducible noise</span></span>
 <span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>g_earth <span class="op">=</span> <span class="fl">9.81</span></span>
 <span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: collect one dictionary per measurement in a list ...</span></span>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a><span class="co"># collect one dictionary per measurement in a list ...</span></span>
 <span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> []</span>
 <span id="cb71-6"><a href="#cb71-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> v0 <span class="kw">in</span> [<span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>]:                         <span class="co"># initial speeds [m/s]</span></span>
 <span id="cb71-7"><a href="#cb71-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> angle <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>, <span class="dv">90</span>, <span class="dv">10</span>):             <span class="co"># 10, 20, ..., 80 degrees</span></span>
@@ -14983,18 +14971,18 @@ T = 6000 K: lambda_max =   483.0 nm,  lambda_max*T = 2.8979e-03 m K</code></pre>
 <span id="cb71-10"><a href="#cb71-10" aria-hidden="true" tabindex="-1"></a>        R_measured <span class="op">=</span> R_exact <span class="op">+</span> rng.normal(scale<span class="op">=</span><span class="fl">0.2</span>)     <span class="co"># add measurement noise, std 0.2 m</span></span>
 <span id="cb71-11"><a href="#cb71-11" aria-hidden="true" tabindex="-1"></a>        rows.append({<span class="st">"angle_deg"</span>: angle, <span class="st">"v0"</span>: v0, <span class="st">"range_m"</span>: R_measured})</span>
 <span id="cb71-12"><a href="#cb71-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-13"><a href="#cb71-13" aria-hidden="true" tabindex="-1"></a><span class="co"># ... Step 2: turn the list of dictionaries into a table</span></span>
+<span id="cb71-13"><a href="#cb71-13" aria-hidden="true" tabindex="-1"></a><span class="co"># ... and turn the list of dictionaries into a table</span></span>
 <span id="cb71-14"><a href="#cb71-14" aria-hidden="true" tabindex="-1"></a>df_proj <span class="op">=</span> pd.DataFrame(rows)</span>
 <span id="cb71-15"><a href="#cb71-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_proj.head())</span>
 <span id="cb71-16"><a href="#cb71-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-17"><a href="#cb71-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 3: for each v0, find the row with the largest range.</span></span>
+<span id="cb71-17"><a href="#cb71-17" aria-hidden="true" tabindex="-1"></a><span class="co"># for each v0, the row with the largest range</span></span>
 <span id="cb71-18"><a href="#cb71-18" aria-hidden="true" tabindex="-1"></a><span class="co"># groupby("v0") splits the table into sub-tables; idxmax() returns the row label of the maximum,</span></span>
 <span id="cb71-19"><a href="#cb71-19" aria-hidden="true" tabindex="-1"></a><span class="co"># and df_proj.loc[label] selects that row.</span></span>
 <span id="cb71-20"><a href="#cb71-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> v0, sub <span class="kw">in</span> df_proj.groupby(<span class="st">"v0"</span>):</span>
 <span id="cb71-21"><a href="#cb71-21" aria-hidden="true" tabindex="-1"></a>    best <span class="op">=</span> df_proj.loc[sub[<span class="st">"range_m"</span>].idxmax()]</span>
 <span id="cb71-22"><a href="#cb71-22" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"v0 = </span><span class="sc">{</span>v0<span class="sc">}</span><span class="ss"> m/s: best angle = </span><span class="sc">{</span>best[<span class="st">'angle_deg'</span>]<span class="sc">}</span><span class="ss"> deg, range = </span><span class="sc">{</span>best[<span class="st">'range_m'</span>]<span class="sc">:.2f}</span><span class="ss"> m"</span>)</span>
 <span id="cb71-23"><a href="#cb71-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-24"><a href="#cb71-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 4: one curve per v0</span></span>
+<span id="cb71-24"><a href="#cb71-24" aria-hidden="true" tabindex="-1"></a><span class="co"># one curve per v0</span></span>
 <span id="cb71-25"><a href="#cb71-25" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">4</span>))</span>
 <span id="cb71-26"><a href="#cb71-26" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> v0, sub <span class="kw">in</span> df_proj.groupby(<span class="st">"v0"</span>):</span>
 <span id="cb71-27"><a href="#cb71-27" aria-hidden="true" tabindex="-1"></a>    ax.plot(sub[<span class="st">"angle_deg"</span>], sub[<span class="st">"range_m"</span>], <span class="st">"o-"</span>, label<span class="op">=</span><span class="ss">f"$v_0$ = </span><span class="sc">{</span>v0<span class="sc">}</span><span class="ss"> m/s"</span>)</span>
@@ -15060,7 +15048,7 @@ v0 = 20 m/s: best angle = 50.0 deg, range = 40.16 m</code></pre>
 <li>Make one figure with three panels of filled contour plots: Rosenbrock on <span class="math inline">\([-2,2]\times[-1,3]\)</span>, Himmelblau on <span class="math inline">\([-5,5]^2\)</span>, Rastrigin on <span class="math inline">\([-5.12, 5.12]^2\)</span>. Plot <span class="math inline">\(\log_{10}(f + 1)\)</span> instead of <span class="math inline">\(f\)</span> for Rosenbrock and Himmelblau, and explain the reason.</li>
 <li>Make a 3D surface plot of the Rastrigin function (<code>fig.add_subplot(projection="3d")</code> and <code>ax.plot_surface(X, Y, Z, cmap="viridis")</code>).</li>
 <li>Find <strong>all local minima</strong> of each function on the grid without loops: a grid point is a local minimum if its value is smaller than the values at all 8 neighbouring points. Mark them with white dots on the contour plots and print their number. (<em>Hint:</em> compare the interior <code>Z[1:-1, 1:-1]</code> with the 8 shifted slices, e.g.&nbsp;<code>Z[:-2, 1:-1]</code>, <code>Z[2:, 1:-1]</code>, … and combine the 8 boolean arrays with <code>&amp;</code>.) For Rosenbrock the method finds many “minima” although the function has only one. Repeat the count for grids of <span class="math inline">\(101\)</span>, <span class="math inline">\(401\)</span> and <span class="math inline">\(1601\)</span> points per axis for all three functions and interpret the result.</li>
-<li>Consider a ball rolling downhill from a random starting point. On which landscape will it most likely end in the global minimum? On which one will it almost never reach it?</li>
+<li>Consider a ball rolling downhill from a random starting point. Decide on which landscape it most likely ends in the global minimum, and on which one it almost never reaches it.</li>
 </ol>
 <section id="solution-3" class="level4">
 <h4 class="anchored" data-anchor-id="solution-3">Solution</h4>
@@ -15167,17 +15155,14 @@ Rastrigin : number of grid minima for 101, 401, 1601 points per axis: [121, 121,
 </div>
 </section>
 </section>
-<section id="exercise-5-a-pendulum-class-and-numerical-integration" class="level3">
-<h3 class="anchored" data-anchor-id="exercise-5-a-pendulum-class-and-numerical-integration">Exercise 5 — A pendulum class and numerical integration</h3>
-<p><strong>Background: how a computer solves an equation of motion.</strong> The pendulum obeys <span class="math display">\[\ddot\theta = -\frac{g}{L}\sin\theta .\]</span> A computer cannot follow <span class="math inline">\(\theta(t)\)</span> continuously; it computes the state at discrete times <span class="math inline">\(t_n = n\,\Delta t\)</span>. The first step is to write the second-order equation as <strong>two first-order equations</strong> for the angle <span class="math inline">\(\theta\)</span> and the angular velocity <span class="math inline">\(\omega = \dot\theta\)</span>: <span class="math display">\[\dot\theta = \omega,\qquad \dot\omega = -\frac{g}{L}\sin\theta .\]</span> For a small time step <span class="math inline">\(\Delta t\)</span> a derivative is approximately a difference quotient, <span class="math inline">\(\dot\theta \approx (\theta_{n+1} - \theta_n)/\Delta t\)</span>, and the same for <span class="math inline">\(\omega\)</span>. Solving for the new values gives an <strong>update rule</strong>. There are two natural versions.</p>
-<p><em>Explicit Euler</em> — both updates use the old values: <span class="math display">\[\theta_{n+1} = \theta_n + \omega_n\,\Delta t,\qquad \omega_{n+1} = \omega_n - \frac{g}{L}\sin\theta_n\,\Delta t .\]</span></p>
-<p><em>Semi-implicit Euler</em> (also called symplectic Euler or Euler–Cromer) — first update <span class="math inline">\(\omega\)</span>, then use the <strong>new</strong> <span class="math inline">\(\omega\)</span> to update <span class="math inline">\(\theta\)</span>: <span class="math display">\[\omega_{n+1} = \omega_n - \frac{g}{L}\sin\theta_n\,\Delta t,\qquad \theta_{n+1} = \theta_n + \omega_{n+1}\,\Delta t .\]</span></p>
+<section id="exercise-5-pendulum-class-and-numerical-integration" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-5-pendulum-class-and-numerical-integration">Exercise 5 — Pendulum class and numerical integration</h3>
+<p>The pendulum obeys <span class="math display">\[\ddot\theta = -\frac{g}{L}\sin\theta .\]</span> A computer cannot follow <span class="math inline">\(\theta(t)\)</span> continuously; it computes the state at discrete times <span class="math inline">\(t_n = n\,\Delta t\)</span>. The second-order equation is first written as <strong>two first-order equations</strong> for the angle <span class="math inline">\(\theta\)</span> and the angular velocity <span class="math inline">\(\omega = \dot\theta\)</span>: <span class="math display">\[\dot\theta = \omega,\qquad \dot\omega = -\frac{g}{L}\sin\theta .\]</span> For a small time step <span class="math inline">\(\Delta t\)</span> a derivative is approximately a difference quotient, <span class="math inline">\(\dot\theta \approx (\theta_{n+1} - \theta_n)/\Delta t\)</span>, and the same for <span class="math inline">\(\omega\)</span>. Solving for the new values gives an <strong>update rule</strong>. There are two natural versions.</p>
+<p>In the <em>explicit Euler</em> method both updates use the old values: <span class="math display">\[\theta_{n+1} = \theta_n + \omega_n\,\Delta t,\qquad \omega_{n+1} = \omega_n - \frac{g}{L}\sin\theta_n\,\Delta t .\]</span></p>
+<p>In the <em>semi-implicit Euler</em> method (also called symplectic Euler or Euler–Cromer) we first update <span class="math inline">\(\omega\)</span>, then use the <strong>new</strong> <span class="math inline">\(\omega\)</span> to update <span class="math inline">\(\theta\)</span>: <span class="math display">\[\omega_{n+1} = \omega_n - \frac{g}{L}\sin\theta_n\,\Delta t,\qquad \theta_{n+1} = \theta_n + \omega_{n+1}\,\Delta t .\]</span></p>
 <p>The two rules differ only in the order of two lines of code, yet they behave very differently over long times. Explicit Euler systematically <strong>adds energy</strong>: the trajectory in the phase plane <span class="math inline">\((\theta, \omega)\)</span> spirals outwards. Semi-implicit Euler belongs to the class of <em>symplectic</em> integrators, which respect the geometric structure of Hamiltonian dynamics (conservation of phase-space area): its energy error does not grow but oscillates around zero. Both methods have an error per unit time proportional to <span class="math inline">\(\Delta t\)</span>; more accurate methods (such as Runge–Kutta) exist, but the difference between the two Euler variants already shows that the choice of integrator matters for physics. The <code>Particle.step</code> method of Section 4.3 uses the semi-implicit rule as well.</p>
-<p><strong>Tasks.</strong> Write a class <code>Pendulum</code> with - attributes <code>length</code>, <code>g</code>, <code>theta</code>, <code>omega</code>, set in <code>__init__</code> (with default <code>g = 9.81</code>); - a method <code>step(dt)</code> implementing the semi-implicit Euler rule, and a method <code>step_explicit(dt)</code> implementing the explicit Euler rule; - a method <code>energy()</code> returning the energy per unit mass <span class="math inline">\(E/m = \tfrac12 L^2\omega^2 - g L\cos\theta\)</span>; - a <code>__repr__</code> showing the current state.</p>
-<ol type="1">
-<li>Create three pendulums released from rest at <span class="math inline">\(10^\circ\)</span>, <span class="math inline">\(90^\circ\)</span> and <span class="math inline">\(170^\circ\)</span> (<span class="math inline">\(L = 1\)</span> m), simulate 10 s with <span class="math inline">\(\Delta t = 10^{-3}\)</span> s using <code>step</code>, and plot <span class="math inline">\(\theta(t)\)</span> for all three in one panel and the energy error <span class="math inline">\([E(t) - E(0)]/(g L)\)</span> in a second panel. Explain why the period of the <span class="math inline">\(170^\circ\)</span> pendulum is much longer. (The error is divided by the energy scale <span class="math inline">\(gL\)</span> and not by <span class="math inline">\(E(0)\)</span>: for the pendulum released at <span class="math inline">\(90^\circ\)</span>, <span class="math inline">\(E(0) = -gL\cos 90^\circ = 0\)</span>.)</li>
-<li>For the <span class="math inline">\(90^\circ\)</span> pendulum compare <code>step</code> and <code>step_explicit</code> with a larger step <span class="math inline">\(\Delta t = 10^{-2}\)</span> s: plot both trajectories in the phase plane <span class="math inline">\((\theta, \omega)\)</span> and both energy errors versus time.</li>
-</ol>
+<p>Write a class <code>Pendulum</code> with - attributes <code>length</code>, <code>g</code>, <code>theta</code>, <code>omega</code>, set in <code>__init__</code> (with default <code>g = 9.81</code>); - a method <code>step(dt)</code> implementing the semi-implicit Euler rule, and a method <code>step_explicit(dt)</code> implementing the explicit Euler rule; - a method <code>energy()</code> returning the energy per unit mass <span class="math inline">\(E/m = \tfrac12 L^2\omega^2 - g L\cos\theta\)</span>; - a <code>__repr__</code> showing the current state.</p>
+<p>Then carry out two tasks: 1. Create three pendulums released from rest at <span class="math inline">\(10^\circ\)</span>, <span class="math inline">\(90^\circ\)</span> and <span class="math inline">\(170^\circ\)</span> (<span class="math inline">\(L = 1\)</span> m), simulate 10 s with <span class="math inline">\(\Delta t = 10^{-3}\)</span> s using <code>step</code>, and plot <span class="math inline">\(\theta(t)\)</span> for all three in one panel and the energy error <span class="math inline">\([E(t) - E(0)]/(g L)\)</span> in a second panel. Explain why the period of the <span class="math inline">\(170^\circ\)</span> pendulum is much longer. (The error is divided by the energy scale <span class="math inline">\(gL\)</span> and not by <span class="math inline">\(E(0)\)</span>: for the pendulum released at <span class="math inline">\(90^\circ\)</span>, <span class="math inline">\(E(0) = -gL\cos 90^\circ = 0\)</span>.) 2. For the <span class="math inline">\(90^\circ\)</span> pendulum compare <code>step</code> and <code>step_explicit</code> with a larger step <span class="math inline">\(\Delta t = 10^{-2}\)</span> s: plot both trajectories in the phase plane <span class="math inline">\((\theta, \omega)\)</span> and both energy errors versus time.</p>
 <section id="solution-4" class="level4">
 <h4 class="anchored" data-anchor-id="solution-4">Solution</h4>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:23.399016Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:23.398862Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:24.005346Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:24.004076Z&quot;}" data-execution_count="46">
@@ -15312,7 +15297,7 @@ semi-implicit Euler : energy error after 10 s = -0.006 g l,  largest |error| = 0
 <span id="cb80-17"><a href="#cb80-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"(pq)'      :"</span>, lhs(xs))</span>
 <span id="cb80-18"><a href="#cb80-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"p'q + pq'  :"</span>, rhs_values(xs))</span>
 <span id="cb80-19"><a href="#cb80-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(p <span class="op">+</span> q))</span>
-<span id="cb80-20"><a href="#cb80-20" aria-hidden="true" tabindex="-1"></a><span class="co"># __add__ was written in Polynomial and explicitly creates Polynomial(a + b).</span></span>
+<span id="cb80-20"><a href="#cb80-20" aria-hidden="true" tabindex="-1"></a><span class="co"># __add__ is defined in Polynomial and explicitly creates Polynomial(a + b).</span></span>
 <span id="cb80-21"><a href="#cb80-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Writing  return type(self)(a + b)  in Polynomial.__add__ would create an object of the same class as self,</span></span>
 <span id="cb80-22"><a href="#cb80-22" aria-hidden="true" tabindex="-1"></a><span class="co"># so subclasses would automatically get objects of their own type.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>

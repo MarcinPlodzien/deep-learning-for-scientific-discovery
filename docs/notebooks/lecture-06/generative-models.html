@@ -176,7 +176,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </li>  
         <li>
     <a class="dropdown-item" href="../../lectures/lecture-06.html">
- <span class="dropdown-text">6 · Generative Models</span></a>
+ <span class="dropdown-text">6 · Probability and Variational Autoencoders</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-07.html">
+ <span class="dropdown-text">7 · Adversarial and Diffusion Models</span></a>
   </li>  
     </ul>
   </li>
@@ -313,6 +317,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-03/lab-013a-cnn-pytorch.html" class="sidebar-item-text sidebar-link">Lab 013a: CNNs on MNIST and CIFAR-10 in PyTorch</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-03/lab-013b-cnn-jax.html" class="sidebar-item-text sidebar-link">Lab 013b: CNNs on MNIST and CIFAR-10 in JAX</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../notebooks/lecture-03/limits-of-deep-networks.html" class="sidebar-item-text sidebar-link">Limits of deep networks</a>
   </div>
 </li>
@@ -370,7 +384,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../lectures/lecture-06.html" class="sidebar-item-text sidebar-link">6 · Generative Models</a>
+            <a href="../../lectures/lecture-06.html" class="sidebar-item-text sidebar-link">6 · Probability and Variational Autoencoders</a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -384,6 +398,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/lecture-06/conditional-generation.html" class="sidebar-item-text sidebar-link">Conditional generation of digits and blood cells</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-07.html" class="sidebar-item-text sidebar-link">7 · Adversarial and Diffusion Models</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-07/generative-models.html" class="sidebar-item-text sidebar-link">Generative models: probability, VAE, GAN and diffusion</a>
   </div>
 </li>
       </ul>
@@ -402,42 +431,40 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#lecture-6-learning-a-probability-distribution-from-data" id="toc-lecture-6-learning-a-probability-distribution-from-data" class="nav-link active" data-scroll-target="#lecture-6-learning-a-probability-distribution-from-data">Lecture 6: Learning a Probability Distribution from Data</a>
+  <li><a href="#generative-models" id="toc-generative-models" class="nav-link active" data-scroll-target="#generative-models">Generative models</a>
   <ul class="collapse">
-  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a></li>
-  <li><a href="#the-probability-toolkit" id="toc-the-probability-toolkit" class="nav-link" data-scroll-target="#the-probability-toolkit">0. The probability toolkit</a>
+  <li><a href="#probability-toolkit" id="toc-probability-toolkit" class="nav-link" data-scroll-target="#probability-toolkit">0. Probability toolkit</a>
   <ul class="collapse">
   <li><a href="#discrete-and-continuous-distributions" id="toc-discrete-and-continuous-distributions" class="nav-link" data-scroll-target="#discrete-and-continuous-distributions">Discrete and continuous distributions</a></li>
-  <li><a href="#expectation-and-averages-over-samples" id="toc-expectation-and-averages-over-samples" class="nav-link" data-scroll-target="#expectation-and-averages-over-samples">Expectation, and averages over samples</a></li>
-  <li><a href="#the-gaussian-distribution" id="toc-the-gaussian-distribution" class="nav-link" data-scroll-target="#the-gaussian-distribution">The Gaussian distribution</a></li>
+  <li><a href="#expectation-and-averages-over-samples" id="toc-expectation-and-averages-over-samples" class="nav-link" data-scroll-target="#expectation-and-averages-over-samples">Expectation and averages over samples</a></li>
+  <li><a href="#gaussian-distribution" id="toc-gaussian-distribution" class="nav-link" data-scroll-target="#gaussian-distribution">Gaussian distribution</a></li>
   <li><a href="#joint-conditional-and-marginal-distributions" id="toc-joint-conditional-and-marginal-distributions" class="nav-link" data-scroll-target="#joint-conditional-and-marginal-distributions">Joint, conditional and marginal distributions</a></li>
-  <li><a href="#the-kullbackleibler-divergence-and-maximum-likelihood" id="toc-the-kullbackleibler-divergence-and-maximum-likelihood" class="nav-link" data-scroll-target="#the-kullbackleibler-divergence-and-maximum-likelihood">The Kullback–Leibler divergence and maximum likelihood</a></li>
+  <li><a href="#kullbackleibler-divergence-and-maximum-likelihood" id="toc-kullbackleibler-divergence-and-maximum-likelihood" class="nav-link" data-scroll-target="#kullbackleibler-divergence-and-maximum-likelihood">Kullback–Leibler divergence and maximum likelihood</a></li>
   </ul></li>
   <li><a href="#probability-and-likelihood" id="toc-probability-and-likelihood" class="nav-link" data-scroll-target="#probability-and-likelihood">1. Probability and likelihood</a></li>
   <li><a href="#maximum-likelihood" id="toc-maximum-likelihood" class="nav-link" data-scroll-target="#maximum-likelihood">2. Maximum likelihood</a></li>
-  <li><a href="#an-autoencoder-cannot-generate" id="toc-an-autoencoder-cannot-generate" class="nav-link" data-scroll-target="#an-autoencoder-cannot-generate">3. An Autoencoder Cannot Generate</a></li>
-  <li><a href="#the-variational-autoencoder-vae" id="toc-the-variational-autoencoder-vae" class="nav-link" data-scroll-target="#the-variational-autoencoder-vae">4. The variational autoencoder (VAE)</a>
+  <li><a href="#autoencoder-as-a-generator" id="toc-autoencoder-as-a-generator" class="nav-link" data-scroll-target="#autoencoder-as-a-generator">3. Autoencoder as a generator</a></li>
+  <li><a href="#variational-autoencoder" id="toc-variational-autoencoder" class="nav-link" data-scroll-target="#variational-autoencoder">4. Variational autoencoder</a>
   <ul class="collapse">
   <li><a href="#new-digits" id="toc-new-digits" class="nav-link" data-scroll-target="#new-digits">New digits</a></li>
   </ul></li>
-  <li><a href="#the-conditional-vae" id="toc-the-conditional-vae" class="nav-link" data-scroll-target="#the-conditional-vae">5. The conditional VAE</a>
+  <li><a href="#conditional-vae" id="toc-conditional-vae" class="nav-link" data-scroll-target="#conditional-vae">5. Conditional VAE</a>
   <ul class="collapse">
-  <li><a href="#testing-the-generated-digits-with-a-classifier" id="toc-testing-the-generated-digits-with-a-classifier" class="nav-link" data-scroll-target="#testing-the-generated-digits-with-a-classifier">Testing the generated digits with a classifier</a></li>
+  <li><a href="#classifier-test-of-the-generated-digits" id="toc-classifier-test-of-the-generated-digits" class="nav-link" data-scroll-target="#classifier-test-of-the-generated-digits">Classifier test of the generated digits</a></li>
   </ul></li>
-  <li><a href="#generating-blood-cell-images-of-a-chosen-type" id="toc-generating-blood-cell-images-of-a-chosen-type" class="nav-link" data-scroll-target="#generating-blood-cell-images-of-a-chosen-type">6. Generating blood-cell images of a chosen type</a></li>
+  <li><a href="#blood-cell-images-of-a-chosen-type" id="toc-blood-cell-images-of-a-chosen-type" class="nav-link" data-scroll-target="#blood-cell-images-of-a-chosen-type">6. Blood-cell images of a chosen type</a></li>
   <li><a href="#generative-adversarial-networks" id="toc-generative-adversarial-networks" class="nav-link" data-scroll-target="#generative-adversarial-networks">7. Generative adversarial networks</a>
   <ul class="collapse">
-  <li><a href="#mode-collapse" id="toc-mode-collapse" class="nav-link" data-scroll-target="#mode-collapse">Mode Collapse</a></li>
-  <li><a href="#the-best-discriminator-and-the-wasserstein-distance" id="toc-the-best-discriminator-and-the-wasserstein-distance" class="nav-link" data-scroll-target="#the-best-discriminator-and-the-wasserstein-distance">The Best Discriminator and the Wasserstein Distance</a></li>
-  <li><a href="#a-conditional-gan" id="toc-a-conditional-gan" class="nav-link" data-scroll-target="#a-conditional-gan">A conditional GAN</a></li>
+  <li><a href="#mode-collapse" id="toc-mode-collapse" class="nav-link" data-scroll-target="#mode-collapse">Mode collapse</a></li>
+  <li><a href="#optimal-discriminator-and-wasserstein-distance" id="toc-optimal-discriminator-and-wasserstein-distance" class="nav-link" data-scroll-target="#optimal-discriminator-and-wasserstein-distance">Optimal discriminator and Wasserstein distance</a></li>
+  <li><a href="#conditional-gan" id="toc-conditional-gan" class="nav-link" data-scroll-target="#conditional-gan">Conditional GAN</a></li>
   </ul></li>
   <li><a href="#diffusion-models" id="toc-diffusion-models" class="nav-link" data-scroll-target="#diffusion-models">8. Diffusion models</a>
   <ul class="collapse">
-  <li><a href="#the-forward-process-and-the-score" id="toc-the-forward-process-and-the-score" class="nav-link" data-scroll-target="#the-forward-process-and-the-score">The Forward Process and the Score</a></li>
+  <li><a href="#forward-process-and-score" id="toc-forward-process-and-score" class="nav-link" data-scroll-target="#forward-process-and-score">Forward process and score</a></li>
   <li><a href="#diffusion-on-mnist" id="toc-diffusion-on-mnist" class="nav-link" data-scroll-target="#diffusion-on-mnist">Diffusion on MNIST</a></li>
   </ul></li>
-  <li><a href="#the-2d-ising-model-learning-the-boltzmann-distribution" id="toc-the-2d-ising-model-learning-the-boltzmann-distribution" class="nav-link" data-scroll-target="#the-2d-ising-model-learning-the-boltzmann-distribution">9. The 2D Ising model: learning the Boltzmann distribution</a></li>
-  <li><a href="#numbers-used-on-the-slides" id="toc-numbers-used-on-the-slides" class="nav-link" data-scroll-target="#numbers-used-on-the-slides">Numbers used on the slides</a></li>
+  <li><a href="#boltzmann-distribution-of-the-2d-ising-model" id="toc-boltzmann-distribution-of-the-2d-ising-model" class="nav-link" data-scroll-target="#boltzmann-distribution-of-the-2d-ising-model">9. Boltzmann distribution of the 2D Ising model</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/MarcinPlodzien/deep-learning-for-scientific-discovery/blob/main/notebooks/lecture-06/generative-models.ipynb" class="toc-action">View source</a></p></div></div></nav>
@@ -463,26 +490,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </header>
 
 <p><a href="https://colab.research.google.com/github/MarcinPlodzien/deep-learning-for-scientific-discovery/blob/main/notebooks/lecture-06/generative-models.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Colab"></a></p>
-<section id="lecture-6-learning-a-probability-distribution-from-data" class="level1">
-<h1>Lecture 6: Learning a Probability Distribution from Data</h1>
+<section id="generative-models" class="level1">
+<h1>Generative models</h1>
 <p><em>Deep Learning for Scientific Discovery, Jagiellonian University. Author: Marcin Płodzień.</em></p>
-<p>The data <span class="math inline">\(\mathbf x_1,\dots,\mathbf x_n\)</span> we collect are <strong>samples</strong> from an unknown probability distribution <span class="math inline">\(p(\mathbf x)\)</span>: the distribution of handwritten digits, of cell images, of spin configurations of a magnet at temperature <span class="math inline">\(T\)</span>. A <strong>generative model</strong> learns an approximation <span class="math inline">\(p_\theta(\mathbf x)\)</span> of it from the samples, and can then <strong>draw new samples</strong>: new instances that were never in the data set but look as if they could have been.</p>
-<p>This notebook goes through the main ideas, each with a small experiment that runs on a laptop CPU:</p>
-<ol start="0" type="1">
-<li>the probability toolkit: distributions, expectations, the Gaussian, joint/conditional/marginal, KL divergence;</li>
-<li>probability and likelihood;</li>
-<li>maximum likelihood: fitting a distribution to points in 2D;</li>
-<li>why an ordinary autoencoder cannot generate;</li>
-<li>the variational autoencoder (VAE): new digits from random latent vectors;</li>
-<li>the conditional VAE: a digit we choose;</li>
-<li>the conditional VAE on blood-cell images: a cell type we choose;</li>
-<li>generative adversarial networks (GANs), the best discriminator, the Wasserstein distance, and the difficulty of training;</li>
-<li>diffusion models: the forward process in 1D, the learned direction field on a 2D example, and MNIST;</li>
-<li>the 2D Ising model, where the true distribution is known: a conditional VAE that generates spin configurations at a chosen temperature, checked against Monte Carlo.</li>
-</ol>
-<p>All random generators are seeded, so the numbers agree with the slides. Each part ends with a <strong>Try it</strong> exercise.</p>
-<section id="setup" class="level2">
-<h2 class="anchored" data-anchor-id="setup">Setup</h2>
+<p>The data <span class="math inline">\(\mathbf x_1,\dots,\mathbf x_n\)</span> we collect are <strong>samples</strong> from an unknown probability distribution <span class="math inline">\(p(\mathbf x)\)</span>: the distribution of handwritten digits, of cell images, of spin configurations of a magnet at temperature <span class="math inline">\(T\)</span>. A <strong>generative model</strong> learns an approximation <span class="math inline">\(p_\theta(\mathbf x)\)</span> of this distribution from the samples and can then <strong>draw new samples</strong>, instances that were never in the data set but look as if they could have been.</p>
+<p>The notebook builds this idea up in small experiments, each of which runs on a laptop CPU (central processing unit). We start with the probability toolkit that the rest of the notebook relies on (discrete and continuous distributions, expectations, the Gaussian, joint, conditional and marginal distributions, and the Kullback–Leibler divergence), and with the distinction between probability and likelihood. Maximum likelihood then lets us fit a distribution to points in two dimensions and sample from it. For images such a formula is out of reach, so we turn to neural networks: we first see that an ordinary autoencoder cannot generate, and then how the variational autoencoder (VAE) repairs this and produces new digits from random latent vectors. Giving the VAE a condition lets us choose the digit, and the same conditional VAE generates blood-cell images of a chosen type. Generative adversarial networks (GANs) take a different route, through a game between two networks; we look at the best discriminator, the Wasserstein distance and the difficulty of training them. Diffusion models learn to undo noise; we follow the forward process in one dimension, draw the learned direction field on a two-dimensional example, and generate MNIST digits. Finally, we return to the 2D Ising model, where the true distribution is known, and check a conditional VAE that generates spin configurations at a chosen temperature against Monte Carlo.</p>
+<p>All random generators are seeded, so the numbers agree with the slides, and every section ends with an exercise.</p>
+<p>We begin with the imports and a few shared definitions: the computation is restricted to the CPU with four threads, figures for the slides go to <code>../beamer/figures</code>, numbers quoted on the slides are collected in the dictionary <code>nums</code> and saved to <code>results/</code>, and the function <code>seed</code> fixes the random generators of PyTorch and NumPy.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T14:51:12.228259Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T14:51:12.227243Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T14:51:17.730078Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T14:51:17.726530Z&quot;}" data-execution_count="1">
 <details open="">
 <summary>Code</summary>
@@ -504,16 +518,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    torch.manual_seed(k)<span class="op">;</span> <span class="cf">return</span> np.random.default_rng(k)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-</section>
-<section id="the-probability-toolkit" class="level2">
-<h2 class="anchored" data-anchor-id="the-probability-toolkit">0. The probability toolkit</h2>
-<p>Everything in this lecture is written in the language of probability. This part collects the few objects we need, each with a small computation: discrete and continuous distributions, expectations as averages over samples, the Gaussian, joint / conditional / marginal distributions, the Kullback–Leibler divergence, and its link to maximum likelihood.</p>
+<section id="probability-toolkit" class="level2">
+<h2 class="anchored" data-anchor-id="probability-toolkit">0. Probability toolkit</h2>
+<p>Everything in this lecture is phrased in the language of probability, so we first collect the few objects we need, each with a small computation: discrete and continuous distributions, expectations as averages over samples, the Gaussian, joint, conditional and marginal distributions, the Kullback–Leibler divergence, and its link to maximum likelihood.</p>
 <section id="discrete-and-continuous-distributions" class="level3">
 <h3 class="anchored" data-anchor-id="discrete-and-continuous-distributions">Discrete and continuous distributions</h3>
-<ul>
-<li><strong>Discrete</strong> <span class="math inline">\(x\)</span> (a die, a class label, a spin): <span class="math inline">\(p(x)\)</span> is a probability, <span class="math inline">\(0\le p(x)\le 1\)</span>, and <span class="math inline">\(\sum_x p(x)=1\)</span>.</li>
-<li><strong>Continuous</strong> <span class="math inline">\(x\)</span> (a pixel intensity, a temperature, a coordinate): <span class="math inline">\(p(x)\)</span> is a <strong>density</strong>. Only areas are probabilities, <span class="math inline">\(P(a\le x\le b)=\int_a^b p(x)\,dx\)</span>, and <span class="math inline">\(\int p(x)\,dx=1\)</span>. A density can be larger than 1.</li>
-</ul>
+<p>For a discrete variable <span class="math inline">\(x\)</span>, such as the outcome of a die, a class label or a spin, <span class="math inline">\(p(x)\)</span> is a probability: <span class="math inline">\(0\le p(x)\le 1\)</span> and <span class="math inline">\(\sum_x p(x)=1\)</span>. For a continuous variable, such as a pixel intensity, a temperature or a coordinate, <span class="math inline">\(p(x)\)</span> is a <strong>density</strong>. Only areas under it are probabilities, <span class="math inline">\(P(a\le x\le b)=\int_a^b p(x)\,dx\)</span>, with <span class="math inline">\(\int p(x)\,dx=1\)</span>, and the density itself can be larger than 1. The cell below computes the probability that a standard Gaussian falls within one standard deviation of its mean, and the peak value of a narrow Gaussian.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T14:51:17.747365Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T14:51:17.741768Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T14:51:21.206281Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T14:51:21.204865Z&quot;}" data-execution_count="2">
 <details open="">
 <summary>Code</summary>
@@ -542,12 +552,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   plt.tight_layout(); plt.savefig(f"{OUT}/gen_discrete_continuous.png", dpi=170, bbox_inches="tight"); plt.show()</code></pre>
 </div>
 </div>
-<p>The area under each curve is 1; the narrow Gaussian has a peak of about 2, so a density is not a probability. For an image, <span class="math inline">\(\mathbf x\in\mathbb R^{784}\)</span> and <span class="math inline">\(p(\mathbf x)\)</span> is a density in 784 dimensions.</p>
+<p>The area under each curve is 1, yet the narrow Gaussian reaches a peak of about 2: a density is not a probability. For an image, <span class="math inline">\(\mathbf x\in\mathbb R^{784}\)</span> and <span class="math inline">\(p(\mathbf x)\)</span> is a density in 784 dimensions.</p>
 </section>
 <section id="expectation-and-averages-over-samples" class="level3">
-<h3 class="anchored" data-anchor-id="expectation-and-averages-over-samples">Expectation, and averages over samples</h3>
-<p>The <strong>expectation</strong> of a function <span class="math inline">\(f\)</span> under <span class="math inline">\(p\)</span> is its average weighted by the probabilities, <span class="math display">\[\mathbb E_{x\sim p}[f(x)]=\sum_x p(x)\,f(x)\quad\text{or}\quad\int p(x)\,f(x)\,dx .\]</span> We almost never know <span class="math inline">\(p\)</span>, but we have samples <span class="math inline">\(x_1,\dots,x_n\)</span> from it. Then <span class="math display">\[\mathbb E_{x\sim p}[f(x)]\approx\frac1n\sum_{i=1}^n f(x_i),\]</span> with an error that shrinks like <span class="math inline">\(1/\sqrt n\)</span>. Every loss in this lecture is such an average, computed on a mini-batch.</p>
-<p>Example: a mixture of two Gaussians, <span class="math inline">\(p(x)=\tfrac12\mathcal N(x;-2,0.6^2)+\tfrac12\mathcal N(x;1.5,1)\)</span>, whose mean is exactly <span class="math inline">\(\mathbb E[x]=\tfrac12(-2)+\tfrac12(1.5)=-0.25\)</span>.</p>
+<h3 class="anchored" data-anchor-id="expectation-and-averages-over-samples">Expectation and averages over samples</h3>
+<p>The <strong>expectation</strong> of a function <span class="math inline">\(f\)</span> under <span class="math inline">\(p\)</span> is its average weighted by the probabilities, <span class="math display">\[\mathbb E_{x\sim p}[f(x)]=\sum_x p(x)\,f(x)\quad\text{or}\quad\int p(x)\,f(x)\,dx .\]</span> We almost never know <span class="math inline">\(p\)</span>, but we do have samples <span class="math inline">\(x_1,\dots,x_n\)</span> from it, and the expectation is approximated by the sample average, <span class="math display">\[\mathbb E_{x\sim p}[f(x)]\approx\frac1n\sum_{i=1}^n f(x_i),\]</span> with an error that shrinks like <span class="math inline">\(1/\sqrt n\)</span>. Every loss in this lecture is such an average, computed on a mini-batch.</p>
+<p>As an example we take a mixture of two Gaussians, <span class="math inline">\(p(x)=\tfrac12\mathcal N(x;-2,0.6^2)+\tfrac12\mathcal N(x;1.5,1)\)</span>, whose mean is exactly <span class="math inline">\(\mathbb E[x]=\tfrac12(-2)+\tfrac12(1.5)=-0.25\)</span>, and estimate this mean from 10, 100 and 10 000 samples.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T14:51:21.215849Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T14:51:21.214861Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T14:51:23.135008Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T14:51:23.134013Z&quot;}" data-execution_count="3">
 <details open="">
 <summary>Code</summary>
@@ -577,11 +587,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   plt.tight_layout(); plt.savefig(f"{OUT}/gen_samples_expectation.png", dpi=170, bbox_inches="tight"); plt.show()</code></pre>
 </div>
 </div>
-<p>With 10 samples the histogram hardly resembles <span class="math inline">\(p\)</span> and the mean is off; with 10 000 both are close. A generative model only ever sees such samples.</p>
+<p>With 10 samples the histogram hardly resembles <span class="math inline">\(p\)</span> and the estimated mean, <span class="math inline">\(-1.142\)</span>, is far from <span class="math inline">\(-0.25\)</span>; with 10 000 samples both the histogram and the mean (<span class="math inline">\(-0.282\)</span>) are close. A generative model only ever sees such samples.</p>
 </section>
-<section id="the-gaussian-distribution" class="level3">
-<h3 class="anchored" data-anchor-id="the-gaussian-distribution">The Gaussian distribution</h3>
-<p>In one dimension, with mean <span class="math inline">\(\mu\)</span> and standard deviation <span class="math inline">\(\sigma\)</span>, <span class="math display">\[\mathcal N(x;\mu,\sigma^2)=\frac{1}{\sqrt{2\pi\sigma^2}}\exp\!\Big(-\frac{(x-\mu)^2}{2\sigma^2}\Big).\]</span> In <span class="math inline">\(d\)</span> dimensions with independent coordinates, <span class="math inline">\(\mathcal N(\mathbf z;\boldsymbol\mu,\mathrm{diag}\,\boldsymbol\sigma^2)=\prod_{k=1}^d\mathcal N(z_k;\mu_k,\sigma_k^2)\)</span>; the <strong>standard</strong> Gaussian is <span class="math inline">\(\mathcal N(0,I)\)</span> (<span class="math inline">\(\mu_k=0\)</span>, <span class="math inline">\(\sigma_k=1\)</span>). To draw from <span class="math inline">\(\mathcal N(\boldsymbol\mu,\mathrm{diag}\,\boldsymbol\sigma^2)\)</span>, draw <span class="math inline">\(\boldsymbol\varepsilon\sim\mathcal N(0,I)\)</span> and compute <span class="math inline">\(\mathbf z=\boldsymbol\mu+\boldsymbol\sigma\odot\boldsymbol\varepsilon\)</span> (<span class="math inline">\(\odot\)</span>: element-wise product). This shift-and-stretch is the reparametrisation trick of the VAE.</p>
+<section id="gaussian-distribution" class="level3">
+<h3 class="anchored" data-anchor-id="gaussian-distribution">Gaussian distribution</h3>
+<p>In one dimension, with mean <span class="math inline">\(\mu\)</span> and standard deviation <span class="math inline">\(\sigma\)</span>, <span class="math display">\[\mathcal N(x;\mu,\sigma^2)=\frac{1}{\sqrt{2\pi\sigma^2}}\exp\!\Big(-\frac{(x-\mu)^2}{2\sigma^2}\Big).\]</span> In <span class="math inline">\(d\)</span> dimensions with independent coordinates, <span class="math inline">\(\mathcal N(\mathbf z;\boldsymbol\mu,\mathrm{diag}\,\boldsymbol\sigma^2)=\prod_{k=1}^d\mathcal N(z_k;\mu_k,\sigma_k^2)\)</span>; the <strong>standard</strong> Gaussian is <span class="math inline">\(\mathcal N(0,I)\)</span>, with <span class="math inline">\(\mu_k=0\)</span> and <span class="math inline">\(\sigma_k=1\)</span>. To draw from <span class="math inline">\(\mathcal N(\boldsymbol\mu,\mathrm{diag}\,\boldsymbol\sigma^2)\)</span> it is enough to draw <span class="math inline">\(\boldsymbol\varepsilon\sim\mathcal N(0,I)\)</span> and compute <span class="math inline">\(\mathbf z=\boldsymbol\mu+\boldsymbol\sigma\odot\boldsymbol\varepsilon\)</span>, where <span class="math inline">\(\odot\)</span> is the element-wise product. This shift-and-stretch will reappear as the reparametrisation trick of the VAE. The cell below draws three one-dimensional Gaussians and then applies the shift-and-stretch with <span class="math inline">\(\boldsymbol\mu=(3,1)\)</span> and <span class="math inline">\(\boldsymbol\sigma=(0.5,1.5)\)</span>, and the sample mean and standard deviation it prints should be close to these values.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T14:51:23.145803Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T14:51:23.141469Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T14:51:24.856789Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T14:51:24.855958Z&quot;}" data-execution_count="4">
 <details open="">
 <summary>Code</summary>
@@ -611,13 +621,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="joint-conditional-and-marginal-distributions" class="level3">
 <h3 class="anchored" data-anchor-id="joint-conditional-and-marginal-distributions">Joint, conditional and marginal distributions</h3>
-<p>Two variables, an observed <span class="math inline">\(x\)</span> and a hidden (latent) <span class="math inline">\(z\)</span>. Their <strong>joint</strong> distribution <span class="math inline">\(p(x,z)\)</span> gives the probability of both together. From it:</p>
-<ul>
-<li><strong>marginal</strong>: <span class="math inline">\(p(x)=\int p(x,z)\,dz\)</span>, the distribution of <span class="math inline">\(x\)</span> alone, whatever <span class="math inline">\(z\)</span> is;</li>
-<li><strong>conditional</strong>: <span class="math inline">\(p(x\,|\,z)=p(x,z)/p(z)\)</span>, the distribution of <span class="math inline">\(x\)</span> once <span class="math inline">\(z\)</span> is known; hence the <strong>product rule</strong> <span class="math inline">\(p(x,z)=p(x\,|\,z)\,p(z)\)</span>;</li>
-<li><strong>Bayes’ rule</strong>: <span class="math inline">\(p(z\,|\,x)=p(x\,|\,z)\,p(z)/p(x)\)</span>, what an observed <span class="math inline">\(x\)</span> tells about the hidden <span class="math inline">\(z\)</span> (the <strong>posterior</strong>).</li>
-</ul>
-<p>Example (a latent-variable model): <span class="math inline">\(z\sim\mathcal N(0,1)\)</span> and, given <span class="math inline">\(z\)</span>, <span class="math inline">\(x\sim\mathcal N\big(2\tanh(2z),\,0.35^2\big)\)</span>. The marginal <span class="math inline">\(p(x)\)</span> is not Gaussian, although both ingredients are.</p>
+<p>Consider two variables, an observed <span class="math inline">\(x\)</span> and a hidden (latent) <span class="math inline">\(z\)</span>. Their <strong>joint</strong> distribution <span class="math inline">\(p(x,z)\)</span> gives the probability of both together, and the other distributions follow from it. The <strong>marginal</strong> <span class="math inline">\(p(x)=\int p(x,z)\,dz\)</span> is the distribution of <span class="math inline">\(x\)</span> alone, whatever <span class="math inline">\(z\)</span> is. The <strong>conditional</strong> <span class="math inline">\(p(x\,|\,z)=p(x,z)/p(z)\)</span> is the distribution of <span class="math inline">\(x\)</span> once <span class="math inline">\(z\)</span> is known, which gives the <strong>product rule</strong> <span class="math inline">\(p(x,z)=p(x\,|\,z)\,p(z)\)</span>. Turning the conditional around gives <strong>Bayes’ rule</strong>, <span class="math inline">\(p(z\,|\,x)=p(x\,|\,z)\,p(z)/p(x)\)</span>, which states what an observed <span class="math inline">\(x\)</span> tells us about the hidden <span class="math inline">\(z\)</span>; this distribution is the <strong>posterior</strong>.</p>
+<p>We illustrate this with a latent-variable model: <span class="math inline">\(z\sim\mathcal N(0,1)\)</span> and, given <span class="math inline">\(z\)</span>, <span class="math inline">\(x\sim\mathcal N\big(2\tanh(2z),\,0.35^2\big)\)</span>. Although both ingredients are Gaussian, the marginal <span class="math inline">\(p(x)\)</span> is not. The cell computes the joint density on a grid, integrates out <span class="math inline">\(z\)</span> to get <span class="math inline">\(p(x)\)</span>, and evaluates the posterior of <span class="math inline">\(z\)</span> for the observation <span class="math inline">\(x=1\)</span>.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T14:51:24.863206Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T14:51:24.862608Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T14:51:27.390968Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T14:51:27.390112Z&quot;}" data-execution_count="5">
 <details open="">
 <summary>Code</summary>
@@ -650,12 +655,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   plt.tight_layout(); plt.savefig(f"{OUT}/gen_joint_conditional.png", dpi=170, bbox_inches="tight"); plt.show()</code></pre>
 </div>
 </div>
-<p>The marginal <span class="math inline">\(p(x)\)</span> has two peaks: most <span class="math inline">\(z\)</span> are mapped by <span class="math inline">\(\tanh\)</span> close to <span class="math inline">\(\pm2\)</span>. Observing <span class="math inline">\(x=1\)</span> narrows the possible <span class="math inline">\(z\)</span> from the broad prior (standard deviation 1) to a narrow posterior (printed above: mean about 0.36, standard deviation about 0.25), close to <span class="math inline">\(z=0.27\)</span> where <span class="math inline">\(2\tanh(2z)=1\)</span>. A VAE needs exactly this posterior, and its <strong>encoder</strong> learns an approximation of it.</p>
+<p>The marginal <span class="math inline">\(p(x)\)</span> has two peaks, because <span class="math inline">\(\tanh\)</span> maps most values of <span class="math inline">\(z\)</span> close to <span class="math inline">\(\pm2\)</span>. Observing <span class="math inline">\(x=1\)</span> narrows the possible <span class="math inline">\(z\)</span> from the broad prior (standard deviation 1) to a narrow posterior with mean 0.360 and standard deviation 0.245, close to <span class="math inline">\(z=0.27\)</span>, where <span class="math inline">\(2\tanh(2z)=1\)</span>. A VAE needs exactly this posterior, and its <strong>encoder</strong> learns an approximation of it.</p>
 </section>
-<section id="the-kullbackleibler-divergence-and-maximum-likelihood" class="level3">
-<h3 class="anchored" data-anchor-id="the-kullbackleibler-divergence-and-maximum-likelihood">The Kullback–Leibler divergence and maximum likelihood</h3>
-<p>How far is a model <span class="math inline">\(q\)</span> from the true distribution <span class="math inline">\(p\)</span>? The <strong>KL divergence</strong> <span class="math display">\[\mathrm{KL}(p\,\|\,q)=\mathbb E_{x\sim p}\Big[\log\frac{p(x)}{q(x)}\Big]=\int p(x)\log\frac{p(x)}{q(x)}\,dx\]</span> is <span class="math inline">\(\ge0\)</span>, equal to 0 only when <span class="math inline">\(q=p\)</span>, and not symmetric. It is the average <em>extra surprise</em> when data from <span class="math inline">\(p\)</span> are described by <span class="math inline">\(q\)</span>.</p>
-<p>Split the logarithm: <span class="math inline">\(\mathrm{KL}(p\,\|\,p_\theta)=\mathbb E_p[\log p]-\mathbb E_p[\log p_\theta]\)</span>. The first term does not depend on <span class="math inline">\(\theta\)</span>, and the second is estimated by the mean log-likelihood <span class="math inline">\(\frac1n\sum_i\log p_\theta(x_i)\)</span>. Hence <span class="math display">\[\text{maximising the log-likelihood}\;\Longleftrightarrow\;\text{minimising }\mathrm{KL}(p\,\|\,p_\theta).\]</span> Check: fit one Gaussian <span class="math inline">\(\mathcal N(\mu,\sigma^2)\)</span> to the two-peak mixture above. The KL is smallest at <span class="math inline">\(\mu=\mathbb E_p[x]=-0.25\)</span>, and maximum likelihood on samples (the sample mean) lands there too.</p>
+<section id="kullbackleibler-divergence-and-maximum-likelihood" class="level3">
+<h3 class="anchored" data-anchor-id="kullbackleibler-divergence-and-maximum-likelihood">Kullback–Leibler divergence and maximum likelihood</h3>
+<p>To measure how far a model <span class="math inline">\(q\)</span> is from the true distribution <span class="math inline">\(p\)</span> we use the Kullback–Leibler (KL) divergence <span class="math display">\[\mathrm{KL}(p\,\|\,q)=\mathbb E_{x\sim p}\Big[\log\frac{p(x)}{q(x)}\Big]=\int p(x)\log\frac{p(x)}{q(x)}\,dx .\]</span> It is non-negative, equal to 0 only when <span class="math inline">\(q=p\)</span>, and not symmetric. It can be read as the average <em>extra surprise</em> when data from <span class="math inline">\(p\)</span> are described by <span class="math inline">\(q\)</span>.</p>
+<p>Splitting the logarithm gives <span class="math inline">\(\mathrm{KL}(p\,\|\,p_\theta)=\mathbb E_p[\log p]-\mathbb E_p[\log p_\theta]\)</span>. The first term does not depend on <span class="math inline">\(\theta\)</span>, and the second is estimated by the mean log-likelihood <span class="math inline">\(\frac1n\sum_i\log p_\theta(x_i)\)</span>. Hence <span class="math display">\[\text{maximising the log-likelihood}\;\Longleftrightarrow\;\text{minimising }\mathrm{KL}(p\,\|\,p_\theta).\]</span> We test this by fitting one Gaussian <span class="math inline">\(\mathcal N(\mu,\sigma^2)\)</span> to the two-peak mixture above. The KL divergence should be smallest at <span class="math inline">\(\mu=\mathbb E_p[x]=-0.25\)</span>, and maximum likelihood on samples, which gives the sample mean, should land close to it.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T14:51:27.414163Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T14:51:27.411847Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T14:51:28.803842Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T14:51:28.794704Z&quot;}" data-execution_count="6">
 <details open="">
 <summary>Code</summary>
@@ -691,17 +696,13 @@ KL(p || q*) = 0.262, KL(q* || p) = 0.454: not symmetric</code></pre>
   plt.tight_layout(); plt.savefig(f"{OUT}/gen_kl_ml.png", dpi=170, bbox_inches="tight"); plt.show()</code></pre>
 </div>
 </div>
-<p>The best single Gaussian sits between the two peaks and covers both: it cannot be close to <span class="math inline">\(p\)</span>, and the KL measures how far it remains. The two directions of the KL give different numbers.</p>
+<p>The KL divergence is indeed smallest at <span class="math inline">\(\mu=-0.250\)</span>, and maximum likelihood on the samples gives mean <span class="math inline">\(-0.211\)</span> and standard deviation 1.929 (exact value 1.935). The best single Gaussian sits between the two peaks and covers both: it cannot be close to <span class="math inline">\(p\)</span>, and the KL divergence, 0.262, measures how far it remains. In the other direction the divergence is 0.454, which confirms that the KL divergence is not symmetric.</p>
 </section>
 </section>
 <section id="probability-and-likelihood" class="level2">
 <h2 class="anchored" data-anchor-id="probability-and-likelihood">1. Probability and likelihood</h2>
-<p>A model <span class="math inline">\(p(x\,|\,\theta)\)</span> gives the probability of data <span class="math inline">\(x\)</span> when the parameters are <span class="math inline">\(\theta\)</span>. The same formula is read in two ways:</p>
-<ul>
-<li><strong>probability</strong>: <span class="math inline">\(\theta\)</span> fixed, <span class="math inline">\(x\)</span> varies. Which data should we expect? Summed over all outcomes <span class="math inline">\(x\)</span> it gives 1.</li>
-<li><strong>likelihood</strong>: the observed data <span class="math inline">\(x\)</span> fixed, <span class="math inline">\(\theta\)</span> varies, <span class="math inline">\(L(\theta)=p(x_{\text{obs}}\,|\,\theta)\)</span>. Which parameters make the observed data most plausible? It is a function of <span class="math inline">\(\theta\)</span>, not a probability distribution over <span class="math inline">\(\theta\)</span>.</li>
-</ul>
-<p>Example: a coin with probability <span class="math inline">\(\theta\)</span> of heads, tossed 10 times. The number of heads <span class="math inline">\(k\)</span> follows <span class="math inline">\(p(k\,|\,\theta)=\binom{10}{k}\theta^k(1-\theta)^{10-k}\)</span>. We observed <span class="math inline">\(k=7\)</span>.</p>
+<p>A model <span class="math inline">\(p(x\,|\,\theta)\)</span> gives the probability of data <span class="math inline">\(x\)</span> when the parameters are <span class="math inline">\(\theta\)</span>, and the same formula can be read in two ways. Read as a <strong>probability</strong>, <span class="math inline">\(\theta\)</span> is fixed and <span class="math inline">\(x\)</span> varies: the formula tells us which data to expect, and summed over all outcomes <span class="math inline">\(x\)</span> it gives 1. Read as a <strong>likelihood</strong>, the observed data <span class="math inline">\(x\)</span> are fixed and <span class="math inline">\(\theta\)</span> varies, <span class="math inline">\(L(\theta)=p(x_{\text{obs}}\,|\,\theta)\)</span>: the formula tells us which parameters make the observed data most plausible. The likelihood is a function of <span class="math inline">\(\theta\)</span>, not a probability distribution over <span class="math inline">\(\theta\)</span>.</p>
+<p>As an example, take a coin with probability <span class="math inline">\(\theta\)</span> of heads, tossed 10 times. The number of heads <span class="math inline">\(k\)</span> follows <span class="math inline">\(p(k\,|\,\theta)=\binom{10}{k}\theta^k(1-\theta)^{10-k}\)</span>, and we observed <span class="math inline">\(k=7\)</span>. The cell evaluates the probability of seven heads for a fair coin, the likelihood at <span class="math inline">\(\theta=0.7\)</span>, and the integral of the likelihood over <span class="math inline">\(\theta\)</span>. The integral equals <span class="math inline">\(1/11=0.0909\)</span>, not 1, which shows that the likelihood is not a distribution over <span class="math inline">\(\theta\)</span>.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T14:51:28.817481Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T14:51:28.816262Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T14:51:30.153416Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T14:51:30.151899Z&quot;}" data-execution_count="7">
 <details open="">
 <summary>Code</summary>
@@ -731,8 +732,8 @@ KL(p || q*) = 0.262, KL(q* || p) = 0.454: not symmetric</code></pre>
 </section>
 <section id="maximum-likelihood" class="level2">
 <h2 class="anchored" data-anchor-id="maximum-likelihood">2. Maximum likelihood</h2>
-<p>Data <span class="math inline">\(\mathbf x_1,\dots,\mathbf x_n\)</span>, independent samples of an unknown <span class="math inline">\(p(\mathbf x)\)</span>, and a model <span class="math inline">\(p_\theta(\mathbf x)\)</span> with parameters <span class="math inline">\(\theta\)</span>. The <strong>likelihood</strong> of the data is the probability (density) the model assigns to all of them, <span class="math inline">\(L(\theta)=\prod_{i=1}^n p_\theta(\mathbf x_i)\)</span>. Maximum likelihood picks the <span class="math inline">\(\theta\)</span> that makes the observed data most probable; in practice we maximise the log-likelihood <span class="math display">\[\ell(\theta)=\sum_{i=1}^n \log p_\theta(\mathbf x_i).\]</span> (Maximising <span class="math inline">\(\ell\)</span> is the same as minimising the KL divergence between the distribution of the data and the model; the cross-entropy loss of classification is the same idea.)</p>
-<p>Example: 1500 points in 2D drawn from three groups. We fit two models by maximum likelihood with scikit-learn: a single Gaussian, and a mixture of three Gaussians, <span class="math inline">\(p_\theta(\mathbf x)=\sum_{k=1}^{3}\pi_k\,\mathcal N(\mathbf x;\boldsymbol\mu_k,\Sigma_k)\)</span>. Then we <strong>draw new points</strong> from each fitted model.</p>
+<p>Suppose the data <span class="math inline">\(\mathbf x_1,\dots,\mathbf x_n\)</span> are independent samples of an unknown <span class="math inline">\(p(\mathbf x)\)</span>, and <span class="math inline">\(p_\theta(\mathbf x)\)</span> is a model with parameters <span class="math inline">\(\theta\)</span>. The <strong>likelihood</strong> of the data is the probability (density) the model assigns to all of them, <span class="math inline">\(L(\theta)=\prod_{i=1}^n p_\theta(\mathbf x_i)\)</span>. Maximum likelihood picks the <span class="math inline">\(\theta\)</span> that makes the observed data most probable; in practice we maximise the log-likelihood <span class="math display">\[\ell(\theta)=\sum_{i=1}^n \log p_\theta(\mathbf x_i).\]</span> As shown in the probability toolkit, maximising <span class="math inline">\(\ell\)</span> is the same as minimising the KL divergence between the distribution of the data and the model; the cross-entropy loss of classification rests on the same idea.</p>
+<p>Our example consists of 1500 points in two dimensions drawn from three groups. We fit two models by maximum likelihood with scikit-learn, a single Gaussian and a mixture of three Gaussians, <span class="math inline">\(p_\theta(\mathbf x)=\sum_{k=1}^{3}\pi_k\,\mathcal N(\mathbf x;\boldsymbol\mu_k,\Sigma_k)\)</span>, and then <strong>draw new points</strong> from each fitted model.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T14:51:30.179786Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T14:51:30.179232Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T14:51:32.930499Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T14:51:32.929393Z&quot;}" data-execution_count="8">
 <details open="">
 <summary>Code</summary>
@@ -764,13 +765,13 @@ KL(p || q*) = 0.262, KL(q* || p) = 0.454: not symmetric</code></pre>
   plt.tight_layout(); plt.savefig(f"{OUT}/gen_mle_gmm.png", dpi=170, bbox_inches="tight"); plt.show()</code></pre>
 </div>
 </div>
-<p>The mixture assigns the data a higher likelihood and its samples look like the data; a single Gaussian puts probability where there is no data. For images we cannot write such a formula by hand: the next parts let neural networks do it.</p>
-<p><strong>Try it.</strong> Fit mixtures with 2, 3, 6 and 12 components and plot the log-likelihood on the data and on a fresh set of samples from <code>make_blobs</code> (another <code>random_state</code>). When does a larger model stop helping?</p>
+<p>The mixture assigns the data a higher mean log-likelihood than the single Gaussian (<span class="math inline">\(-3.63\)</span> against <span class="math inline">\(-4.61\)</span> per point, stored in <code>results/numbers_l6.json</code>), and its samples look like the data, whereas a single Gaussian puts probability where there are no data. For images we cannot write down such a formula ourselves, and the following sections let neural networks learn it.</p>
+<p>As an exercise, fit mixtures with 2, 3, 6 and 12 components and plot the log-likelihood on the data and on a fresh set of samples from <code>make_blobs</code> (with another <code>random_state</code>). When does a larger model stop helping?</p>
 </section>
-<section id="an-autoencoder-cannot-generate" class="level2">
-<h2 class="anchored" data-anchor-id="an-autoencoder-cannot-generate">3. An Autoencoder Cannot Generate</h2>
-<p>We read the MNIST files (they are downloaded once into <code>data/MNIST_raw</code> if they are not there). Pixels are scaled to <span class="math inline">\([0,1]\)</span>; each image is a vector of 784 numbers.</p>
-<p>An autoencoder (Lecture 5) maps an image to a latent vector <span class="math inline">\(\mathbf z=E(\mathbf x)\)</span> and back, <span class="math inline">\(\hat{\mathbf x}=G(\mathbf z)\)</span>. Can its decoder <span class="math inline">\(G\)</span> produce <em>new</em> digits? We train one with <span class="math inline">\(d=2\)</span> and decode a regular grid of latent points covering the region where the training codes lie.</p>
+<section id="autoencoder-as-a-generator" class="level2">
+<h2 class="anchored" data-anchor-id="autoencoder-as-a-generator">3. Autoencoder as a generator</h2>
+<p>We read the MNIST (Modified National Institute of Standards and Technology) files of handwritten digits, which are downloaded once into <code>data/MNIST_raw</code> if they are not there. Pixels are scaled to <span class="math inline">\([0,1]\)</span>, and each image is a vector of 784 numbers.</p>
+<p>An autoencoder (Lecture 5) maps an image to a latent vector <span class="math inline">\(\mathbf z=E(\mathbf x)\)</span> and back, <span class="math inline">\(\hat{\mathbf x}=G(\mathbf z)\)</span>. It is natural to ask whether its decoder <span class="math inline">\(G\)</span> can produce <em>new</em> digits. To find out, we train one with a latent dimension <span class="math inline">\(d=2\)</span> and decode a regular grid of latent points covering the region where the training codes lie.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T14:51:32.949214Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T14:51:32.945355Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T14:55:18.415516Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T14:55:18.412063Z&quot;}" data-execution_count="9">
 <details open="">
 <summary>Code</summary>
@@ -839,18 +840,14 @@ KL(p || q*) = 0.262, KL(q* || p) = 0.454: not symmetric</code></pre>
   plt.savefig(path, dpi=170, bbox_inches="tight"); plt.show()</code></pre>
 </div>
 </div>
-<p>Some regions decode to digits, others to shapes that are no digit at all, and nothing tells us which latent points are “valid”. The autoencoder learned to rebuild its training images, not a distribution we can sample. To generate we need a latent space with a <strong>known distribution</strong>.</p>
+<p>Some regions of the grid decode to digits, others to shapes that are no digit at all, and nothing tells us which latent points are “valid”. The autoencoder learned to rebuild its training images, not a distribution we can sample. To generate, we need a latent space with a <strong>known distribution</strong>.</p>
 </section>
-<section id="the-variational-autoencoder-vae" class="level2">
-<h2 class="anchored" data-anchor-id="the-variational-autoencoder-vae">4. The variational autoencoder (VAE)</h2>
-<p>The VAE is a latent-variable model: a latent vector <span class="math inline">\(\mathbf z\)</span> is drawn from a simple distribution <span class="math inline">\(p(\mathbf z)=\mathcal N(0,I)\)</span>, and the decoder turns it into an image, <span class="math inline">\(p_\theta(\mathbf x|\mathbf z)\)</span>. The distribution of the data is then <span class="math display">\[p_\theta(\mathbf x)=\int p_\theta(\mathbf x|\mathbf z)\,p(\mathbf z)\,d\mathbf z .\]</span></p>
-<ul>
-<li><strong>Encoder.</strong> For an input <span class="math inline">\(\mathbf x\)</span> it outputs a Gaussian <em>cloud</em> in latent space: a mean <span class="math inline">\(\boldsymbol\mu(\mathbf x)\)</span> and a width <span class="math inline">\(\boldsymbol\sigma(\mathbf x)\)</span>, one pair for each of the <span class="math inline">\(d\)</span> latent coordinates (in practice it outputs <span class="math inline">\(\log\boldsymbol\sigma^2\)</span>, which can be any real number).</li>
-<li><strong>Reparametrisation trick.</strong> A latent vector is drawn from the cloud as <span class="math inline">\(\mathbf z=\boldsymbol\mu+\boldsymbol\sigma\odot\boldsymbol\varepsilon\)</span>, with <span class="math inline">\(\boldsymbol\varepsilon\sim\mathcal N(0,I)\)</span> drawn independently of the network. The randomness sits in <span class="math inline">\(\boldsymbol\varepsilon\)</span>, so <span class="math inline">\(\mathbf z\)</span> is an ordinary differentiable function of <span class="math inline">\(\boldsymbol\mu\)</span> and <span class="math inline">\(\boldsymbol\sigma\)</span>, and backpropagation works through it.</li>
-<li><strong>Loss.</strong> Two terms per image: <span class="math display">\[\mathcal L(\mathbf x)=\underbrace{\mathrm{BCE}\big(\mathbf x,G(\mathbf z)\big)}_{\text{rebuild the input}}+\underbrace{\tfrac12\sum_{k=1}^{d}\big(\mu_k^2+\sigma_k^2-\ln\sigma_k^2-1\big)}_{\mathrm{KL}(\mathcal N(\boldsymbol\mu,\boldsymbol\sigma^2)\,\|\,\mathcal N(0,I))}.\]</span> The binary cross-entropy (BCE, summed over the 784 pixels) suits pixels in <span class="math inline">\([0,1]\)</span>. The KL term pulls every cloud towards <span class="math inline">\(\mathcal N(0,I)\)</span>, so the clouds of all images fill one standard Gaussian without gaps. The sum of the two terms is minus a lower bound on <span class="math inline">\(\log p_\theta(\mathbf x)\)</span> (the <em>evidence lower bound</em>, ELBO): training the VAE is approximate maximum likelihood.</li>
-<li><strong>Generation.</strong> Skip the encoder: draw <span class="math inline">\(\mathbf z\sim\mathcal N(0,I)\)</span> and compute <span class="math inline">\(G(\mathbf z)\)</span>.</li>
-</ul>
-<p>The class below implements this; <code>cond</code> adds an optional condition for part 4.</p>
+<section id="variational-autoencoder" class="level2">
+<h2 class="anchored" data-anchor-id="variational-autoencoder">4. Variational autoencoder</h2>
+<p>The variational autoencoder (VAE) is a latent-variable model: a latent vector <span class="math inline">\(\mathbf z\)</span> is drawn from a simple distribution <span class="math inline">\(p(\mathbf z)=\mathcal N(0,I)\)</span>, and the decoder turns it into an image, <span class="math inline">\(p_\theta(\mathbf x|\mathbf z)\)</span>. The distribution of the data is then <span class="math display">\[p_\theta(\mathbf x)=\int p_\theta(\mathbf x|\mathbf z)\,p(\mathbf z)\,d\mathbf z .\]</span></p>
+<p>The encoder no longer maps an input <span class="math inline">\(\mathbf x\)</span> to a single point. Instead, it outputs a Gaussian <em>cloud</em> in latent space, a mean <span class="math inline">\(\boldsymbol\mu(\mathbf x)\)</span> and a width <span class="math inline">\(\boldsymbol\sigma(\mathbf x)\)</span> for each of the <span class="math inline">\(d\)</span> latent coordinates; in practice it outputs <span class="math inline">\(\log\boldsymbol\sigma^2\)</span>, which can be any real number. A latent vector is drawn from the cloud as <span class="math inline">\(\mathbf z=\boldsymbol\mu+\boldsymbol\sigma\odot\boldsymbol\varepsilon\)</span>, with <span class="math inline">\(\boldsymbol\varepsilon\sim\mathcal N(0,I)\)</span> drawn independently of the network. This is the reparametrisation trick: the randomness sits in <span class="math inline">\(\boldsymbol\varepsilon\)</span>, so <span class="math inline">\(\mathbf z\)</span> is an ordinary differentiable function of <span class="math inline">\(\boldsymbol\mu\)</span> and <span class="math inline">\(\boldsymbol\sigma\)</span>, and backpropagation works through it.</p>
+<p>The loss has two terms per image, <span class="math display">\[\mathcal L(\mathbf x)=\underbrace{\mathrm{BCE}\big(\mathbf x,G(\mathbf z)\big)}_{\text{rebuild the input}}+\underbrace{\tfrac12\sum_{k=1}^{d}\big(\mu_k^2+\sigma_k^2-\ln\sigma_k^2-1\big)}_{\mathrm{KL}(\mathcal N(\boldsymbol\mu,\boldsymbol\sigma^2)\,\|\,\mathcal N(0,I))}.\]</span> The binary cross-entropy (BCE), summed over the 784 pixels, suits pixels in <span class="math inline">\([0,1]\)</span>. The KL term pulls every cloud towards <span class="math inline">\(\mathcal N(0,I)\)</span>, so that the clouds of all images fill one standard Gaussian without gaps. The sum of the two terms is minus a lower bound on <span class="math inline">\(\log p_\theta(\mathbf x)\)</span>, the <em>evidence lower bound</em> (ELBO), so training the VAE is approximate maximum likelihood. Generation then skips the encoder altogether: we draw <span class="math inline">\(\mathbf z\sim\mathcal N(0,I)\)</span> and compute <span class="math inline">\(G(\mathbf z)\)</span>.</p>
+<p>The class below implements this model; its argument <code>cond</code> adds an optional condition, which we use in section 5.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T14:55:18.420845Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T14:55:18.420228Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T14:55:18.452542Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T14:55:18.450102Z&quot;}" data-execution_count="10">
 <details open="">
 <summary>Code</summary>
@@ -892,7 +889,7 @@ KL(p || q*) = 0.262, KL(q* || p) = 0.454: not symmetric</code></pre>
 <span id="cb26-36"><a href="#cb26-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.array(hist)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>We train two VAEs on the 60 000 training digits, without labels: one with <span class="math inline">\(d=2\)</span>, so that we can draw its latent space, and one with <span class="math inline">\(d=16\)</span>, which rebuilds and generates better. The loss is printed per image: reconstruction (BCE) and KL.</p>
+<p>We train two VAEs on the 60 000 training digits, without labels: one with <span class="math inline">\(d=2\)</span>, so that we can draw its latent space, and one with <span class="math inline">\(d=16\)</span>, which rebuilds and generates better. The loss is printed per image and split into its reconstruction (BCE) and KL parts.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T14:55:18.461203Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T14:55:18.460469Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T15:12:34.467403Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T15:12:34.466518Z&quot;}" data-execution_count="11">
 <details open="">
 <summary>Code</summary>
@@ -923,9 +920,10 @@ d = 16: loss per image 99.9 = reconstruction 80.3 + KL 19.6</code></pre>
   plt.savefig(f"{OUT}/{name}", dpi=170, bbox_inches="tight", pad_inches=0.02); plt.show()</code></pre>
 </div>
 </div>
+<p>For <span class="math inline">\(d=2\)</span> the final loss per image is 138.9 (reconstruction 132.1, KL 6.8); for <span class="math inline">\(d=16\)</span> it is 99.9 (reconstruction 80.3, KL 19.6). The larger latent space carries more information about each image, so it rebuilds better and pays a larger KL term for it.</p>
 <section id="new-digits" class="level3">
 <h3 class="anchored" data-anchor-id="new-digits">New digits</h3>
-<p>Left: the decoder of the <span class="math inline">\(d=2\)</span> VAE on a regular grid of <span class="math inline">\(\mathbf z\)</span> over <span class="math inline">\([-2.5,2.5]^2\)</span>, i.e.&nbsp;where <span class="math inline">\(\mathcal N(0,I)\)</span> puts its probability. Every point decodes to a digit, and neighbouring points give similar digits. Right: 32 new digits from the <span class="math inline">\(d=16\)</span> VAE, each from a random <span class="math inline">\(\mathbf z\sim\mathcal N(0,I)\)</span>.</p>
+<p>The left panel shows the decoder of the <span class="math inline">\(d=2\)</span> VAE on a regular grid of <span class="math inline">\(\mathbf z\)</span> over <span class="math inline">\([-2.5,2.5]^2\)</span>, the region where <span class="math inline">\(\mathcal N(0,I)\)</span> puts its probability. The right panel shows 32 new digits from the <span class="math inline">\(d=16\)</span> VAE, each decoded from a random <span class="math inline">\(\mathbf z\sim\mathcal N(0,I)\)</span>. To see whether the model only copies its training data, we also measure the distance of each generated digit to the nearest training image and compare it with the same distance for real test digits.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T15:12:34.479467Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T15:12:34.479130Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T15:12:43.399859Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T15:12:43.395945Z&quot;}" data-execution_count="12">
 <details open="">
 <summary>Code</summary>
@@ -952,14 +950,14 @@ d = 16: loss per image 99.9 = reconstruction 80.3 + KL 19.6</code></pre>
 <pre><code>mean distance to the nearest training image: generated 4.73, real test digits 4.03</code></pre>
 </div>
 </div>
-<p>The generated digits are not copies: their distance to the nearest training image is comparable to that of real test digits, which the network never saw. The samples are somewhat blurry, a known property of VAEs.</p>
-<p><strong>Try it.</strong> Train the <span class="math inline">\(d=16\)</span> VAE without the KL term (set <code>kl = 0</code> in <code>vae_loss</code>) and generate from <span class="math inline">\(\mathcal N(0,I)\)</span> again. What happens, and why?</p>
+<p>Every point of the grid decodes to a digit, and neighbouring points give similar digits. The generated digits are not copies: their mean distance to the nearest training image, 4.73, is comparable to that of real test digits, 4.03, which the network never saw. The samples are somewhat blurry, a known property of VAEs.</p>
+<p>As an exercise, train the <span class="math inline">\(d=16\)</span> VAE without the KL term (set <code>kl = 0</code> in <code>vae_loss</code>) and generate from <span class="math inline">\(\mathcal N(0,I)\)</span> again. What happens, and why?</p>
 </section>
 </section>
-<section id="the-conditional-vae" class="level2">
-<h2 class="anchored" data-anchor-id="the-conditional-vae">5. The conditional VAE</h2>
-<p>Often we want to say <em>what</em> to generate. A conditional VAE gets a known label <span class="math inline">\(\mathbf c\)</span> as an extra input of both networks: <span class="math inline">\(E(\mathbf x,\mathbf c)\)</span> and <span class="math inline">\(G(\mathbf z,\mathbf c)\)</span>. The loss is unchanged. Since <span class="math inline">\(\mathbf c\)</span> already tells the decoder which digit to draw, the latent vector <span class="math inline">\(\mathbf z\)</span> only needs to carry what <span class="math inline">\(\mathbf c\)</span> does not say: the <strong>style</strong> (slant, thickness, size).</p>
-<p>Here <span class="math inline">\(\mathbf c\)</span> is the one-hot vector of the digit. To generate, we fix <span class="math inline">\(\mathbf c\)</span> and draw <span class="math inline">\(\mathbf z\sim\mathcal N(0,I)\)</span>. In the figure, each row is one digit and each column one random <span class="math inline">\(\mathbf z\)</span>, the <strong>same</strong> in every row.</p>
+<section id="conditional-vae" class="level2">
+<h2 class="anchored" data-anchor-id="conditional-vae">5. Conditional VAE</h2>
+<p>Often we want to say <em>what</em> to generate. A conditional VAE receives a known label <span class="math inline">\(\mathbf c\)</span> as an extra input of both networks, <span class="math inline">\(E(\mathbf x,\mathbf c)\)</span> and <span class="math inline">\(G(\mathbf z,\mathbf c)\)</span>, while the loss stays unchanged. Since <span class="math inline">\(\mathbf c\)</span> already tells the decoder which digit to draw, the latent vector <span class="math inline">\(\mathbf z\)</span> only needs to carry what <span class="math inline">\(\mathbf c\)</span> does not say: the <strong>style</strong>, such as slant, thickness and size.</p>
+<p>Here <span class="math inline">\(\mathbf c\)</span> is the one-hot vector of the digit. To generate, we fix <span class="math inline">\(\mathbf c\)</span> and draw <span class="math inline">\(\mathbf z\sim\mathcal N(0,I)\)</span>. In the figure, each row is one digit and each column one random <span class="math inline">\(\mathbf z\)</span>, the <strong>same</strong> in every row, so the style should stay constant down a column.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T15:12:43.409534Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T15:12:43.409173Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T15:26:11.525716Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T15:26:11.524496Z&quot;}" data-execution_count="13">
 <details open="">
 <summary>Code</summary>
@@ -983,9 +981,9 @@ d = 16: loss per image 99.9 = reconstruction 80.3 + KL 19.6</code></pre>
   plt.savefig(path, dpi=170, bbox_inches="tight"); plt.show()</code></pre>
 </div>
 </div>
-<section id="testing-the-generated-digits-with-a-classifier" class="level3">
-<h3 class="anchored" data-anchor-id="testing-the-generated-digits-with-a-classifier">Testing the generated digits with a classifier</h3>
-<p>Do the generated digits really show the digit we asked for? We train a small classifier on the <strong>real</strong> MNIST training images (a dense network <span class="math inline">\(784\to256\to10\)</span>, cross-entropy, 3 epochs), check its accuracy on the real test images, and then let it label 200 generated images for each requested digit. The fraction labelled as the requested digit measures how well the conditional VAE respects its condition. The same classifier is used again for the GAN in part 7.</p>
+<section id="classifier-test-of-the-generated-digits" class="level3">
+<h3 class="anchored" data-anchor-id="classifier-test-of-the-generated-digits">Classifier test of the generated digits</h3>
+<p>Looking at the pictures is not enough to decide whether the generated digits really show the digit we asked for. We therefore train a small classifier on the <strong>real</strong> MNIST training images (a dense network <span class="math inline">\(784\to256\to10\)</span>, cross-entropy loss, 3 epochs), check its accuracy on the real test images, and then let it label 200 generated images for each requested digit. The fraction labelled as the requested digit measures how well the conditional VAE respects its condition. The same classifier is used again for the GAN in section 7.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T15:26:11.532590Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T15:26:11.531883Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T15:27:07.399292Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T15:27:07.398467Z&quot;}" data-execution_count="14">
 <details open="">
 <summary>Code</summary>
@@ -1021,13 +1019,14 @@ fraction of generated digits recognised as the requested digit: [0.98 0.94 0.98 
   plt.savefig(f"{OUT}/gen_cvae_mnist_check.png", dpi=170, bbox_inches="tight"); plt.show()</code></pre>
 </div>
 </div>
-<p><strong>Try it.</strong> Keep <span class="math inline">\(\mathbf c\)</span> fixed and move along one latent coordinate, <span class="math inline">\(z_1\)</span> from <span class="math inline">\(-3\)</span> to <span class="math inline">\(3\)</span>, with the others at 0. Which property of the digit changes?</p>
+<p>The classifier reaches an accuracy of 0.971 on real test digits, and it recognises on average 96.3% of the generated digits as the digit that was requested, between 94% and 98% for each digit. The conditional VAE therefore respects its condition about as well as the classifier can judge.</p>
+<p>As an exercise, keep <span class="math inline">\(\mathbf c\)</span> fixed and move along one latent coordinate, <span class="math inline">\(z_1\)</span> from <span class="math inline">\(-3\)</span> to <span class="math inline">\(3\)</span>, with the others at 0. Which property of the digit changes?</p>
 </section>
 </section>
-<section id="generating-blood-cell-images-of-a-chosen-type" class="level2">
-<h2 class="anchored" data-anchor-id="generating-blood-cell-images-of-a-chosen-type">6. Generating blood-cell images of a chosen type</h2>
-<p>The same conditional VAE idea on BloodMNIST (Lecture 4): <span class="math inline">\(28\times28\)</span> colour images of eight types of normal blood cells. The condition <span class="math inline">\(\mathbf c\)</span> is the one-hot cell type. Images have 3 colour channels, so encoder and decoder are convolutional, like the CNNs of Lecture 4.</p>
-<p>Do the generated cells really look like their type? We check it with a small CNN classifier trained on the real images: we generate 100 cells of each type and count how many the classifier assigns to the type we asked for.</p>
+<section id="blood-cell-images-of-a-chosen-type" class="level2">
+<h2 class="anchored" data-anchor-id="blood-cell-images-of-a-chosen-type">6. Blood-cell images of a chosen type</h2>
+<p>The same conditional VAE idea applies to BloodMNIST (Lecture 4): <span class="math inline">\(28\times28\)</span> colour images of eight types of normal blood cells. The condition <span class="math inline">\(\mathbf c\)</span> is the one-hot cell type. The images have three colour channels, so encoder and decoder are convolutional, like the convolutional neural networks (CNNs) of Lecture 4.</p>
+<p>To check whether the generated cells really look like their type, we train a small CNN classifier on the real images, generate 100 cells of each type, and count how many the classifier assigns to the type we asked for.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T15:27:07.406798Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T15:27:07.405044Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T15:36:44.540854Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T15:36:44.539355Z&quot;}" data-execution_count="15">
 <details open="">
 <summary>Code</summary>
@@ -1119,19 +1118,15 @@ fraction of generated digits recognised as the requested digit: [0.98 0.94 0.98 
   plt.subplots_adjust(wspace=0.04, hspace=0.06); plt.savefig(f"{OUT}/gen_cvae_blood.png", dpi=170, bbox_inches="tight"); plt.show()</code></pre>
 </div>
 </div>
-<p>Each row is one requested cell type, each column one random <span class="math inline">\(\mathbf z\)</span> (the same in every row). The percentage is the fraction of 100 generated cells of that type that the classifier, trained on real cells, assigns to the requested type.</p>
-<p><strong>Try it.</strong> Generate cells of one type with several values of a single latent coordinate. What changes in the image?</p>
+<p>Each row of the figure is one requested cell type and each column one random <span class="math inline">\(\mathbf z\)</span>, the same in every row. The percentage is the fraction of the 100 generated cells of that type that the classifier, which reaches a test accuracy of 0.838 on real cells, assigns to the requested type. The results are very uneven: platelets (100%) and erythroblasts (98%) are recognised almost always, eosinophils (81%) and immature granulocytes (86%) mostly, whereas basophils (4%), lymphocytes (14%), neutrophils (14%) and monocytes (26%) are mostly not.</p>
+<p>As an exercise, generate cells of one type with several values of a single latent coordinate. What changes in the image?</p>
 </section>
 <section id="generative-adversarial-networks" class="level2">
 <h2 class="anchored" data-anchor-id="generative-adversarial-networks">7. Generative adversarial networks</h2>
-<p>A GAN learns to sample without ever writing <span class="math inline">\(p(\mathbf x)\)</span> down. Two networks:</p>
-<ul>
-<li>the <strong>generator</strong> <span class="math inline">\(G\)</span> turns noise <span class="math inline">\(\mathbf z\sim\mathcal N(0,I)\)</span> into a sample <span class="math inline">\(\tilde{\mathbf x}=G(\mathbf z)\)</span>; it never sees the data;</li>
-<li>the <strong>discriminator</strong> <span class="math inline">\(D\)</span> is a classifier: <span class="math inline">\(D(\mathbf x)\)</span> is the probability that <span class="math inline">\(\mathbf x\)</span> is real, not generated.</li>
-</ul>
-<p><span class="math inline">\(D\)</span> is trained with the binary cross-entropy to label real images 1 and generated images 0; <span class="math inline">\(G\)</span> is trained to make <span class="math inline">\(D\)</span> wrong, and in practice it minimises <span class="math inline">\(-\log D(G(\mathbf z))\)</span> (the <em>non-saturating</em> loss, which gives <span class="math inline">\(G\)</span> useful gradients even when <span class="math inline">\(D\)</span> wins easily). The two steps alternate. When <span class="math inline">\(D\)</span> is as good as possible, improving <span class="math inline">\(G\)</span> moves the distribution of the generated samples towards that of the data.</p>
+<p>A generative adversarial network (GAN) learns to sample without ever writing <span class="math inline">\(p(\mathbf x)\)</span> down. It consists of two networks. The <strong>generator</strong> <span class="math inline">\(G\)</span> turns noise <span class="math inline">\(\mathbf z\sim\mathcal N(0,I)\)</span> into a sample <span class="math inline">\(\tilde{\mathbf x}=G(\mathbf z)\)</span> and never sees the data. The <strong>discriminator</strong> <span class="math inline">\(D\)</span> is a classifier: <span class="math inline">\(D(\mathbf x)\)</span> is the probability that <span class="math inline">\(\mathbf x\)</span> is real rather than generated.</p>
+<p><span class="math inline">\(D\)</span> is trained with the binary cross-entropy to label real images 1 and generated images 0, and <span class="math inline">\(G\)</span> is trained to make <span class="math inline">\(D\)</span> wrong. In practice <span class="math inline">\(G\)</span> minimises <span class="math inline">\(-\log D(G(\mathbf z))\)</span>, the <em>non-saturating</em> loss, which gives <span class="math inline">\(G\)</span> useful gradients even when <span class="math inline">\(D\)</span> wins easily. The two steps alternate, and when <span class="math inline">\(D\)</span> is as good as possible, improving <span class="math inline">\(G\)</span> moves the distribution of the generated samples towards that of the data.</p>
 <p>GANs are hard to train: there is no single loss that decreases, the two networks can oscillate, and the generator can collapse onto a few kinds of samples (<em>mode collapse</em>). We train a small GAN and look at all of this.</p>
-<p>The details matter. We use the common recipe for dense GANs: LeakyReLU activations in both networks, a <span class="math inline">\(\tanh\)</span> output of the generator with the pixels rescaled to <span class="math inline">\([-1,1]\)</span>, and <em>dropout</em> in the discriminator, which keeps it from winning too early. Without them (ReLU, sigmoid output, no dropout) the discriminator wins within the first epoch, its loss drops to about 0.01, and the generator collapses onto one blob (see <strong>Try it</strong>).</p>
+<p>The details matter. We use the common recipe for dense GANs: LeakyReLU activations in both networks, a <span class="math inline">\(\tanh\)</span> output of the generator with the pixels rescaled to <span class="math inline">\([-1,1]\)</span>, and <em>dropout</em> in the discriminator, which keeps it from winning too early. Without these choices (ReLU, sigmoid output, no dropout) the discriminator wins within the first epoch, its loss drops to about 0.01, and the generator collapses onto one blob, as the first exercise at the end of this section shows.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T15:36:44.552236Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T15:36:44.551277Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T15:52:21.326506Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T15:52:21.323089Z&quot;}" data-execution_count="16">
 <details open="">
 <summary>Code</summary>
@@ -1194,10 +1189,10 @@ fraction of generated digits recognised as the requested digit: [0.98 0.94 0.98 
   plt.savefig(f"{OUT}/gen_gan_losses.png", dpi=170, bbox_inches="tight"); plt.show()</code></pre>
 </div>
 </div>
-<p>The samples improve from epoch to epoch, but the loss curves do not show it: the two losses measure a game, not the quality of the samples.</p>
+<p>The samples improve from epoch to epoch, but the loss curves do not show it: the two losses measure the state of a game, not the quality of the samples.</p>
 <section id="mode-collapse" class="level3">
-<h3 class="anchored" data-anchor-id="mode-collapse">Mode Collapse</h3>
-<p>The MNIST classifier of part 5 labels 2000 new samples of the GAN and 2000 of the VAE. A generator that covers the data produces every digit about 10% of the time.</p>
+<h3 class="anchored" data-anchor-id="mode-collapse">Mode collapse</h3>
+<p>A generator that covers the data should produce every digit about 10% of the time. We let the MNIST classifier of section 5 label 2000 new samples of the GAN and 2000 of the VAE and compare the frequencies of the ten digits.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T15:52:21.342562Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T15:52:21.341710Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T15:52:22.142446Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T15:52:22.141283Z&quot;}" data-execution_count="17">
 <details open="">
 <summary>Code</summary>
@@ -1222,11 +1217,12 @@ VAE: [0.094 0.082 0.129 0.118 0.092 0.084 0.074 0.098 0.116 0.112]</code></pre>
   plt.savefig(f"{OUT}/gen_gan_modes.png", dpi=170, bbox_inches="tight"); plt.show()</code></pre>
 </div>
 </div>
+<p>For the GAN the frequencies range from 6.4% (digit 8) to 15.2% (digit 1), for the VAE from 7.4% to 12.9%. Neither model has collapsed onto a few digits, although the GAN produces some digits noticeably more often than others.</p>
 </section>
-<section id="the-best-discriminator-and-the-wasserstein-distance" class="level3">
-<h3 class="anchored" data-anchor-id="the-best-discriminator-and-the-wasserstein-distance">The Best Discriminator and the Wasserstein Distance</h3>
-<p>For a fixed generator with density <span class="math inline">\(p_G\)</span>, the discriminator that maximises <span class="math inline">\(V(D,G)\)</span> is known in closed form (Goodfellow et al.&nbsp;2014, Proposition 1): <span class="math display">\[D^*(\mathbf x)=\frac{p_{\text{data}}(\mathbf x)}{p_{\text{data}}(\mathbf x)+p_G(\mathbf x)} .\]</span> It is the probability that a point at <span class="math inline">\(\mathbf x\)</span> is real when real and generated points are equally frequent. Where the generator puts too little probability, <span class="math inline">\(D^*&gt;1/2\)</span>; where it puts too much, <span class="math inline">\(D^*&lt;1/2\)</span>; when <span class="math inline">\(p_G=p_{\text{data}}\)</span>, <span class="math inline">\(D^*=1/2\)</span> everywhere and the discriminator can only guess.</p>
-<p>The <strong>Wasserstein-1 distance</strong> between two distributions on a line is the area between their cumulative distribution functions, <span class="math inline">\(W(p,q)=\int|F_p(x)-F_q(x)|\,dx\)</span>: the probability mass to be moved times the distance it travels. Two narrow bumps, <span class="math inline">\(p\)</span> at 0 and <span class="math inline">\(q\)</span> at <span class="math inline">\(\theta\)</span>: the Jensen–Shannon divergence (what the original GAN loss measures at the best <span class="math inline">\(D\)</span>) is stuck at <span class="math inline">\(\log2\)</span> as soon as they stop overlapping, whatever <span class="math inline">\(\theta\)</span>; the Wasserstein distance is <span class="math inline">\(\theta\)</span> and still tells how far apart they are.</p>
+<section id="optimal-discriminator-and-wasserstein-distance" class="level3">
+<h3 class="anchored" data-anchor-id="optimal-discriminator-and-wasserstein-distance">Optimal discriminator and Wasserstein distance</h3>
+<p>For a fixed generator with density <span class="math inline">\(p_G\)</span>, the discriminator that maximises the GAN objective <span class="math inline">\(V(D,G)\)</span> is known in closed form (Goodfellow et al.&nbsp;2014, Proposition 1): <span class="math display">\[D^*(\mathbf x)=\frac{p_{\text{data}}(\mathbf x)}{p_{\text{data}}(\mathbf x)+p_G(\mathbf x)} .\]</span> It is the probability that a point at <span class="math inline">\(\mathbf x\)</span> is real when real and generated points are equally frequent. Where the generator puts too little probability, <span class="math inline">\(D^*&gt;1/2\)</span>; where it puts too much, <span class="math inline">\(D^*&lt;1/2\)</span>; and when <span class="math inline">\(p_G=p_{\text{data}}\)</span>, <span class="math inline">\(D^*=1/2\)</span> everywhere and the discriminator can only guess.</p>
+<p>The original GAN loss, evaluated at the best discriminator, measures the Jensen–Shannon (JS) divergence between the data and the generator. A different measure of distance is the <strong>Wasserstein-1 distance</strong>, which for two distributions on a line is the area between their cumulative distribution functions, <span class="math inline">\(W(p,q)=\int|F_p(x)-F_q(x)|\,dx\)</span>: the probability mass to be moved times the distance it travels. The difference between the two shows up for two narrow bumps, <span class="math inline">\(p\)</span> at 0 and <span class="math inline">\(q\)</span> at <span class="math inline">\(\theta\)</span>. The JS divergence is stuck at <span class="math inline">\(\log2\)</span> as soon as the bumps stop overlapping, whatever <span class="math inline">\(\theta\)</span>, while the Wasserstein distance equals <span class="math inline">\(\theta\)</span> and still tells how far apart they are. The cell draws <span class="math inline">\(D^*\)</span> for a generator that is not yet good and for a perfect one, and computes both quantities for <span class="math inline">\(\theta=1\)</span> and <span class="math inline">\(\theta=2\)</span>.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T15:52:22.158093Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T15:52:22.157408Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T15:52:25.047536Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T15:52:25.042074Z&quot;}" data-execution_count="18">
 <details open="">
 <summary>Code</summary>
@@ -1274,11 +1270,11 @@ VAE: [0.094 0.082 0.129 0.118 0.092 0.084 0.074 0.098 0.116 0.112]</code></pre>
   plt.tight_layout(); plt.savefig(f"{OUT}/gen_wasserstein_js.png", dpi=170, bbox_inches="tight"); plt.show()</code></pre>
 </div>
 </div>
-<p>Once the bumps no longer overlap, the Jensen–Shannon divergence is constant: its gradient with respect to <span class="math inline">\(\theta\)</span> is zero, and a generator trained on it learns nothing about where to move. The Wasserstein distance grows linearly with <span class="math inline">\(\theta\)</span> and always points the way.</p>
+<p>For both <span class="math inline">\(\theta=1\)</span> and <span class="math inline">\(\theta=2\)</span> the JS divergence equals <span class="math inline">\(\log2=0.693\)</span>, while the Wasserstein distance is 1 and 2. Once the bumps no longer overlap, the JS divergence is constant: its gradient with respect to <span class="math inline">\(\theta\)</span> is zero, and a generator trained on it learns nothing about where to move. The Wasserstein distance grows linearly with <span class="math inline">\(\theta\)</span> and always points the way.</p>
 </section>
-<section id="a-conditional-gan" class="level3">
-<h3 class="anchored" data-anchor-id="a-conditional-gan">A conditional GAN</h3>
-<p>As for the VAE, a condition <span class="math inline">\(\mathbf c\)</span> (here the one-hot digit) is given to <strong>both</strong> networks: the generator <span class="math inline">\(G(\mathbf z,\mathbf c)\)</span> draws an image of the requested digit, and the discriminator <span class="math inline">\(D(\mathbf x,\mathbf c)\)</span> judges the <em>pair</em>: is this a real image of digit <span class="math inline">\(\mathbf c\)</span>? A realistic 3 sent with the condition “7” is therefore rejected, and <span class="math inline">\(G\)</span> must respect the condition. We check the result with the same MNIST classifier.</p>
+<section id="conditional-gan" class="level3">
+<h3 class="anchored" data-anchor-id="conditional-gan">Conditional GAN</h3>
+<p>As for the VAE, a condition <span class="math inline">\(\mathbf c\)</span>, here the one-hot digit, is given to <strong>both</strong> networks. The generator <span class="math inline">\(G(\mathbf z,\mathbf c)\)</span> draws an image of the requested digit, and the discriminator <span class="math inline">\(D(\mathbf x,\mathbf c)\)</span> judges the <em>pair</em>: is this a real image of digit <span class="math inline">\(\mathbf c\)</span>? A realistic 3 sent with the condition “7” is therefore rejected, and <span class="math inline">\(G\)</span> must respect the condition. We check the result with the same MNIST classifier as before.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T15:52:25.053798Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T15:52:25.053319Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T16:08:59.202464Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T16:08:59.201275Z&quot;}" data-execution_count="19">
 <details open="">
 <summary>Code</summary>
@@ -1323,19 +1319,15 @@ conditional VAE (part 5), for comparison: [0.98 0.94 0.98 0.98 0.96 0.94 0.96 0.
   plt.savefig(path, dpi=170, bbox_inches="tight"); plt.show()</code></pre>
 </div>
 </div>
-<p><strong>Try it.</strong> Replace the generator by <code>nn.Sequential(nn.Linear(64, 256), nn.ReLU(), nn.Linear(256, 512), nn.ReLU(), nn.Linear(512, 784), nn.Sigmoid())</code>, remove the dropout and the rescaling to <span class="math inline">\([-1,1]\)</span>, and watch the discriminator loss and the samples after one epoch.</p>
-<p><strong>Try it.</strong> Train the GAN with the <em>saturating</em> generator loss, i.e.&nbsp;minimise <span class="math inline">\(\log(1-D(G(\mathbf z)))\)</span> instead of <span class="math inline">\(-\log D(G(\mathbf z))\)</span>. Does training still start?</p>
+<p>The classifier recognises on average 96.1% of the conditional GAN digits as the requested digit, almost the same as the 96.3% of the conditional VAE. The two models differ in how they get there, not in how well they respect the condition.</p>
+<p>Two exercises explore the recipe. First, replace the generator by <code>nn.Sequential(nn.Linear(64, 256), nn.ReLU(), nn.Linear(256, 512), nn.ReLU(), nn.Linear(512, 784), nn.Sigmoid())</code>, remove the dropout and the rescaling to <span class="math inline">\([-1,1]\)</span>, and watch the discriminator loss and the samples after one epoch. Second, train the GAN with the <em>saturating</em> generator loss, i.e.&nbsp;minimise <span class="math inline">\(\log(1-D(G(\mathbf z)))\)</span> instead of <span class="math inline">\(-\log D(G(\mathbf z))\)</span>. Does training still start?</p>
 </section>
 </section>
 <section id="diffusion-models" class="level2">
 <h2 class="anchored" data-anchor-id="diffusion-models">8. Diffusion models</h2>
-<p>A diffusion model learns to <strong>undo noise</strong>.</p>
-<ul>
-<li><strong>Forward process (no learning).</strong> Starting from a data point <span class="math inline">\(\mathbf x_0\)</span>, add a little Gaussian noise at each of <span class="math inline">\(T\)</span> steps; after many steps nothing is left but noise. With a fixed schedule <span class="math inline">\(\beta_1,\dots,\beta_T\)</span> the noisy point at step <span class="math inline">\(t\)</span> can be written directly, <span class="math inline">\(\mathbf x_t=\sqrt{\bar\alpha_t}\,\mathbf x_0+\sqrt{1-\bar\alpha_t}\,\boldsymbol\varepsilon\)</span>, with <span class="math inline">\(\bar\alpha_t=\prod_{s\le t}(1-\beta_s)\)</span> and <span class="math inline">\(\boldsymbol\varepsilon\sim\mathcal N(0,I)\)</span>. The schedule must make <span class="math inline">\(\bar\alpha_T\approx0\)</span>: generation starts from pure noise, so the forward process has to end there too. (A schedule that leaves part of the data at step <span class="math inline">\(T\)</span> makes the network start from a state it never saw in training, and the samples come out as scrawls.)</li>
-<li><strong>Training.</strong> A network <span class="math inline">\(\boldsymbol\varepsilon_\theta(\mathbf x_t,t)\)</span> learns to predict the noise that was added: minimise <span class="math inline">\(|\boldsymbol\varepsilon-\boldsymbol\varepsilon_\theta(\mathbf x_t,t)|^2\)</span> over random data points, steps and noises. An ordinary regression.</li>
-<li><strong>Generation.</strong> Start from pure noise <span class="math inline">\(\mathbf x_T\sim\mathcal N(0,I)\)</span> and remove the predicted noise one step at a time down to <span class="math inline">\(\mathbf x_0\)</span>.</li>
-</ul>
-<p>We use 2D data (two half-moons), where every step can be drawn.</p>
+<p>A diffusion model learns to <strong>undo noise</strong>. Its forward process involves no learning: starting from a data point <span class="math inline">\(\mathbf x_0\)</span>, a little Gaussian noise is added at each of <span class="math inline">\(T\)</span> steps, until nothing but noise is left. With a fixed schedule <span class="math inline">\(\beta_1,\dots,\beta_T\)</span> the noisy point at step <span class="math inline">\(t\)</span> can be written directly as <span class="math inline">\(\mathbf x_t=\sqrt{\bar\alpha_t}\,\mathbf x_0+\sqrt{1-\bar\alpha_t}\,\boldsymbol\varepsilon\)</span>, with <span class="math inline">\(\bar\alpha_t=\prod_{s\le t}(1-\beta_s)\)</span> and <span class="math inline">\(\boldsymbol\varepsilon\sim\mathcal N(0,I)\)</span>. The schedule must make <span class="math inline">\(\bar\alpha_T\approx0\)</span>: generation starts from pure noise, so the forward process has to end there too. A schedule that leaves part of the data at step <span class="math inline">\(T\)</span> makes the network start from a state it never saw in training, and the samples come out as scrawls.</p>
+<p>Training is an ordinary regression. A network <span class="math inline">\(\boldsymbol\varepsilon_\theta(\mathbf x_t,t)\)</span> learns to predict the noise that was added, by minimising <span class="math inline">\(|\boldsymbol\varepsilon-\boldsymbol\varepsilon_\theta(\mathbf x_t,t)|^2\)</span> over random data points, steps and noises. Generation starts from pure noise <span class="math inline">\(\mathbf x_T\sim\mathcal N(0,I)\)</span> and removes the predicted noise one step at a time, down to <span class="math inline">\(\mathbf x_0\)</span>.</p>
+<p>We first use two-dimensional data, two half-moons, where every step can be drawn.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T16:08:59.215001Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T16:08:59.214381Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T16:09:23.870969Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T16:09:23.870115Z&quot;}" data-execution_count="20">
 <details open="">
 <summary>Code</summary>
@@ -1394,11 +1386,11 @@ conditional VAE (part 5), for comparison: [0.98 0.94 0.98 0.98 0.96 0.94 0.96 0.
   plt.tight_layout(); plt.savefig(f"{OUT}/gen_diffusion_forward_reverse.png", dpi=170, bbox_inches="tight"); plt.show()</code></pre>
 </div>
 </div>
-<section id="the-forward-process-and-the-score" class="level3">
-<h3 class="anchored" data-anchor-id="the-forward-process-and-the-score">The Forward Process and the Score</h3>
-<p>One step of the forward process shrinks the point a little and adds a little noise, <span class="math display">\[\mathbf x_t=\sqrt{1-\beta_t}\,\mathbf x_{t-1}+\sqrt{\beta_t}\,\boldsymbol\varepsilon_t,\qquad\boldsymbol\varepsilon_t\sim\mathcal N(0,I).\]</span> The two factors are chosen so that their squares add up to 1: data with variance 1 keep variance 1 at every step. Combining <span class="math inline">\(t\)</span> steps (a sum of independent Gaussians is Gaussian) gives <span class="math inline">\(\mathbf x_t=\sqrt{\bar\alpha_t}\,\mathbf x_0+\sqrt{1-\bar\alpha_t}\,\boldsymbol\varepsilon\)</span> with <span class="math inline">\(\bar\alpha_t=\prod_{s\le t}(1-\beta_s)\)</span>.</p>
-<p>In 1D we can follow the whole distribution: data at <span class="math inline">\(\pm1\)</span> (two narrow peaks) turn into one broad Gaussian.</p>
-<p>The trained noise predictor has a geometric meaning. For Gaussian noising, the best possible prediction of the noise satisfies <span class="math inline">\(\boldsymbol\varepsilon_\theta(\mathbf x_t,t)\approx-\sqrt{1-\bar\alpha_t}\,\nabla_{\mathbf x}\log p_t(\mathbf x_t)\)</span>, where <span class="math inline">\(p_t\)</span> is the distribution of the noisy data at step <span class="math inline">\(t\)</span>. So <span class="math inline">\(-\boldsymbol\varepsilon_\theta/\sqrt{1-\bar\alpha_t}\)</span> is the <strong>score</strong> <span class="math inline">\(\nabla\log p_t\)</span>: an arrow that points towards higher data density. We draw these arrows for the two-moons network trained above.</p>
+<p>After <span class="math inline">\(T=100\)</span> steps the data are scaled by <span class="math inline">\(\sqrt{\bar\alpha_T}=0.075\)</span>, so almost nothing but noise is left, and the noise predictor reaches a final loss of 0.322 after 24 s of training.</p>
+<section id="forward-process-and-score" class="level3">
+<h3 class="anchored" data-anchor-id="forward-process-and-score">Forward process and score</h3>
+<p>One step of the forward process shrinks the point a little and adds a little noise, <span class="math display">\[\mathbf x_t=\sqrt{1-\beta_t}\,\mathbf x_{t-1}+\sqrt{\beta_t}\,\boldsymbol\varepsilon_t,\qquad\boldsymbol\varepsilon_t\sim\mathcal N(0,I).\]</span> The two factors are chosen so that their squares add up to 1: data with variance 1 keep variance 1 at every step. Combining <span class="math inline">\(t\)</span> steps, and using that a sum of independent Gaussians is Gaussian, gives <span class="math inline">\(\mathbf x_t=\sqrt{\bar\alpha_t}\,\mathbf x_0+\sqrt{1-\bar\alpha_t}\,\boldsymbol\varepsilon\)</span> with <span class="math inline">\(\bar\alpha_t=\prod_{s\le t}(1-\beta_s)\)</span>. In one dimension we can follow the whole distribution and watch data at <span class="math inline">\(\pm1\)</span>, two narrow peaks, turn into one broad Gaussian.</p>
+<p>The trained noise predictor also has a geometric meaning. For Gaussian noising, the best possible prediction of the noise satisfies <span class="math inline">\(\boldsymbol\varepsilon_\theta(\mathbf x_t,t)\approx-\sqrt{1-\bar\alpha_t}\,\nabla_{\mathbf x}\log p_t(\mathbf x_t)\)</span>, where <span class="math inline">\(p_t\)</span> is the distribution of the noisy data at step <span class="math inline">\(t\)</span>. Hence <span class="math inline">\(-\boldsymbol\varepsilon_\theta/\sqrt{1-\bar\alpha_t}\)</span> is the <strong>score</strong> <span class="math inline">\(\nabla\log p_t\)</span>, an arrow that points towards higher data density. We draw these arrows for the two-moons network trained above.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T16:09:23.876817Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T16:09:23.876277Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T16:09:25.777956Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T16:09:25.777393Z&quot;}" data-execution_count="21">
 <details open="">
 <summary>Code</summary>
@@ -1445,12 +1437,12 @@ conditional VAE (part 5), for comparison: [0.98 0.94 0.98 0.98 0.96 0.94 0.96 0.
   plt.tight_layout(); plt.savefig(f"{OUT}/gen_diffusion_score.png", dpi=170, bbox_inches="tight"); plt.show()</code></pre>
 </div>
 </div>
-<p>Blue: noisy data at three steps. Orange: the learned arrows <span class="math inline">\(-\boldsymbol\varepsilon_\theta/\sqrt{1-\bar\alpha_t}\)</span>. At every step the arrows point from empty regions towards the noisy data, which change from two moons (small <span class="math inline">\(t\)</span>) to one broad cloud around the origin (large <span class="math inline">\(t\)</span>). Generation follows these arrows from step <span class="math inline">\(T\)</span> down to 1, with a little fresh noise at each step.</p>
+<p>In the second figure, blue points are the noisy data at three steps and orange arrows the learned score <span class="math inline">\(-\boldsymbol\varepsilon_\theta/\sqrt{1-\bar\alpha_t}\)</span>. At every step the arrows point from empty regions towards the noisy data, which change from two moons at small <span class="math inline">\(t\)</span> to one broad cloud around the origin at large <span class="math inline">\(t\)</span>. Generation follows these arrows from step <span class="math inline">\(T\)</span> down to 1, with a little fresh noise at each step.</p>
 </section>
 <section id="diffusion-on-mnist" class="level3">
 <h3 class="anchored" data-anchor-id="diffusion-on-mnist">Diffusion on MNIST</h3>
-<p>The same algorithm on images. The noise-prediction network is now a small <strong>U-Net</strong>: convolutions that shrink the image (<span class="math inline">\(28\to14\to7\)</span> pixels) and grow it back, with <em>skip connections</em> that pass the fine details from the shrinking to the growing path; the step <span class="math inline">\(t\)</span> enters as an extra input, added to the features. <span class="math inline">\(T=200\)</span> noise steps, trained on the 60 000 training digits to predict the added noise.</p>
-<p>Training (15 epochs) takes about half an hour on a CPU. For generation we use an <em>exponential moving average</em> of the weights over the training steps, a standard trick that smooths out the noise of the last updates; the trained weights are saved to <code>results/ddpm_mnist.pt</code> and loaded on later runs. Generating means 200 passes of the network, from pure noise to a digit. We check the generated digits with the MNIST classifier of part 5.</p>
+<p>The same algorithm works on images. The noise-prediction network is now a small <strong>U-Net</strong>: convolutions that shrink the image (<span class="math inline">\(28\to14\to7\)</span> pixels) and grow it back, with <em>skip connections</em> that pass the fine details from the shrinking to the growing path. The step <span class="math inline">\(t\)</span> enters as an extra input, added to the features. We use <span class="math inline">\(T=200\)</span> noise steps, for which <span class="math inline">\(\sqrt{\bar\alpha_T}=0.00551\)</span>, and train on the 60 000 training digits to predict the added noise.</p>
+<p>Training for 15 epochs takes about half an hour on a CPU. For generation we use an <em>exponential moving average</em> of the weights over the training steps, a standard technique that smooths out the noise of the last updates. The trained weights are saved to <code>results/ddpm_mnist.pt</code> and loaded on later runs. Generating a digit means 200 passes of the network, from pure noise to the image, and we check the generated digits with the MNIST classifier of section 5.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T16:09:25.782511Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T16:09:25.782032Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T16:09:50.344512Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T16:09:50.343120Z&quot;}" data-execution_count="22">
 <details open="">
 <summary>Code</summary>
@@ -1547,14 +1539,15 @@ loaded trained weights from results/ddpm_mnist.pt</code></pre>
   plt.savefig(path, dpi=170, bbox_inches="tight"); plt.show()</code></pre>
 </div>
 </div>
-<p><strong>Try it.</strong> Use only <span class="math inline">\(T=10\)</span> steps (and a larger final <span class="math inline">\(\beta_T\)</span>). How do the generated points change?</p>
+<p>The 64 generated digits take 21 s to produce. The classifier assigns them to all ten digits, between 2 and 11 times each, with a mean confidence of 0.80, so the diffusion model covers all classes.</p>
+<p>As an exercise, use only <span class="math inline">\(T=10\)</span> steps (and a larger final <span class="math inline">\(\beta_T\)</span>) on the two-moons data. How do the generated points change?</p>
 </section>
 </section>
-<section id="the-2d-ising-model-learning-the-boltzmann-distribution" class="level2">
-<h2 class="anchored" data-anchor-id="the-2d-ising-model-learning-the-boltzmann-distribution">9. The 2D Ising model: learning the Boltzmann distribution</h2>
-<p>For spins we <strong>know</strong> the true distribution, <span class="math inline">\(p(\mathbf s\,|\,T)=e^{-H(\mathbf s)/T}/Z\)</span> (Lecture 4), and Metropolis Monte Carlo samples it exactly. Can a network learn it from samples alone?</p>
-<p>We train a conditional VAE with the temperature as condition, <span class="math inline">\(\mathbf c=T\)</span>, on the Monte Carlo configurations of a <span class="math inline">\(20\times20\)</span> lattice (51 temperatures from 1.0 to 3.5, 200 configurations each; the data set of Lecture 4, regenerated here if missing). Spins <span class="math inline">\(s_i=\pm1\)</span> are mapped to pixels <span class="math inline">\((s_i+1)/2\in\{0,1\}\)</span>, so the same BCE loss applies. To generate at a chosen <span class="math inline">\(T\)</span> we draw <span class="math inline">\(\mathbf z\sim\mathcal N(0,I)\)</span>, decode, and draw each spin up with the decoded probability.</p>
-<p>We then check the generated configurations <strong>as physicists</strong>: do they have the right magnetisation <span class="math inline">\(\langle|M|\rangle\)</span> and energy per spin at each temperature?</p>
+<section id="boltzmann-distribution-of-the-2d-ising-model" class="level2">
+<h2 class="anchored" data-anchor-id="boltzmann-distribution-of-the-2d-ising-model">9. Boltzmann distribution of the 2D Ising model</h2>
+<p>For spins we <strong>know</strong> the true distribution, <span class="math inline">\(p(\mathbf s\,|\,T)=e^{-H(\mathbf s)/T}/Z\)</span> (Lecture 4), and Metropolis Monte Carlo samples it exactly. This makes the Ising model a good test of whether a network can learn a distribution from samples alone.</p>
+<p>We train a conditional VAE with the temperature as condition, <span class="math inline">\(\mathbf c=T\)</span>, on the Monte Carlo configurations of a <span class="math inline">\(20\times20\)</span> lattice: 51 temperatures from 1.0 to 3.5, with 200 configurations each. This is the data set of Lecture 4, regenerated here if missing. Spins <span class="math inline">\(s_i=\pm1\)</span> are mapped to pixels <span class="math inline">\((s_i+1)/2\in\{0,1\}\)</span>, so the same BCE loss applies. To generate at a chosen <span class="math inline">\(T\)</span> we draw <span class="math inline">\(\mathbf z\sim\mathcal N(0,I)\)</span>, decode, and draw each spin up with the decoded probability.</p>
+<p>We then check the generated configurations the way a physicist would: do they have the right magnetisation <span class="math inline">\(\langle|M|\rangle\)</span> and energy per spin at each temperature?</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T16:09:50.350979Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T16:09:50.350386Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T16:10:55.397800Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T16:10:55.396969Z&quot;}" data-execution_count="23">
 <details open="">
 <summary>Code</summary>
@@ -1637,11 +1630,9 @@ loaded trained weights from results/ddpm_mnist.pt</code></pre>
   plt.tight_layout(); plt.savefig(f"{OUT}/gen_ising_cvae_samples.png", dpi=170, bbox_inches="tight"); plt.show()</code></pre>
 </div>
 </div>
-<p>Compare the curves, not only the pictures. The magnetisation tells whether the model learned the <strong>global</strong> order at each temperature; the energy counts aligned <strong>neighbours</strong>, i.e.&nbsp;the local correlations. Here the spins are drawn independently once the decoder has given their probabilities, so any correlation between neighbours must come through the latent vector <span class="math inline">\(\mathbf z\)</span>; where the energy of the generated configurations deviates from Monte Carlo, the model has not captured those correlations.</p>
-<p><strong>Try it.</strong> Generate at <span class="math inline">\(T=2.27\)</span>, a temperature between two of the training temperatures. Do the generated configurations interpolate sensibly? Increase the latent dimension <span class="math inline">\(d\)</span>: does the energy improve?</p>
-</section>
-<section id="numbers-used-on-the-slides" class="level2">
-<h2 class="anchored" data-anchor-id="numbers-used-on-the-slides">Numbers used on the slides</h2>
+<p>The comparison rests on the curves, not only on the pictures. The magnetisation tells whether the model learned the <strong>global</strong> order at each temperature; the energy counts aligned <strong>neighbours</strong>, i.e.&nbsp;the local correlations. The largest deviation from Monte Carlo is 0.234 in the magnetisation and 0.634 in the energy per spin, the latter at <span class="math inline">\(T=2.3\)</span>, close to the critical temperature. The spins are drawn independently once the decoder has given their probabilities, so any correlation between neighbours must come through the latent vector <span class="math inline">\(\mathbf z\)</span>; where the energy of the generated configurations deviates from Monte Carlo, the model has not captured those correlations.</p>
+<p>As an exercise, generate at <span class="math inline">\(T=2.27\)</span>, a temperature between two of the training temperatures. Do the generated configurations interpolate sensibly? Increase the latent dimension <span class="math inline">\(d\)</span>: does the energy improve?</p>
+<p>Finally, the numbers computed above are written to <code>results/numbers_l6.json</code>, from which the slides take their values.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T16:10:55.402726Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T16:10:55.402220Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T16:10:55.409514Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T16:10:55.407449Z&quot;}" data-execution_count="24">
 <details open="">
 <summary>Code</summary>
@@ -2068,7 +2059,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="../../lectures/lecture-06.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">6 · Generative Models</span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">6 · Probability and Variational Autoencoders</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

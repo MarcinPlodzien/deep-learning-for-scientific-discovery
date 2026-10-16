@@ -176,7 +176,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </li>  
         <li>
     <a class="dropdown-item" href="../../lectures/lecture-06.html">
- <span class="dropdown-text">6 · Generative Models</span></a>
+ <span class="dropdown-text">6 · Probability and Variational Autoencoders</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-07.html">
+ <span class="dropdown-text">7 · Adversarial and Diffusion Models</span></a>
   </li>  
     </ul>
   </li>
@@ -313,6 +317,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-03/lab-013a-cnn-pytorch.html" class="sidebar-item-text sidebar-link">Lab 013a: CNNs on MNIST and CIFAR-10 in PyTorch</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-03/lab-013b-cnn-jax.html" class="sidebar-item-text sidebar-link">Lab 013b: CNNs on MNIST and CIFAR-10 in JAX</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../notebooks/lecture-03/limits-of-deep-networks.html" class="sidebar-item-text sidebar-link">Limits of deep networks</a>
   </div>
 </li>
@@ -370,7 +384,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../lectures/lecture-06.html" class="sidebar-item-text sidebar-link">6 · Generative Models</a>
+            <a href="../../lectures/lecture-06.html" class="sidebar-item-text sidebar-link">6 · Probability and Variational Autoencoders</a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -384,6 +398,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/lecture-06/conditional-generation.html" class="sidebar-item-text sidebar-link">Conditional generation of digits and blood cells</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-07.html" class="sidebar-item-text sidebar-link">7 · Adversarial and Diffusion Models</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-07/generative-models.html" class="sidebar-item-text sidebar-link">Generative models: probability, VAE, GAN and diffusion</a>
   </div>
 </li>
       </ul>
@@ -403,35 +432,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
    
   <ul>
   <li><a href="#deep-learning-for-scientific-discovery" id="toc-deep-learning-for-scientific-discovery" class="nav-link active" data-scroll-target="#deep-learning-for-scientific-discovery">Deep Learning for Scientific Discovery</a></li>
-  <li><a href="#lab-012-onsagers-exact-solution-of-the-2d-ising-model" id="toc-lab-012-onsagers-exact-solution-of-the-2d-ising-model" class="nav-link" data-scroll-target="#lab-012-onsagers-exact-solution-of-the-2d-ising-model">Lab 012 — Onsager’s Exact Solution of the 2D Ising Model</a>
+  <li><a href="#lab-012-onsagers-exact-solution" id="toc-lab-012-onsagers-exact-solution" class="nav-link" data-scroll-target="#lab-012-onsagers-exact-solution">Lab 012 — Onsager’s exact solution</a>
   <ul class="collapse">
-  <li><a href="#solving-the-model-what-it-means" id="toc-solving-the-model-what-it-means" class="nav-link" data-scroll-target="#solving-the-model-what-it-means">1. Solving the model: what it means</a>
+  <li><a href="#the-free-energy-and-its-derivatives" id="toc-the-free-energy-and-its-derivatives" class="nav-link" data-scroll-target="#the-free-energy-and-its-derivatives">1. The free energy and its derivatives</a>
   <ul class="collapse">
   <li><a href="#brute-force-on-a-tiny-lattice" id="toc-brute-force-on-a-tiny-lattice" class="nav-link" data-scroll-target="#brute-force-on-a-tiny-lattice">1.1 Brute force on a tiny lattice</a></li>
   <li><a href="#thermodynamics-of-the-finite-lattice" id="toc-thermodynamics-of-the-finite-lattice" class="nav-link" data-scroll-target="#thermodynamics-of-the-finite-lattice">1.2 Thermodynamics of the finite lattice</a></li>
   </ul></li>
-  <li><a href="#warm-up-the-1d-chain-and-the-transfer-matrix" id="toc-warm-up-the-1d-chain-and-the-transfer-matrix" class="nav-link" data-scroll-target="#warm-up-the-1d-chain-and-the-transfer-matrix">2. Warm-up: the 1D chain and the transfer matrix</a>
+  <li><a href="#the-1d-chain-and-the-transfer-matrix" id="toc-the-1d-chain-and-the-transfer-matrix" class="nav-link" data-scroll-target="#the-1d-chain-and-the-transfer-matrix">2. The 1D chain and the transfer matrix</a>
   <ul class="collapse">
-  <li><a href="#no-transition-in-1d" id="toc-no-transition-in-1d" class="nav-link" data-scroll-target="#no-transition-in-1d">2.1 No transition in 1D</a></li>
+  <li><a href="#free-energy-and-correlations-of-the-infinite-chain" id="toc-free-energy-and-correlations-of-the-infinite-chain" class="nav-link" data-scroll-target="#free-energy-and-correlations-of-the-infinite-chain">2.1 Free energy and correlations of the infinite chain</a></li>
   </ul></li>
-  <li><a href="#two-dimensions-a-transfer-matrix-of-size-2ltimes2l" id="toc-two-dimensions-a-transfer-matrix-of-size-2ltimes2l" class="nav-link" data-scroll-target="#two-dimensions-a-transfer-matrix-of-size-2ltimes2l">3. Two dimensions: a transfer matrix of size <span class="math inline">\(2^L\times2^L\)</span></a>
+  <li><a href="#the-2d-transfer-matrix" id="toc-the-2d-transfer-matrix" class="nav-link" data-scroll-target="#the-2d-transfer-matrix">3. The 2D transfer matrix</a>
   <ul class="collapse">
-  <li><a href="#free-energy-and-specific-heat-of-strips-l-4dots10" id="toc-free-energy-and-specific-heat-of-strips-l-4dots10" class="nav-link" data-scroll-target="#free-energy-and-specific-heat-of-strips-l-4dots10">3.1 Free energy and specific heat of strips, <span class="math inline">\(L = 4,\dots,10\)</span></a></li>
+  <li><a href="#free-energy-and-specific-heat-of-strips" id="toc-free-energy-and-specific-heat-of-strips" class="nav-link" data-scroll-target="#free-energy-and-specific-heat-of-strips">3.1 Free energy and specific heat of strips</a></li>
   </ul></li>
   <li><a href="#high--and-low-temperature-expansions-of-z" id="toc-high--and-low-temperature-expansions-of-z" class="nav-link" data-scroll-target="#high--and-low-temperature-expansions-of-z">4. High- and low-temperature expansions of <span class="math inline">\(Z\)</span></a></li>
   <li><a href="#kramerswannier-duality-and-the-self-dual-point" id="toc-kramerswannier-duality-and-the-self-dual-point" class="nav-link" data-scroll-target="#kramerswannier-duality-and-the-self-dual-point">5. Kramers–Wannier duality and the self-dual point</a></li>
-  <li><a href="#onsagers-formula-and-everything-that-follows-from-it" id="toc-onsagers-formula-and-everything-that-follows-from-it" class="nav-link" data-scroll-target="#onsagers-formula-and-everything-that-follows-from-it">6. Onsager’s formula and everything that follows from it</a></li>
-  <li><a href="#the-value-ut_c--sqrt2" id="toc-the-value-ut_c--sqrt2" class="nav-link" data-scroll-target="#the-value-ut_c--sqrt2">7. The value <span class="math inline">\(u(T_c) = -\sqrt2\)</span></a>
+  <li><a href="#onsagers-formula" id="toc-onsagers-formula" class="nav-link" data-scroll-target="#onsagers-formula">6. Onsager’s formula</a></li>
+  <li><a href="#energy-at-the-critical-point" id="toc-energy-at-the-critical-point" class="nav-link" data-scroll-target="#energy-at-the-critical-point">7. Energy at the critical point</a>
   <ul class="collapse">
-  <li><a href="#numerically" id="toc-numerically" class="nav-link" data-scroll-target="#numerically">7.1 Numerically</a></li>
-  <li><a href="#from-duality-alone-without-onsagers-formula" id="toc-from-duality-alone-without-onsagers-formula" class="nav-link" data-scroll-target="#from-duality-alone-without-onsagers-formula">7.2 From duality alone, without Onsager’s formula</a></li>
+  <li><a href="#the-elliptic-formula-at-t_c" id="toc-the-elliptic-formula-at-t_c" class="nav-link" data-scroll-target="#the-elliptic-formula-at-t_c">7.1 The elliptic formula at <span class="math inline">\(T_c\)</span></a></li>
+  <li><a href="#the-value-from-duality" id="toc-the-value-from-duality" class="nav-link" data-scroll-target="#the-value-from-duality">7.2 The value from duality</a></li>
   </ul></li>
-  <li><a href="#critical-exponents-measured" id="toc-critical-exponents-measured" class="nav-link" data-scroll-target="#critical-exponents-measured">8. Critical exponents, measured</a>
+  <li><a href="#critical-exponents" id="toc-critical-exponents" class="nav-link" data-scroll-target="#critical-exponents">8. Critical exponents</a>
   <ul class="collapse">
   <li><a href="#exponents-eta-and-nu-from-the-transfer-matrix" id="toc-exponents-eta-and-nu-from-the-transfer-matrix" class="nav-link" data-scroll-target="#exponents-eta-and-nu-from-the-transfer-matrix">8.1 Exponents <span class="math inline">\(\eta\)</span> and <span class="math inline">\(\nu\)</span> from the transfer matrix</a></li>
   </ul></li>
-  <li><a href="#mean-field-theory-against-the-exact-solution" id="toc-mean-field-theory-against-the-exact-solution" class="nav-link" data-scroll-target="#mean-field-theory-against-the-exact-solution">9. Mean-field theory against the exact solution</a></li>
-  <li><a href="#universality-the-triangular-lattice" id="toc-universality-the-triangular-lattice" class="nav-link" data-scroll-target="#universality-the-triangular-lattice">10. Universality: the triangular lattice</a></li>
+  <li><a href="#mean-field-theory" id="toc-mean-field-theory" class="nav-link" data-scroll-target="#mean-field-theory">9. Mean-field theory</a></li>
+  <li><a href="#the-triangular-lattice-and-universality" id="toc-the-triangular-lattice-and-universality" class="nav-link" data-scroll-target="#the-triangular-lattice-and-universality">10. The triangular lattice and universality</a></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">11. Summary</a></li>
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a>
   <ul class="collapse">
@@ -470,22 +499,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 2026/2027 <br> <strong>Author:</strong> Marcin Płodzień <br> <strong>Lab:</strong> 012 <br> <strong>Reading:</strong> slides <em>Onsager’s Exact Solution of the 2D Ising Model</em> (supplement to Lecture 4); Lecture Notes, Chapter 2, Section <em>Deep Learning in the Classical 2D Ising Model</em> (subsection <em>Onsager’s solution</em>)
 <hr>
 </section>
-<section id="lab-012-onsagers-exact-solution-of-the-2d-ising-model" class="level1">
-<h1>Lab 012 — Onsager’s Exact Solution of the 2D Ising Model</h1>
-<p>In Lab 010 and Lab 011 a convolutional network located the critical temperature of the 2D Ising model from raw spin images. In the lecture we asked <em>where the exact number <span class="math inline">\(T_c = 2/\ln(1+\sqrt2)\)</span> comes from</em>. This notebook follows the slides <em>Onsager’s Exact Solution</em> and reproduces each result with a computation:</p>
-<ol type="1">
-<li>what it means to “solve” the model: <span class="math inline">\(\ln Z\)</span> of a finite lattice by brute force, and why it is always smooth;</li>
-<li>the 1D chain: the transfer matrix, numerically and exactly;</li>
-<li>the 2D transfer matrix (<span class="math inline">\(2^L\times2^L\)</span>) for strips of width <span class="math inline">\(L\)</span>: the free energy converges to Onsager’s, the specific-heat peak grows and moves towards <span class="math inline">\(T_c\)</span>, the correlation length detects <span class="math inline">\(T_c\)</span>;</li>
-<li>the high- and low-temperature expansions of <span class="math inline">\(Z\)</span>;</li>
-<li>Kramers–Wannier duality and the self-dual point <span class="math inline">\(\sinh 2K_c = 1\)</span>;</li>
-<li>Onsager’s formula: <span class="math inline">\(f\)</span>, <span class="math inline">\(u\)</span>, <span class="math inline">\(c\)</span> and Yang’s magnetisation <span class="math inline">\(M\)</span>;</li>
-<li><span class="math inline">\(u(T_c) = -\sqrt2\,J\)</span>: numerically, and derived from duality alone;</li>
-<li>critical exponents measured from the exact formulas and from the transfer matrix;</li>
-<li>mean-field theory against the exact solution;</li>
-<li>universality: the triangular lattice.</li>
-</ol>
-<p>Units: <span class="math inline">\(J = k_B = 1\)</span>, field <span class="math inline">\(h = 0\)</span> unless stated otherwise. <span class="math inline">\(K = J/T = \beta J\)</span> is the dimensionless coupling.</p>
+<section id="lab-012-onsagers-exact-solution" class="level1">
+<h1>Lab 012 — Onsager’s exact solution</h1>
+<p>In Lab 010 and Lab 011 a convolutional network located the critical temperature of the two-dimensional (2D) Ising model from raw spin images. In the lecture we asked where the exact critical temperature <span class="math display">\[T_c=\frac{2}{\ln\big(1+\sqrt2\big)}\approx2.2692 \tag{1}\]</span> comes from. This notebook follows the slides <em>Onsager’s Exact Solution</em> and reproduces each of their results with a computation.</p>
+<p>We begin with what it means to “solve” the model: <span class="math inline">\(\ln Z\)</span> of a finite lattice computed by brute force, which turns out to be always smooth. The one-dimensional chain then introduces the transfer matrix, numerically and exactly. In two dimensions the transfer matrix has size <span class="math inline">\(2^L\times2^L\)</span> for a strip of width <span class="math inline">\(L\)</span>; with it we watch the free energy converge to Onsager’s, the specific-heat peak grow and move towards <span class="math inline">\(T_c\)</span>, and the correlation length detect <span class="math inline">\(T_c\)</span>. The high- and low-temperature expansions of <span class="math inline">\(Z\)</span> lead to Kramers–Wannier duality and to the self-dual coupling <span class="math inline">\(K_c\)</span>. From Onsager’s formula we obtain <span class="math inline">\(f\)</span>, <span class="math inline">\(u\)</span>, <span class="math inline">\(c\)</span> and Yang’s magnetisation <span class="math inline">\(M\)</span>, and we derive the energy per spin at <span class="math inline">\(T_c\)</span>, <span class="math inline">\(-\sqrt2\,J\)</span>, both numerically and from duality alone. The last part measures the critical exponents from the exact formulas and from the transfer matrix, compares mean-field theory with the exact solution, and tests universality on the triangular lattice.</p>
+<p>We use units in which <span class="math inline">\(J\)</span> and <span class="math inline">\(k_B\)</span> are one, with no external field unless stated otherwise. The dimensionless coupling is <span class="math display">\[K=\frac{J}{T}=\beta J. \tag{2}\]</span></p>
 <blockquote class="blockquote">
 <p><strong>How to run this notebook in Google Colab</strong> 1. Go to <a href="https://colab.research.google.com" class="uri">https://colab.research.google.com</a> → <em>File → Upload notebook</em> (or open it from Google Drive). 2. Run cells one by one with <strong>Shift + Enter</strong>. Run them <em>in order</em> — later cells use variables defined earlier. 3. Only <code>numpy</code>, <code>scipy</code> and <code>matplotlib</code> are needed; they are pre-installed in Colab, no <code>pip install</code> required. No data are downloaded. 4. The whole notebook runs in a few minutes on a laptop. The slowest cells (transfer matrices of size <span class="math inline">\(2^{10}\times2^{10}\)</span> and <span class="math inline">\(2^{12}\times2^{12}\)</span>) print their running time. 5. If the notebook state becomes inconsistent: <em>Runtime → Restart session</em> and run from the top.</p>
 </blockquote>
@@ -520,19 +538,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <hr>
-<section id="solving-the-model-what-it-means" class="level2">
-<h2 class="anchored" data-anchor-id="solving-the-model-what-it-means">1. Solving the model: what it means</h2>
-<p>Everything follows from the <strong>free energy per spin</strong> <span class="math display">\[
-f(T) = -T\lim_{N\to\infty}\frac1N\ln Z,\qquad Z=\sum_{\{s_i\}}e^{-H(\{s_i\})/T},\qquad H = -\sum_{\langle i,j\rangle}s_is_j .
-\]</span> Observables are derivatives, with <span class="math inline">\(\beta = 1/T\)</span>: <span class="math display">\[
-u = \frac{\partial(\beta f)}{\partial\beta} = \frac{\langle H\rangle}{N},\qquad
-c = \frac{\partial u}{\partial T} = \frac{\langle H^2\rangle-\langle H\rangle^2}{NT^2}.
+<section id="the-free-energy-and-its-derivatives" class="level2">
+<h2 class="anchored" data-anchor-id="the-free-energy-and-its-derivatives">1. The free energy and its derivatives</h2>
+<p>To “solve” the model means to know the <strong>free energy per spin</strong>, because everything else follows from it: <span class="math display">\[
+f(T) = -T\lim_{N\to\infty}\frac1N\ln Z, \tag{3}
+\]</span> <span class="math display">\[
+Z=\sum_{\{s_i\}}e^{-H(\{s_i\})/T}, \tag{4}
+\]</span> <span class="math display">\[
+H = -\sum_{\langle i,j\rangle}s_is_j . \tag{5}
+\]</span> Observables are derivatives with respect to the inverse temperature <span class="math inline">\(\beta\)</span>: <span class="math display">\[
+u = \frac{\partial(\beta f)}{\partial\beta} = \frac{\langle H\rangle}{N}, \tag{6}
+\]</span> <span class="math display">\[
+c = \frac{\partial u}{\partial T} = \frac{\langle H^2\rangle-\langle H\rangle^2}{NT^2}. \tag{7}
 \]</span></p>
 <section id="brute-force-on-a-tiny-lattice" class="level3">
 <h3 class="anchored" data-anchor-id="brute-force-on-a-tiny-lattice">1.1 Brute force on a tiny lattice</h3>
-<p>On an <span class="math inline">\(L\times L\)</span> torus there are <span class="math inline">\(2^{L^2}\)</span> configurations. For <span class="math inline">\(L = 4\)</span> that is <span class="math inline">\(65\,536\)</span> — easy. We store every configuration as a row of <span class="math inline">\(\pm1\)</span>: the bits of the integer <span class="math inline">\(n\in\{0,\dots,2^N-1\}\)</span> give the spins, <span class="math inline">\(s = 1-2\,\text{bit}\)</span>.</p>
-<p>Each configuration has energy <span class="math inline">\(E = -2N + 2b\)</span>, where <span class="math inline">\(b\)</span> is the number of <strong>broken bonds</strong> (antiparallel neighbours): the torus has <span class="math inline">\(2N\)</span> bonds, each contributes <span class="math inline">\(-1\)</span> if satisfied and <span class="math inline">\(+1\)</span> if broken. So <span class="math inline">\(Z\)</span> is determined by the histogram <span class="math inline">\(n_b\)</span> (the <em>density of states</em>): <span class="math display">\[
-Z(T) = \sum_{b} n_b\, e^{-(-2N+2b)/T}.
+<p>On an <span class="math inline">\(L\times L\)</span> torus there are <span class="math inline">\(2^{L^2}\)</span> configurations. For the <span class="math inline">\(4\times4\)</span> lattice that is 65 536, which is easy. We store every configuration as a row of <span class="math inline">\(\pm1\)</span>: the binary digits of an integer <span class="math inline">\(n\)</span> from 0 to <span class="math inline">\(2^N-1\)</span> give the spins, a digit 0 being read as the spin <span class="math inline">\(+1\)</span> and a digit 1 as <span class="math inline">\(-1\)</span>.</p>
+<p>Each configuration has the energy <span class="math display">\[E = -2N + 2b, \tag{8}\]</span> where <span class="math inline">\(b\)</span> is the number of <strong>broken bonds</strong> (antiparallel neighbours): the torus has two bonds per site, and each contributes <span class="math inline">\(-1\)</span> if satisfied and <span class="math inline">\(+1\)</span> if broken. So <span class="math inline">\(Z\)</span> is determined by the histogram <span class="math inline">\(n_b\)</span> (the <em>density of states</em>): <span class="math display">\[
+Z(T) = \sum_{b} n_b\, e^{-(-2N+2b)/T}. \tag{9}
 \]</span></p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:14.875904Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:14.874900Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:14.975598Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:14.974300Z&quot;}" data-execution_count="2">
 <details open="">
@@ -569,8 +592,12 @@ L = 4:  65536 configurations enumerated in 0.07 s,  sum n_b = 65536
 <section id="thermodynamics-of-the-finite-lattice" class="level3">
 <h3 class="anchored" data-anchor-id="thermodynamics-of-the-finite-lattice">1.2 Thermodynamics of the finite lattice</h3>
 <p>With <span class="math inline">\(n_b\)</span> in hand, <span class="math inline">\(\ln Z\)</span>, <span class="math inline">\(u\)</span> and <span class="math inline">\(c\)</span> are smooth functions of <span class="math inline">\(T\)</span>: <span class="math display">\[
-\ln Z = \ln\sum_b n_b e^{(2N-2b)/T},\qquad u = \frac{\sum_b n_b E_b e^{-E_b/T}}{NZ},\qquad c = \frac{\langle E^2\rangle - \langle E\rangle^2}{NT^2}.
-\]</span> <span class="math inline">\(Z\)</span> is a <strong>finite sum of exponentials</strong>, positive for every real <span class="math inline">\(T\)</span>, so <span class="math inline">\(\ln Z\)</span> is analytic: a finite lattice has <em>no</em> phase transition. A singularity can only appear in the limit <span class="math inline">\(N\to\infty\)</span>.</p>
+\ln Z = \ln\sum_b n_b e^{(2N-2b)/T}, \tag{10}
+\]</span> <span class="math display">\[
+u = \frac{\sum_b n_b E_b e^{-E_b/T}}{NZ}, \tag{11}
+\]</span> <span class="math display">\[
+c = \frac{\langle E^2\rangle - \langle E\rangle^2}{NT^2}. \tag{12}
+\]</span> <span class="math inline">\(Z\)</span> is a <strong>finite sum of exponentials</strong>, positive for every real <span class="math inline">\(T\)</span>, so <span class="math inline">\(\ln Z\)</span> is analytic: a finite lattice has <em>no</em> phase transition. A singularity can only appear in the limit of infinitely many spins.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:14.983075Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:14.982377Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:16.175176Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:16.170460Z&quot;}" data-execution_count="3">
 <details open="">
 <summary>Code</summary>
@@ -607,21 +634,23 @@ L = 4: specific-heat maximum c = 0.816 at T = 2.440</code></pre>
 <p><img src="lab-012-onsager_files/figure-html/cell-4-output-2.png" class="img-fluid"></p>
 </div>
 </div>
-<p>The specific heat has a smooth bump. Brute force cannot go much further: <span class="math inline">\(L = 6\)</span> already has <span class="math inline">\(2^{36}\approx 7\times10^{10}\)</span> configurations, and the images of Lab 010 (<span class="math inline">\(L = 20\)</span>) have <span class="math inline">\(2^{400}\)</span>. We need a smarter way to do the sum — the <strong>transfer matrix</strong>.</p>
+<p>The specific heat has a smooth bump. Brute force cannot go much further: the <span class="math inline">\(6\times6\)</span> lattice already has <span class="math inline">\(2^{36}\)</span>, about <span class="math inline">\(7\times10^{10}\)</span>, configurations, and the <span class="math inline">\(20\times20\)</span> images of Lab 010 have <span class="math inline">\(2^{400}\)</span>. We need a smarter way to do the sum — the <strong>transfer matrix</strong>.</p>
 <hr>
 </section>
 </section>
-<section id="warm-up-the-1d-chain-and-the-transfer-matrix" class="level2">
-<h2 class="anchored" data-anchor-id="warm-up-the-1d-chain-and-the-transfer-matrix">2. Warm-up: the 1D chain and the transfer matrix</h2>
-<p><span class="math inline">\(H = -\sum_i s_is_{i+1} - h\sum_i s_i\)</span> on a ring of <span class="math inline">\(N\)</span> spins; write <span class="math inline">\(K = \beta\)</span> (since <span class="math inline">\(J = 1\)</span>) and <span class="math inline">\(\tilde h = \beta h\)</span>. The Boltzmann weight is a product of <strong>bond factors</strong> <span class="math display">\[
-e^{-\beta H} = \prod_{i=1}^N \mathsf T_{s_is_{i+1}},\qquad
-\mathsf T_{ss'} = e^{Kss' + \frac{\tilde h}{2}(s+s')},\qquad
-\mathsf T = \begin{pmatrix} e^{K+\tilde h} &amp; e^{-K}\\ e^{-K} &amp; e^{K-\tilde h}\end{pmatrix}.
+<section id="the-1d-chain-and-the-transfer-matrix" class="level2">
+<h2 class="anchored" data-anchor-id="the-1d-chain-and-the-transfer-matrix">2. The 1D chain and the transfer matrix</h2>
+<p>The one-dimensional (1D) chain shows the transfer-matrix idea in its simplest form. Take <span class="math display">\[H = -\sum_i s_is_{i+1} - h\sum_i s_i \tag{13}\]</span> on a ring of <span class="math inline">\(N\)</span> spins. With <span class="math inline">\(J\)</span> set to 1 the coupling <span class="math inline">\(K\)</span> of equation (2) is <span class="math inline">\(\beta\)</span> itself, and we write the reduced field as <span class="math display">\[\tilde h = \beta h. \tag{14}\]</span> The Boltzmann weight is a product of <strong>bond factors</strong> <span class="math display">\[
+e^{-\beta H} = \prod_{i=1}^N \mathsf T_{s_is_{i+1}}, \tag{15}
+\]</span> <span class="math display">\[
+\mathsf T_{ss'} = e^{Kss' + \frac{\tilde h}{2}(s+s')}, \tag{16}
+\]</span> <span class="math display">\[
+\mathsf T = \begin{pmatrix} e^{K+\tilde h} &amp; e^{-K}\\ e^{-K} &amp; e^{K-\tilde h}\end{pmatrix}. \tag{17}
 \]</span> The sum over all <span class="math inline">\(2^N\)</span> configurations is a matrix product, closed into a trace by the periodic boundary: <span class="math display">\[
-Z = \sum_{s_1,\dots,s_N}\mathsf T_{s_1s_2}\mathsf T_{s_2s_3}\cdots\mathsf T_{s_Ns_1} = \operatorname{Tr}\mathsf T^N = \lambda_+^N + \lambda_-^N .
-\]</span> The eigenvalues of the symmetric <span class="math inline">\(2\times2\)</span> matrix <span class="math inline">\(\begin{pmatrix}a&amp;b\\b&amp;d\end{pmatrix}\)</span> are <span class="math inline">\(\frac{a+d}{2}\pm\sqrt{\left(\frac{a-d}{2}\right)^2+b^2}\)</span>, i.e. <span class="math display">\[
-\lambda_\pm = e^{K}\cosh\tilde h \pm \sqrt{e^{2K}\sinh^2\tilde h + e^{-2K}},\qquad \text{at } h=0:\ \lambda_+ = 2\cosh K,\ \lambda_- = 2\sinh K .
-\]</span> We check <span class="math inline">\(\operatorname{Tr}\mathsf T^N\)</span> against brute force, and the closed form of <span class="math inline">\(\lambda_\pm\)</span> against <code>numpy</code>.</p>
+Z = \sum_{s_1,\dots,s_N}\mathsf T_{s_1s_2}\mathsf T_{s_2s_3}\cdots\mathsf T_{s_Ns_1} = \operatorname{Tr}\mathsf T^N = \lambda_+^N + \lambda_-^N . \tag{18}
+\]</span> The eigenvalues of a symmetric <span class="math inline">\(2\times2\)</span> matrix with diagonal entries <span class="math inline">\(a\)</span>, <span class="math inline">\(d\)</span> and off-diagonal entry <span class="math inline">\(b\)</span> are <span class="math display">\[\lambda=\frac{a+d}{2}\pm\sqrt{\left(\frac{a-d}{2}\right)^2+b^2}, \tag{19}\]</span> which for the matrix (17) gives <span class="math display">\[
+\lambda_\pm = e^{K}\cosh\tilde h \pm \sqrt{e^{2K}\sinh^2\tilde h + e^{-2K}}, \tag{20}
+\]</span> and in zero field <span class="math display">\[\lambda_+ = 2\cosh K,\qquad \lambda_- = 2\sinh K . \tag{21}\]</span> The trace in equation (18) is compared with the brute-force sum, and equation (20) with the eigenvalues returned by <code>numpy</code>.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:16.200176Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:16.198834Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:16.253703Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:16.252419Z&quot;}" data-execution_count="4">
 <details open="">
 <summary>Code</summary>
@@ -650,14 +679,18 @@ K=0.7, beta*h= 0.4:  Z brute = 9.1298799858e+06   Tr T^N = 9.1298799858e+06   ma
 K=1.5, beta*h=-0.2:  Z brute = 2.3316896955e+10   Tr T^N = 2.3316896955e+10   max|lambda_numpy - lambda_formula| = 4.4e-16</code></pre>
 </div>
 </div>
-<section id="no-transition-in-1d" class="level3">
-<h3 class="anchored" data-anchor-id="no-transition-in-1d">2.1 No transition in 1D</h3>
-<p>For <span class="math inline">\(N\to\infty\)</span>, <span class="math inline">\(\ln Z = N\ln\lambda_+ + \ln\big(1 + (\lambda_-/\lambda_+)^N\big)\to N\ln\lambda_+\)</span>, so <span class="math display">\[
-f = -T\ln\big(2\cosh(1/T)\big),
-\]</span> smooth for every <span class="math inline">\(T&gt;0\)</span>: <strong>no phase transition</strong> in 1D (Ising, 1925). The spin–spin correlation is also a matrix product, with <span class="math inline">\(\sigma^z = \operatorname{diag}(1,-1)\)</span>: <span class="math display">\[
+<section id="free-energy-and-correlations-of-the-infinite-chain" class="level3">
+<h3 class="anchored" data-anchor-id="free-energy-and-correlations-of-the-infinite-chain">2.1 Free energy and correlations of the infinite chain</h3>
+<p>For a long chain <span class="math display">\[
+\ln Z = N\ln\lambda_+ + \ln\Big(1 + \big(\lambda_-/\lambda_+\big)^N\Big)\;\xrightarrow{N\to\infty}\;N\ln\lambda_+ , \tag{22}
+\]</span> so <span class="math display">\[
+f = -T\ln\big(2\cosh(1/T)\big), \tag{23}
+\]</span> smooth at every positive temperature: there is <strong>no phase transition</strong> in 1D (Ising, 1925). The spin–spin correlation is also a matrix product, with the diagonal matrix <span class="math inline">\(\sigma^z\)</span> whose entries are 1 and <span class="math inline">\(-1\)</span>: <span class="math display">\[
 \langle s_0s_r\rangle = \frac{\operatorname{Tr}\big(\sigma^z\mathsf T^r\sigma^z\mathsf T^{N-r}\big)}{\operatorname{Tr}\mathsf T^N}
-\;\xrightarrow{N\to\infty}\; \Big(\frac{\lambda_-}{\lambda_+}\Big)^r = (\tanh K)^r = e^{-r/\xi},\qquad \xi = -\frac{1}{\ln\tanh K}.
-\]</span> <span class="math inline">\(\xi\)</span> is finite at every <span class="math inline">\(T&gt;0\)</span> and diverges only at <span class="math inline">\(T = 0\)</span>.</p>
+\;\xrightarrow{N\to\infty}\; \Big(\frac{\lambda_-}{\lambda_+}\Big)^r = (\tanh K)^r = e^{-r/\xi}, \tag{24}
+\]</span> <span class="math display">\[
+\xi = -\frac{1}{\ln\tanh K}. \tag{25}
+\]</span> <span class="math inline">\(\xi\)</span> is finite at every positive temperature and diverges only at zero temperature.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:16.258638Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:16.258020Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:18.292414Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:18.290643Z&quot;}" data-execution_count="5">
 <details open="">
 <summary>Code</summary>
@@ -688,20 +721,23 @@ K = 1.5: max |&lt;s0 sr&gt; - tanh(K)^r| over r&lt;25 = 4.4e-16,  xi = 10.034</c
 <p><img src="lab-012-onsager_files/figure-html/cell-6-output-2.png" class="img-fluid"></p>
 </div>
 </div>
-<p><strong>Lesson:</strong> for <span class="math inline">\(N\to\infty\)</span> only the largest eigenvalue matters, <span class="math inline">\(\ln Z \approx N\ln\lambda_{\max}\)</span>, and the correlation length is set by the ratio of the two largest eigenvalues, <span class="math inline">\(\xi = 1/\ln(\lambda_{\max}/\lambda_2)\)</span>.</p>
+<p>The 1D chain teaches the lesson we carry into two dimensions: for a long system only the largest eigenvalue matters, <span class="math display">\[\ln Z \approx N\ln\lambda_{\max}, \tag{26}\]</span> and the correlation length is set by the ratio of the two largest eigenvalues, <span class="math display">\[\xi = \frac{1}{\ln(\lambda_{\max}/\lambda_2)}. \tag{27}\]</span></p>
 <hr>
 </section>
 </section>
-<section id="two-dimensions-a-transfer-matrix-of-size-2ltimes2l" class="level2">
-<h2 class="anchored" data-anchor-id="two-dimensions-a-transfer-matrix-of-size-2ltimes2l">3. Two dimensions: a transfer matrix of size <span class="math inline">\(2^L\times2^L\)</span></h2>
-<p>Take a strip of <strong>width <span class="math inline">\(L\)</span></strong> (periodic in the vertical direction) and length <span class="math inline">\(L'\to\infty\)</span>. One column <span class="math inline">\(\sigma = (s_1,\dots,s_L)\)</span> has <span class="math inline">\(2^L\)</span> states. Bonds inside a column and between neighbouring columns give <span class="math display">\[
-Z = \operatorname{Tr}\mathsf V^{L'},\qquad
-\mathsf V_{\sigma\sigma'} = \exp\Big[K\sum_{i=1}^L s_is_i' + \frac K2\sum_{i=1}^L\big(s_is_{i+1} + s'_is'_{i+1}\big)\Big],
+<section id="the-2d-transfer-matrix" class="level2">
+<h2 class="anchored" data-anchor-id="the-2d-transfer-matrix">3. The 2D transfer matrix</h2>
+<p>Take a strip of <strong>width <span class="math inline">\(L\)</span></strong> (periodic in the vertical direction) and of a length <span class="math inline">\(L'\)</span> that grows without bound. One column <span class="math inline">\(\sigma\)</span>, the spins <span class="math inline">\(s_1,\dots,s_L\)</span>, has <span class="math inline">\(2^L\)</span> states. Bonds inside a column and between neighbouring columns give <span class="math display">\[
+Z = \operatorname{Tr}\mathsf V^{L'}, \tag{28}
+\]</span> <span class="math display">\[
+\mathsf V_{\sigma\sigma'} = \exp\Big[K\sum_{i=1}^L s_is_i' + \frac K2\sum_{i=1}^L\big(s_is_{i+1} + s'_is'_{i+1}\big)\Big], \tag{29}
 \]</span> where the vertical bonds are split half–half between the two columns so that <span class="math inline">\(\mathsf V\)</span> is symmetric. Then <span class="math display">\[
-f_L(T) = -\frac{T}{L}\ln\lambda_0(L),\qquad \xi_L = \frac{1}{\ln(\lambda_0/\lambda_1)},
-\]</span> with <span class="math inline">\(\lambda_0&gt;\lambda_1\)</span> the two largest eigenvalues. Onsager’s free energy is <span class="math inline">\(f = \lim_{L\to\infty}f_L\)</span>.</p>
-<p><strong>Symmetry sectors.</strong> Flipping all spins, <span class="math inline">\(\sigma\to-\sigma\)</span>, does not change <span class="math inline">\(\mathsf V\)</span>. In our bit encoding the flip maps the index <span class="math inline">\(n\to 2^L-1-n\)</span>. Pairing each state with its flipped partner splits <span class="math inline">\(\mathsf V\)</span> into an even block (<span class="math inline">\(\mathsf V_{nm}+\mathsf V_{n,\bar m}\)</span>) and an odd block (<span class="math inline">\(\mathsf V_{nm}-\mathsf V_{n,\bar m}\)</span>), each of size <span class="math inline">\(2^{L-1}\)</span>. <span class="math inline">\(\lambda_0\)</span> is the top of the even block (Perron–Frobenius: all entries are positive), <span class="math inline">\(\lambda_1\)</span> the top of the odd block — the eigenvalue that describes how a single spin’s orientation is remembered along the strip.</p>
-<p><strong>Check first:</strong> on an <span class="math inline">\(L\times L'\)</span> torus, <span class="math inline">\(Z = \operatorname{Tr}\mathsf V^{L'}\)</span> exactly — compare with the brute-force histogram of Section 1 for <span class="math inline">\(4\times4\)</span>.</p>
+f_L(T) = -\frac{T}{L}\ln\lambda_0(L), \tag{30}
+\]</span> <span class="math display">\[
+\xi_L = \frac{1}{\ln(\lambda_0/\lambda_1)}, \tag{31}
+\]</span> with <span class="math inline">\(\lambda_0\)</span> and <span class="math inline">\(\lambda_1\)</span> the largest and the second-largest eigenvalue. Onsager’s free energy is the limit <span class="math display">\[f = \lim_{L\to\infty}f_L . \tag{32}\]</span></p>
+<p>Symmetry halves the work. Reversing all spins of a column does not change <span class="math inline">\(\mathsf V\)</span>, and in our bit encoding it maps the index <span class="math inline">\(n\)</span> to <span class="math display">\[\bar n = 2^L-1-n. \tag{33}\]</span> Pairing each state with its reversed partner splits <span class="math inline">\(\mathsf V\)</span> into an even and an odd block, <span class="math display">\[\mathsf V^{\pm}_{nm}=\mathsf V_{nm}\pm\mathsf V_{n\bar m}, \tag{34}\]</span> each of size <span class="math inline">\(2^{L-1}\)</span>. <span class="math inline">\(\lambda_0\)</span> is the top of the even block (Perron–Frobenius: all entries are positive), and <span class="math inline">\(\lambda_1\)</span> the top of the odd block, the eigenvalue that describes how a single spin’s orientation is remembered along the strip.</p>
+<p>The construction is first tested on a known case: on an <span class="math inline">\(L\times L'\)</span> torus equation (28) is exact, so for <span class="math inline">\(4\times4\)</span> it must agree with the brute-force histogram of Section 1.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:18.299328Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:18.298673Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:18.323571Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:18.321500Z&quot;}" data-execution_count="6">
 <details open="">
 <summary>Code</summary>
@@ -746,9 +782,9 @@ T = 2.2692:  ln Z (Tr V^4) = 15.521915458755   ln Z (brute force) = 15.521915458
 T = 3.5000:  ln Z (Tr V^4) = 12.600438025330   ln Z (brute force) = 12.600438025330</code></pre>
 </div>
 </div>
-<section id="free-energy-and-specific-heat-of-strips-l-4dots10" class="level3">
-<h3 class="anchored" data-anchor-id="free-energy-and-specific-heat-of-strips-l-4dots10">3.1 Free energy and specific heat of strips, <span class="math inline">\(L = 4,\dots,10\)</span></h3>
-<p><span class="math inline">\(c_L = -T\,\partial^2 f_L/\partial T^2\)</span> is computed by finite differences on a fine grid (the eigenvalues are accurate to machine precision, so the second difference is reliable). Onsager’s <span class="math inline">\(f\)</span> (Section 6) is plotted for comparison.</p>
+<section id="free-energy-and-specific-heat-of-strips" class="level3">
+<h3 class="anchored" data-anchor-id="free-energy-and-specific-heat-of-strips">3.1 Free energy and specific heat of strips</h3>
+<p>For the widths 4 to 10 we compute <span class="math display">\[c_L = -T\,\frac{\partial^2 f_L}{\partial T^2} \tag{35}\]</span> by finite differences on a fine grid; the eigenvalues are accurate to machine precision, so the second difference is reliable. Onsager’s <span class="math inline">\(f\)</span> (Section 6) is plotted for comparison.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:18.335658Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:18.333611Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:27.893037Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:27.892372Z&quot;}" data-execution_count="7">
 <details open="">
 <summary>Code</summary>
@@ -806,12 +842,8 @@ L = 10:  c_max = 1.3262 at T = 2.260;   |f_L - f| at T = 1.5, T_c, 3.5:  6.8e-06
 <p><img src="lab-012-onsager_files/figure-html/cell-8-output-3.png" class="img-fluid"></p>
 </div>
 </div>
-<p>Three observations, all visible above:</p>
-<ul>
-<li><strong>Away from <span class="math inline">\(T_c\)</span></strong> <span class="math inline">\(f_L\)</span> converges to Onsager’s <span class="math inline">\(f\)</span> exponentially fast in <span class="math inline">\(L\)</span> (the correlation length is finite, a strip wider than <span class="math inline">\(\xi\)</span> is “infinite”).</li>
-<li><strong>At <span class="math inline">\(T_c\)</span></strong> convergence is only a power law — the strip is never wider than <span class="math inline">\(\xi=\infty\)</span>. The peak of <span class="math inline">\(c_L\)</span> grows (slowly — the divergence will turn out to be logarithmic, Section 8) and moves towards <span class="math inline">\(T_c\)</span>.</li>
-<li><span class="math inline">\(\xi_L/L\)</span> <strong>decreases</strong> with <span class="math inline">\(L\)</span> above <span class="math inline">\(T_c\)</span> (finite <span class="math inline">\(\xi\)</span>), <strong>increases</strong> below <span class="math inline">\(T_c\)</span> (two degenerate ordered states, <span class="math inline">\(\lambda_1\to\lambda_0\)</span>), and is <span class="math inline">\(L\)</span>-independent exactly at <span class="math inline">\(T_c\)</span>, where the only length scale is <span class="math inline">\(L\)</span> itself. The crossing points locate <span class="math inline">\(T_c\)</span> — the same logic as the finite-size analysis of the CNN, but with an exact algorithm.</li>
-</ul>
+<p><strong>Away from <span class="math inline">\(T_c\)</span></strong>, <span class="math inline">\(f_L\)</span> converges to Onsager’s <span class="math inline">\(f\)</span> exponentially fast in <span class="math inline">\(L\)</span>: the correlation length is finite, and a strip wider than <span class="math inline">\(\xi\)</span> is effectively “infinite”. <strong>At <span class="math inline">\(T_c\)</span></strong> the convergence is only a power law, because the strip is never wider than the infinite correlation length; the peak of <span class="math inline">\(c_L\)</span> grows (slowly, since the divergence will turn out to be logarithmic, Section 8) and moves towards <span class="math inline">\(T_c\)</span>.</p>
+<p>The ratio <span class="math inline">\(\xi_L/L\)</span> <strong>decreases</strong> with <span class="math inline">\(L\)</span> above <span class="math inline">\(T_c\)</span> (finite <span class="math inline">\(\xi\)</span>), <strong>increases</strong> below <span class="math inline">\(T_c\)</span> (two degenerate ordered states, so that <span class="math inline">\(\lambda_1\)</span> approaches <span class="math inline">\(\lambda_0\)</span>), and is <span class="math inline">\(L\)</span>-independent exactly at <span class="math inline">\(T_c\)</span>, where the only length scale is <span class="math inline">\(L\)</span> itself. The crossing points of the curves for neighbouring widths therefore locate <span class="math inline">\(T_c\)</span>. This is the same logic as the finite-size analysis of the CNN, but with an exact algorithm.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:27.895360Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:27.895033Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:35.019303Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:35.018183Z&quot;}" data-execution_count="8">
 <details open="">
 <summary>Code</summary>
@@ -839,19 +871,19 @@ L = 10:  c_max = 1.3262 at T = 2.260;   |f_L - f| at T = 1.5, T_c, 3.5:  6.8e-06
 exact T_c = 2.26918531</code></pre>
 </div>
 </div>
-<p>The crossings approach <span class="math inline">\(T_c\)</span> quickly. With matrices of size at most <span class="math inline">\(2^{12}\times2^{12}\)</span> we get <span class="math inline">\(T_c\)</span> to several digits without any Monte Carlo noise. This is the numerical side of the slide <em>“2D: a transfer matrix of size <span class="math inline">\(2^L\times2^L\)</span>”</em>: for <span class="math inline">\(L = 50\)</span> the matrix would have <span class="math inline">\(2^{50}\)</span> rows, so Onsager’s achievement was to find <span class="math inline">\(\lambda_0\)</span> <strong>analytically</strong> for every <span class="math inline">\(L\)</span>.</p>
+<p>The crossings approach <span class="math inline">\(T_c\)</span> quickly. With matrices of size at most <span class="math inline">\(2^{12}\times2^{12}\)</span> we get <span class="math inline">\(T_c\)</span> to several digits without any Monte Carlo noise. This is the numerical side of the slide <em>“2D: a transfer matrix of size <span class="math inline">\(2^L\times2^L\)</span>”</em>: for a width of 50 the matrix would have <span class="math inline">\(2^{50}\)</span> rows, so Onsager’s achievement was to find <span class="math inline">\(\lambda_0\)</span> <strong>analytically</strong> for every <span class="math inline">\(L\)</span>.</p>
 <hr>
 </section>
 </section>
 <section id="high--and-low-temperature-expansions-of-z" class="level2">
 <h2 class="anchored" data-anchor-id="high--and-low-temperature-expansions-of-z">4. High- and low-temperature expansions of <span class="math inline">\(Z\)</span></h2>
-<p><strong>High <span class="math inline">\(T\)</span>.</strong> Since <span class="math inline">\(ss'=\pm1\)</span>, <span class="math inline">\(e^{Kss'} = \cosh K\,(1 + t\,ss')\)</span> with <span class="math inline">\(t = \tanh K\)</span>. Expanding the product over all <span class="math inline">\(2N\)</span> bonds gives a sum over subsets <span class="math inline">\(G\)</span> of bonds; summing over each spin kills every term in which some site touches an odd number of bonds of <span class="math inline">\(G\)</span>. Survivors are <strong>closed graphs</strong>: <span class="math display">\[
-Z = 2^N(\cosh K)^{2N}\sum_{\text{closed } G}t^{|G|} = 2^N(\cosh K)^{2N}\big(1 + N t^4 + 2N t^6 + \dots\big),
-\]</span> — the smallest closed graph is an elementary square (4 bonds, <span class="math inline">\(N\)</span> of them), next a <span class="math inline">\(1\times2\)</span> rectangle (6 bonds, <span class="math inline">\(2N\)</span> of them: horizontal and vertical).</p>
-<p><strong>Low <span class="math inline">\(T\)</span>.</strong> Start from all spins up, <span class="math inline">\(E_0 = -2N\)</span>. Every broken bond costs <span class="math inline">\(2\)</span>, i.e.&nbsp;a factor <span class="math inline">\(x = e^{-2K}\)</span>. Broken bonds form closed walls on the <strong>dual</strong> lattice: <span class="math display">\[
-Z = 2e^{2NK}\big(1 + N x^4 + 2N x^6 + \dots\big),
-\]</span> — one flipped spin breaks 4 bonds (<span class="math inline">\(N\)</span> ways), a flipped neighbouring pair breaks 6 bonds (<span class="math inline">\(2N\)</span> ways). The factor <span class="math inline">\(2\)</span> is the all-down copy.</p>
-<p><strong>Check 1</strong> — the counting on the <span class="math inline">\(4\times4\)</span> torus: <span class="math inline">\(n_b/2\)</span> from Section 1 should be <span class="math inline">\(N = 16\)</span> at <span class="math inline">\(b=4\)</span> and <span class="math inline">\(2N = 32\)</span> at <span class="math inline">\(b = 6\)</span>.</p>
+<p>At high temperature the natural small parameter is <span class="math inline">\(\tanh K\)</span>. Since the product <span class="math inline">\(ss'\)</span> of two spins is <span class="math inline">\(\pm1\)</span>, <span class="math display">\[e^{Kss'} = \cosh K\,(1 + t\,ss'),\qquad t = \tanh K. \tag{36}\]</span> Expanding the product over all bonds gives a sum over subsets <span class="math inline">\(G\)</span> of bonds; summing over each spin kills every term in which some site touches an odd number of bonds of <span class="math inline">\(G\)</span>. The survivors are <strong>closed graphs</strong>: <span class="math display">\[
+Z = 2^N(\cosh K)^{2N}\sum_{\text{closed } G}t^{|G|} = 2^N(\cosh K)^{2N}\big(1 + N t^4 + 2N t^6 + \dots\big), \tag{37}
+\]</span> where the smallest closed graph is an elementary square (4 bonds, <span class="math inline">\(N\)</span> of them), and the next a <span class="math inline">\(1\times2\)</span> rectangle (6 bonds, <span class="math inline">\(2N\)</span> of them: horizontal and vertical).</p>
+<p>At low temperature we expand around order instead. Start from all spins up, with energy <span class="math inline">\(-2N\)</span>. Every broken bond costs the energy 2, that is a factor <span class="math display">\[x = e^{-2K}, \tag{38}\]</span> and broken bonds form closed walls on the <strong>dual</strong> lattice: <span class="math display">\[
+Z = 2e^{2NK}\big(1 + N x^4 + 2N x^6 + \dots\big). \tag{39}
+\]</span> One flipped spin breaks 4 bonds (<span class="math inline">\(N\)</span> ways), a flipped neighbouring pair breaks 6 bonds (<span class="math inline">\(2N\)</span> ways), and the factor 2 is the all-down copy.</p>
+<p>The counting can be checked directly on the <span class="math inline">\(4\times4\)</span> torus: half the histogram <span class="math inline">\(n_b\)</span> of Section 1 should be 16, the number of sites, for four broken bonds and 32 for six.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:35.023357Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:35.023012Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:35.029441Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:35.028636Z&quot;}" data-execution_count="9">
 <details open="">
 <summary>Code</summary>
@@ -864,10 +896,11 @@ Z = 2e^{2NK}\big(1 + N x^4 + 2N x^6 + \dots\big),
             n_8/2 = 212  (here also walls that wind around the small torus contribute)</code></pre>
 </div>
 </div>
-<p><strong>Check 2</strong> — the leading terms against the exact <span class="math inline">\(N\to\infty\)</span> free energy. Per spin, <span class="math inline">\(\ln(1 + Nt^4 + 2Nt^6+\dots)/N = t^4 + 2t^6 + O(t^8)\)</span> (terms with two separate squares are of order <span class="math inline">\(N^2t^8\)</span> and are cancelled by the logarithm up to <span class="math inline">\(O(t^8)\)</span>). So <span class="math display">\[
-R_{\rm high}(K) = \frac{\ln Z/N - \ln2 - 2\ln\cosh K}{t^4 + 2t^6}\xrightarrow{K\to0}1,\qquad
-R_{\rm low}(K) = \frac{\ln Z/N - 2K}{x^4 + 2x^6}\xrightarrow{K\to\infty}1 .
-\]</span></p>
+<p>A second test compares the leading terms with the exact free energy of the infinite lattice. Per spin, <span class="math display">\[\frac1N\ln\big(1 + Nt^4 + 2Nt^6+\dots\big) = t^4 + 2t^6 + O(t^8) \tag{40}\]</span> (terms with two separate squares are of order <span class="math inline">\(N^2t^8\)</span> and are cancelled by the logarithm up to <span class="math inline">\(O(t^8)\)</span>). So the ratios <span class="math display">\[
+R_{\rm high}(K) = \frac{\ln Z/N - \ln2 - 2\ln\cosh K}{t^4 + 2t^6}\xrightarrow{K\to0}1, \tag{41}
+\]</span> <span class="math display">\[
+R_{\rm low}(K) = \frac{\ln Z/N - 2K}{x^4 + 2x^6}\xrightarrow{K\to\infty}1 \tag{42}
+\]</span> must approach one in their respective limits.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:35.033131Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:35.032709Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:35.047786Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:35.046631Z&quot;}" data-execution_count="10">
 <details open="">
 <summary>Code</summary>
@@ -890,18 +923,18 @@ R_{\rm low}(K) = \frac{\ln Z/N - 2K}{x^4 + 2x^6}\xrightarrow{K\to\infty}1 .
   0.25   1.017319     0.80   1.007776</code></pre>
 </div>
 </div>
-<p>Both ratios tend to <span class="math inline">\(1\)</span> (the deviation is the next order, <span class="math inline">\(\propto t^4\)</span> and <span class="math inline">\(\propto x^4\)</span>, plus the integration accuracy for very small values). Notice that <strong>both series have the same coefficients</strong> <span class="math inline">\(1, N, 2N,\dots\)</span>: the closed graphs on the square lattice and on its dual are the same set. This is self-duality.</p>
+<p>Both ratios tend to 1 (the deviation is of the next order, proportional to <span class="math inline">\(t^4\)</span> and to <span class="math inline">\(x^4\)</span>, plus the integration accuracy for very small values). <strong>Both series have the same coefficients</strong> <span class="math inline">\(1, N, 2N,\dots\)</span>: the closed graphs on the square lattice and on its dual are the same set. This is self-duality.</p>
 <hr>
 </section>
 <section id="kramerswannier-duality-and-the-self-dual-point" class="level2">
 <h2 class="anchored" data-anchor-id="kramerswannier-duality-and-the-self-dual-point">5. Kramers–Wannier duality and the self-dual point</h2>
-<p>Call <span class="math inline">\(g(y) = \frac1N\ln\sum_G y^{|G|}\)</span> (per spin, <span class="math inline">\(N\to\infty\)</span>). The two expansions say <span class="math display">\[
-\varphi(K) \equiv \frac{\ln Z(K)}{N} = \ln 2 + 2\ln\cosh K + g(\tanh K) = 2K + g\big(e^{-2K}\big).
-\]</span> Define the <strong>dual coupling</strong> <span class="math inline">\(K^*\)</span> by <span class="math inline">\(e^{-2K^*} = \tanh K\)</span>. Using the second form at <span class="math inline">\(K^*\)</span> and the first at <span class="math inline">\(K\)</span>, both contain <span class="math inline">\(g(\tanh K)\)</span>, so <span class="math display">\[
-\boxed{\ \varphi(K) - \ln2 - 2\ln\cosh K = \varphi(K^*) - 2K^*\ }.
-\]</span> Useful forms of the duality map: <span class="math inline">\(e^{-2K^*}=\tanh K \iff \sinh2K\,\sinh2K^* = 1\)</span> (from <span class="math inline">\(\sinh 2K^* = \frac{1-\tanh^2K}{2\tanh K} = \frac{1}{\sinh2K}\)</span>). Small <span class="math inline">\(K\)</span> (hot) maps to large <span class="math inline">\(K^*\)</span> (cold). If there is a single singularity, it must sit at the <strong>self-dual point</strong> <span class="math inline">\(K_c = K_c^*\)</span>: <span class="math display">\[
-\sinh 2K_c = 1\ \Rightarrow\ e^{2K_c} = 1+\sqrt2\ \Rightarrow\ T_c = \frac{2}{\ln(1+\sqrt2)}.
-\]</span> We check: (i) <span class="math inline">\(\sinh2K\sinh2K^*=1\)</span>, (ii) Onsager’s modulus <span class="math inline">\(\kappa(K) = 2\sinh2K/\cosh^22K\)</span> is the same at <span class="math inline">\(K\)</span> and <span class="math inline">\(K^*\)</span>, (iii) the boxed identity holds for Onsager’s <span class="math inline">\(f\)</span>, (iv) the fixed point of <span class="math inline">\(K\mapsto K^*\)</span>, found by root finding, is <span class="math inline">\(K_c\)</span>.</p>
+<p>Call <span class="math display">\[g(y) = \lim_{N\to\infty}\frac1N\ln\sum_G y^{|G|} . \tag{43}\]</span> The two expansions, equations (37) and (39), say <span class="math display">\[
+\varphi(K) \equiv \frac{\ln Z(K)}{N} = \ln 2 + 2\ln\cosh K + g(\tanh K) = 2K + g\big(e^{-2K}\big). \tag{44}
+\]</span> Define the <strong>dual coupling</strong> <span class="math inline">\(K^*\)</span> by <span class="math display">\[e^{-2K^*} = \tanh K . \tag{45}\]</span> Using the second form of equation (44) at <span class="math inline">\(K^*\)</span> and the first at <span class="math inline">\(K\)</span>, both contain <span class="math inline">\(g(\tanh K)\)</span>, so <span class="math display">\[
+\boxed{\ \varphi(K) - \ln2 - 2\ln\cosh K = \varphi(K^*) - 2K^*\ }. \tag{46}
+\]</span> An equivalent form of the duality map (45) is <span class="math display">\[\sinh2K\,\sinh2K^* = 1, \tag{47}\]</span> which follows from <span class="math display">\[\sinh 2K^* = \frac{1-\tanh^2K}{2\tanh K} = \frac{1}{\sinh2K}. \tag{48}\]</span> Small <span class="math inline">\(K\)</span> (hot) maps to large <span class="math inline">\(K^*\)</span> (cold). If there is a single singularity, it must sit at the <strong>self-dual point</strong>, the coupling <span class="math inline">\(K_c\)</span> that is its own dual: <span class="math display">\[
+\sinh 2K_c = 1\ \Rightarrow\ e^{2K_c} = 1+\sqrt2\ \Rightarrow\ T_c = \frac{2}{\ln(1+\sqrt2)}, \tag{49}
+\]</span> which is equation (1). We check: (i) equation (47), (ii) Onsager’s modulus <span class="math inline">\(\kappa\)</span> of equation (51) is the same at <span class="math inline">\(K\)</span> and <span class="math inline">\(K^*\)</span>, (iii) the identity (46) holds for Onsager’s <span class="math inline">\(f\)</span>, (iv) the fixed point of the duality map, found by root finding, is <span class="math inline">\(K_c\)</span>.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:35.051453Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:35.051065Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:35.089365Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:35.088562Z&quot;}" data-execution_count="11">
 <details open="">
 <summary>Code</summary>
@@ -935,22 +968,19 @@ self-dual point from root finding: K = 0.440686793510,  T = 2.2691853142
 ln(1+sqrt2)/2 = 0.440686793510,   sinh(2K) at the fixed point = 1.000000000000</code></pre>
 </div>
 </div>
-<p>The integrand figure of the lecture uses the pair <span class="math inline">\(T = 1.6\)</span> and its dual <span class="math inline">\(T^*\)</span> (printed above): they give the same <span class="math inline">\(\kappa\)</span>, hence the same integrand in Onsager’s formula. The column <span class="math inline">\(T^*\)</span> also shows how the map works: the ordered temperatures <span class="math inline">\(T&lt;T_c\)</span> map onto disordered <span class="math inline">\(T^*&gt;T_c\)</span> and vice versa.</p>
+<p>The integrand figure of the lecture uses the temperature 1.6 and its dual <span class="math inline">\(T^*\)</span> (printed above): they give the same <span class="math inline">\(\kappa\)</span>, hence the same integrand in Onsager’s formula. The column <span class="math inline">\(T^*\)</span> also shows how the map works: temperatures below <span class="math inline">\(T_c\)</span> map onto dual temperatures above <span class="math inline">\(T_c\)</span>, and vice versa.</p>
 <hr>
 </section>
-<section id="onsagers-formula-and-everything-that-follows-from-it" class="level2">
-<h2 class="anchored" data-anchor-id="onsagers-formula-and-everything-that-follows-from-it">6. Onsager’s formula and everything that follows from it</h2>
+<section id="onsagers-formula" class="level2">
+<h2 class="anchored" data-anchor-id="onsagers-formula">6. Onsager’s formula</h2>
 <p><span class="math display">\[
--\beta f = \ln(2\cosh2K) + \frac{1}{2\pi}\int_0^\pi d\phi\,\ln\Big[\tfrac12\Big(1+\sqrt{1-\kappa^2\sin^2\phi}\Big)\Big],\qquad
-\kappa = \frac{2\sinh2K}{\cosh^22K} = \frac{2s}{1+s^2},\ s = \sinh 2K .
-\]</span> Since <span class="math inline">\(2s\le1+s^2\)</span>, <span class="math inline">\(\kappa\le1\)</span>, with equality only at <span class="math inline">\(s = 1\)</span>, i.e.&nbsp;at <span class="math inline">\(T_c\)</span>. There the square root vanishes at <span class="math inline">\(\phi = \pi/2\)</span> and the integrand develops a kink: this is the origin of the non-analyticity.</p>
-<p>The energy per spin, <span class="math inline">\(u = \partial(\beta f)/\partial\beta\)</span>, can be computed in two independent ways:</p>
-<ol type="1">
-<li><strong>numerically</strong>: differentiate the integral formula (finite differences in <span class="math inline">\(\beta\)</span>);</li>
-<li>from the closed formula with the complete elliptic integral <span class="math inline">\(K_1(\kappa) = \int_0^{\pi/2}d\phi/\sqrt{1-\kappa^2\sin^2\phi}\)</span>: <span class="math display">\[
-u = -\coth2K\Big[1 + \frac2\pi\big(2\tanh^22K - 1\big)K_1(\kappa)\Big].
-\]</span> <code>scipy.special.ellipkm1(p)</code> returns <span class="math inline">\(K_1\)</span> as a function of <span class="math inline">\(p = 1-\kappa^2\)</span>; near <span class="math inline">\(T_c\)</span>, <span class="math inline">\(\kappa^2\)</span> is so close to 1 that <span class="math inline">\(1-\kappa^2\)</span> must be computed without cancellation: <span class="math inline">\(1-\kappa^2 = \big(\frac{1-s^2}{1+s^2}\big)^2\)</span> with <span class="math inline">\(s = \sinh 2K\)</span>. Yang’s spontaneous magnetisation is <span class="math inline">\(M = \big[1-\sinh^{-4}2K\big]^{1/8}\)</span> for <span class="math inline">\(T&lt;T_c\)</span>, <span class="math inline">\(0\)</span> above.</li>
-</ol>
+-\beta f = \ln(2\cosh2K) + \frac{1}{2\pi}\int_0^\pi d\phi\,\ln\Big[\tfrac12\Big(1+\sqrt{1-\kappa^2\sin^2\phi}\Big)\Big], \tag{50}
+\]</span> <span class="math display">\[
+\kappa = \frac{2\sinh2K}{\cosh^22K} = \frac{2s}{1+s^2},\qquad s = \sinh 2K . \tag{51}
+\]</span> Since <span class="math display">\[2s\le1+s^2, \tag{52}\]</span> <span class="math inline">\(\kappa\)</span> never exceeds 1, and it reaches 1 only where <span class="math inline">\(s\)</span> is 1, that is at <span class="math inline">\(T_c\)</span> by equation (49). There the square root vanishes at the angle <span class="math inline">\(\pi/2\)</span> and the integrand develops a kink: this is the origin of the non-analyticity.</p>
+<p>The energy per spin, equation (6), can be computed in two independent ways, and we use both. The first is numerical: differentiate the integral formula by finite differences in <span class="math inline">\(\beta\)</span>. The second uses the complete elliptic integral of the first kind, <span class="math display">\[K_1(\kappa) = \int_0^{\pi/2}\frac{d\phi}{\sqrt{1-\kappa^2\sin^2\phi}}, \tag{53}\]</span> in the formula <span class="math display">\[
+u = -\coth2K\Big[1 + \frac2\pi\big(2\tanh^22K - 1\big)K_1(\kappa)\Big]. \tag{54}
+\]</span> <code>scipy.special.ellipkm1(p)</code> returns <span class="math inline">\(K_1\)</span> as a function of the complementary parameter <span class="math display">\[p = 1-\kappa^2 = \Big(\frac{1-s^2}{1+s^2}\Big)^2 . \tag{55}\]</span> Near <span class="math inline">\(T_c\)</span>, <span class="math inline">\(\kappa^2\)</span> is so close to 1 that <span class="math inline">\(p\)</span> must be computed from the right-hand form, without cancellation. Yang’s spontaneous magnetisation is <span class="math display">\[M = \begin{cases}\big[1-\sinh^{-4}2K\big]^{1/8}, &amp; T&lt;T_c,\\[2pt] 0, &amp; T&gt;T_c.\end{cases} \tag{56}\]</span></p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:35.092962Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:35.092572Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:35.124406Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:35.122362Z&quot;}" data-execution_count="12">
 <details open="">
 <summary>Code</summary>
@@ -1018,14 +1048,16 @@ u = -\coth2K\Big[1 + \frac2\pi\big(2\tanh^22K - 1\big)K_1(\kappa)\Big].
 <p><img src="lab-012-onsager_files/figure-html/cell-14-output-2.png" class="img-fluid"></p>
 </div>
 </div>
-<p><span class="math inline">\(f\)</span> looks perfectly smooth; <span class="math inline">\(u\)</span> is continuous but has a vertical tangent at <span class="math inline">\(T_c\)</span>; <span class="math inline">\(c = du/dT\)</span> diverges. The singularity of <span class="math inline">\(f\)</span> is in its <strong>second</strong> derivative: a continuous (second-order) transition.</p>
+<p><span class="math inline">\(f\)</span> looks perfectly smooth; <span class="math inline">\(u\)</span> is continuous but has a vertical tangent at <span class="math inline">\(T_c\)</span>; the specific heat, the derivative of <span class="math inline">\(u\)</span> with respect to <span class="math inline">\(T\)</span>, diverges. The singularity of <span class="math inline">\(f\)</span> is in its <strong>second</strong> derivative: a continuous (second-order) transition.</p>
 <hr>
 </section>
-<section id="the-value-ut_c--sqrt2" class="level2">
-<h2 class="anchored" data-anchor-id="the-value-ut_c--sqrt2">7. The value <span class="math inline">\(u(T_c) = -\sqrt2\)</span></h2>
-<section id="numerically" class="level3">
-<h3 class="anchored" data-anchor-id="numerically">7.1 Numerically</h3>
-<p>At <span class="math inline">\(T_c\)</span>, <span class="math inline">\(2\tanh^22K_c - 1 = 0\)</span> (because <span class="math inline">\(\sinh 2K_c = 1 \Rightarrow \cosh^2 2K_c = 2 \Rightarrow \tanh^22K_c = \tfrac12\)</span>), so in the elliptic formula the prefactor kills the logarithmically divergent <span class="math inline">\(K_1(\kappa\to1)\)</span>, and <span class="math inline">\(u(T_c) = -\coth2K_c = -\cosh 2K_c/\sinh 2K_c = -\sqrt2\)</span>.</p>
+<section id="energy-at-the-critical-point" class="level2">
+<h2 class="anchored" data-anchor-id="energy-at-the-critical-point">7. Energy at the critical point</h2>
+<section id="the-elliptic-formula-at-t_c" class="level3">
+<h3 class="anchored" data-anchor-id="the-elliptic-formula-at-t_c">7.1 The elliptic formula at <span class="math inline">\(T_c\)</span></h3>
+<p>At <span class="math inline">\(T_c\)</span> the prefactor of <span class="math inline">\(K_1\)</span> in equation (54) vanishes, because <span class="math display">\[
+\sinh 2K_c = 1 \;\Rightarrow\; \cosh^2 2K_c = 2 \;\Rightarrow\; \tanh^22K_c = \tfrac12 \;\Rightarrow\; 2\tanh^22K_c - 1 = 0 . \tag{57}
+\]</span> It kills the logarithmic divergence of <span class="math inline">\(K_1\)</span> as <span class="math inline">\(\kappa\)</span> approaches 1, and <span class="math display">\[u(T_c) = -\coth2K_c = -\frac{\cosh 2K_c}{\sinh 2K_c} = -\sqrt2 . \tag{58}\]</span> Numerically, equation (54) is evaluated ever closer to <span class="math inline">\(T_c\)</span> from both sides and compared with the central difference of the integral formula in <span class="math inline">\(\beta\)</span> at <span class="math inline">\(T_c\)</span>.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:38.370872Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:38.370658Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:38.380198Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:38.379665Z&quot;}" data-execution_count="14">
 <details open="">
 <summary>Code</summary>
@@ -1045,15 +1077,17 @@ from the integral, central difference in beta at T_c: -1.41421356</code></pre>
 </div>
 </div>
 </section>
-<section id="from-duality-alone-without-onsagers-formula" class="level3">
-<h3 class="anchored" data-anchor-id="from-duality-alone-without-onsagers-formula">7.2 From duality alone, without Onsager’s formula</h3>
-<p>Differentiate the boxed duality identity of Section 5 with respect to <span class="math inline">\(K\)</span>. Since <span class="math inline">\(\varphi = \ln Z/N\)</span> and <span class="math inline">\(\partial\ln Z/\partial\beta = -\langle H\rangle\)</span>, <span class="math display">\[
-\varphi'(K) = -u(K) \equiv \varepsilon(K)\quad(\text{for } J = 1,\ \varepsilon = 2\langle s_is_j\rangle_{\rm nn}\ \text{— two bonds per spin}).
-\]</span> Differentiating <span class="math inline">\(\ \varphi(K) - \ln2 - 2\ln\cosh K = \varphi(K^*) - 2K^*\ \)</span>: <span class="math display">\[
-\varepsilon(K) - 2\tanh K = \big(\varepsilon(K^*) - 2\big)\frac{dK^*}{dK}.
-\]</span> From <span class="math inline">\(e^{-2K^*} = \tanh K\)</span>: <span class="math inline">\(\ -2e^{-2K^*}dK^* = \frac{dK}{\cosh^2K}\ \Rightarrow\ \frac{dK^*}{dK} = -\frac{1}{2\tanh K\cosh^2K} = -\frac{1}{\sinh 2K}\)</span>, which equals <span class="math inline">\(-1\)</span> at <span class="math inline">\(K_c\)</span>. At the self-dual point <span class="math inline">\(K^* = K = K_c\)</span>, and <strong>if <span class="math inline">\(u\)</span> is continuous there</strong> (no latent heat): <span class="math display">\[
-\varepsilon - 2\tanh K_c = -(\varepsilon - 2)\ \Rightarrow\ \varepsilon(K_c) = 1 + \tanh K_c .
-\]</span> Finally <span class="math inline">\(\tanh K_c = e^{-2K_c}\)</span> (self-duality) <span class="math inline">\(= 1/(1+\sqrt2) = \sqrt2 - 1\)</span>, so <span class="math inline">\(\varepsilon(K_c) = \sqrt2\)</span> and <span class="math inline">\(u(T_c) = -\sqrt2\)</span>. Two exact results — <span class="math inline">\(T_c\)</span> and <span class="math inline">\(u(T_c)\)</span> — from a symmetry argument. Each step is checked below.</p>
+<section id="the-value-from-duality" class="level3">
+<h3 class="anchored" data-anchor-id="the-value-from-duality">7.2 The value from duality</h3>
+<p>The same number follows from the duality of Section 5 alone, without Onsager’s formula. Differentiate the duality identity (46) with respect to <span class="math inline">\(K\)</span>. Since <span class="math inline">\(\varphi\)</span> is <span class="math inline">\(\ln Z/N\)</span>, equation (44), and the derivative of <span class="math inline">\(\ln Z\)</span> with respect to <span class="math inline">\(\beta\)</span> is <span class="math inline">\(-\langle H\rangle\)</span>, <span class="math display">\[
+\varphi'(K) = -u(K) \equiv \varepsilon(K), \tag{59}
+\]</span> where, with <span class="math inline">\(J\)</span> set to 1, <span class="math inline">\(\varepsilon\)</span> is twice the nearest-neighbour correlation <span class="math inline">\(\langle s_is_j\rangle_{\rm nn}\)</span> (two bonds per spin). Differentiating equation (46) gives <span class="math display">\[
+\varepsilon(K) - 2\tanh K = \big(\varepsilon(K^*) - 2\big)\frac{dK^*}{dK}. \tag{60}
+\]</span> Differentiating equation (45), <span class="math display">\[
+-2e^{-2K^*}dK^* = \frac{dK}{\cosh^2K}\ \Rightarrow\ \frac{dK^*}{dK} = -\frac{1}{2\tanh K\cosh^2K} = -\frac{1}{\sinh 2K}, \tag{61}
+\]</span> which is <span class="math inline">\(-1\)</span> at <span class="math inline">\(K_c\)</span> by equation (49). At the self-dual point <span class="math inline">\(K\)</span> and <span class="math inline">\(K^*\)</span> both coincide with <span class="math inline">\(K_c\)</span>, and <strong>if <span class="math inline">\(u\)</span> is continuous there</strong> (no latent heat), equation (60) becomes <span class="math display">\[
+\varepsilon - 2\tanh K_c = -(\varepsilon - 2)\ \Rightarrow\ \varepsilon(K_c) = 1 + \tanh K_c . \tag{62}
+\]</span> Finally, by self-duality, <span class="math display">\[\tanh K_c = e^{-2K_c} = \frac{1}{1+\sqrt2} = \sqrt2 - 1, \tag{63}\]</span> so that <span class="math display">\[\varepsilon(K_c) = \sqrt2,\qquad u(T_c) = -\sqrt2 . \tag{64}\]</span> Two exact results, <span class="math inline">\(T_c\)</span> and <span class="math inline">\(u(T_c)\)</span>, thus come from a symmetry argument; each step of the derivation is evaluated numerically below.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:38.383050Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:38.382711Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:38.388645Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:38.388138Z&quot;}" data-execution_count="15">
 <details open="">
 <summary>Code</summary>
@@ -1083,11 +1117,11 @@ K = 0.6000:  eps(K) - 2 tanh K = +0.8349870437   (eps(K*) - 2) dK*/dK = +0.83498
 <hr>
 </section>
 </section>
-<section id="critical-exponents-measured" class="level2">
-<h2 class="anchored" data-anchor-id="critical-exponents-measured">8. Critical exponents, measured</h2>
-<p>With <span class="math inline">\(t = (T-T_c)/T_c\)</span>:</p>
-<p><strong>Magnetisation, <span class="math inline">\(M\sim(-t)^\beta\)</span>.</strong> Fit <span class="math inline">\(\ln M\)</span> against <span class="math inline">\(\ln(-t)\)</span> close to <span class="math inline">\(T_c\)</span> — and look at the <em>local</em> slope <span class="math inline">\(d\ln M/d\ln(-t)\)</span>, which must tend to <span class="math inline">\(\beta\)</span>.</p>
-<p><strong>Specific heat, <span class="math inline">\(c\sim -A\ln|t|\)</span></strong> (exponent <span class="math inline">\(\alpha = 0\)</span>, logarithm). We fit <span class="math inline">\(c = -A\ln|t| + B_\pm\)</span> on both sides of <span class="math inline">\(T_c\)</span>. The exact amplitude is <span class="math inline">\(A = \frac{2}{\pi}\big(\frac{2}{T_c}\big)^2\)</span>; we test it. <span class="math inline">\(c\)</span> is obtained from the elliptic <span class="math inline">\(u\)</span> by a central difference with a step much smaller than <span class="math inline">\(|T-T_c|\)</span>.</p>
+<section id="critical-exponents" class="level2">
+<h2 class="anchored" data-anchor-id="critical-exponents">8. Critical exponents</h2>
+<p>Near <span class="math inline">\(T_c\)</span> the exact formulas behave as powers (or logarithms) of the reduced temperature <span class="math display">\[t = \frac{T-T_c}{T_c}, \tag{65}\]</span> and the exponents of these laws can be read off numerically.</p>
+<p>For the magnetisation, <span class="math display">\[M\sim(-t)^\beta, \tag{66}\]</span> we fit <span class="math inline">\(\ln M\)</span> against <span class="math inline">\(\ln(-t)\)</span> close to <span class="math inline">\(T_c\)</span>, and we also look at the <em>local</em> slope <span class="math inline">\(d\ln M/d\ln(-t)\)</span>, which must tend to <span class="math inline">\(\beta\)</span>.</p>
+<p>The specific heat diverges logarithmically, <span class="math display">\[c\sim -A\ln|t|, \tag{67}\]</span> which corresponds to a vanishing exponent <span class="math inline">\(\alpha\)</span>. We fit <span class="math display">\[c = -A\ln|t| + B_\pm \tag{68}\]</span> on both sides of <span class="math inline">\(T_c\)</span> and compare the fitted amplitude with the exact value <span class="math display">\[A = \frac{2}{\pi}\Big(\frac{2}{T_c}\Big)^2 . \tag{69}\]</span> Here <span class="math inline">\(c\)</span> is obtained from the elliptic <span class="math inline">\(u\)</span> by a central difference with a step much smaller than <span class="math inline">\(|T-T_c|\)</span>.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:38.391224Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:38.390918Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:39.752927Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:39.751845Z&quot;}" data-execution_count="16">
 <details open="">
 <summary>Code</summary>
@@ -1137,11 +1171,9 @@ exact amplitude: A = (2/pi)(2/T_c)^2 = 0.494539</code></pre>
 <section id="exponents-eta-and-nu-from-the-transfer-matrix" class="level3">
 <h3 class="anchored" data-anchor-id="exponents-eta-and-nu-from-the-transfer-matrix">8.1 Exponents <span class="math inline">\(\eta\)</span> and <span class="math inline">\(\nu\)</span> from the transfer matrix</h3>
 <p>The strips of Section 3 give two more exponents, independently of Onsager’s formula.</p>
-<ul>
-<li><strong><span class="math inline">\(\eta\)</span>.</strong> At <span class="math inline">\(T_c\)</span> the strip correlation length is proportional to the width. Conformal invariance of the critical point fixes the constant: <span class="math inline">\(\xi_L = L/(\pi\eta)\)</span> on a periodic strip. So <span class="math inline">\(\eta_L = L/(\pi\,\xi_L(T_c))\)</span> should tend to <span class="math inline">\(\eta\)</span>, and the exact value is <span class="math inline">\(\eta = 1/4\)</span>.</li>
-<li><strong><span class="math inline">\(\nu\)</span>.</strong> Near <span class="math inline">\(T_c\)</span>, <span class="math inline">\(\xi_L/L\)</span> is a function of <span class="math inline">\(L^{1/\nu}t\)</span> only (finite-size scaling), so its slope at <span class="math inline">\(T_c\)</span> grows as <span class="math inline">\(\frac{d(\xi_L/L)}{dT}\big|_{T_c}\propto L^{1/\nu}\)</span>. The exact value is <span class="math inline">\(\nu = 1\)</span>.</li>
-<li>As a by-product: the free energy at <span class="math inline">\(T_c\)</span> converges as <span class="math inline">\(f_L - f = -\frac{\pi\,c_{\rm CFT}\,T_c}{6L^2}\)</span> with the “central charge” <span class="math inline">\(c_{\rm CFT} = \frac12\)</span> for the Ising universality class, i.e.&nbsp;<span class="math inline">\(L^2(f_L - f)\to-\pi T_c/12\)</span>. We test this as well.</li>
-</ul>
+<p>The exponent <span class="math inline">\(\eta\)</span> follows from the correlation length at <span class="math inline">\(T_c\)</span>, which on a strip is proportional to the width. Conformal invariance of the critical point fixes the constant on a periodic strip, <span class="math display">\[\xi_L = \frac{L}{\pi\eta}, \tag{70}\]</span> so <span class="math display">\[\eta_L = \frac{L}{\pi\,\xi_L(T_c)} \tag{71}\]</span> should tend to <span class="math inline">\(\eta\)</span>, whose exact value is 1/4.</p>
+<p>The exponent <span class="math inline">\(\nu\)</span> follows from finite-size scaling. Near <span class="math inline">\(T_c\)</span>, <span class="math inline">\(\xi_L/L\)</span> is a function of <span class="math inline">\(L^{1/\nu}t\)</span> only, so its slope at <span class="math inline">\(T_c\)</span> grows as <span class="math display">\[\frac{d(\xi_L/L)}{dT}\Big|_{T_c}\propto L^{1/\nu}. \tag{72}\]</span> The exact value of <span class="math inline">\(\nu\)</span> is 1.</p>
+<p>As a by-product we test the convergence of the free energy at <span class="math inline">\(T_c\)</span>, <span class="math display">\[f_L - f = -\frac{\pi\,c_{\rm CFT}\,T_c}{6L^2}, \tag{73}\]</span> where the central charge <span class="math inline">\(c_{\rm CFT}\)</span> of conformal field theory (CFT) for the Ising universality class is one half; in other words <span class="math display">\[L^2(f_L - f)\to-\frac{\pi T_c}{12}. \tag{74}\]</span></p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:39.757138Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:39.756765Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:41.345830Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:41.344736Z&quot;}" data-execution_count="17">
 <details open="">
 <summary>Code</summary>
@@ -1172,7 +1204,7 @@ exact amplitude: A = (2/pi)(2/T_c)^2 = 0.494539</code></pre>
 1/nu from consecutive pairs of L: 1.0912, 1.0397, 1.0222, 1.0144</code></pre>
 </div>
 </div>
-<p>All three columns converge, monotonically in <span class="math inline">\(L\)</span>, towards the exact values <span class="math inline">\(\eta = 1/4\)</span>, <span class="math inline">\(\nu = 1\)</span> and the conformal prediction <span class="math inline">\(-\pi T_c/12\)</span>. Together with <span class="math inline">\(\alpha = 0\)</span> (log) and <span class="math inline">\(\beta = 1/8\)</span>, the scaling relations <span class="math inline">\(\gamma = \nu(2-\eta)\)</span> and <span class="math inline">\(\alpha + 2\beta + \gamma = 2\)</span> give the remaining exponent:</p>
+<p>All three columns converge, monotonically in <span class="math inline">\(L\)</span>, towards the exact values, 1/4 for <span class="math inline">\(\eta\)</span> and 1 for <span class="math inline">\(\nu\)</span>, and towards the conformal prediction of equation (74). Together with the vanishing <span class="math inline">\(\alpha\)</span> (logarithm) and <span class="math inline">\(\beta\)</span> of 1/8, the scaling relations <span class="math display">\[\gamma = \nu(2-\eta),\qquad \alpha + 2\beta + \gamma = 2 \tag{75}\]</span> give the remaining exponent:</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:41.350625Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:41.349765Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:41.355954Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:41.355106Z&quot;}" data-execution_count="18">
 <details open="">
 <summary>Code</summary>
@@ -1187,11 +1219,11 @@ exact amplitude: A = (2/pi)(2/T_c)^2 = 0.494539</code></pre>
 <hr>
 </section>
 </section>
-<section id="mean-field-theory-against-the-exact-solution" class="level2">
-<h2 class="anchored" data-anchor-id="mean-field-theory-against-the-exact-solution">9. Mean-field theory against the exact solution</h2>
-<p>Replace the neighbours of each spin by their average <span class="math inline">\(m\)</span>: each spin feels the field <span class="math inline">\(zm\)</span> with <span class="math inline">\(z = 4\)</span> neighbours, so <span class="math display">\[
-m = \tanh\Big(\frac{4m}{T}\Big).
-\]</span> <span class="math inline">\(m = 0\)</span> is always a solution; a non-zero one exists when the slope of the right-hand side at <span class="math inline">\(m = 0\)</span> exceeds 1, i.e.&nbsp;<span class="math inline">\(4/T &gt; 1\)</span>: <span class="math inline">\(T_c^{\rm MF} = 4\)</span>. Near <span class="math inline">\(T_c^{\rm MF}\)</span>, <span class="math inline">\(\tanh x\approx x - x^3/3\)</span> gives <span class="math inline">\(m \approx \frac4Tm - \frac13\big(\frac4T\big)^3m^3\)</span>, i.e.&nbsp;<span class="math inline">\(m^2\approx 3\big(\frac4T-1\big)\big/\big(\frac4T\big)^3\)</span>, so <span class="math inline">\(m\sim(1 - T/T_c^{\rm MF})^{1/2}\)</span>: <span class="math inline">\(\beta_{\rm MF} = \frac12\)</span>. The mean-field energy per spin is <span class="math inline">\(u_{\rm MF} = -\frac z2m^2 = -2m^2\)</span>: zero above <span class="math inline">\(T_c^{\rm MF}\)</span> and with a finite slope below — a <strong>jump</strong> in <span class="math inline">\(c\)</span> instead of a divergence.</p>
+<section id="mean-field-theory" class="level2">
+<h2 class="anchored" data-anchor-id="mean-field-theory">9. Mean-field theory</h2>
+<p>Mean-field (MF) theory replaces the neighbours of each spin by their average <span class="math inline">\(m\)</span>: each spin feels the field <span class="math inline">\(zm\)</span>, where <span class="math inline">\(z\)</span>, the number of neighbours, is 4, so <span class="math display">\[
+m = \tanh\Big(\frac{4m}{T}\Big). \tag{76}
+\]</span> Zero magnetisation is always a solution; a non-zero one exists when the slope of the right-hand side at the origin exceeds 1, that is below <span class="math display">\[T_c^{\rm MF} = 4 . \tag{77}\]</span> Near <span class="math inline">\(T_c^{\rm MF}\)</span> the expansion <span class="math display">\[\tanh x\approx x - \frac{x^3}{3} \tag{78}\]</span> gives <span class="math display">\[m \approx \frac4Tm - \frac13\Big(\frac4T\Big)^3m^3,\qquad m^2\approx \frac{3\big(\frac4T-1\big)}{\big(\frac4T\big)^3}, \tag{79}\]</span> so <span class="math display">\[m\sim\big(1 - T/T_c^{\rm MF}\big)^{1/2},\qquad \beta_{\rm MF} = \tfrac12 . \tag{80}\]</span> The mean-field energy per spin, <span class="math display">\[u_{\rm MF} = -\frac z2m^2 = -2m^2, \tag{81}\]</span> vanishes above <span class="math inline">\(T_c^{\rm MF}\)</span> and has a finite slope below, which gives a <strong>jump</strong> in <span class="math inline">\(c\)</span> instead of a divergence. <span class="math inline">\(T_c^{\rm MF}\)</span>, <span class="math inline">\(\beta_{\rm MF}\)</span> and the specific heat just below <span class="math inline">\(T_c^{\rm MF}\)</span> are also found numerically, and the mean-field magnetisation is plotted together with Yang’s exact <span class="math inline">\(M\)</span>.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:41.361146Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:41.360289Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:41.672457Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:41.671473Z&quot;}" data-execution_count="19">
 <details open="">
 <summary>Code</summary>
@@ -1232,13 +1264,13 @@ mean-field specific heat just below T_c^MF: 1.49640, 1.49996   (and exactly 0 ab
 <p><img src="lab-012-onsager_files/figure-html/cell-20-output-2.png" class="img-fluid"></p>
 </div>
 </div>
-<p>Mean field neglects fluctuations; in 2D they are strong, they lower <span class="math inline">\(T_c\)</span> and change <span class="math inline">\(\beta\)</span> from <span class="math inline">\(\frac12\)</span> to <span class="math inline">\(\frac18\)</span>. The same mean-field equation appears again in energy-based models, as a <strong>recurrent <span class="math inline">\(\tanh\)</span> network</strong>.</p>
+<p>Mean field neglects fluctuations; in 2D they are strong, they lower <span class="math inline">\(T_c\)</span> and change <span class="math inline">\(\beta\)</span> from 1/2 to 1/8. The same mean-field equation appears again in energy-based models, as a <strong>recurrent <span class="math inline">\(\tanh\)</span> network</strong>.</p>
 <hr>
 </section>
-<section id="universality-the-triangular-lattice" class="level2">
-<h2 class="anchored" data-anchor-id="universality-the-triangular-lattice">10. Universality: the triangular lattice</h2>
-<p>Add one diagonal bond to every plaquette: each spin now has <span class="math inline">\(z = 6\)</span> neighbours. In the transfer matrix this is the extra term <span class="math inline">\(K\sum_is_is'_{i+1}\)</span> (flag <code>lattice="triangular"</code>; <span class="math inline">\(\mathsf V\)</span> is no longer symmetric, so we use a general eigensolver). The exact results are <span class="math inline">\(T_c^{\triangle} = 4/\ln3\)</span> and <em>the same exponents</em> as on the square lattice. We test both with the crossing method of Section 3 and with <span class="math inline">\(\eta_L\)</span>.</p>
-<p>Geometry: in the triangular lattice the columns are <span class="math inline">\(\sqrt3/2\)</span> apart (the sites of one column are at distance 1), so the physical correlation length is <span class="math inline">\(\frac{\sqrt3}{2}\xi_L\)</span> and <span class="math inline">\(\eta_L = L\big/\big(\pi\,\tfrac{\sqrt3}{2}\xi_L\big)\)</span>.</p>
+<section id="the-triangular-lattice-and-universality" class="level2">
+<h2 class="anchored" data-anchor-id="the-triangular-lattice-and-universality">10. The triangular lattice and universality</h2>
+<p>Add one diagonal bond to every plaquette: each spin now has six neighbours. In the transfer matrix this adds the term <span class="math display">\[K\sum_is_is'_{i+1} \tag{82}\]</span> to the exponent of equation (29) (flag <code>lattice="triangular"</code>; <span class="math inline">\(\mathsf V\)</span> is no longer symmetric, so we use a general eigensolver). The exact results are the critical temperature <span class="math display">\[T_c^{\triangle} = \frac{4}{\ln3} \tag{83}\]</span> and <em>the same exponents</em> as on the square lattice. We test both with the crossing method of Section 3 and with <span class="math inline">\(\eta_L\)</span>.</p>
+<p>One geometric correction is needed. In the triangular lattice the columns are <span class="math inline">\(\sqrt3/2\)</span> apart (the sites of one column are at distance 1), so the physical correlation length is <span class="math inline">\(\xi_L\)</span> multiplied by <span class="math inline">\(\sqrt3/2\)</span>, and <span class="math display">\[\eta_L = \frac{L}{\pi\,\tfrac{\sqrt3}{2}\,\xi_L}. \tag{84}\]</span></p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:41.677237Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:41.676445Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:51.527754Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:51.525624Z&quot;}" data-execution_count="20">
 <details open="">
 <summary>Code</summary>
@@ -1268,6 +1300,7 @@ mean-field specific heat just below T_c^MF: 1.49640, 1.49996   (and exactly 0 ab
 </section>
 <section id="summary" class="level2">
 <h2 class="anchored" data-anchor-id="summary">11. Summary</h2>
+<p>The table collects the statements of the slides and the section of this notebook where each of them is computed.</p>
 <table class="table">
 <colgroup>
 <col style="width: 50%">
@@ -1281,43 +1314,43 @@ mean-field specific heat just below T_c^MF: 1.49640, 1.49996   (and exactly 0 ab
 </thead>
 <tbody>
 <tr class="odd">
-<td>finite lattice ⇒ <span class="math inline">\(\ln Z\)</span> smooth</td>
+<td>finite lattice: <span class="math inline">\(\ln Z\)</span> smooth</td>
 <td>Section 1 (brute force, <span class="math inline">\(4\times4\)</span>)</td>
 </tr>
 <tr class="even">
-<td><span class="math inline">\(Z = \operatorname{Tr}\mathsf T^N\)</span>, <span class="math inline">\(\lambda_\pm = 2\cosh K, 2\sinh K\)</span>, <span class="math inline">\(\xi_{1D}\)</span> finite</td>
+<td>transfer matrix of the chain, equations (18) and (21); finite <span class="math inline">\(\xi\)</span> in 1D</td>
 <td>Section 2</td>
 </tr>
 <tr class="odd">
-<td><span class="math inline">\(f_L\to f\)</span>, <span class="math inline">\(c_L\)</span> peak grows, <span class="math inline">\(\xi_L/L\)</span> crossings <span class="math inline">\(\to T_c\)</span></td>
+<td><span class="math inline">\(f_L\)</span> converges to <span class="math inline">\(f\)</span>, the peak of <span class="math inline">\(c_L\)</span> grows, crossings of <span class="math inline">\(\xi_L/L\)</span> approach <span class="math inline">\(T_c\)</span></td>
 <td>Section 3</td>
 </tr>
 <tr class="even">
-<td>closed graphs: <span class="math inline">\(1 + Nt^4 + 2Nt^6\)</span>, same on the dual lattice</td>
+<td>closed graphs, equations (37) and (39), the same on the dual lattice</td>
 <td>Section 4</td>
 </tr>
 <tr class="odd">
-<td><span class="math inline">\(\sinh2K\sinh2K^* = 1\)</span>, <span class="math inline">\(\kappa(K) = \kappa(K^*)\)</span>, <span class="math inline">\(\sinh 2K_c = 1\)</span></td>
+<td>duality, equations (47) and (49); <span class="math inline">\(\kappa\)</span> the same at <span class="math inline">\(K\)</span> and <span class="math inline">\(K^*\)</span></td>
 <td>Section 5</td>
 </tr>
 <tr class="even">
-<td><span class="math inline">\(u\)</span> from the integral = elliptic formula</td>
+<td><span class="math inline">\(u\)</span> from the integral agrees with equation (54)</td>
 <td>Section 6</td>
 </tr>
 <tr class="odd">
-<td><span class="math inline">\(u(T_c) = -\sqrt2\)</span>, also from duality</td>
+<td><span class="math inline">\(u(T_c)\)</span> of equation (58), also from duality, equation (64)</td>
 <td>Section 7</td>
 </tr>
 <tr class="even">
-<td><span class="math inline">\(\beta = 1/8\)</span>, <span class="math inline">\(\alpha = 0\)</span> (log, amplitude), <span class="math inline">\(\eta = 1/4\)</span>, <span class="math inline">\(\nu = 1\)</span></td>
+<td>exponents: <span class="math inline">\(\beta\)</span> 1/8, <span class="math inline">\(\alpha\)</span> 0 (logarithm, amplitude (69)), <span class="math inline">\(\eta\)</span> 1/4, <span class="math inline">\(\nu\)</span> 1</td>
 <td>Section 8</td>
 </tr>
 <tr class="odd">
-<td><span class="math inline">\(T_c^{\rm MF} = 4\)</span>, <span class="math inline">\(\beta_{\rm MF} = 1/2\)</span>, jump in <span class="math inline">\(c\)</span></td>
+<td>mean field: equations (77) and (80), jump in <span class="math inline">\(c\)</span></td>
 <td>Section 9</td>
 </tr>
 <tr class="even">
-<td>triangular lattice: <span class="math inline">\(T_c = 4/\ln3\)</span>, same <span class="math inline">\(\eta\)</span></td>
+<td>triangular lattice: equation (83), same <span class="math inline">\(\eta\)</span></td>
 <td>Section 10</td>
 </tr>
 </tbody>
@@ -1328,7 +1361,7 @@ mean-field specific heat just below T_c^MF: 1.49640, 1.49996   (and exactly 0 ab
 <h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
 <section id="exercise-1-the-1d-chain-in-a-field" class="level3">
 <h3 class="anchored" data-anchor-id="exercise-1-the-1d-chain-in-a-field">Exercise 1 — the 1D chain in a field</h3>
-<p>Using the transfer matrix, compute the magnetisation per spin of the infinite chain, <span class="math inline">\(m = \partial\ln\lambda_+/\partial\tilde h\)</span>, numerically (finite difference) and compare with the closed form <span class="math inline">\(m = \dfrac{\sinh\tilde h}{\sqrt{\sinh^2\tilde h + e^{-4K}}}\)</span>. Plot <span class="math inline">\(m(h)\)</span> at several <span class="math inline">\(T\)</span>: is there a spontaneous magnetisation at <span class="math inline">\(h\to0^+\)</span> for any <span class="math inline">\(T&gt;0\)</span>?</p>
+<p>Using the transfer matrix, compute the magnetisation per spin of the infinite chain, <span class="math display">\[m = \frac{\partial\ln\lambda_+}{\partial\tilde h}, \tag{85}\]</span> numerically (finite difference) and compare with <span class="math display">\[m = \frac{\sinh\tilde h}{\sqrt{\sinh^2\tilde h + e^{-4K}}}. \tag{86}\]</span> Plot <span class="math inline">\(m(h)\)</span> at several temperatures: is there a spontaneous magnetisation as the field goes to zero from above, at any positive temperature?</p>
 <section id="solution" class="level4">
 <h4 class="anchored" data-anchor-id="solution">Solution</h4>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:51.533127Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:51.532719Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:51.952843Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:51.951518Z&quot;}" data-execution_count="21">
@@ -1340,8 +1373,8 @@ mean-field specific heat just below T_c^MF: 1.49640, 1.49996   (and exactly 0 ab
 <span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> K, ht <span class="kw">in</span> [(<span class="fl">0.5</span>, <span class="fl">0.1</span>), (<span class="fl">1.0</span>, <span class="fl">0.05</span>), (<span class="fl">2.0</span>, <span class="fl">0.01</span>)]:</span>
 <span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> <span class="fl">1e-6</span></span>
 <span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>    m_num <span class="op">=</span> (np.log(lam_plus(K, ht <span class="op">+</span> d)) <span class="op">-</span> np.log(lam_plus(K, ht <span class="op">-</span> d))) <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> d)</span>
-<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>    m_cf <span class="op">=</span> np.sinh(ht) <span class="op">/</span> np.sqrt(np.sinh(ht)<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> np.exp(<span class="op">-</span><span class="dv">4</span> <span class="op">*</span> K))</span>
-<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"K = </span><span class="sc">{</span>K<span class="sc">}</span><span class="ss">, beta h = </span><span class="sc">{</span>ht<span class="sc">}</span><span class="ss">:  m numerical = </span><span class="sc">{</span>m_num<span class="sc">:.8f}</span><span class="ss">,  closed form = </span><span class="sc">{</span>m_cf<span class="sc">:.8f}</span><span class="ss">"</span>)</span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>    m_exact <span class="op">=</span> np.sinh(ht) <span class="op">/</span> np.sqrt(np.sinh(ht)<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> np.exp(<span class="op">-</span><span class="dv">4</span> <span class="op">*</span> K))</span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"K = </span><span class="sc">{</span>K<span class="sc">}</span><span class="ss">, beta h = </span><span class="sc">{</span>ht<span class="sc">}</span><span class="ss">:  m numerical = </span><span class="sc">{</span>m_num<span class="sc">:.8f}</span><span class="ss">,  equation (86) = </span><span class="sc">{</span>m_exact<span class="sc">:.8f}</span><span class="ss">"</span>)</span>
 <span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>hgrid <span class="op">=</span> np.linspace(<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="dv">401</span>)</span>
 <span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="fl">3.4</span>))</span>
@@ -1359,12 +1392,12 @@ K = 2.0, beta h = 0.01:  m numerical = 0.47921470,  closed form = 0.47921470</co
 <p><img src="lab-012-onsager_files/figure-html/cell-22-output-2.png" class="img-fluid"></p>
 </div>
 </div>
-<p><span class="math inline">\(m(h)\)</span> is a smooth odd function, <span class="math inline">\(m(0) = 0\)</span> for every <span class="math inline">\(T&gt;0\)</span>: no spontaneous magnetisation, only an ever steeper curve as <span class="math inline">\(T\to0\)</span> (the slope at <span class="math inline">\(h = 0\)</span> is <span class="math inline">\(\beta e^{2K}\)</span>: it grows exponentially in <span class="math inline">\(K\)</span>, but is finite for every <span class="math inline">\(T&gt;0\)</span>).</p>
+<p><span class="math inline">\(m(h)\)</span> is a smooth odd function that vanishes at zero field for every positive temperature: no spontaneous magnetisation, only an ever steeper curve as the temperature goes to zero. The slope at zero field, <span class="math display">\[\frac{\partial m}{\partial h}\Big|_{h=0} = \beta e^{2K}, \tag{87}\]</span> grows exponentially in <span class="math inline">\(K\)</span>, but is finite for every positive temperature.</p>
 </section>
 </section>
 <section id="exercise-2-the-specific-heat-peak-of-strips" class="level3">
 <h3 class="anchored" data-anchor-id="exercise-2-the-specific-heat-peak-of-strips">Exercise 2 — the specific-heat peak of strips</h3>
-<p>Using <code>strip</code> from Section 3, plot the maximum of <span class="math inline">\(c_L\)</span> against <span class="math inline">\(\ln L\)</span>. A logarithmic divergence <span class="math inline">\(c\sim-A\ln|t|\)</span> combined with <span class="math inline">\(|t|\sim1/L\)</span> (because <span class="math inline">\(\nu = 1\)</span>) predicts <span class="math inline">\(c_{\max}(L)\approx A\ln L + \text{const}\)</span>. Fit the slope and compare with <span class="math inline">\(A\)</span> found in Section 8.</p>
+<p>Using <code>strip</code> from Section 3, plot the maximum of <span class="math inline">\(c_L\)</span> against <span class="math inline">\(\ln L\)</span>. The logarithmic divergence of equation (67), combined with <span class="math display">\[|t|\sim\frac1L \tag{88}\]</span> (because <span class="math inline">\(\nu\)</span> is 1), predicts <span class="math display">\[c_{\max}(L)\approx A\ln L + \text{const}. \tag{89}\]</span> Fit the slope and compare with <span class="math inline">\(A\)</span> found in Section 8.</p>
 <section id="solution-1" class="level4">
 <h4 class="anchored" data-anchor-id="solution-1">Solution</h4>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:51.956508Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:51.955931Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:02:00.529198Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:02:00.528078Z&quot;}" data-execution_count="22">
@@ -1404,7 +1437,7 @@ slope of c_max vs ln L (L = 6..12): 0.4947;   A from Section 8: 0.4945</code></p
 </section>
 <section id="exercise-3-open-the-quantum-connection" class="level3">
 <h3 class="anchored" data-anchor-id="exercise-3-open-the-quantum-connection">Exercise 3 (open) — the quantum connection</h3>
-<p>For the strip, <span class="math inline">\(\mathsf V\)</span> can be written as <span class="math inline">\(e^{-\tau H_q}\)</span>-like product of <span class="math inline">\(e^{K\sum s_is_{i+1}}\)</span> and <span class="math inline">\(\prod_i(e^{K}\mathbb 1 + e^{-K}\sigma^x_i)\)</span>. Show that <span class="math inline">\(e^{K}\mathbb 1 + e^{-K}\sigma^x = \sqrt{2\sinh2K}\;e^{K^*\sigma^x}\)</span>, i.e.&nbsp;the transfer matrix is a product of a classical Ising coupling along the column and a <strong>transverse field</strong> of strength <span class="math inline">\(K^*\)</span>. Verify the identity numerically for a few values of <span class="math inline">\(K\)</span>. This is the bridge to the transverse-field Ising chain used later in the course.</p>
+<p>For the strip, <span class="math inline">\(\mathsf V\)</span> can be written, like an imaginary-time evolution operator, as a product of diagonal matrices and single-spin factors, <span class="math display">\[\mathsf V = e^{\frac K2\sum_i s_is_{i+1}}\Big[\prod_i\big(e^{K}\mathbb 1 + e^{-K}\sigma^x_i\big)\Big]e^{\frac K2\sum_i s_is_{i+1}} . \tag{90}\]</span> Show that <span class="math display">\[e^{K}\mathbb 1 + e^{-K}\sigma^x = \sqrt{2\sinh2K}\;e^{K^*\sigma^x}, \tag{91}\]</span> so that the transfer matrix is a product of a classical Ising coupling along the column and a <strong>transverse field</strong> of strength <span class="math inline">\(K^*\)</span>. Verify the identity numerically for a few values of <span class="math inline">\(K\)</span>. This is the bridge to the transverse-field Ising chain used later in the course.</p>
 <section id="solution-2" class="level4">
 <h4 class="anchored" data-anchor-id="solution-2">Solution</h4>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:02:00.536115Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:02:00.535439Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:02:00.553591Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:02:00.552152Z&quot;}" data-execution_count="23">
@@ -1423,7 +1456,7 @@ K = 0.4407:  max |lhs - rhs| = 2.2e-16
 K = 0.8000:  max |lhs - rhs| = 1.1e-16</code></pre>
 </div>
 </div>
-<p>Proof: <span class="math inline">\(e^{K^*\sigma^x} = \cosh K^*\,\mathbb1 + \sinh K^*\sigma^x\)</span>, and from <span class="math inline">\(e^{-2K^*} = \tanh K\)</span> one gets <span class="math inline">\(\tanh K^* = e^{-2K}\)</span>, so the ratio of the coefficients is right; the prefactor follows from <span class="math inline">\(\cosh K^*\sqrt{2\sinh2K} = e^{K}\)</span>, which the numerical check confirms. At the self-dual point <span class="math inline">\(K = K^* = K_c\)</span> the column coupling and the transverse field are equal — the critical point of the quantum chain.</p>
+<p>Proof: the exponential of <span class="math inline">\(\sigma^x\)</span> is <span class="math display">\[e^{K^*\sigma^x} = \cosh K^*\,\mathbb1 + \sinh K^*\,\sigma^x , \tag{92}\]</span> and from equation (45) one gets <span class="math display">\[\tanh K^* = e^{-2K}, \tag{93}\]</span> so the ratio of the coefficients is right; the prefactor follows from <span class="math display">\[\cosh K^*\sqrt{2\sinh2K} = e^{K}, \tag{94}\]</span> which the numerical check confirms. At the self-dual point, where <span class="math inline">\(K\)</span> and <span class="math inline">\(K^*\)</span> both equal <span class="math inline">\(K_c\)</span>, the column coupling and the transverse field are equal — the critical point of the quantum chain.</p>
 
 
 </section>

@@ -176,7 +176,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </li>  
         <li>
     <a class="dropdown-item" href="../../lectures/lecture-06.html">
- <span class="dropdown-text">6 · Generative Models</span></a>
+ <span class="dropdown-text">6 · Probability and Variational Autoencoders</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-07.html">
+ <span class="dropdown-text">7 · Adversarial and Diffusion Models</span></a>
   </li>  
     </ul>
   </li>
@@ -313,6 +317,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-03/lab-013a-cnn-pytorch.html" class="sidebar-item-text sidebar-link">Lab 013a: CNNs on MNIST and CIFAR-10 in PyTorch</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-03/lab-013b-cnn-jax.html" class="sidebar-item-text sidebar-link">Lab 013b: CNNs on MNIST and CIFAR-10 in JAX</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../notebooks/lecture-03/limits-of-deep-networks.html" class="sidebar-item-text sidebar-link">Limits of deep networks</a>
   </div>
 </li>
@@ -370,7 +384,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../lectures/lecture-06.html" class="sidebar-item-text sidebar-link">6 · Generative Models</a>
+            <a href="../../lectures/lecture-06.html" class="sidebar-item-text sidebar-link">6 · Probability and Variational Autoencoders</a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -384,6 +398,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/lecture-06/conditional-generation.html" class="sidebar-item-text sidebar-link">Conditional generation of digits and blood cells</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-07.html" class="sidebar-item-text sidebar-link">7 · Adversarial and Diffusion Models</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-07/generative-models.html" class="sidebar-item-text sidebar-link">Generative models: probability, VAE, GAN and diffusion</a>
   </div>
 </li>
       </ul>
@@ -405,14 +434,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#deep-learning-for-scientific-discovery" id="toc-deep-learning-for-scientific-discovery" class="nav-link active" data-scroll-target="#deep-learning-for-scientific-discovery">Deep Learning for Scientific Discovery</a></li>
   <li><a href="#lab-010-monte-carlo-samples-of-the-2d-ising-model" id="toc-lab-010-monte-carlo-samples-of-the-2d-ising-model" class="nav-link" data-scroll-target="#lab-010-monte-carlo-samples-of-the-2d-ising-model">Lab 010 — Monte Carlo samples of the 2D Ising model</a>
   <ul class="collapse">
-  <li><a href="#the-model-and-what-we-want-to-measure" id="toc-the-model-and-what-we-want-to-measure" class="nav-link" data-scroll-target="#the-model-and-what-we-want-to-measure">1. The model and what we want to measure</a></li>
+  <li><a href="#the-model-and-its-observables" id="toc-the-model-and-its-observables" class="nav-link" data-scroll-target="#the-model-and-its-observables">1. The model and its observables</a></li>
   <li><a href="#the-metropolis-algorithm" id="toc-the-metropolis-algorithm" class="nav-link" data-scroll-target="#the-metropolis-algorithm">2. The Metropolis algorithm</a></li>
   <li><a href="#equilibration-time" id="toc-equilibration-time" class="nav-link" data-scroll-target="#equilibration-time">3. Equilibration time</a></li>
-  <li><a href="#decorrelation-spacing-between-stored-samples" id="toc-decorrelation-spacing-between-stored-samples" class="nav-link" data-scroll-target="#decorrelation-spacing-between-stored-samples">4. Decorrelation: spacing between stored samples</a></li>
+  <li><a href="#decorrelation-of-stored-samples" id="toc-decorrelation-of-stored-samples" class="nav-link" data-scroll-target="#decorrelation-of-stored-samples">4. Decorrelation of stored samples</a></li>
   <li><a href="#generating-the-dataset" id="toc-generating-the-dataset" class="nav-link" data-scroll-target="#generating-the-dataset">5. Generating the dataset</a></li>
-  <li><a href="#what-the-samples-look-like" id="toc-what-the-samples-look-like" class="nav-link" data-scroll-target="#what-the-samples-look-like">6. What the samples look like</a></li>
-  <li><a href="#thermodynamics-from-the-samples-vs-onsagers-exact-solution" id="toc-thermodynamics-from-the-samples-vs-onsagers-exact-solution" class="nav-link" data-scroll-target="#thermodynamics-from-the-samples-vs-onsagers-exact-solution">7. Thermodynamics from the samples vs Onsager’s exact solution</a></li>
-  <li><a href="#the-logic-of-t_c-finite-size" id="toc-the-logic-of-t_c-finite-size" class="nav-link" data-scroll-target="#the-logic-of-t_c-finite-size">8. The logic of <span class="math inline">\(T_c\)</span>: finite size</a></li>
+  <li><a href="#sample-configurations" id="toc-sample-configurations" class="nav-link" data-scroll-target="#sample-configurations">6. Sample configurations</a></li>
+  <li><a href="#thermodynamics-and-onsagers-exact-solution" id="toc-thermodynamics-and-onsagers-exact-solution" class="nav-link" data-scroll-target="#thermodynamics-and-onsagers-exact-solution">7. Thermodynamics and Onsager’s exact solution</a></li>
+  <li><a href="#finite-size-effects" id="toc-finite-size-effects" class="nav-link" data-scroll-target="#finite-size-effects">8. Finite-size effects</a></li>
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">9. Exercises</a></li>
   </ul></li>
   </ul>
@@ -447,14 +476,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="lab-010-monte-carlo-samples-of-the-2d-ising-model" class="level1">
 <h1>Lab 010 — Monte Carlo samples of the 2D Ising model</h1>
-<p>In Lecture 4 a convolutional network located the critical temperature <span class="math inline">\(T_c\)</span> of the 2D Ising model from raw spin images. This notebook produces those images ourselves, and checks them against Onsager’s exact solution (also Lecture 4).</p>
-<ol type="1">
-<li>We implement the <strong>Metropolis algorithm</strong> for an <span class="math inline">\(N_x\times N_y\)</span> lattice with periodic boundaries, in a vectorised <em>checkerboard</em> form that is fast in NumPy.</li>
-<li>We learn how to use it correctly: <strong>equilibration</strong> (how long to wait) and <strong>decorrelation</strong> (how far apart to store samples).</li>
-<li>We generate a <strong>dataset</strong> of configurations on a temperature grid and save it to <code>data/</code> — Lab 011 trains the CNN on it.</li>
-<li>We measure magnetisation, energy, specific heat and susceptibility, compare them with the <strong>exact Onsager / Yang results</strong>, and see how the transition sharpens with system size: the logic behind “finding <span class="math inline">\(T_c\)</span>”.</li>
-</ol>
-<p>You can change the lattice size <span class="math inline">\((N_x, N_y)\)</span> in Section 7 (default <span class="math inline">\(20\times20\)</span>).</p>
+<p>In Lecture 4 a convolutional neural network (CNN) located the critical temperature <span class="math inline">\(T_c\)</span> of the two-dimensional (2D) Ising model from raw spin images. Those images are produced here by Monte Carlo sampling, and what they tell us is compared with Onsager’s exact solution, also discussed in Lecture 4.</p>
+<p>The tool is the Metropolis algorithm for an <span class="math inline">\(N_x\times N_y\)</span> lattice with periodic boundaries. We implement it in a vectorised <em>checkerboard</em> form, which makes it fast in NumPy. A sampler, however, is only as good as the way it is used: a chain must first forget its starting point (<strong>equilibration</strong>), and consecutive configurations are not independent, so stored samples must be spaced apart (<strong>decorrelation</strong>). Once both times are known, we generate a <strong>dataset</strong> of configurations on a grid of temperatures and save it to <code>data/</code>; Lab 011 trains the CNN on it.</p>
+<p>The samples are then put to a physical test. We measure the magnetisation, energy, specific heat and susceptibility, compare them with the <strong>exact results of Onsager and Yang</strong>, and follow how the transition sharpens as the lattice grows. This finite-size behaviour is the logic behind every attempt to “find <span class="math inline">\(T_c\)</span>” from data, including the attempt made by the network.</p>
+<p>The lattice size <span class="math inline">\((N_x, N_y)\)</span> is set in Section 5 (default <span class="math inline">\(20\times20\)</span>).</p>
 <blockquote class="blockquote">
 <p><strong>How to run this notebook in Google Colab</strong> 1. Go to <a href="https://colab.research.google.com" class="uri">https://colab.research.google.com</a> → <em>File → Upload notebook</em> (or open it from Google Drive). 2. Run cells one by one with <strong>Shift + Enter</strong>. Run them <em>in order</em> — later cells use variables defined earlier. 3. The required packages (<code>numpy</code>, <code>scipy</code>, <code>matplotlib</code>) are pre-installed in Colab; no <code>pip install</code> required. 4. The dataset is saved to the folder <code>data/</code> in the current working directory (in Colab: <code>/content</code>, which is cleared when the runtime is recycled — download the file if you want to keep it). 5. If the notebook state becomes inconsistent: <em>Runtime → Restart session</em> and run from the top.</p>
 </blockquote>
@@ -481,32 +506,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <hr>
-<section id="the-model-and-what-we-want-to-measure" class="level2">
-<h2 class="anchored" data-anchor-id="the-model-and-what-we-want-to-measure">1. The model and what we want to measure</h2>
-<p>Spins <span class="math inline">\(s_i=\pm1\)</span> sit on an <span class="math inline">\(N_x\times N_y\)</span> square lattice with periodic boundary conditions (a torus), <span class="math inline">\(N=N_xN_y\)</span>. The energy is <span class="math display">\[
-H(\boldsymbol s) = -J\sum_{\langle i,j\rangle} s_i s_j , \qquad J=1,\ h=0,
-\]</span> where <span class="math inline">\(\langle i,j\rangle\)</span> runs over the <span class="math inline">\(2N\)</span> nearest-neighbour bonds. In equilibrium at temperature <span class="math inline">\(T\)</span> (with <span class="math inline">\(k_B=1\)</span>, <span class="math inline">\(\beta=1/T\)</span>) the configurations are distributed as <span class="math display">\[
-p(\boldsymbol s) = \frac{e^{-\beta H(\boldsymbol s)}}{Z}, \qquad Z=\sum_{\boldsymbol s} e^{-\beta H(\boldsymbol s)} .
-\]</span> For one configuration we measure the <strong>energy per spin</strong> and the <strong>magnetisation per spin</strong> <span class="math display">\[
-e(\boldsymbol s)=\frac{H(\boldsymbol s)}{N}, \qquad m(\boldsymbol s) = \frac1N\sum_i s_i .
-\]</span> Thermal averages <span class="math inline">\(\langle\cdot\rangle\)</span> are averages over samples drawn from <span class="math inline">\(p(\boldsymbol s)\)</span>. The two <em>fluctuation</em> quantities follow from the variances: <span class="math display">\[
-c = \frac{N}{T^2}\left(\langle e^2\rangle-\langle e\rangle^2\right) \ \ \text{(specific heat per spin)}, \qquad
-\chi = \frac{N}{T}\left(\langle m^2\rangle-\langle |m|\rangle^2\right) \ \ \text{(susceptibility per spin)}.
-\]</span> <em>Why <span class="math inline">\(|m|\)</span>?</em> On a finite lattice the two ordered states <span class="math inline">\(m\approx+M\)</span> and <span class="math inline">\(m\approx-M\)</span> have equal probability, so <span class="math inline">\(\langle m\rangle=0\)</span> at <strong>every</strong> <span class="math inline">\(T\)</span>. The useful finite-size order parameter is <span class="math inline">\(\langle|m|\rangle\)</span>.</p>
+<section id="the-model-and-its-observables" class="level2">
+<h2 class="anchored" data-anchor-id="the-model-and-its-observables">1. The model and its observables</h2>
+<p>Spins <span class="math inline">\(s_i\)</span>, each <span class="math inline">\(\pm1\)</span>, sit on an <span class="math inline">\(N_x\times N_y\)</span> square lattice with periodic boundary conditions (a torus) with <span class="math display">\[N=N_xN_y \tag{1}\]</span> sites. With the coupling <span class="math inline">\(J\)</span> set to 1 and no external field, the energy is <span class="math display">\[
+H(\boldsymbol s) = -J\sum_{\langle i,j\rangle} s_i s_j , \tag{2}
+\]</span> where <span class="math inline">\(\langle i,j\rangle\)</span> runs over the nearest-neighbour bonds, twice as many as there are sites. We use units in which <span class="math inline">\(k_B\)</span> is one and write the inverse temperature as <span class="math display">\[\beta=\frac1T. \tag{3}\]</span> In equilibrium at temperature <span class="math inline">\(T\)</span> the configurations are distributed as <span class="math display">\[
+p(\boldsymbol s) = \frac{e^{-\beta H(\boldsymbol s)}}{Z}, \tag{4}
+\]</span> <span class="math display">\[
+Z=\sum_{\boldsymbol s} e^{-\beta H(\boldsymbol s)} . \tag{5}
+\]</span> For one configuration we measure the <strong>energy per spin</strong> and the <strong>magnetisation per spin</strong>, <span class="math display">\[
+e(\boldsymbol s)=\frac{H(\boldsymbol s)}{N}, \tag{6}
+\]</span> <span class="math display">\[
+m(\boldsymbol s) = \frac1N\sum_i s_i . \tag{7}
+\]</span> Thermal averages <span class="math inline">\(\langle\cdot\rangle\)</span> are averages over samples drawn from equation (4). The two <em>fluctuation</em> quantities follow from the variances, the specific heat per spin <span class="math display">\[
+c = \frac{N}{T^2}\left(\langle e^2\rangle-\langle e\rangle^2\right) \tag{8}
+\]</span> and the susceptibility per spin <span class="math display">\[
+\chi = \frac{N}{T}\left(\langle m^2\rangle-\langle |m|\rangle^2\right). \tag{9}
+\]</span> The susceptibility is built from <span class="math inline">\(|m|\)</span> rather than from <span class="math inline">\(m\)</span> for a reason that matters for every finite lattice. On a finite lattice the two ordered states, with <span class="math inline">\(m\)</span> close to <span class="math inline">\(+M\)</span> and to <span class="math inline">\(-M\)</span>, have equal probability, so the average <span class="math inline">\(\langle m\rangle\)</span> vanishes at <strong>every</strong> temperature, ordered or not. The useful finite-size order parameter is therefore <span class="math inline">\(\langle|m|\rangle\)</span>.</p>
 <p>We cannot sum over all <span class="math inline">\(2^N\)</span> configurations (<span class="math inline">\(2^{400}\)</span> for <span class="math inline">\(20\times20\)</span>), so we <strong>sample</strong> them.</p>
 <hr>
 </section>
 <section id="the-metropolis-algorithm" class="level2">
 <h2 class="anchored" data-anchor-id="the-metropolis-algorithm">2. The Metropolis algorithm</h2>
-<p>We build a Markov chain <span class="math inline">\(\boldsymbol s^{(0)}\to\boldsymbol s^{(1)}\to\dots\)</span> whose stationary distribution is <span class="math inline">\(p(\boldsymbol s)\)</span>. A sufficient condition is <strong>detailed balance</strong>: <span class="math display">\[
-p(\boldsymbol s)\,W(\boldsymbol s\to\boldsymbol s') = p(\boldsymbol s')\,W(\boldsymbol s'\to\boldsymbol s).
-\]</span> <strong>The algorithm.</strong> Propose to flip one spin, <span class="math inline">\(s_i\to-s_i\)</span>. Only the four bonds of site <span class="math inline">\(i\)</span> change, so with the local field <span class="math inline">\(\phi_i=\sum_{j\in\mathrm{nn}(i)}s_j\)</span> <span class="math display">\[
-\Delta E = E(\boldsymbol s') - E(\boldsymbol s) = 2\,s_i\,\phi_i \in\{-8,-4,0,4,8\}.
-\]</span> Accept the flip with probability <span class="math inline">\(A=\min\left(1,e^{-\beta\Delta E}\right)\)</span>. Check detailed balance for <span class="math inline">\(\Delta E&gt;0\)</span>: <span class="math display">\[
-\frac{W(\boldsymbol s\to\boldsymbol s')}{W(\boldsymbol s'\to\boldsymbol s)}=\frac{e^{-\beta\Delta E}}{1}=\frac{e^{-\beta E(\boldsymbol s')}}{e^{-\beta E(\boldsymbol s)}}=\frac{p(\boldsymbol s')}{p(\boldsymbol s)} \qquad\checkmark
-\]</span> — the partition function <span class="math inline">\(Z\)</span> cancels, which is why we never need it.</p>
-<p><strong>Checkerboard trick.</strong> Colour the lattice like a chessboard. All four neighbours of a black site are white, so the flips of all black sites are independent of each other and can be done <strong>at once</strong>; then all white sites. One <strong>sweep</strong> = black half + white half = one attempted flip per spin (one <em>Monte Carlo step</em>). With periodic boundaries the chessboard colouring is consistent only if <span class="math inline">\(N_x\)</span> and <span class="math inline">\(N_y\)</span> are <strong>even</strong>.</p>
-<p>We update a whole <em>batch</em> of independent lattices (several chains × several temperatures) in one array operation: array shape <code>(..., Ny, Nx)</code>.</p>
+<p>We build a Markov chain of configurations <span class="math inline">\(\boldsymbol s^{(0)}, \boldsymbol s^{(1)}, \dots\)</span> whose stationary distribution is <span class="math inline">\(p(\boldsymbol s)\)</span>. A sufficient condition is <strong>detailed balance</strong>: <span class="math display">\[
+p(\boldsymbol s)\,W(\boldsymbol s\to\boldsymbol s') = p(\boldsymbol s')\,W(\boldsymbol s'\to\boldsymbol s). \tag{10}
+\]</span> The Metropolis algorithm satisfies it with a very simple move. We propose to reverse one spin <span class="math inline">\(s_i\)</span>. Only the four bonds of site <span class="math inline">\(i\)</span> change, so with the local field <span class="math display">\[\phi_i=\sum_{j\in\mathrm{nn}(i)}s_j \tag{11}\]</span> the energy changes by <span class="math display">\[
+\Delta E = E(\boldsymbol s') - E(\boldsymbol s) = 2\,s_i\,\phi_i \in\{-8,-4,0,4,8\}. \tag{12}
+\]</span> The flip is accepted with probability <span class="math display">\[A=\min\left(1,e^{-\beta\Delta E}\right). \tag{13}\]</span> To see that this obeys detailed balance, take a move that raises the energy, with positive <span class="math inline">\(\Delta E\)</span>: the forward move is accepted with the probability of equation (13), which is then smaller than one, and the backward move always, so <span class="math display">\[
+\frac{W(\boldsymbol s\to\boldsymbol s')}{W(\boldsymbol s'\to\boldsymbol s)}=\frac{e^{-\beta\Delta E}}{1}=\frac{e^{-\beta E(\boldsymbol s')}}{e^{-\beta E(\boldsymbol s)}}=\frac{p(\boldsymbol s')}{p(\boldsymbol s)} . \tag{14}
+\]</span> The partition function <span class="math inline">\(Z\)</span> cancels in this ratio, which is why we never need it.</p>
+<p>Updating one spin at a time in a Python loop would be slow. The way around it is a <strong>checkerboard</strong> decomposition. Colour the lattice like a chessboard: all four neighbours of a black site are white, so the flips of all black sites are independent of each other and can be carried out <strong>at once</strong>, followed by all white sites. One <strong>sweep</strong> (black half plus white half) is one attempted flip per spin, called one <em>Monte Carlo step</em>. With periodic boundaries the chessboard colouring is consistent only if <span class="math inline">\(N_x\)</span> and <span class="math inline">\(N_y\)</span> are <strong>even</strong>.</p>
+<p>The same idea extends to many lattices at once: we update a whole <em>batch</em> of independent lattices (several chains × several temperatures) in one array operation on arrays of shape <code>(..., Ny, Nx)</code>.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T11:43:45.061575Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T11:43:45.061141Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T11:43:45.071915Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T11:43:45.071365Z&quot;}" data-execution_count="2">
 <details open="">
 <summary>Code</summary>
@@ -546,7 +576,7 @@ p(\boldsymbol s)\,W(\boldsymbol s\to\boldsymbol s') = p(\boldsymbol s')\,W(\bold
 <span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> s.mean(axis<span class="op">=</span>(<span class="op">-</span><span class="dv">2</span>, <span class="op">-</span><span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p><strong>Sanity check.</strong> On a small <span class="math inline">\(4\times4\)</span> lattice we can enumerate all <span class="math inline">\(2^{16}=65\,536\)</span> configurations and compute <span class="math inline">\(\langle e\rangle\)</span> and <span class="math inline">\(\langle|m|\rangle\)</span> <em>exactly</em>. The sampler must reproduce them within the statistical error.</p>
+<p>The sampler is first tested where the answer is known exactly. On a small <span class="math inline">\(4\times4\)</span> lattice we can enumerate all 65 536 configurations and compute <span class="math inline">\(\langle e\rangle\)</span> and <span class="math inline">\(\langle|m|\rangle\)</span> <em>exactly</em>; the sampler must reproduce these values within its statistical error.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T11:43:45.075812Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T11:43:45.074779Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T11:43:48.455409Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T11:43:48.454466Z&quot;}" data-execution_count="3">
 <details open="">
 <summary>Code</summary>
@@ -589,12 +619,7 @@ p(\boldsymbol s)\,W(\boldsymbol s\to\boldsymbol s') = p(\boldsymbol s')\,W(\bold
 </section>
 <section id="equilibration-time" class="level2">
 <h2 class="anchored" data-anchor-id="equilibration-time">3. Equilibration time</h2>
-<p>A chain starts from an arbitrary configuration, which is <em>not</em> typical for <span class="math inline">\(p(\boldsymbol s)\)</span>. We discard the first sweeps (<strong>burn-in</strong>) until the observables stop drifting. Two natural starts:</p>
-<ul>
-<li><strong>cold start</strong>: all spins up (<span class="math inline">\(T=0\)</span> ground state),</li>
-<li><strong>hot start</strong>: random spins (<span class="math inline">\(T=\infty\)</span>).</li>
-</ul>
-<p>When both starts reach the same values, the chain has (very likely) forgotten where it began.</p>
+<p>A chain starts from an arbitrary configuration, which is <em>not</em> typical for <span class="math inline">\(p(\boldsymbol s)\)</span>. We therefore discard the first sweeps (<strong>burn-in</strong>) until the observables stop drifting. Two starting points are natural: a <strong>cold start</strong>, with all spins up (the ground state, reached at zero temperature), and a <strong>hot start</strong>, with random spins (the state typical of infinite temperature). They lie at the two extremes, so when chains from both starts arrive at the same values, the chain has (very likely) forgotten where it began.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T11:43:48.463676Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T11:43:48.463003Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T11:43:52.898252Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T11:43:52.897546Z&quot;}" data-execution_count="4">
 <details open="">
 <summary>Code</summary>
@@ -633,7 +658,7 @@ p(\boldsymbol s)\,W(\boldsymbol s\to\boldsymbol s') = p(\boldsymbol s')\,W(\bold
 <p><img src="lab-010-ising-monte-carlo_files/figure-html/cell-5-output-1.png" class="img-fluid"></p>
 </div>
 </div>
-<p><strong>What to look for.</strong> * At <span class="math inline">\(T=3.0\)</span> (disordered) both starts merge after a few sweeps. * At <span class="math inline">\(T=1.8\)</span> (ordered) a hot start must <em>coarsen</em>: domains of up and down spins grow and merge. Sometimes two domains wrap around the torus as <strong>stripes</strong> (two flat domain walls). A flat wall costs energy but has no curvature to shrink it, so it can survive for a very long time — such a chain would sit at <span class="math inline">\(|m|\)</span> well below the ordered value, with a slightly higher energy. Whether it happens depends on the random seed; rerun the cell with another seed (or more chains) and check the snapshots below. * At <span class="math inline">\(T\approx T_c\)</span> the fluctuations are large and slow: this is <strong>critical slowing down</strong>.</p>
+<p>The three temperatures behave very differently. At the temperature 3.0, in the disordered phase, the curves from both starts merge after a few sweeps. At 1.8, in the ordered phase, a hot start must <em>coarsen</em>: domains of up and down spins grow and merge. Sometimes two domains wrap around the torus as <strong>stripes</strong>, separated by two flat domain walls. A flat wall costs energy but has no curvature that would make it shrink, so it can survive for a very long time, and such a chain sits at <span class="math inline">\(|m|\)</span> well below the ordered value with a slightly higher energy. Whether this happens depends on the random seed; a run with another seed (or more chains) shows this in the snapshots below. Close to <span class="math inline">\(T_c\)</span>, at 2.27, the fluctuations are large and slow, an effect called <strong>critical slowing down</strong>.</p>
 <p>For the dataset we use a <strong>cold start</strong>: below <span class="math inline">\(T_c\)</span> it is already close to equilibrium, and above <span class="math inline">\(T_c\)</span> it melts quickly.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T11:43:52.903842Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T11:43:52.902941Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T11:43:53.417463Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T11:43:53.415312Z&quot;}" data-execution_count="5">
 <details open="">
@@ -656,13 +681,13 @@ p(\boldsymbol s)\,W(\boldsymbol s\to\boldsymbol s') = p(\boldsymbol s')\,W(\bold
 </div>
 <hr>
 </section>
-<section id="decorrelation-spacing-between-stored-samples" class="level2">
-<h2 class="anchored" data-anchor-id="decorrelation-spacing-between-stored-samples">4. Decorrelation: spacing between stored samples</h2>
-<p>Consecutive configurations of a Markov chain are <strong>correlated</strong>: one sweep changes only part of the lattice. For an observable <span class="math inline">\(O\)</span> (here <span class="math inline">\(|m|\)</span>), the normalised autocorrelation function is <span class="math display">\[
-C_O(t) = \frac{\langle O_{t_0}O_{t_0+t}\rangle - \langle O\rangle^2}{\langle O^2\rangle-\langle O\rangle^2}, \qquad C_O(0)=1,
-\]</span> and the <strong>integrated autocorrelation time</strong> is <span class="math display">\[
-\tau_{\rm int} = \frac12 + \sum_{t\geq1} C_O(t).
-\]</span> Out of <span class="math inline">\(n\)</span> consecutive measurements only about <span class="math inline">\(n/(2\tau_{\rm int})\)</span> are effectively independent. We sum <span class="math inline">\(C_O(t)\)</span> up to the first time it drops below zero (beyond that point the estimate is noise). Two rules follow: * store samples every <span class="math inline">\(\gtrsim 2\tau_{\rm int}\)</span> sweeps, <strong>or</strong> * run <strong>many independent chains</strong> (we do both).</p>
+<section id="decorrelation-of-stored-samples" class="level2">
+<h2 class="anchored" data-anchor-id="decorrelation-of-stored-samples">4. Decorrelation of stored samples</h2>
+<p>Even after equilibration, consecutive configurations of a Markov chain are <strong>correlated</strong>, because one sweep changes only part of the lattice. For an observable <span class="math inline">\(O\)</span> (here <span class="math inline">\(|m|\)</span>) the correlation is measured by the normalised autocorrelation function <span class="math display">\[
+C_O(t) = \frac{\langle O_{t_0}O_{t_0+t}\rangle - \langle O\rangle^2}{\langle O^2\rangle-\langle O\rangle^2}, \qquad C_O(0)=1, \tag{15}
+\]</span> and summarised by the <strong>integrated autocorrelation time</strong> <span class="math display">\[
+\tau_{\rm int} = \frac12 + \sum_{t\geq1} C_O(t). \tag{16}
+\]</span> Out of <span class="math inline">\(n\)</span> consecutive measurements only about <span class="math display">\[n_{\rm eff}\approx\frac{n}{2\tau_{\rm int}} \tag{17}\]</span> are effectively independent. We sum <span class="math inline">\(C_O(t)\)</span> up to the first time it drops below zero, because beyond that point the estimate is noise. Two ways of obtaining nearly independent samples follow: store a configuration only after at least about twice <span class="math inline">\(\tau_{\rm int}\)</span> sweeps, or run <strong>many independent chains</strong>. We do both.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T11:43:53.423592Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T11:43:53.422119Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T11:44:04.111463Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T11:44:04.110801Z&quot;}" data-execution_count="6">
 <details open="">
 <summary>Code</summary>
@@ -715,14 +740,14 @@ T = 3.00:  tau_int =    1.7 sweeps</code></pre>
 </div>
 </div>
 <p>The autocorrelation time is largest close to <span class="math inline">\(T_c\)</span> — <strong>critical slowing down</strong>: near <span class="math inline">\(T_c\)</span> the correlated regions are large, and a local single-spin update needs many sweeps to change them. (Cluster algorithms such as Wolff’s avoid this; we stay with Metropolis because it is simple and is the algorithm of the Lecture Notes.)</p>
-<p>In the dataset below we take 20 independent chains per temperature and store a configuration every <code>n_between</code> sweeps. Compare <code>n_between</code> with the values of <span class="math inline">\(\tau_{\rm int}\)</span> printed above: far from <span class="math inline">\(T_c\)</span> the stored samples of one chain are practically independent; close to <span class="math inline">\(T_c\)</span> they are not fully independent, but the 20 chains are.</p>
+<p>The dataset uses 20 independent chains per temperature and stores a configuration every <code>n_between</code> sweeps. Compare <code>n_between</code> with the values of <span class="math inline">\(\tau_{\rm int}\)</span> printed above: far from <span class="math inline">\(T_c\)</span> the stored samples of one chain are practically independent; close to <span class="math inline">\(T_c\)</span> they are not fully independent, but the 20 chains are.</p>
 <hr>
 </section>
 <section id="generating-the-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="generating-the-dataset">5. Generating the dataset</h2>
-<p>We sample a grid of temperatures from <span class="math inline">\(T=1.0\)</span> to <span class="math inline">\(T=3.5\)</span> in steps of <span class="math inline">\(0.05\)</span>. All temperatures and all chains are updated together as one array of shape <code>(chains, temperatures, Ny, Nx)</code>.</p>
-<p>The Ising energy is symmetric under a <strong>global spin flip</strong> <span class="math inline">\(\boldsymbol s\to-\boldsymbol s\)</span>. A cold start puts every low-<span class="math inline">\(T\)</span> chain into the <span class="math inline">\(m&gt;0\)</span> state, and on our time scales it stays there. We restore the symmetry exactly by flipping each stored configuration with probability <span class="math inline">\(1/2\)</span>. Otherwise a network could learn the trivial rule “black means ordered”.</p>
-<p><strong>Change <code>Nx</code>, <code>Ny</code> here</strong> (both must be even).</p>
+<p>We sample a grid of temperatures from 1.0 to 3.5 in steps of 0.05. All temperatures and all chains are updated together as one array of shape <code>(chains, temperatures, Ny, Nx)</code>.</p>
+<p>One more detail concerns symmetry. The Ising energy is symmetric under a <strong>global spin flip</strong>, which reverses every spin, but a cold start puts every low-temperature chain into the state of positive magnetisation, and on our time scales it stays there. We restore the symmetry exactly by flipping each stored configuration with probability one half. Without this step a network could learn the trivial rule “black means ordered”.</p>
+<p>One sample of the data set is an <span class="math inline">\(N_y\times N_x\)</span> array of spins <span class="math inline">\(\pm1\)</span>, stored as 8-bit integers, together with the temperature at which it was drawn; Lab 011 derives its labels (ordered or disordered) from that temperature. For the <span class="math inline">\(20\times20\)</span> lattice the file holds 51 temperatures with 200 configurations each, 10 200 samples in all. The lattice size is set by <code>Nx</code> and <code>Ny</code>; both must be even.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T11:44:04.114325Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T11:44:04.114025Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T11:44:25.078919Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T11:44:25.078164Z&quot;}" data-execution_count="7">
 <details open="">
 <summary>Code</summary>
@@ -768,8 +793,9 @@ T = 3.00:  tau_int =    1.7 sweeps</code></pre>
 </div>
 <hr>
 </section>
-<section id="what-the-samples-look-like" class="level2">
-<h2 class="anchored" data-anchor-id="what-the-samples-look-like">6. What the samples look like</h2>
+<section id="sample-configurations" class="level2">
+<h2 class="anchored" data-anchor-id="sample-configurations">6. Sample configurations</h2>
+<p>Each column of the figure shows three stored configurations at one temperature, from deep in the ordered phase (temperature 1.2) to the disordered phase (3.2), with the columns between 1.9 and 2.6 bracketing <span class="math inline">\(T_c\)</span>.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T11:44:25.087091Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T11:44:25.086250Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T11:44:26.102648Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T11:44:26.100210Z&quot;}" data-execution_count="8">
 <details open="">
 <summary>Code</summary>
@@ -789,19 +815,21 @@ T = 3.00:  tau_int =    1.7 sweeps</code></pre>
 <p><img src="lab-010-ising-monte-carlo_files/figure-html/cell-9-output-1.png" class="img-fluid"></p>
 </div>
 </div>
-Close to <span class="math inline">\(T_c\)</span> (columns <span class="math inline">\(2.2\)</span>–<span class="math inline">\(2.4\)</span>) configurations from the two phases are hard to tell apart by eye: we see clusters of all sizes. This is the region the CNN of Lab 011 will <em>not</em> see during training.
+Close to <span class="math inline">\(T_c\)</span> (columns 2.2–2.4) configurations from the two phases are hard to tell apart by eye: we see clusters of all sizes. This is the region the CNN of Lab 011 will <em>not</em> see during training.
 <hr>
 </section>
-<section id="thermodynamics-from-the-samples-vs-onsagers-exact-solution" class="level2">
-<h2 class="anchored" data-anchor-id="thermodynamics-from-the-samples-vs-onsagers-exact-solution">7. Thermodynamics from the samples vs Onsager’s exact solution</h2>
-<p><strong>Exact results</strong> for the infinite lattice (<span class="math inline">\(J=1\)</span>, <span class="math inline">\(K=\beta J\)</span>): * free energy (Onsager 1944), with <span class="math inline">\(\kappa = 2\sinh 2K/\cosh^2 2K\)</span>: <span class="math display">\[
--\beta f = \ln Z/N = \ln\left(2\cosh 2K\right) + \frac{1}{2\pi}\int_0^\pi d\phi\, \ln\frac{1+\sqrt{1-\kappa^2\sin^2\phi}}{2};
-\]</span> * energy per spin <span class="math inline">\(u = -\partial(\ln Z/N)/\partial\beta\)</span>, which evaluates to <span class="math display">\[
-u = -\coth 2K\left[1+\frac{2}{\pi}\left(2\tanh^2 2K-1\right)K_1(\kappa)\right], \qquad K_1(\kappa)=\int_0^{\pi/2}\frac{d\phi}{\sqrt{1-\kappa^2\sin^2\phi}};
-\]</span> * spontaneous magnetisation (Onsager 1949, proof by Yang 1952): <span class="math display">\[
-M = \left[1-\sinh^{-4}2K\right]^{1/8} \ \ (T&lt;T_c), \qquad M=0 \ \ (T&gt;T_c).
+<section id="thermodynamics-and-onsagers-exact-solution" class="level2">
+<h2 class="anchored" data-anchor-id="thermodynamics-and-onsagers-exact-solution">7. Thermodynamics and Onsager’s exact solution</h2>
+<p>The samples can now be compared with the exact results for the infinite lattice, with <span class="math inline">\(J\)</span> set to 1. With the reduced coupling <span class="math display">\[K=\beta J \tag{18}\]</span> and <span class="math display">\[\kappa = \frac{2\sinh 2K}{\cosh^2 2K}, \tag{19}\]</span> the free energy found by Onsager (1944) reads <span class="math display">\[
+-\beta f = \frac{\ln Z}{N} = \ln\left(2\cosh 2K\right) + \frac{1}{2\pi}\int_0^\pi d\phi\, \ln\frac{1+\sqrt{1-\kappa^2\sin^2\phi}}{2}. \tag{20}
+\]</span> The energy per spin is its derivative, <span class="math display">\[u = -\frac{\partial}{\partial\beta}\frac{\ln Z}{N}, \tag{21}\]</span> which evaluates to <span class="math display">\[
+u = -\coth 2K\left[1+\frac{2}{\pi}\left(2\tanh^2 2K-1\right)K_1(\kappa)\right], \tag{22}
+\]</span> <span class="math display">\[
+K_1(\kappa)=\int_0^{\pi/2}\frac{d\phi}{\sqrt{1-\kappa^2\sin^2\phi}}. \tag{23}
+\]</span> The spontaneous magnetisation was announced by Onsager in 1949 and proved by Yang in 1952: <span class="math display">\[
+M = \begin{cases}\left[1-\sinh^{-4}2K\right]^{1/8}, &amp; T&lt;T_c,\\[2pt] 0, &amp; T&gt;T_c.\end{cases} \tag{24}
 \]</span></p>
-<p>Before using the formula for <span class="math inline">\(u\)</span> we <strong>check it</strong> against a numerical derivative of the free-energy integral. Note that SciPy’s <code>ellipk(m)</code> uses the parameter <span class="math inline">\(m=\kappa^2\)</span>.</p>
+<p>Equation (22) is checked against a numerical derivative of the free-energy integral, equation (20). SciPy’s <code>ellipk(m)</code> takes as its parameter the square of <span class="math inline">\(\kappa\)</span>.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T11:44:26.109750Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T11:44:26.109327Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T11:44:26.133643Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T11:44:26.131206Z&quot;}" data-execution_count="9">
 <details open="">
 <summary>Code</summary>
@@ -876,14 +904,14 @@ u(T_c) from the formula: -1.414214;  -sqrt(2) = -1.414214</code></pre>
 peak of chi at T = 2.35      exact T_c = 2.2692</code></pre>
 </div>
 </div>
-<strong>Reading the plots.</strong> * Far from <span class="math inline">\(T_c\)</span> the Monte Carlo points lie on the exact curves: <span class="math inline">\(20\times20\)</span> is already “large” there, because the correlation length is short. * Near <span class="math inline">\(T_c\)</span> the finite lattice deviates. <span class="math inline">\(\langle|m|\rangle\)</span> does not drop to zero at <span class="math inline">\(T_c\)</span> but has a smooth tail above it. The exact <span class="math inline">\(M\)</span> has an infinite slope at <span class="math inline">\(T_c\)</span>, which no finite system can have. * <span class="math inline">\(c\)</span> and <span class="math inline">\(\chi\)</span> have <strong>finite peaks</strong> instead of divergences. The peaks lie close to <span class="math inline">\(T_c\)</span>, but not exactly at it.
+Far from <span class="math inline">\(T_c\)</span> the Monte Carlo points lie on the exact curves: a <span class="math inline">\(20\times20\)</span> lattice is already “large” there, because the correlation length is short. Near <span class="math inline">\(T_c\)</span> the finite lattice deviates. <span class="math inline">\(\langle|m|\rangle\)</span> does not drop to zero at <span class="math inline">\(T_c\)</span> but has a smooth tail above it, whereas the exact <span class="math inline">\(M\)</span> of equation (24) has an infinite slope at <span class="math inline">\(T_c\)</span>, which no finite system can have. Likewise <span class="math inline">\(c\)</span> and <span class="math inline">\(\chi\)</span> have <strong>finite peaks</strong> instead of divergences; the peaks (at the temperatures 2.30 and 2.35 in the printed output) lie close to the exact critical temperature <span class="math display">\[T_c=\frac{2}{\ln\big(1+\sqrt2\big)}\approx2.2692, \tag{25}\]</span> but not exactly at it.
 <hr>
 </section>
-<section id="the-logic-of-t_c-finite-size" class="level2">
-<h2 class="anchored" data-anchor-id="the-logic-of-t_c-finite-size">8. The logic of <span class="math inline">\(T_c\)</span>: finite size</h2>
-<p>A phase transition is a <strong>non-analyticity</strong> of <span class="math inline">\(\ln Z\)</span> (Lecture 4). For finite <span class="math inline">\(N\)</span>, <span class="math inline">\(Z\)</span> is a finite sum of exponentials of <span class="math inline">\(\beta\)</span> — an analytic function — so <strong>a finite lattice has no sharp transition</strong>. What we see are <em>pseudo-critical</em> features (peaks of <span class="math inline">\(c\)</span>, <span class="math inline">\(\chi\)</span>; the steepest drop of <span class="math inline">\(\langle|m|\rangle\)</span>) whose positions <span class="math inline">\(T^*(L)\)</span> approach <span class="math inline">\(T_c\)</span> as <span class="math inline">\(L\to\infty\)</span>, while the peaks grow.</p>
-<p>The mechanism: the correlation length <span class="math inline">\(\xi(T)\)</span> diverges at <span class="math inline">\(T_c\)</span>. On a lattice of size <span class="math inline">\(L\)</span> the critical behaviour is cut off when <span class="math inline">\(\xi(T)\approx L\)</span>, so the transition is rounded over a window that shrinks as <span class="math inline">\(L\)</span> grows. Since <span class="math inline">\(\xi\sim|T-T_c|^{-\nu}\)</span>, the window is <span class="math inline">\(|T-T_c|\sim L^{-1/\nu}\)</span>.</p>
-<p>We test this: <span class="math inline">\(\chi(T)\)</span> for <span class="math inline">\(L=10, 20, 40\)</span> on a fine grid around <span class="math inline">\(T_c\)</span>, measuring after every sweep.</p>
+<section id="finite-size-effects" class="level2">
+<h2 class="anchored" data-anchor-id="finite-size-effects">8. Finite-size effects</h2>
+<p>A phase transition is a <strong>non-analyticity</strong> of <span class="math inline">\(\ln Z\)</span> (Lecture 4). For finite <span class="math inline">\(N\)</span>, <span class="math inline">\(Z\)</span> is a finite sum of exponentials of <span class="math inline">\(\beta\)</span>, an analytic function, so <strong>a finite lattice has no sharp transition</strong>. What we see are <em>pseudo-critical</em> features (peaks of <span class="math inline">\(c\)</span> and <span class="math inline">\(\chi\)</span>, the steepest drop of <span class="math inline">\(\langle|m|\rangle\)</span>) whose positions <span class="math inline">\(T^*(L)\)</span> approach <span class="math inline">\(T_c\)</span> as <span class="math inline">\(L\)</span> grows without bound, while the peaks grow.</p>
+<p>The mechanism is the divergence of the correlation length <span class="math inline">\(\xi(T)\)</span> at <span class="math inline">\(T_c\)</span>. On a lattice of size <span class="math inline">\(L\)</span> the critical behaviour is cut off when <span class="math display">\[\xi(T)\approx L, \tag{26}\]</span> so the transition is rounded over a window that shrinks as <span class="math inline">\(L\)</span> grows. Since <span class="math display">\[\xi\sim|T-T_c|^{-\nu}, \tag{27}\]</span> the window is <span class="math display">\[|T-T_c|\sim L^{-1/\nu}. \tag{28}\]</span></p>
+<p>The prediction is tested by computing <span class="math inline">\(\chi(T)\)</span> for the lattice sizes 10, 20 and 40 on a fine grid around <span class="math inline">\(T_c\)</span>, measuring after every sweep.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T11:44:26.888790Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T11:44:26.887779Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T11:45:38.085459Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T11:45:38.084932Z&quot;}" data-execution_count="11">
 <details open="">
 <summary>Code</summary>
@@ -937,7 +965,8 @@ peak of chi at T = 2.35      exact T_c = 2.2692</code></pre>
  40   2.30                 31.62    +0.031</code></pre>
 </div>
 </div>
-<strong>Conclusions.</strong> * As <span class="math inline">\(L\)</span> grows, the drop of <span class="math inline">\(\langle|m|\rangle\)</span> becomes steeper and approaches the exact curve; the peak of <span class="math inline">\(\chi\)</span> grows and moves toward <span class="math inline">\(T_c\)</span> (see the table above; the grid spacing <span class="math inline">\(0.04\)</span> limits the resolution of <span class="math inline">\(T^*(L)\)</span>). * <em>Locating</em> <span class="math inline">\(T_c\)</span> from finite data is a <strong>finite-size extrapolation</strong>, not a single measurement. The CNN in Lab 011 faces exactly the same limitation: its estimate <span class="math inline">\(\bar T_c\)</span> is a pseudo-critical temperature of an <span class="math inline">\(L\times L\)</span> lattice. * What the samples <strong>do not</strong> tell us is <em>why</em> there is a transition, or why at <span class="math inline">\(2/\ln(1+\sqrt2)\)</span>. That came from Onsager’s exact solution (Lecture 4).
+<p>As <span class="math inline">\(L\)</span> grows, the drop of <span class="math inline">\(\langle|m|\rangle\)</span> becomes steeper and approaches the exact curve, and the peak of <span class="math inline">\(\chi\)</span> grows and moves toward <span class="math inline">\(T_c\)</span>: in the table above <span class="math inline">\(T^*(L)\)</span> goes from 2.46 to 2.38 to 2.30 for the lattice sizes 10, 20 and 40, while <span class="math inline">\(\chi_{\max}\)</span> rises from 2.64 to 31.62 (the grid spacing 0.04 limits the resolution of <span class="math inline">\(T^*(L)\)</span>).</p>
+Locating <span class="math inline">\(T_c\)</span> from finite data is therefore a <strong>finite-size extrapolation</strong>, not a single measurement. The CNN in Lab 011 faces exactly the same limitation: its estimate <span class="math inline">\(\bar T_c\)</span> is a pseudo-critical temperature of an <span class="math inline">\(L\times L\)</span> lattice. What the samples <strong>do not</strong> tell us is <em>why</em> there is a transition, or why it sits at the value of equation (25). That answer came from Onsager’s exact solution (Lecture 4 and Lab 012).
 <hr>
 </section>
 <section id="exercises" class="level2">
@@ -945,8 +974,8 @@ peak of chi at T = 2.35      exact T_c = 2.2692</code></pre>
 <ol type="1">
 <li>Change <code>Nx, Ny</code> in Section 5 to a rectangular lattice, e.g.&nbsp;<span class="math inline">\(40\times10\)</span>. How do the snapshots and <span class="math inline">\(\langle|m|\rangle(T)\)</span> change? (Hint: the shorter side limits <span class="math inline">\(\xi\)</span>.)</li>
 <li>Start the dataset from a <strong>hot</strong> start at all temperatures and repeat Section 7. Which temperatures are affected, and why?</li>
-<li>Measure <span class="math inline">\(\tau_{\rm int}\)</span> at <span class="math inline">\(T\approx T_c\)</span> for <span class="math inline">\(L=10,20,40\)</span>. How does it grow with <span class="math inline">\(L\)</span>?</li>
-<li>Implement the heat-bath (Glauber) rule <span class="math inline">\(p(s_i=+1)=1/(1+e^{-2\beta\phi_i})\)</span> instead of Metropolis, and check that the averages do not change.</li>
+<li>Measure <span class="math inline">\(\tau_{\rm int}\)</span> close to <span class="math inline">\(T_c\)</span> for the lattice sizes 10, 20 and 40. How does it grow with <span class="math inline">\(L\)</span>?</li>
+<li>Implement the heat-bath (Glauber) rule <span class="math display">\[p(s_i=+1)=\frac{1}{1+e^{-2\beta\phi_i}} \tag{29}\]</span> instead of Metropolis, and check that the averages do not change.</li>
 </ol>
 
 

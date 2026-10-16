@@ -92,7 +92,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<link href="../../about.html" rel="next">
+<link href="../../lectures/lecture-07.html" rel="next">
 <link href="../../notebooks/lecture-06/generative-models.html" rel="prev">
 <script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
@@ -176,7 +176,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </li>  
         <li>
     <a class="dropdown-item" href="../../lectures/lecture-06.html">
- <span class="dropdown-text">6 · Generative Models</span></a>
+ <span class="dropdown-text">6 · Probability and Variational Autoencoders</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-07.html">
+ <span class="dropdown-text">7 · Adversarial and Diffusion Models</span></a>
   </li>  
     </ul>
   </li>
@@ -313,6 +317,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-03/lab-013a-cnn-pytorch.html" class="sidebar-item-text sidebar-link">Lab 013a: CNNs on MNIST and CIFAR-10 in PyTorch</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-03/lab-013b-cnn-jax.html" class="sidebar-item-text sidebar-link">Lab 013b: CNNs on MNIST and CIFAR-10 in JAX</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../notebooks/lecture-03/limits-of-deep-networks.html" class="sidebar-item-text sidebar-link">Limits of deep networks</a>
   </div>
 </li>
@@ -370,7 +384,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../lectures/lecture-06.html" class="sidebar-item-text sidebar-link">6 · Generative Models</a>
+            <a href="../../lectures/lecture-06.html" class="sidebar-item-text sidebar-link">6 · Probability and Variational Autoencoders</a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -384,6 +398,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/lecture-06/conditional-generation.html" class="sidebar-item-text sidebar-link active">Conditional generation of digits and blood cells</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-07.html" class="sidebar-item-text sidebar-link">7 · Adversarial and Diffusion Models</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-07/generative-models.html" class="sidebar-item-text sidebar-link">Generative models: probability, VAE, GAN and diffusion</a>
   </div>
 </li>
       </ul>
@@ -402,34 +431,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#lecture-6-generating-a-chosen-class-with-a-conditional-vae" id="toc-lecture-6-generating-a-chosen-class-with-a-conditional-vae" class="nav-link active" data-scroll-target="#lecture-6-generating-a-chosen-class-with-a-conditional-vae">Lecture 6: Generating a Chosen Class with a Conditional VAE</a>
+  <li><a href="#conditional-generation" id="toc-conditional-generation" class="nav-link active" data-scroll-target="#conditional-generation">Conditional generation</a>
   <ul class="collapse">
-  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a></li>
-  <li><a href="#mnist" id="toc-mnist" class="nav-link" data-scroll-target="#mnist">MNIST</a></li>
-  <li><a href="#the-vae-in-a-2d-latent-space" id="toc-the-vae-in-a-2d-latent-space" class="nav-link" data-scroll-target="#the-vae-in-a-2d-latent-space">1. The VAE in a 2D Latent Space</a>
+  <li><a href="#mnist-data" id="toc-mnist-data" class="nav-link" data-scroll-target="#mnist-data">MNIST data</a></li>
+  <li><a href="#variational-autoencoder-in-a-two-dimensional-latent-space" id="toc-variational-autoencoder-in-a-two-dimensional-latent-space" class="nav-link" data-scroll-target="#variational-autoencoder-in-a-two-dimensional-latent-space">1. Variational autoencoder in a two-dimensional latent space</a>
   <ul class="collapse">
-  <li><a href="#a.-the-latent-space" id="toc-a.-the-latent-space" class="nav-link" data-scroll-target="#a.-the-latent-space">1a. The latent space</a></li>
-  <li><a href="#b.-the-reparametrisation-trick" id="toc-b.-the-reparametrisation-trick" class="nav-link" data-scroll-target="#b.-the-reparametrisation-trick">1b. The Reparametrisation Trick</a></li>
-  <li><a href="#c.-conditioning" id="toc-c.-conditioning" class="nav-link" data-scroll-target="#c.-conditioning">1c. Conditioning</a></li>
+  <li><a href="#latent-space" id="toc-latent-space" class="nav-link" data-scroll-target="#latent-space">1.1 Latent space</a></li>
+  <li><a href="#reparametrisation-trick" id="toc-reparametrisation-trick" class="nav-link" data-scroll-target="#reparametrisation-trick">1.2 Reparametrisation trick</a></li>
+  <li><a href="#conditioning" id="toc-conditioning" class="nav-link" data-scroll-target="#conditioning">1.3 Conditioning</a></li>
   </ul></li>
-  <li><a href="#generating-a-chosen-mnist-digit" id="toc-generating-a-chosen-mnist-digit" class="nav-link" data-scroll-target="#generating-a-chosen-mnist-digit">2. Generating a Chosen MNIST Digit</a>
+  <li><a href="#mnist-digits-of-a-chosen-class" id="toc-mnist-digits-of-a-chosen-class" class="nav-link" data-scroll-target="#mnist-digits-of-a-chosen-class">2. MNIST digits of a chosen class</a>
   <ul class="collapse">
-  <li><a href="#a.-a-classifier-trained-on-real-digits" id="toc-a.-a-classifier-trained-on-real-digits" class="nav-link" data-scroll-target="#a.-a-classifier-trained-on-real-digits">2a. A classifier trained on real digits</a></li>
-  <li><a href="#b.-the-conditional-vae-with-d8" id="toc-b.-the-conditional-vae-with-d8" class="nav-link" data-scroll-target="#b.-the-conditional-vae-with-d8">2b. The conditional VAE with <span class="math inline">\(d=8\)</span></a></li>
-  <li><a href="#c.-generating-a-chosen-digit" id="toc-c.-generating-a-chosen-digit" class="nav-link" data-scroll-target="#c.-generating-a-chosen-digit">2c. Generating a chosen digit</a></li>
-  <li><a href="#d.-classifier-check-of-the-synthetic-digits" id="toc-d.-classifier-check-of-the-synthetic-digits" class="nav-link" data-scroll-target="#d.-classifier-check-of-the-synthetic-digits">2d. Classifier Check of the Synthetic Digits</a></li>
-  <li><a href="#e.-training-on-synthetic-digits-only" id="toc-e.-training-on-synthetic-digits-only" class="nav-link" data-scroll-target="#e.-training-on-synthetic-digits-only">2e. Training on synthetic digits only</a></li>
+  <li><a href="#classifier-trained-on-real-digits" id="toc-classifier-trained-on-real-digits" class="nav-link" data-scroll-target="#classifier-trained-on-real-digits">2.1 Classifier trained on real digits</a></li>
+  <li><a href="#conditional-vae-with-d8" id="toc-conditional-vae-with-d8" class="nav-link" data-scroll-target="#conditional-vae-with-d8">2.2 Conditional VAE with <span class="math inline">\(d=8\)</span></a></li>
+  <li><a href="#generation-of-a-chosen-digit" id="toc-generation-of-a-chosen-digit" class="nav-link" data-scroll-target="#generation-of-a-chosen-digit">2.3 Generation of a chosen digit</a></li>
+  <li><a href="#classification-of-the-synthetic-digits" id="toc-classification-of-the-synthetic-digits" class="nav-link" data-scroll-target="#classification-of-the-synthetic-digits">2.4 Classification of the synthetic digits</a></li>
+  <li><a href="#classifier-trained-on-synthetic-digits" id="toc-classifier-trained-on-synthetic-digits" class="nav-link" data-scroll-target="#classifier-trained-on-synthetic-digits">2.5 Classifier trained on synthetic digits</a></li>
   </ul></li>
   <li><a href="#blood-cells-of-a-chosen-type" id="toc-blood-cells-of-a-chosen-type" class="nav-link" data-scroll-target="#blood-cells-of-a-chosen-type">3. Blood cells of a chosen type</a>
   <ul class="collapse">
-  <li><a href="#a.-a-classifier-trained-on-real-cells" id="toc-a.-a-classifier-trained-on-real-cells" class="nav-link" data-scroll-target="#a.-a-classifier-trained-on-real-cells">3a. A classifier trained on real cells</a></li>
-  <li><a href="#b.-a-convolutional-conditional-vae" id="toc-b.-a-convolutional-conditional-vae" class="nav-link" data-scroll-target="#b.-a-convolutional-conditional-vae">3b. A convolutional conditional VAE</a></li>
-  <li><a href="#c.-generating-a-cell-of-a-chosen-type" id="toc-c.-generating-a-cell-of-a-chosen-type" class="nav-link" data-scroll-target="#c.-generating-a-cell-of-a-chosen-type">3c. Generating a cell of a chosen type</a></li>
-  <li><a href="#d.-classifier-check-of-the-synthetic-cells" id="toc-d.-classifier-check-of-the-synthetic-cells" class="nav-link" data-scroll-target="#d.-classifier-check-of-the-synthetic-cells">3d. Classifier Check of the Synthetic Cells</a></li>
-  <li><a href="#e.-training-on-synthetic-cells-only" id="toc-e.-training-on-synthetic-cells-only" class="nav-link" data-scroll-target="#e.-training-on-synthetic-cells-only">3e. Training on synthetic cells only</a></li>
+  <li><a href="#classifier-trained-on-real-cells" id="toc-classifier-trained-on-real-cells" class="nav-link" data-scroll-target="#classifier-trained-on-real-cells">3.1 Classifier trained on real cells</a></li>
+  <li><a href="#convolutional-conditional-vae" id="toc-convolutional-conditional-vae" class="nav-link" data-scroll-target="#convolutional-conditional-vae">3.2 Convolutional conditional VAE</a></li>
+  <li><a href="#generation-of-a-cell-of-a-chosen-type" id="toc-generation-of-a-cell-of-a-chosen-type" class="nav-link" data-scroll-target="#generation-of-a-cell-of-a-chosen-type">3.3 Generation of a cell of a chosen type</a></li>
+  <li><a href="#classification-of-the-synthetic-cells" id="toc-classification-of-the-synthetic-cells" class="nav-link" data-scroll-target="#classification-of-the-synthetic-cells">3.4 Classification of the synthetic cells</a></li>
+  <li><a href="#classifier-trained-on-synthetic-cells" id="toc-classifier-trained-on-synthetic-cells" class="nav-link" data-scroll-target="#classifier-trained-on-synthetic-cells">3.5 Classifier trained on synthetic cells</a></li>
   </ul></li>
-  <li><a href="#training-and-testing-on-real-and-synthetic-data" id="toc-training-and-testing-on-real-and-synthetic-data" class="nav-link" data-scroll-target="#training-and-testing-on-real-and-synthetic-data">4. Training and Testing on Real and Synthetic Data</a></li>
-  <li><a href="#numbers-used-on-the-slides" id="toc-numbers-used-on-the-slides" class="nav-link" data-scroll-target="#numbers-used-on-the-slides">Numbers used on the slides</a></li>
+  <li><a href="#real-and-synthetic-data-for-training-and-testing" id="toc-real-and-synthetic-data-for-training-and-testing" class="nav-link" data-scroll-target="#real-and-synthetic-data-for-training-and-testing">4. Real and synthetic data for training and testing</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/MarcinPlodzien/deep-learning-for-scientific-discovery/blob/main/notebooks/lecture-06/conditional-generation.ipynb" class="toc-action">View source</a></p></div></div></nav>
@@ -455,18 +482,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </header>
 
 <p><a href="https://colab.research.google.com/github/MarcinPlodzien/deep-learning-for-scientific-discovery/blob/main/notebooks/lecture-06/conditional-generation.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Colab"></a></p>
-<section id="lecture-6-generating-a-chosen-class-with-a-conditional-vae" class="level1">
-<h1>Lecture 6: Generating a Chosen Class with a Conditional VAE</h1>
+<section id="conditional-generation" class="level1">
+<h1>Conditional generation</h1>
 <p><em>Deep Learning for Scientific Discovery, Jagiellonian University. Author: Marcin Płodzień.</em></p>
-<p>A conditional VAE learns <span class="math inline">\(p_\theta(\mathbf x\,|\,\mathbf c)\)</span>: the distribution of images <span class="math inline">\(\mathbf x\)</span> of a given class <span class="math inline">\(\mathbf c\)</span>. This notebook first shows the logic of the VAE in a two-dimensional latent space (latent representation, reparametrisation trick, conditioning), and then does two things:</p>
-<ol type="1">
-<li><strong>generate</strong> new images of a class we choose: a digit <span class="math inline">\(k\in\{0,\dots,9\}\)</span> (MNIST) and a blood-cell type (BloodMNIST);</li>
-<li><strong>check</strong> them with a classifier trained on <strong>real</strong> images only: does it recognise the synthetic images as the requested class? The answer is a confusion matrix, <em>requested class</em> against <em>predicted class</em>, next to the confusion matrix of the same classifier on real test images.</li>
-</ol>
-<p>Finally we ask whether synthetic digits can replace real ones: we train a classifier on synthetic images only and test it on real ones.</p>
-<p>Everything runs on a CPU in a few minutes. The trained weights are saved in <code>results/</code>.</p>
-<section id="setup" class="level2">
-<h2 class="anchored" data-anchor-id="setup">Setup</h2>
+<p>A conditional variational autoencoder (VAE) learns <span class="math inline">\(p_\theta(\mathbf x\,|\,\mathbf c)\)</span>, the distribution of images <span class="math inline">\(\mathbf x\)</span> of a given class <span class="math inline">\(\mathbf c\)</span>. Before using it, we look at the logic of the VAE in a two-dimensional latent space, where the latent representation, the reparametrisation trick and the effect of conditioning can all be drawn.</p>
+<p>With this in place, the notebook does two things. It <strong>generates</strong> new images of a class we choose, a digit <span class="math inline">\(k\in\{0,\dots,9\}\)</span> from MNIST and a blood-cell type from BloodMNIST. It then <strong>checks</strong> them with a classifier trained on <strong>real</strong> images only, asking whether the classifier recognises the synthetic images as the requested class. The answer is a confusion matrix of <em>requested class</em> against <em>predicted class</em>, which we place next to the confusion matrix of the same classifier on real test images. Finally, we ask whether synthetic images can replace real ones, by training a classifier on synthetic images only and testing it on real ones.</p>
+<p>Everything runs on a CPU (central processing unit) in a few minutes, and the trained weights are saved in <code>results/</code>.</p>
+<p>We begin with the imports and a few shared definitions: the computation is restricted to the CPU with four threads, figures for the slides go to <code>../beamer/figures</code>, numbers quoted on the slides are collected in the dictionary <code>nums</code> and saved to <code>results/</code>, and the function <code>seed</code> fixes the random generators of PyTorch and NumPy.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:00:50.264545Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:00:50.263970Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:00:53.723197Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:00:53.722441Z&quot;}" data-execution_count="1">
 <details open="">
 <summary>Code</summary>
@@ -487,10 +509,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    torch.manual_seed(k)<span class="op">;</span> <span class="cf">return</span> np.random.default_rng(k)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-</section>
-<section id="mnist" class="level2">
-<h2 class="anchored" data-anchor-id="mnist">MNIST</h2>
-<p>Pixels scaled to <span class="math inline">\([0,1]\)</span>; each image is a vector of 784 numbers. Labels <span class="math inline">\(y\in\{0,\dots,9\}\)</span>. The files are read from <code>data/MNIST_raw</code> (downloaded once if missing).</p>
+<section id="mnist-data" class="level2">
+<h2 class="anchored" data-anchor-id="mnist-data">MNIST data</h2>
+<p>The MNIST (Modified National Institute of Standards and Technology) data set contains <span class="math inline">\(28\times28\)</span> images of handwritten digits with labels <span class="math inline">\(y\in\{0,\dots,9\}\)</span>. The pixels are scaled to <span class="math inline">\([0,1]\)</span>, so each image is a vector of 784 numbers. The files are read from <code>data/MNIST_raw</code> and downloaded once if missing.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:00:53.727871Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:00:53.726981Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:00:54.241887Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:00:54.238947Z&quot;}" data-execution_count="2">
 <details open="">
 <summary>Code</summary>
@@ -522,13 +543,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </section>
-<section id="the-vae-in-a-2d-latent-space" class="level2">
-<h2 class="anchored" data-anchor-id="the-vae-in-a-2d-latent-space">1. The VAE in a 2D Latent Space</h2>
-<p><strong>Latent-space representation.</strong> An encoder compresses an image <span class="math inline">\(\mathbf x\in\mathbb R^{784}\)</span> into a few numbers <span class="math inline">\(\mathbf z\in\mathbb R^d\)</span>, its <em>latent representation</em>: coordinates in which similar images are close. A decoder <span class="math inline">\(G\)</span> maps <span class="math inline">\(\mathbf z\)</span> back to an image. With <span class="math inline">\(d=2\)</span> we can draw the latent space.</p>
-<p><strong>From a point to a cloud.</strong> A plain autoencoder sends <span class="math inline">\(\mathbf x\)</span> to one point. A VAE sends it to a Gaussian cloud <span class="math inline">\(q_\phi(\mathbf z\,|\,\mathbf x)=\mathcal N\big(\boldsymbol\mu(\mathbf x),\operatorname{diag}\boldsymbol\sigma^2(\mathbf x)\big)\)</span>: the encoder outputs the centre <span class="math inline">\(\boldsymbol\mu\)</span> and the widths <span class="math inline">\(\boldsymbol\sigma\)</span> (as <span class="math inline">\(\log\boldsymbol\sigma^2\)</span>, which can take any sign). In training, a random point of the cloud is decoded, so <em>every</em> point near <span class="math inline">\(\boldsymbol\mu(\mathbf x)\)</span> must decode to something like <span class="math inline">\(\mathbf x\)</span>.</p>
-<p><strong>The loss</strong> has two terms, per image: <span class="math display">\[\mathcal L(\mathbf x)=\underbrace{-\sum_{j=1}^{784}\big[x_j\log\hat x_j+(1-x_j)\log(1-\hat x_j)\big]}_{\text{reconstruction: } -\log p_\theta(\mathbf x|\mathbf z)}+\underbrace{\tfrac12\sum_{k=1}^{d}\big(\mu_k^2+\sigma_k^2-\ln\sigma_k^2-1\big)}_{\mathrm{KL}(q_\phi(\mathbf z|\mathbf x)\,\|\,\mathcal N(0,I))},\qquad \hat{\mathbf x}=\operatorname{sigmoid}\big(G(\mathbf z)\big).\]</span> The KL term pulls every cloud towards <span class="math inline">\(\mathcal N(0,I)\)</span>, so the clouds of all training images together fill the standard Gaussian without gaps. Then a random <span class="math inline">\(\mathbf z\sim\mathcal N(0,I)\)</span> lands where the decoder was trained: this is what makes <strong>generation</strong> possible.</p>
-<p><strong>The reparametrisation trick.</strong> “Draw <span class="math inline">\(\mathbf z\)</span> from <span class="math inline">\(\mathcal N(\boldsymbol\mu,\boldsymbol\sigma^2)\)</span>” has no derivative with respect to <span class="math inline">\(\boldsymbol\mu\)</span> and <span class="math inline">\(\boldsymbol\sigma\)</span>. Write instead <span class="math display">\[\mathbf z=\boldsymbol\mu+\boldsymbol\sigma\odot\boldsymbol\varepsilon,\qquad\boldsymbol\varepsilon\sim\mathcal N(0,I):\]</span> the randomness is an input <span class="math inline">\(\boldsymbol\varepsilon\)</span> that does not depend on the weights, <span class="math inline">\(\partial z_k/\partial\mu_k=1\)</span>, <span class="math inline">\(\partial z_k/\partial\sigma_k=\varepsilon_k\)</span>, and backpropagation runs through <span class="math inline">\(\mathbf z\)</span> into the encoder.</p>
-<p>The class below is used for the plain VAE (<code>cond=0</code>) and, later, for the conditional VAE (<code>cond=10</code>, the condition concatenated to the inputs of both networks).</p>
+<section id="variational-autoencoder-in-a-two-dimensional-latent-space" class="level2">
+<h2 class="anchored" data-anchor-id="variational-autoencoder-in-a-two-dimensional-latent-space">1. Variational autoencoder in a two-dimensional latent space</h2>
+<p>An encoder compresses an image <span class="math inline">\(\mathbf x\in\mathbb R^{784}\)</span> into a few numbers <span class="math inline">\(\mathbf z\in\mathbb R^d\)</span>, its <em>latent representation</em>: coordinates in which similar images are close. A decoder <span class="math inline">\(G\)</span> maps <span class="math inline">\(\mathbf z\)</span> back to an image. With <span class="math inline">\(d=2\)</span> the latent space can be drawn.</p>
+<p>A plain autoencoder sends <span class="math inline">\(\mathbf x\)</span> to a single point. A VAE instead sends it to a Gaussian cloud <span class="math inline">\(q_\phi(\mathbf z\,|\,\mathbf x)=\mathcal N\big(\boldsymbol\mu(\mathbf x),\operatorname{diag}\boldsymbol\sigma^2(\mathbf x)\big)\)</span>: the encoder outputs the centre <span class="math inline">\(\boldsymbol\mu\)</span> and the widths <span class="math inline">\(\boldsymbol\sigma\)</span>, the latter as <span class="math inline">\(\log\boldsymbol\sigma^2\)</span>, which can take any sign. In training, a random point of the cloud is decoded, so <em>every</em> point near <span class="math inline">\(\boldsymbol\mu(\mathbf x)\)</span> must decode to something like <span class="math inline">\(\mathbf x\)</span>.</p>
+<p>The loss has two terms per image, <span class="math display">\[\mathcal L(\mathbf x)=\underbrace{-\sum_{j=1}^{784}\big[x_j\log\hat x_j+(1-x_j)\log(1-\hat x_j)\big]}_{\text{reconstruction: } -\log p_\theta(\mathbf x|\mathbf z)}+\underbrace{\tfrac12\sum_{k=1}^{d}\big(\mu_k^2+\sigma_k^2-\ln\sigma_k^2-1\big)}_{\mathrm{KL}(q_\phi(\mathbf z|\mathbf x)\,\|\,\mathcal N(0,I))},\qquad \hat{\mathbf x}=\operatorname{sigmoid}\big(G(\mathbf z)\big).\]</span> The first term is the binary cross-entropy between the image and its reconstruction. The second, the Kullback–Leibler (KL) divergence, pulls every cloud towards <span class="math inline">\(\mathcal N(0,I)\)</span>, so that the clouds of all training images together fill the standard Gaussian without gaps. A random <span class="math inline">\(\mathbf z\sim\mathcal N(0,I)\)</span> then lands where the decoder was trained, and this is what makes <strong>generation</strong> possible.</p>
+<p>One obstacle remains: the operation “draw <span class="math inline">\(\mathbf z\)</span> from <span class="math inline">\(\mathcal N(\boldsymbol\mu,\boldsymbol\sigma^2)\)</span>” has no derivative with respect to <span class="math inline">\(\boldsymbol\mu\)</span> and <span class="math inline">\(\boldsymbol\sigma\)</span>. The reparametrisation trick removes it by writing <span class="math display">\[\mathbf z=\boldsymbol\mu+\boldsymbol\sigma\odot\boldsymbol\varepsilon,\qquad\boldsymbol\varepsilon\sim\mathcal N(0,I).\]</span> The randomness is now an input <span class="math inline">\(\boldsymbol\varepsilon\)</span> that does not depend on the weights, <span class="math inline">\(\partial z_k/\partial\mu_k=1\)</span> and <span class="math inline">\(\partial z_k/\partial\sigma_k=\varepsilon_k\)</span>, and backpropagation runs through <span class="math inline">\(\mathbf z\)</span> into the encoder.</p>
+<p>The class below is used both for the plain VAE (<code>cond=0</code>) and, later, for the conditional VAE (<code>cond=10</code>, with the condition concatenated to the inputs of both networks). We first train a plain VAE with <span class="math inline">\(d=2\)</span> for 20 epochs.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:00:54.257532Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:00:54.256973Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:03:57.847895Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:03:57.845178Z&quot;}" data-execution_count="3">
 <details open="">
 <summary>Code</summary>
@@ -592,9 +613,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 VAE with d = 2 trained in 184 s</code></pre>
 </div>
 </div>
-<section id="a.-the-latent-space" class="level3">
-<h3 class="anchored" data-anchor-id="a.-the-latent-space">1a. The latent space</h3>
-<p>Each test digit is encoded to the centre <span class="math inline">\(\boldsymbol\mu(\mathbf x)\)</span> of its cloud, a point in the plane. The colour is the digit label, which the VAE never saw: it is used only to read the picture. The dashed circles mark radius 1 and 2 of <span class="math inline">\(\mathcal N(0,I)\)</span>.</p>
+<section id="latent-space" class="level3">
+<h3 class="anchored" data-anchor-id="latent-space">1.1 Latent space</h3>
+<p>After 20 epochs the loss per image is 138.7, of which 132.0 is reconstruction and 6.7 the KL term. We now encode each test digit to the centre <span class="math inline">\(\boldsymbol\mu(\mathbf x)\)</span> of its cloud, a point in the plane, and colour it by the digit label. The VAE never saw these labels; they serve only to read the picture. The dashed circles mark radius 1 and 2 of <span class="math inline">\(\mathcal N(0,I)\)</span>.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:03:57.852083Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:03:57.851317Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:03:59.096069Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:03:59.092493Z&quot;}" data-execution_count="4">
 <details open="">
 <summary>Code</summary>
@@ -625,11 +646,11 @@ fraction of centres within radius 1, 2, 3: [0.488, 0.797, 0.965]  (N(0,I) in 2D:
   plt.savefig(f"{OUT}/cond_vae_latent.png", dpi=170, bbox_inches="tight"); plt.show()</code></pre>
 </div>
 </div>
-<p>Digits of the same class sit together, although no label was used in training. The centres are concentrated around the origin, where <span class="math inline">\(\mathcal N(0,I)\)</span> puts its probability; compare the printed fractions within radius 1, 2, 3 with those of <span class="math inline">\(\mathcal N(0,I)\)</span>. The KL term pulls the clouds there, the reconstruction term pushes the classes apart, and some classes (0, 1, 7) sit at the edge.</p>
+<p>Digits of the same class sit together, although no label was used in training. The clouds are narrow, with a mean width <span class="math inline">\(\sigma\)</span> of 0.041, and their centres are concentrated around the origin, where <span class="math inline">\(\mathcal N(0,I)\)</span> puts its probability: 48.8%, 79.7% and 96.5% of them lie within radius 1, 2 and 3, against 39.3%, 86.5% and 98.9% for <span class="math inline">\(\mathcal N(0,I)\)</span> in two dimensions. The KL term pulls the clouds towards the origin, the reconstruction term pushes the classes apart, and some classes (0, 1, 7) sit at the edge.</p>
 </section>
-<section id="b.-the-reparametrisation-trick" class="level3">
-<h3 class="anchored" data-anchor-id="b.-the-reparametrisation-trick">1b. The Reparametrisation Trick</h3>
-<p>Take one test image. The encoder gives its cloud <span class="math inline">\((\boldsymbol\mu,\boldsymbol\sigma)\)</span>. We draw 8 noises <span class="math inline">\(\boldsymbol\varepsilon\sim\mathcal N(0,I)\)</span>, form <span class="math inline">\(\mathbf z=\boldsymbol\mu+\boldsymbol\sigma\odot\boldsymbol\varepsilon\)</span>, and decode each: these are the images the decoder must produce during training for this one input.</p>
+<section id="reparametrisation-trick" class="level3">
+<h3 class="anchored" data-anchor-id="reparametrisation-trick">1.2 Reparametrisation trick</h3>
+<p>To see what the decoder must learn for a single input, we take one test image and let the encoder give its cloud <span class="math inline">\((\boldsymbol\mu,\boldsymbol\sigma)\)</span>. We draw 8 noises <span class="math inline">\(\boldsymbol\varepsilon\sim\mathcal N(0,I)\)</span>, form <span class="math inline">\(\mathbf z=\boldsymbol\mu+\boldsymbol\sigma\odot\boldsymbol\varepsilon\)</span>, and decode each: these are the images the decoder must produce during training for this one input. We also let automatic differentiation compute the derivatives of <span class="math inline">\(z_1\)</span> with respect to <span class="math inline">\(\mu_1\)</span> and <span class="math inline">\(\sigma_1\)</span>.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:03:59.103529Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:03:59.102819Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:04:00.239240Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:04:00.238237Z&quot;}" data-execution_count="5">
 <details open="">
 <summary>Code</summary>
@@ -674,11 +695,11 @@ dz1/dmu1 = 1.0   dz1/dsigma1 = -0.2367   eps1 = -0.2367</code></pre>
   plt.savefig(f"{OUT}/cond_vae_cloud.png", dpi=170, bbox_inches="tight"); plt.show()</code></pre>
 </div>
 </div>
-<p>All eight decoded images are versions of the input digit: nearby points of the latent space decode to similar images. (With only <span class="math inline">\(d=2\)</span> latent numbers the VAE cannot rebuild every digit well; we picked the 0 it rebuilds best. A badly rebuilt input, e.g.&nbsp;an unusual 5, can land in the region of another digit and decode to it.) Autograd confirms <span class="math inline">\(\partial z_1/\partial\mu_1=1\)</span> and <span class="math inline">\(\partial z_1/\partial\sigma_1=\varepsilon_1\)</span>: the noise enters as a constant, and the gradient of the loss reaches <span class="math inline">\(\boldsymbol\mu\)</span> and <span class="math inline">\(\boldsymbol\sigma\)</span>, hence the encoder.</p>
+<p>All eight decoded images are versions of the input digit: nearby points of the latent space decode to similar images. With only <span class="math inline">\(d=2\)</span> latent numbers the VAE cannot rebuild every digit well, so we picked the 0 it rebuilds best; a badly rebuilt input, such as an unusual 5, can land in the region of another digit and decode to it. Automatic differentiation confirms <span class="math inline">\(\partial z_1/\partial\mu_1=1\)</span> and <span class="math inline">\(\partial z_1/\partial\sigma_1=\varepsilon_1=-0.2367\)</span>: the noise enters as a constant, and the gradient of the loss reaches <span class="math inline">\(\boldsymbol\mu\)</span> and <span class="math inline">\(\boldsymbol\sigma\)</span>, and hence the encoder.</p>
 </section>
-<section id="c.-conditioning" class="level3">
-<h3 class="anchored" data-anchor-id="c.-conditioning">1c. Conditioning</h3>
-<p>A conditional VAE receives the label as <span class="math inline">\(\mathbf c\)</span> (one-hot) in <strong>both</strong> networks: <span class="math inline">\(q_\phi(\mathbf z\,|\,\mathbf x,\mathbf c)\)</span> and <span class="math inline">\(p_\theta(\mathbf x\,|\,\mathbf z,\mathbf c)\)</span>. The decoder already knows <em>which</em> digit to draw from <span class="math inline">\(\mathbf c\)</span>, so the latent space no longer needs to encode the class: it keeps only what <span class="math inline">\(\mathbf c\)</span> does not say, the <strong>style</strong>. We train one with <span class="math inline">\(d=2\)</span> and draw its latent space with the same colours.</p>
+<section id="conditioning" class="level3">
+<h3 class="anchored" data-anchor-id="conditioning">1.3 Conditioning</h3>
+<p>A conditional VAE receives the label as a one-hot vector <span class="math inline">\(\mathbf c\)</span> in <strong>both</strong> networks, <span class="math inline">\(q_\phi(\mathbf z\,|\,\mathbf x,\mathbf c)\)</span> and <span class="math inline">\(p_\theta(\mathbf x\,|\,\mathbf z,\mathbf c)\)</span>. Since the decoder already knows from <span class="math inline">\(\mathbf c\)</span> <em>which</em> digit to draw, the latent space no longer needs to encode the class and keeps only what <span class="math inline">\(\mathbf c\)</span> does not say, the <strong>style</strong>. We train one with <span class="math inline">\(d=2\)</span> and draw its latent space with the same colours.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:04:00.255243Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:04:00.254682Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:06:58.401772Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:06:58.400708Z&quot;}" data-execution_count="6">
 <details open="">
 <summary>Code</summary>
@@ -725,15 +746,15 @@ conditional VAE with d = 2 trained in 177 s</code></pre>
   plt.tight_layout(); plt.savefig(f"{OUT}/cond_cvae_latent.png", dpi=170, bbox_inches="tight"); plt.show()</code></pre>
 </div>
 </div>
-<p>Left: the colours are mixed. With the label given separately, the position in the latent space no longer says which digit it is. Right: each row uses one fixed <span class="math inline">\(\mathbf z\)</span> and all ten conditions; the digit changes along the row while the slant and thickness stay. This is conditioning in generation: <span class="math inline">\(\mathbf c\)</span> chooses <em>what</em>, <span class="math inline">\(\mathbf z\)</span> chooses <em>how</em>.</p>
+<p>The conditional VAE reaches a lower loss per image than the plain one, 127.3 against 138.7, because the label supplies part of the information. In the left panel the colours are mixed: with the label given separately, the position in the latent space no longer says which digit it is. In the right panel each row uses one fixed <span class="math inline">\(\mathbf z\)</span> with all ten conditions, and the digit changes along the row while the slant and thickness stay the same. This is conditioning in generation: <span class="math inline">\(\mathbf c\)</span> chooses <em>what</em> is drawn, <span class="math inline">\(\mathbf z\)</span> chooses <em>how</em>.</p>
 <p>For the rest of the notebook we use a conditional VAE with <span class="math inline">\(d=8\)</span>, which draws better digits than <span class="math inline">\(d=2\)</span>.</p>
 </section>
 </section>
-<section id="generating-a-chosen-mnist-digit" class="level2">
-<h2 class="anchored" data-anchor-id="generating-a-chosen-mnist-digit">2. Generating a Chosen MNIST Digit</h2>
-<section id="a.-a-classifier-trained-on-real-digits" class="level3">
-<h3 class="anchored" data-anchor-id="a.-a-classifier-trained-on-real-digits">2a. A classifier trained on real digits</h3>
-<p>The judge of the synthetic digits: a dense network <span class="math inline">\(784\to256\to10\)</span>, trained with cross-entropy on the real training images. We measure its accuracy and confusion matrix on the real test images first, so that we know how good the judge itself is.</p>
+<section id="mnist-digits-of-a-chosen-class" class="level2">
+<h2 class="anchored" data-anchor-id="mnist-digits-of-a-chosen-class">2. MNIST digits of a chosen class</h2>
+<section id="classifier-trained-on-real-digits" class="level3">
+<h3 class="anchored" data-anchor-id="classifier-trained-on-real-digits">2.1 Classifier trained on real digits</h3>
+<p>To judge the synthetic digits we need a classifier that has only seen real ones. We use a dense network <span class="math inline">\(784\to256\to10\)</span>, trained with cross-entropy on the real training images, and first measure its accuracy and confusion matrix on the real test images, so that we know how good the judge itself is.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:06:58.412271Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:06:58.411472Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:07:03.260991Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:07:03.260140Z&quot;}" data-execution_count="7">
 <details open="">
 <summary>Code</summary>
@@ -764,15 +785,12 @@ conditional VAE with d = 2 trained in 177 s</code></pre>
 <pre><code>accuracy on real test digits: 0.969</code></pre>
 </div>
 </div>
+<p>The classifier reaches an accuracy of 0.969 on the real test digits.</p>
 </section>
-<section id="b.-the-conditional-vae-with-d8" class="level3">
-<h3 class="anchored" data-anchor-id="b.-the-conditional-vae-with-d8">2b. The conditional VAE with <span class="math inline">\(d=8\)</span></h3>
-<p>Encoder <span class="math inline">\(q_\phi(\mathbf z\,|\,\mathbf x,\mathbf c)\)</span> and decoder <span class="math inline">\(p_\theta(\mathbf x\,|\,\mathbf z,\mathbf c)\)</span> are dense networks; the condition <span class="math inline">\(\mathbf c\)</span> (one-hot digit, 10 numbers) is <strong>concatenated</strong> to the input of both:</p>
-<ul>
-<li>encoder: <span class="math inline">\([\mathbf x,\mathbf c]\)</span> (<span class="math inline">\(784+10\)</span>) <span class="math inline">\(\to512\to256\to(\boldsymbol\mu,\log\boldsymbol\sigma^2)\)</span>, each of size <span class="math inline">\(d=8\)</span>;</li>
-<li>decoder: <span class="math inline">\([\mathbf z,\mathbf c]\)</span> (<span class="math inline">\(8+10\)</span>) <span class="math inline">\(\to256\to512\to784\)</span> logits; the sigmoid gives pixels in <span class="math inline">\([0,1]\)</span>.</li>
-</ul>
-<p>Loss per image: binary cross-entropy (reconstruction) + <span class="math inline">\(\mathrm{KL}\big(\mathcal N(\boldsymbol\mu,\operatorname{diag}\boldsymbol\sigma^2)\,\|\,\mathcal N(0,I)\big)=\tfrac12\sum_k(\mu_k^2+\sigma_k^2-\ln\sigma_k^2-1)\)</span>.</p>
+<section id="conditional-vae-with-d8" class="level3">
+<h3 class="anchored" data-anchor-id="conditional-vae-with-d8">2.2 Conditional VAE with <span class="math inline">\(d=8\)</span></h3>
+<p>Encoder <span class="math inline">\(q_\phi(\mathbf z\,|\,\mathbf x,\mathbf c)\)</span> and decoder <span class="math inline">\(p_\theta(\mathbf x\,|\,\mathbf z,\mathbf c)\)</span> are dense networks, and the condition <span class="math inline">\(\mathbf c\)</span>, the one-hot digit with 10 entries, is <strong>concatenated</strong> to the input of both. The encoder maps <span class="math inline">\([\mathbf x,\mathbf c]\)</span> (<span class="math inline">\(784+10\)</span> numbers) through layers of 512 and 256 units to <span class="math inline">\((\boldsymbol\mu,\log\boldsymbol\sigma^2)\)</span>, each of size <span class="math inline">\(d=8\)</span>. The decoder maps <span class="math inline">\([\mathbf z,\mathbf c]\)</span> (<span class="math inline">\(8+10\)</span> numbers) through layers of 256 and 512 units to 784 logits, and the sigmoid turns them into pixels in <span class="math inline">\([0,1]\)</span>.</p>
+<p>The loss per image is again the binary cross-entropy of the reconstruction plus <span class="math inline">\(\mathrm{KL}\big(\mathcal N(\boldsymbol\mu,\operatorname{diag}\boldsymbol\sigma^2)\,\|\,\mathcal N(0,I)\big)=\tfrac12\sum_k(\mu_k^2+\sigma_k^2-\ln\sigma_k^2-1)\)</span>.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:07:03.269689Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:07:03.268149Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:09:56.219085Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:09:56.218157Z&quot;}" data-execution_count="8">
 <details open="">
 <summary>Code</summary>
@@ -795,15 +813,11 @@ conditional VAE with d = 2 trained in 177 s</code></pre>
 trained in 173 s</code></pre>
 </div>
 </div>
+<p>After 20 epochs the loss per image is 97.6, with reconstruction 83.4 and KL 14.2.</p>
 </section>
-<section id="c.-generating-a-chosen-digit" class="level3">
-<h3 class="anchored" data-anchor-id="c.-generating-a-chosen-digit">2c. Generating a chosen digit</h3>
-<p>Generation uses <strong>only the decoder</strong>. To get <span class="math inline">\(n\)</span> images of digit <span class="math inline">\(k\)</span>:</p>
-<ol type="1">
-<li>the condition: <span class="math inline">\(\mathbf c=\mathbf e_k\)</span>, the one-hot vector of <span class="math inline">\(k\)</span>, repeated <span class="math inline">\(n\)</span> times;</li>
-<li>the style: <span class="math inline">\(n\)</span> random latent vectors <span class="math inline">\(\mathbf z\sim\mathcal N(0,I)\)</span>;</li>
-<li>decode <span class="math inline">\([\mathbf z,\mathbf c]\)</span> and apply the sigmoid.</li>
-</ol>
+<section id="generation-of-a-chosen-digit" class="level3">
+<h3 class="anchored" data-anchor-id="generation-of-a-chosen-digit">2.3 Generation of a chosen digit</h3>
+<p>Generation uses <strong>only the decoder</strong>. To get <span class="math inline">\(n\)</span> images of digit <span class="math inline">\(k\)</span>, we form the condition <span class="math inline">\(\mathbf c=\mathbf e_k\)</span>, the one-hot vector of <span class="math inline">\(k\)</span>, repeated <span class="math inline">\(n\)</span> times; draw <span class="math inline">\(n\)</span> random latent vectors <span class="math inline">\(\mathbf z\sim\mathcal N(0,I)\)</span> for the style; and decode <span class="math inline">\([\mathbf z,\mathbf c]\)</span> and apply the sigmoid. The function <code>generate_digit</code> below does exactly this.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:09:56.228938Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:09:56.228257Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:09:59.421683Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:09:59.420830Z&quot;}" data-execution_count="9">
 <details open="">
 <summary>Code</summary>
@@ -828,11 +842,11 @@ trained in 173 s</code></pre>
   plt.subplots_adjust(wspace=0.04, hspace=0.04); plt.savefig(f"{OUT}/cond_generate_digits.png", dpi=170, bbox_inches="tight"); plt.show()</code></pre>
 </div>
 </div>
-<p>Row <span class="math inline">\(k\)</span>: <code>generate_digit(k, 12)</code>. Within a row the digit is fixed and the style (slant, thickness, width) changes with the random <span class="math inline">\(\mathbf z\)</span>.</p>
+<p>Row <span class="math inline">\(k\)</span> of the figure shows <code>generate_digit(k, 12)</code>. Within a row the digit is fixed, and the style (slant, thickness, width) changes with the random <span class="math inline">\(\mathbf z\)</span>.</p>
 </section>
-<section id="d.-classifier-check-of-the-synthetic-digits" class="level3">
-<h3 class="anchored" data-anchor-id="d.-classifier-check-of-the-synthetic-digits">2d. Classifier Check of the Synthetic Digits</h3>
-<p>We generate 1000 digits of each class and let the classifier, which never saw a synthetic image, label them. Row <span class="math inline">\(k\)</span> of the confusion matrix: the fraction of the digits <em>requested</em> as <span class="math inline">\(k\)</span> that the classifier assigns to each class.</p>
+<section id="classification-of-the-synthetic-digits" class="level3">
+<h3 class="anchored" data-anchor-id="classification-of-the-synthetic-digits">2.4 Classification of the synthetic digits</h3>
+<p>We now generate 1000 digits of each class and let the classifier, which never saw a synthetic image, label them. Row <span class="math inline">\(k\)</span> of the resulting confusion matrix gives the fraction of the digits <em>requested</em> as <span class="math inline">\(k\)</span> that the classifier assigns to each class.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:09:59.426254Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:09:59.425755Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:10:00.436869Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:10:00.435693Z&quot;}" data-execution_count="10">
 <details open="">
 <summary>Code</summary>
@@ -866,11 +880,11 @@ trained in 173 s</code></pre>
   plt.tight_layout(); plt.savefig(f"{OUT}/cond_mnist_confusion.png", dpi=170, bbox_inches="tight"); plt.show()</code></pre>
 </div>
 </div>
-<p>Numbers are percentages of each row. The diagonal of the right matrix says how often the generated digit is the one we asked for; the off-diagonal entries say what it is confused with, and can be compared with the confusions of the same classifier on real digits (left).</p>
+<p>The numbers in the matrices are percentages of each row. The diagonal of the right matrix says how often the generated digit is the one we asked for: between 90.6% (digit 9) and 99.0% (digit 4), 95.2% on average. The off-diagonal entries say what a generated digit is confused with, and can be compared with the confusions of the same classifier on real digits in the left matrix.</p>
 </section>
-<section id="e.-training-on-synthetic-digits-only" class="level3">
-<h3 class="anchored" data-anchor-id="e.-training-on-synthetic-digits-only">2e. Training on synthetic digits only</h3>
-<p>Train the same classifier architecture on <strong>60 000 synthetic digits only</strong> (6000 per class, labels = the requested digits) and test it on the <strong>real</strong> test digits.</p>
+<section id="classifier-trained-on-synthetic-digits" class="level3">
+<h3 class="anchored" data-anchor-id="classifier-trained-on-synthetic-digits">2.5 Classifier trained on synthetic digits</h3>
+<p>A harder test is whether the synthetic digits can stand in for real ones. We train the same classifier architecture on <strong>60 000 synthetic digits only</strong>, 6000 per class with the requested digits as labels, and test it on the <strong>real</strong> test digits.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:10:00.445347Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:10:00.444793Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:10:06.282978Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:10:06.279564Z&quot;}" data-execution_count="11">
 <details open="">
 <summary>Code</summary>
@@ -902,13 +916,13 @@ synthetic-data classifier on real test digits: 0.918</code></pre>
   plt.tight_layout(); plt.savefig(f"{OUT}/cond_mnist_train_synthetic.png", dpi=170, bbox_inches="tight"); plt.show()</code></pre>
 </div>
 </div>
-<p>The gap between the two accuracies measures what the generator misses of the real distribution: styles it never produces, and blurry strokes.</p>
-<p><strong>Try it.</strong> Mix real and synthetic training digits (e.g.&nbsp;1000 real + 60 000 synthetic). Does the synthetic data help when real data are scarce? Compare with 1000 real digits alone.</p>
+<p>The classifier trained on synthetic digits reaches 0.918 on real test digits, against 0.969 for the one trained on real digits. The gap measures what the generator misses of the real distribution: styles it never produces, and blurry strokes.</p>
+<p>As an exercise, mix real and synthetic training digits, for example 1000 real and 60 000 synthetic. Does the synthetic data help when real data are scarce? Compare with 1000 real digits alone.</p>
 </section>
 </section>
 <section id="blood-cells-of-a-chosen-type" class="level2">
 <h2 class="anchored" data-anchor-id="blood-cells-of-a-chosen-type">3. Blood cells of a chosen type</h2>
-<p>BloodMNIST (Lecture 4): <span class="math inline">\(28\times28\)</span> RGB images of eight types of normal blood cells. The file is taken from the Lecture 4 folder, or downloaded from Zenodo.</p>
+<p>BloodMNIST (Lecture 4) contains <span class="math inline">\(28\times28\)</span> images in RGB (red, green, blue) colour of eight types of normal blood cells. The file is taken from the Lecture 4 folder, or downloaded from Zenodo. Note that the classes are unbalanced, from 849 lymphocytes to 2330 neutrophils in the training set.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:10:06.289462Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:10:06.288476Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:10:06.835508Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:10:06.834920Z&quot;}" data-execution_count="12">
 <details open="">
 <summary>Code</summary>
@@ -931,9 +945,9 @@ synthetic-data classifier on real test digits: 0.918</code></pre>
 training images per type: {'basophil': 852, 'eosinophil': 2181, 'erythroblast': 1085, 'immature granulocyte': 2026, 'lymphocyte': 849, 'monocyte': 993, 'neutrophil': 2330, 'platelet': 1643}</code></pre>
 </div>
 </div>
-<section id="a.-a-classifier-trained-on-real-cells" class="level3">
-<h3 class="anchored" data-anchor-id="a.-a-classifier-trained-on-real-cells">3a. A classifier trained on real cells</h3>
-<p>A small CNN: two blocks of <span class="math inline">\(3\times3\)</span> convolution, ReLU and <span class="math inline">\(2\times2\)</span> max-pooling (<span class="math inline">\(28\to14\to7\)</span>), then <span class="math inline">\(64\cdot7\cdot7\to128\to8\)</span>.</p>
+<section id="classifier-trained-on-real-cells" class="level3">
+<h3 class="anchored" data-anchor-id="classifier-trained-on-real-cells">3.1 Classifier trained on real cells</h3>
+<p>The judge for the cells is a small convolutional neural network (CNN): two blocks of <span class="math inline">\(3\times3\)</span> convolution, ReLU and <span class="math inline">\(2\times2\)</span> max-pooling (<span class="math inline">\(28\to14\to7\)</span> pixels), followed by dense layers <span class="math inline">\(64\cdot7\cdot7\to128\to8\)</span>.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:10:06.838651Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:10:06.838170Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:10:52.225829Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:10:52.224527Z&quot;}" data-execution_count="13">
 <details open="">
 <summary>Code</summary>
@@ -950,10 +964,11 @@ training images per type: {'basophil': 852, 'eosinophil': 2181, 'erythroblast': 
 <pre><code>accuracy on real test cells: 0.838</code></pre>
 </div>
 </div>
+<p>The CNN reaches an accuracy of 0.838 on the real test cells.</p>
 </section>
-<section id="b.-a-convolutional-conditional-vae" class="level3">
-<h3 class="anchored" data-anchor-id="b.-a-convolutional-conditional-vae">3b. A convolutional conditional VAE</h3>
-<p>A convolution sees an image as stacked channels, so the condition enters as <strong>8 extra input channels</strong>: channel <span class="math inline">\(k\)</span> is constant, 1 if the cell is of type <span class="math inline">\(k\)</span> and 0 otherwise. Encoder: <span class="math inline">\(28\times28\times(3+8)\to14\times14\times32\to7\times7\times64\to(\boldsymbol\mu,\log\boldsymbol\sigma^2)\)</span> with <span class="math inline">\(d=16\)</span>. Decoder: <span class="math inline">\([\mathbf z,\mathbf c]\)</span> (<span class="math inline">\(16+8\)</span>) <span class="math inline">\(\to7\times7\times64\to14\times14\times32\to28\times28\times3\)</span> logits (transposed convolutions double the size).</p>
+<section id="convolutional-conditional-vae" class="level3">
+<h3 class="anchored" data-anchor-id="convolutional-conditional-vae">3.2 Convolutional conditional VAE</h3>
+<p>A convolution sees an image as stacked channels, so the condition enters as <strong>8 extra input channels</strong>: channel <span class="math inline">\(k\)</span> is constant, equal to 1 if the cell is of type <span class="math inline">\(k\)</span> and 0 otherwise. The encoder maps <span class="math inline">\(28\times28\times(3+8)\to14\times14\times32\to7\times7\times64\to(\boldsymbol\mu,\log\boldsymbol\sigma^2)\)</span> with <span class="math inline">\(d=16\)</span>. The decoder maps <span class="math inline">\([\mathbf z,\mathbf c]\)</span> (<span class="math inline">\(16+8\)</span> numbers) <span class="math inline">\(\to7\times7\times64\to14\times14\times32\to28\times28\times3\)</span> logits, with transposed convolutions that double the size at each step.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:10:52.228513Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:10:52.228156Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:12:56.744850Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:12:56.744043Z&quot;}" data-execution_count="14">
 <details open="">
 <summary>Code</summary>
@@ -998,10 +1013,11 @@ training images per type: {'basophil': 852, 'eosinophil': 2181, 'erythroblast': 
 trained in 124 s</code></pre>
 </div>
 </div>
+<p>After 30 epochs the loss per image is 1203.4, with reconstruction 1188.1 and KL 15.3; the reconstruction term is much larger than for digits because it is summed over <span class="math inline">\(3\times784\)</span> colour values.</p>
 </section>
-<section id="c.-generating-a-cell-of-a-chosen-type" class="level3">
-<h3 class="anchored" data-anchor-id="c.-generating-a-cell-of-a-chosen-type">3c. Generating a cell of a chosen type</h3>
-<p>The same three lines as for digits: one-hot condition, random <span class="math inline">\(\mathbf z\)</span>, decoder and sigmoid.</p>
+<section id="generation-of-a-cell-of-a-chosen-type" class="level3">
+<h3 class="anchored" data-anchor-id="generation-of-a-cell-of-a-chosen-type">3.3 Generation of a cell of a chosen type</h3>
+<p>Generation takes the same three operations as for digits: a one-hot condition, a random <span class="math inline">\(\mathbf z\)</span>, and the decoder followed by the sigmoid.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:12:56.748563Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:12:56.747936Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:12:58.385666Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:12:58.384641Z&quot;}" data-execution_count="15">
 <details open="">
 <summary>Code</summary>
@@ -1033,8 +1049,9 @@ trained in 124 s</code></pre>
 </div>
 </div>
 </section>
-<section id="d.-classifier-check-of-the-synthetic-cells" class="level3">
-<h3 class="anchored" data-anchor-id="d.-classifier-check-of-the-synthetic-cells">3d. Classifier Check of the Synthetic Cells</h3>
+<section id="classification-of-the-synthetic-cells" class="level3">
+<h3 class="anchored" data-anchor-id="classification-of-the-synthetic-cells">3.4 Classification of the synthetic cells</h3>
+<p>As for the digits, we generate 500 cells of each type, let the CNN trained on real cells label them, and compare the resulting confusion matrix with that of the same CNN on real test cells.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:12:58.390130Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:12:58.389337Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:13:00.500839Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:13:00.499971Z&quot;}" data-execution_count="16">
 <details open="">
 <summary>Code</summary>
@@ -1069,11 +1086,11 @@ trained in 124 s</code></pre>
   plt.tight_layout(); plt.savefig(f"{OUT}/cond_blood_confusion.png", dpi=170, bbox_inches="tight"); plt.show()</code></pre>
 </div>
 </div>
-<p>Compare the two diagonals. Types that differ in size and colour are generated recognisably; types that differ in the shape of the nucleus are not: the VAE blurs exactly the detail the classifier relies on, and the off-diagonal entries show which type they collapse to.</p>
+<p>The two diagonals differ strongly. Types that differ in size and colour are generated recognisably: platelets 100%, erythroblasts 96.2%, eosinophils 82.2%, immature granulocytes 81.8%. Types that differ in the shape of the nucleus are not: basophils 6.2%, neutrophils 11.6%, lymphocytes 14.2%, monocytes 18.2%. The VAE blurs exactly the detail the classifier relies on, and the off-diagonal entries show which type these cells collapse to.</p>
 </section>
-<section id="e.-training-on-synthetic-cells-only" class="level3">
-<h3 class="anchored" data-anchor-id="e.-training-on-synthetic-cells-only">3e. Training on synthetic cells only</h3>
-<p>As for the digits (part 2e): the same CNN, trained on 12 000 generated cells (1500 per type, labels = requested types), tested on the real test cells.</p>
+<section id="classifier-trained-on-synthetic-cells" class="level3">
+<h3 class="anchored" data-anchor-id="classifier-trained-on-synthetic-cells">3.5 Classifier trained on synthetic cells</h3>
+<p>As for the digits in section 2.5, we train the same CNN on 12 000 generated cells, 1500 per type with the requested types as labels, and test it on the real test cells.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:13:00.504500Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:13:00.503912Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:13:51.880465Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:13:51.879952Z&quot;}" data-execution_count="17">
 <details open="">
 <summary>Code</summary>
@@ -1097,11 +1114,12 @@ synthetic-data CNN on real test cells: 0.637
 per type: {'basophil': 0.816, 'eosinophil': 0.635, 'erythroblast': 0.646, 'immature granulocyte': 0.38, 'lymphocyte': 0.827, 'monocyte': 0.317, 'neutrophil': 0.643, 'platelet': 0.947}</code></pre>
 </div>
 </div>
+<p>The CNN trained on synthetic cells reaches 0.637 on real test cells, against 0.838 for the one trained on real cells. Per type, the accuracy ranges from 0.317 (monocytes) to 0.947 (platelets).</p>
 </section>
 </section>
-<section id="training-and-testing-on-real-and-synthetic-data" class="level2">
-<h2 class="anchored" data-anchor-id="training-and-testing-on-real-and-synthetic-data">4. Training and Testing on Real and Synthetic Data</h2>
-<p>Four combinations of training and test data, for each data set. The synthetic test sets are freshly generated (1000 digits per class, 500 cells per type), never used in training.</p>
+<section id="real-and-synthetic-data-for-training-and-testing" class="level2">
+<h2 class="anchored" data-anchor-id="real-and-synthetic-data-for-training-and-testing">4. Real and synthetic data for training and testing</h2>
+<p>The experiments above combine real and synthetic data in different ways. Collecting all four combinations of training and test data, for each data set, gives a compact summary. The synthetic test sets are freshly generated (1000 digits per class, 500 cells per type) and never used in training. Each cell of the table answers a different question:</p>
 <table class="table">
 <colgroup>
 <col style="width: 33%">
@@ -1163,11 +1181,9 @@ BloodMNIST
   plt.tight_layout(); plt.savefig(f"{OUT}/cond_two_by_two.png", dpi=170, bbox_inches="tight"); plt.show()</code></pre>
 </div>
 </div>
-<p>Read the table by rows. A classifier trained on real data and tested on synthetic data measures whether the generator draws the requested class. A classifier trained on synthetic data and tested on real data measures whether the synthetic data carry what is needed to recognise real instances. A high synthetic/synthetic accuracy with a low synthetic/real accuracy means the generator produces classes that are easy to tell apart, but not the real ones.</p>
-<p><strong>Try it.</strong> Mix real and synthetic training cells: 10% of the real training set plus all synthetic cells. Does the synthetic data help when real data are scarce?</p>
-</section>
-<section id="numbers-used-on-the-slides" class="level2">
-<h2 class="anchored" data-anchor-id="numbers-used-on-the-slides">Numbers used on the slides</h2>
+<p>The table is read by rows. A classifier trained on real data and tested on synthetic data measures whether the generator draws the requested class: 0.955 for MNIST, but only 0.514 for BloodMNIST. A classifier trained on synthetic data and tested on real data measures whether the synthetic data carry what is needed to recognise real instances: 0.918 and 0.637. For BloodMNIST, the high synthetic/synthetic accuracy of 0.864 together with the low synthetic/real accuracy of 0.637 means that the generator produces classes that are easy to tell apart, but not the real ones.</p>
+<p>As an exercise, mix real and synthetic training cells: 10% of the real training set plus all synthetic cells. Does the synthetic data help when real data are scarce?</p>
+<p>Finally, the numbers computed above are written to <code>results/numbers_cond.json</code>, from which the slides take their values.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-15T18:13:58.252478Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-15T18:13:58.252082Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-15T18:13:58.259649Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-15T18:13:58.258770Z&quot;}" data-execution_count="19">
 <details open="">
 <summary>Code</summary>
@@ -1555,8 +1571,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../about.html" class="pagination-link">
-        <span class="nav-page-text">About</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../lectures/lecture-07.html" class="pagination-link">
+        <span class="nav-page-text">7 · Adversarial and Diffusion Models</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

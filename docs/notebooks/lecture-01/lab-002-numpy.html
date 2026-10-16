@@ -176,7 +176,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </li>  
         <li>
     <a class="dropdown-item" href="../../lectures/lecture-06.html">
- <span class="dropdown-text">6 · Generative Models</span></a>
+ <span class="dropdown-text">6 · Probability and Variational Autoencoders</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-07.html">
+ <span class="dropdown-text">7 · Adversarial and Diffusion Models</span></a>
   </li>  
     </ul>
   </li>
@@ -313,6 +317,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-03/lab-013a-cnn-pytorch.html" class="sidebar-item-text sidebar-link">Lab 013a: CNNs on MNIST and CIFAR-10 in PyTorch</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-03/lab-013b-cnn-jax.html" class="sidebar-item-text sidebar-link">Lab 013b: CNNs on MNIST and CIFAR-10 in JAX</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../notebooks/lecture-03/limits-of-deep-networks.html" class="sidebar-item-text sidebar-link">Limits of deep networks</a>
   </div>
 </li>
@@ -370,7 +384,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../lectures/lecture-06.html" class="sidebar-item-text sidebar-link">6 · Generative Models</a>
+            <a href="../../lectures/lecture-06.html" class="sidebar-item-text sidebar-link">6 · Probability and Variational Autoencoders</a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -384,6 +398,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/lecture-06/conditional-generation.html" class="sidebar-item-text sidebar-link">Conditional generation of digits and blood cells</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-07.html" class="sidebar-item-text sidebar-link">7 · Adversarial and Diffusion Models</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-07/generative-models.html" class="sidebar-item-text sidebar-link">Generative models: probability, VAE, GAN and diffusion</a>
   </div>
 </li>
       </ul>
@@ -403,9 +432,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
    
   <ul>
   <li><a href="#deep-learning-for-scientific-discovery" id="toc-deep-learning-for-scientific-discovery" class="nav-link active" data-scroll-target="#deep-learning-for-scientific-discovery">Deep Learning for Scientific Discovery</a></li>
-  <li><a href="#lab-002-numpy-thinking-in-arrays" id="toc-lab-002-numpy-thinking-in-arrays" class="nav-link" data-scroll-target="#lab-002-numpy-thinking-in-arrays">Lab 002 — NumPy: thinking in arrays</a>
+  <li><a href="#lab-002-numpy-basics" id="toc-lab-002-numpy-basics" class="nav-link" data-scroll-target="#lab-002-numpy-basics">Lab 002 — NumPy basics</a>
   <ul class="collapse">
-  <li><a href="#arrays-loops-vs.-vectorisation" id="toc-arrays-loops-vs.-vectorisation" class="nav-link" data-scroll-target="#arrays-loops-vs.-vectorisation">1. Arrays: loops vs.&nbsp;vectorisation</a></li>
+  <li><a href="#loops-and-vectorisation" id="toc-loops-and-vectorisation" class="nav-link" data-scroll-target="#loops-and-vectorisation">1. Loops and vectorisation</a></li>
   <li><a href="#creating-arrays" id="toc-creating-arrays" class="nav-link" data-scroll-target="#creating-arrays">2. Creating arrays</a></li>
   <li><a href="#indexing-slicing-and-boolean-masks" id="toc-indexing-slicing-and-boolean-masks" class="nav-link" data-scroll-target="#indexing-slicing-and-boolean-masks">3. Indexing, slicing and boolean masks</a>
   <ul class="collapse">
@@ -414,20 +443,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#reshaping-and-stacking" id="toc-reshaping-and-stacking" class="nav-link" data-scroll-target="#reshaping-and-stacking">4. Reshaping and stacking</a></li>
   <li><a href="#broadcasting" id="toc-broadcasting" class="nav-link" data-scroll-target="#broadcasting">5. Broadcasting</a></li>
   <li><a href="#reductions-along-an-axis" id="toc-reductions-along-an-axis" class="nav-link" data-scroll-target="#reductions-along-an-axis">6. Reductions along an axis</a></li>
-  <li><a href="#linear-algebra-the-schrödinger-equation-on-a-grid" id="toc-linear-algebra-the-schrödinger-equation-on-a-grid" class="nav-link" data-scroll-target="#linear-algebra-the-schrödinger-equation-on-a-grid">7. Linear algebra: the Schrödinger equation on a grid</a>
+  <li><a href="#linear-algebra" id="toc-linear-algebra" class="nav-link" data-scroll-target="#linear-algebra">7. Linear algebra</a>
   <ul class="collapse">
-  <li><a href="#physics-example-quantum-harmonic-oscillator" id="toc-physics-example-quantum-harmonic-oscillator" class="nav-link" data-scroll-target="#physics-example-quantum-harmonic-oscillator">Physics example: quantum harmonic oscillator</a></li>
+  <li><a href="#the-schrödinger-equation-on-a-grid" id="toc-the-schrödinger-equation-on-a-grid" class="nav-link" data-scroll-target="#the-schrödinger-equation-on-a-grid">The Schrödinger equation on a grid</a></li>
   </ul></li>
   <li><a href="#random-numbers" id="toc-random-numbers" class="nav-link" data-scroll-target="#random-numbers">8. Random numbers</a></li>
-  <li><a href="#towards-neural-networks-a-dense-layer-in-numpy" id="toc-towards-neural-networks-a-dense-layer-in-numpy" class="nav-link" data-scroll-target="#towards-neural-networks-a-dense-layer-in-numpy">9. Towards neural networks: a dense layer in NumPy</a></li>
-  <li><a href="#what-numpy-cannot-do" id="toc-what-numpy-cannot-do" class="nav-link" data-scroll-target="#what-numpy-cannot-do">10. What NumPy cannot do</a></li>
-  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">11. Summary</a>
+  <li><a href="#a-dense-layer-in-numpy" id="toc-a-dense-layer-in-numpy" class="nav-link" data-scroll-target="#a-dense-layer-in-numpy">9. A dense layer in NumPy</a></li>
+  <li><a href="#limits-of-numpy" id="toc-limits-of-numpy" class="nav-link" data-scroll-target="#limits-of-numpy">10. Limits of NumPy</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">11. Summary</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">12. Exercises</a>
   <ul class="collapse">
-  <li><a href="#exercise-1-vectorise-the-ising-energy" id="toc-exercise-1-vectorise-the-ising-energy" class="nav-link" data-scroll-target="#exercise-1-vectorise-the-ising-energy">Exercise 1 — Vectorise the Ising energy</a></li>
-  <li><a href="#exercise-2-softmax-one-hot-encoding-and-cross-entropy-from-the-lecture" id="toc-exercise-2-softmax-one-hot-encoding-and-cross-entropy-from-the-lecture" class="nav-link" data-scroll-target="#exercise-2-softmax-one-hot-encoding-and-cross-entropy-from-the-lecture">Exercise 2 — Softmax, one-hot encoding and cross-entropy (from the lecture)</a></li>
+  <li><a href="#exercise-1-vectorised-ising-energy" id="toc-exercise-1-vectorised-ising-energy" class="nav-link" data-scroll-target="#exercise-1-vectorised-ising-energy">Exercise 1 — Vectorised Ising energy</a></li>
+  <li><a href="#exercise-2-softmax-one-hot-encoding-and-cross-entropy" id="toc-exercise-2-softmax-one-hot-encoding-and-cross-entropy" class="nav-link" data-scroll-target="#exercise-2-softmax-one-hot-encoding-and-cross-entropy">Exercise 2 — Softmax, one-hot encoding and cross-entropy</a></li>
   <li><a href="#exercise-3-tunnelling-in-a-double-well" id="toc-exercise-3-tunnelling-in-a-double-well" class="nav-link" data-scroll-target="#exercise-3-tunnelling-in-a-double-well">Exercise 3 — Tunnelling in a double well</a></li>
-  <li><a href="#exercise-4-particles-without-loops-broadcasting" id="toc-exercise-4-particles-without-loops-broadcasting" class="nav-link" data-scroll-target="#exercise-4-particles-without-loops-broadcasting">Exercise 4 — Particles without loops (broadcasting)</a></li>
-  <li><a href="#exercise-5-advanced-a-two-hidden-layer-network-by-hand" id="toc-exercise-5-advanced-a-two-hidden-layer-network-by-hand" class="nav-link" data-scroll-target="#exercise-5-advanced-a-two-hidden-layer-network-by-hand">Exercise 5 (advanced) — A two-hidden-layer network, by hand</a></li>
+  <li><a href="#exercise-4-pairwise-distances-with-broadcasting" id="toc-exercise-4-pairwise-distances-with-broadcasting" class="nav-link" data-scroll-target="#exercise-4-pairwise-distances-with-broadcasting">Exercise 4 — Pairwise distances with broadcasting</a></li>
+  <li><a href="#exercise-5-advanced-a-network-with-two-hidden-layers" id="toc-exercise-5-advanced-a-network-with-two-hidden-layers" class="nav-link" data-scroll-target="#exercise-5-advanced-a-network-with-two-hidden-layers">Exercise 5 (advanced) — A network with two hidden layers</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -460,12 +490,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <strong>Author:</strong> Marcin Płodzień
 <hr>
 </section>
-<section id="lab-002-numpy-thinking-in-arrays" class="level1">
-<h1>Lab 002 — NumPy: thinking in arrays</h1>
+<section id="lab-002-numpy-basics" class="level1">
+<h1>Lab 002 — NumPy basics</h1>
 <p>In the lecture we said: <em>a neural network is a non-linear, parametrised function with a nested structure</em>, <span class="math display">\[f_{\vec\theta}(\mathbf{x}) = h^{(L)}\circ\cdots\circ h^{(1)}(\mathbf{x}), \qquad h^{(l)}(\mathbf{z}) = \sigma\big(\mathbf{W}^{(l)}\mathbf{z} + \mathbf{b}^{(l)}\big).\]</span> Here <span class="math inline">\(\circ\)</span> denotes composition of functions (<span class="math inline">\(g\circ h(\mathbf x) = g(h(\mathbf x))\)</span>): the output of one layer <span class="math inline">\(h^{(l)}\)</span> is the input of the next. <span class="math inline">\(\sigma\)</span> is an activation function, a fixed non-linear function applied to every component separately (examples in Section 9). Every ingredient here — vectors <span class="math inline">\(\mathbf z\)</span>, matrices <span class="math inline">\(\mathbf W\)</span>, element-wise functions <span class="math inline">\(\sigma\)</span> — is an <strong>array operation</strong>. NumPy is the Python library for arrays. PyTorch uses almost the same interface, so most of this notebook carries over with minor changes of names.</p>
-<p><strong>Plan</strong> 1. Why arrays? Loops vs.&nbsp;vectorisation 2. Creating arrays 3. Indexing, slicing and boolean masks 4. Reshaping and stacking 5. Broadcasting 6. Reductions along an axis 7. Linear algebra: the Schrödinger equation on a grid 8. Random numbers 9. Towards neural networks: a dense layer in NumPy 10. What NumPy cannot do 11. Summary 12. Exercises</p>
+<p>Section 1 measures why arrays are worth the trouble: a loop over a million numbers against a single vectorised expression. Sections 2–6 then cover the everyday operations: creating arrays, indexing, slicing and boolean masks, reshaping and stacking, broadcasting, and reductions along an axis. Section 7 applies linear algebra to a physics problem, the Schrödinger equation on a grid, and Section 8 introduces random numbers and a Monte Carlo estimate of <span class="math inline">\(\pi\)</span>. In Section 9 these pieces are combined into a dense layer of a neural network, and Section 10 explains the limits of NumPy that motivate PyTorch. A summary (Section 11) and exercises with solutions (Section 12) close the notebook.</p>
 <blockquote class="blockquote">
-<p><strong>How to run this notebook in Google Colab</strong> 1. Go to <a href="https://colab.research.google.com" class="uri">https://colab.research.google.com</a> → <em>File → Upload notebook</em> (or open it from Google Drive). 2. Run cells one by one with <strong>Shift + Enter</strong>. Run them <em>in order</em> — later cells use variables defined earlier. 3. The required packages (<code>numpy</code>, <code>matplotlib</code>) are pre-installed in Colab; no <code>pip install</code> required. 4. If the notebook state becomes inconsistent: <em>Runtime → Restart session</em> and run from the top.</p>
+<p>The notebook runs in Google Colab without any installation: 1. Go to <a href="https://colab.research.google.com" class="uri">https://colab.research.google.com</a> → <em>File → Upload notebook</em> (or open it from Google Drive). 2. Run cells one by one with <strong>Shift + Enter</strong>. Run them <em>in order</em> — later cells use variables defined earlier. 3. The required packages (<code>numpy</code>, <code>matplotlib</code>) are pre-installed in Colab; no <code>pip install</code> required. 4. If the notebook state becomes inconsistent: <em>Runtime → Restart session</em> and run from the top.</p>
 </blockquote>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:26.488929Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:26.488823Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:26.781867Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:26.781281Z&quot;}" data-execution_count="1">
 <details open="">
@@ -484,11 +514,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <hr>
-<section id="arrays-loops-vs.-vectorisation" class="level2">
-<h2 class="anchored" data-anchor-id="arrays-loops-vs.-vectorisation">1. Arrays: loops vs.&nbsp;vectorisation</h2>
-<p>Task: compute <span class="math inline">\(\sum_{i=1}^{n} x_i^2\)</span> for <span class="math inline">\(n = 10^6\)</span> numbers. First the “plain Python” way, then NumPy.</p>
-<p>New tools in the cell below: - <code>1_000_000</code> is the number <span class="math inline">\(10^6\)</span>; Python ignores underscores in numbers, they only make long numbers readable. - <code>time.perf_counter()</code> returns the current time in seconds from a high-resolution clock. The difference of two calls is the time spent on the code between them. - An <strong>f-string</strong> <code>f"... {expr} ..."</code> inserts the value of <code>expr</code> into the text. A format specification after a colon controls how a number is printed: <code>{s:.6f}</code> gives 6 digits after the decimal point, <code>{t:7.2f}</code> gives 2 digits in a field 7 characters wide.</p>
-<p>The value <span class="math inline">\(n = 10^6\)</span> is not special: it only has to be large enough that both run times are well above the resolution of the clock.</p>
+<section id="loops-and-vectorisation" class="level2">
+<h2 class="anchored" data-anchor-id="loops-and-vectorisation">1. Loops and vectorisation</h2>
+<p>We compute <span class="math inline">\(\sum_{i=1}^{n} x_i^2\)</span> for <span class="math inline">\(n = 10^6\)</span> numbers, first with a Python loop, then with NumPy, and time both with <code>time.perf_counter()</code>. The value of <span class="math inline">\(n\)</span> only has to be large enough that both run times are well above the resolution of the clock.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:26.784108Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:26.783798Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:26.963255Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:26.962650Z&quot;}" data-execution_count="2">
 <details open="">
 <summary>Code</summary>
@@ -515,7 +543,7 @@ numpy: 333332.833333   time    2.37 ms   -&gt; 38x faster</code></pre>
 </div>
 </div>
 <p>The measured ratio depends on the computer and changes from run to run; in the run stored above, NumPy was about 40 times faster for <span class="math inline">\(n = 10^6\)</span>. The last digit of the two sums differs because the two methods add the numbers in a different order; floating-point rounding depends on the order, and both are correct to about <span class="math inline">\(10^{-12}\)</span> relative accuracy.</p>
-<p><strong>Memory layout.</strong> A NumPy array is a contiguous block of memory holding numbers of <em>one</em> type; the loop over it runs inside NumPy, in code written in the language C and translated to machine instructions in advance (<em>compiled</em>). A Python list holds references to separate Python objects, each of which may be of a different type, and the Python loop is executed statement by statement by the Python interpreter, which checks the type of every element anew.</p>
+<p>The speed difference comes from the memory layout. A NumPy array is a contiguous block of memory holding numbers of <em>one</em> type; the loop over it runs inside NumPy, in code implemented in the language C and translated to machine instructions in advance (<em>compiled</em>). A Python list holds references to separate Python objects, each of which may be of a different type, and the Python loop is executed statement by statement by the Python interpreter, which checks the type of every element anew.</p>
 <blockquote class="blockquote">
 <p>A <code>for</code> loop over the <em>elements</em> of an array can almost always be replaced by a shorter and faster NumPy expression.</p>
 </blockquote>
@@ -523,7 +551,7 @@ numpy: 333332.833333   time    2.37 ms   -&gt; 38x faster</code></pre>
 </section>
 <section id="creating-arrays" class="level2">
 <h2 class="anchored" data-anchor-id="creating-arrays">2. Creating arrays</h2>
-<p>The most important attributes of any array: - <code>a.shape</code> — the size along each axis (a tuple), - <code>a.ndim</code> — the number of axes, - <code>a.dtype</code> — the type of the elements (<code>float64</code>, <code>int64</code>, <code>complex128</code>, <code>bool</code>, …).</p>
+<p>Every array carries three attributes: <code>a.shape</code> is the size along each axis (a tuple), <code>a.ndim</code> is the number of axes, and <code>a.dtype</code> is the type of the elements (<code>float64</code>, <code>int64</code>, <code>complex128</code>, <code>bool</code>, …).</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:26.965114Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:26.964963Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:26.968060Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:26.967605Z&quot;}" data-execution_count="3">
 <details open="">
 <summary>Code</summary>
@@ -539,7 +567,7 @@ numpy: 333332.833333   time    2.37 ms   -&gt; 38x faster</code></pre>
 M: shape=(2, 3), ndim=2, dtype=int64</code></pre>
 </div>
 </div>
-<p>Common constructors. Mind the difference between <code>arange</code> (given <strong>step</strong>, end excluded) and <code>linspace</code> (given <strong>number of points</strong>, end included). For physics grids prefer <code>linspace</code>.</p>
+<p>NumPy offers several constructors for common arrays. Mind the difference between <code>arange</code> (given <strong>step</strong>, end excluded) and <code>linspace</code> (given <strong>number of points</strong>, end included). For physics grids prefer <code>linspace</code>.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:26.969347Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:26.969220Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:26.989077Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:26.988706Z&quot;}" data-execution_count="4">
 <details open="">
 <summary>Code</summary>
@@ -565,7 +593,7 @@ full      : [7. 7. 7.]
 zeros_like: [0. 0. 0.]</code></pre>
 </div>
 </div>
-<p><strong>dtype matters.</strong> NumPy chooses the dtype from the entries: <code>M</code> above was written with integers only and became <code>int64</code>, while <code>a</code> contains <code>1.0</code> and became <code>float64</code>. Integer arrays stay integer under <code>+</code>, <code>-</code>, <code>*</code> and <code>//</code>, but <code>/</code> always returns floats (see below); complex numbers are built in (<code>1j</code> is the imaginary unit). The number in the name is the number of bits per element: <code>float64</code> uses 8 bytes and keeps about 16 significant digits, <code>float32</code> uses 4 bytes and keeps about 7. Deep learning usually uses <code>float32</code> (faster, less memory), scientific computing <code>float64</code> (more precise).</p>
+<p>The dtype matters. NumPy chooses it from the entries: <code>M</code> above contains integers only and became <code>int64</code>, while <code>a</code> contains <code>1.0</code> and became <code>float64</code>. Integer arrays stay integer under <code>+</code>, <code>-</code>, <code>*</code> and <code>//</code>, but <code>/</code> always returns floats (see below); complex numbers are built in (<code>1j</code> is the imaginary unit). The number in the name is the number of bits per element: <code>float64</code> uses 8 bytes and keeps about 16 significant digits, <code>float32</code> uses 4 bytes and keeps about 7. Deep learning usually uses <code>float32</code> (faster, less memory), scientific computing <code>float64</code> (more precise).</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:26.990075Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:26.989954Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:27.000112Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:26.999547Z&quot;}" data-execution_count="5">
 <details open="">
 <summary>Code</summary>
@@ -613,7 +641,7 @@ A[1:3, ::2]=
 A[-1, -1]  = 19</code></pre>
 </div>
 </div>
-<p><strong>Boolean masks</strong> select the elements that satisfy a condition; they are used for selecting data.</p>
+<p><strong>Boolean masks</strong> select the elements that satisfy a condition.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:27.011877Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:27.011777Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:27.026810Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:27.026464Z&quot;}" data-execution_count="7">
 <details open="">
 <summary>Code</summary>
@@ -658,7 +686,7 @@ a after modifying c: [0 1 2 3 4]   &lt;- unchanged</code></pre>
 </section>
 <section id="reshaping-and-stacking" class="level2">
 <h2 class="anchored" data-anchor-id="reshaping-and-stacking">4. Reshaping and stacking</h2>
-<p>The same numbers can be viewed with different shapes, as long as the total size agrees. <code>-1</code> means that this dimension is inferred from the total size. <code>reshape</code> reads the elements row by row (the last index changes fastest) and fills the new shape in the same order, as the printout below shows. This is used frequently in deep learning: e.g.&nbsp;a <span class="math inline">\(28\times28\)</span> image becomes a vector of length <span class="math inline">\(784\)</span> before entering a dense layer.</p>
+<p>The same numbers can be viewed with different shapes, as long as the total size agrees. <code>-1</code> means that this dimension is inferred from the total size. <code>reshape</code> reads the elements row by row (the last index changes fastest) and fills the new shape in the same order. In deep learning, for example, a <span class="math inline">\(28\times28\)</span> image becomes a vector of length <span class="math inline">\(784\)</span> before entering a dense layer.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:27.039267Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:27.039141Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:27.048817Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:27.048254Z&quot;}" data-execution_count="9">
 <details open="">
 <summary>Code</summary>
@@ -691,7 +719,7 @@ transpose:
 <pre><code>(3,) (3, 1) (1, 3)</code></pre>
 </div>
 </div>
-<p>Joining arrays: <code>concatenate</code> along an existing axis, <code>stack</code> along a new one:</p>
+<p>Arrays are joined with <code>concatenate</code> along an existing axis and with <code>stack</code> along a new one.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:27.059873Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:27.059768Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:27.070166Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:27.069784Z&quot;}" data-execution_count="11">
 <details open="">
 <summary>Code</summary>
@@ -770,8 +798,7 @@ stack axis 1:
 feature means now: [0. 0. 0.]   stds now: [1. 1. 1.]</code></pre>
 </div>
 </div>
-<p><strong>An outer operation:</strong> a table of <span class="math inline">\(\sin(k x)\)</span> for many <span class="math inline">\(k\)</span> and many <span class="math inline">\(x\)</span> at once — no loops. The result <code>modes</code> has shape <code>(4, 200)</code>: element <code>[i, j]</code> is <span class="math inline">\(\sin(k_i x_j)\)</span>, so row <code>i</code> is the whole curve for wave number <span class="math inline">\(k_i\)</span>.</p>
-<p>The cell also draws the first figure of this notebook (with a short reminder of Matplotlib): - <code>fig, ax = plt.subplots(figsize=(7, 3.5))</code> creates a figure <code>fig</code> (the whole image, 7 by 3.5 inches) containing one coordinate system <code>ax</code>. Curves are drawn with methods of <code>ax</code>, and <code>plt.show()</code> displays the finished figure. - <code>zip(k, modes)</code> walks through two sequences in parallel: in each iteration <code>kk</code> is the next element of <code>k</code> and <code>row</code> the next row of <code>modes</code> (iterating over a 2D array gives its rows). - <code>r"$\sin(kx)$"</code> is a <em>raw string</em>: the <code>r</code> keeps the backslash literally, which the LaTeX command <code>\sin</code> needs. Text between <code>$...$</code> is typeset as mathematics.</p>
+<p>Broadcasting also gives “outer” operations without loops, for example a table of <span class="math inline">\(\sin(k x)\)</span> for many <span class="math inline">\(k\)</span> and many <span class="math inline">\(x\)</span> at once. The result <code>modes</code> has shape <code>(4, 200)</code>: element <code>[i, j]</code> is <span class="math inline">\(\sin(k_i x_j)\)</span>, so row <code>i</code> is the whole curve for wave number <span class="math inline">\(k_i\)</span> (iterating over a 2D array gives its rows).</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:27.082548Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:27.082444Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:27.336947Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:27.336420Z&quot;}" data-execution_count="13">
 <details open="">
 <summary>Code</summary>
@@ -797,7 +824,7 @@ feature means now: [0. 0. 0.]   stds now: [1. 1. 1.]</code></pre>
 </section>
 <section id="reductions-along-an-axis" class="level2">
 <h2 class="anchored" data-anchor-id="reductions-along-an-axis">6. Reductions along an axis</h2>
-<p><code>sum</code>, <code>mean</code>, <code>std</code>, <code>max</code>, <code>argmax</code>, … collapse an array along an axis. Convention: <strong>axis 0 = samples, axis 1 = features</strong> (the same in PyTorch, where the argument is called <code>dim</code>; here the features are the classes). <code>axis=k</code> is the axis that is removed by the reduction. Below, <code>scores</code> has shape <code>(4, 3)</code> (4 samples, 3 classes): <code>sum(axis=1)</code> removes the class axis and returns shape <code>(4,)</code>, one number per sample; <code>mean(axis=0)</code> removes the sample axis and returns shape <code>(3,)</code>, one number per class. <code>argmax</code> returns the <em>position</em> of the largest element, counted from 0. <code>keepdims=True</code> keeps the reduced axis with size 1, e.g.&nbsp;<code>scores.sum(axis=1, keepdims=True)</code> has shape <code>(4, 1)</code>, ready for broadcasting against <code>scores</code>.</p>
+<p><code>sum</code>, <code>mean</code>, <code>std</code>, <code>max</code>, <code>argmax</code>, … collapse an array along an axis. Convention: <strong>axis 0 = samples, axis 1 = features</strong> (the same in PyTorch, where the argument is called <code>dim</code>; here the features are the classes). <code>axis=k</code> is the axis that is removed by the reduction. <code>scores</code> has shape <code>(4, 3)</code> (4 samples, 3 classes): <code>sum(axis=1)</code> removes the class axis and returns shape <code>(4,)</code>, one number per sample; <code>mean(axis=0)</code> removes the sample axis and returns shape <code>(3,)</code>, one number per class. <code>argmax</code> returns the <em>position</em> of the largest element, counted from 0. <code>keepdims=True</code> keeps the reduced axis with size 1, e.g.&nbsp;<code>scores.sum(axis=1, keepdims=True)</code> has shape <code>(4, 1)</code>, ready for broadcasting against <code>scores</code>.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:27.338382Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:27.338235Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:27.342108Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:27.341674Z&quot;}" data-execution_count="14">
 <details open="">
 <summary>Code</summary>
@@ -817,8 +844,8 @@ predicted class (argmax):   [1 0 2 1]</code></pre>
 </div>
 <hr>
 </section>
-<section id="linear-algebra-the-schrödinger-equation-on-a-grid" class="level2">
-<h2 class="anchored" data-anchor-id="linear-algebra-the-schrödinger-equation-on-a-grid">7. Linear algebra: the Schrödinger equation on a grid</h2>
+<section id="linear-algebra" class="level2">
+<h2 class="anchored" data-anchor-id="linear-algebra">7. Linear algebra</h2>
 <p><code>@</code> is matrix multiplication; <code>np.linalg</code> contains solvers, determinants, eigenvalue routines.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:27.343515Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:27.343367Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:27.362106Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:27.361711Z&quot;}" data-execution_count="15">
 <details open="">
@@ -844,12 +871,12 @@ M @ M   =
 solve M x = v : [ 0.8 -0.6]   check M @ x = [ 1. -1.]</code></pre>
 </div>
 </div>
-<section id="physics-example-quantum-harmonic-oscillator" class="level3">
-<h3 class="anchored" data-anchor-id="physics-example-quantum-harmonic-oscillator">Physics example: quantum harmonic oscillator</h3>
-<p>We discretise <span class="math inline">\(x\in[-a, a]\)</span> with <span class="math inline">\(N_x\)</span> points <span class="math inline">\(x_1,\dots,x_{N_x}\)</span>, spacing <span class="math inline">\(\Delta x = 2a/(N_x-1)\)</span>, and store the values <span class="math inline">\(\psi_i = \psi(x_i)\)</span> as a vector <span class="math inline">\(\vec\psi\)</span> of length <span class="math inline">\(N_x\)</span>. Adding the Taylor expansions <span class="math inline">\(\psi(x\pm\Delta x) = \psi \pm \Delta x\,\psi' + \tfrac12\Delta x^2\psi'' \pm \tfrac16\Delta x^3\psi''' + O(\Delta x^4)\)</span>, the odd terms cancel and the second derivative becomes <span class="math display">\[\frac{d^2\psi}{dx^2}\Big|_{x_i} \approx \frac{\psi_{i+1} - 2\psi_i + \psi_{i-1}}{\Delta x^2},\]</span> so the Hamiltonian <span class="math inline">\(\hat H = -\tfrac12\frac{d^2}{dx^2} + V(x)\)</span> (units <span class="math inline">\(\hbar = m = \omega = 1\)</span>) becomes an <span class="math inline">\(N_x\times N_x\)</span> <strong>tridiagonal matrix</strong> <span class="math display">\[\bar H = -\frac{1}{2\Delta x^2}\begin{pmatrix}-2 &amp; 1 &amp; &amp; \\ 1 &amp; -2 &amp; 1 &amp; \\ &amp; \ddots &amp; \ddots &amp; \ddots \\ &amp; &amp; 1 &amp; -2\end{pmatrix} + \mathrm{diag}\big(V(x_1),\dots,V(x_{N_x})\big).\]</span> The time-independent Schrödinger equation <span class="math inline">\(\bar H\vec\psi_n = E_n\vec\psi_n\)</span> is now a matrix <strong>eigenvalue problem</strong> — <code>np.linalg.eigh</code> (for Hermitian matrices) solves it. For <span class="math inline">\(V = x^2/2\)</span> we expect <span class="math inline">\(E_n = n + \tfrac12\)</span>.</p>
+<section id="the-schrödinger-equation-on-a-grid" class="level3">
+<h3 class="anchored" data-anchor-id="the-schrödinger-equation-on-a-grid">The Schrödinger equation on a grid</h3>
+<p>The eigenstates of the quantum harmonic oscillator follow from a matrix diagonalisation. We discretise <span class="math inline">\(x\in[-a, a]\)</span> with <span class="math inline">\(N_x\)</span> points <span class="math inline">\(x_1,\dots,x_{N_x}\)</span>, spacing <span class="math inline">\(\Delta x = 2a/(N_x-1)\)</span>, and store the values <span class="math inline">\(\psi_i = \psi(x_i)\)</span> as a vector <span class="math inline">\(\vec\psi\)</span> of length <span class="math inline">\(N_x\)</span>. Adding the Taylor expansions <span class="math inline">\(\psi(x\pm\Delta x) = \psi \pm \Delta x\,\psi' + \tfrac12\Delta x^2\psi'' \pm \tfrac16\Delta x^3\psi''' + O(\Delta x^4)\)</span>, the odd terms cancel and the second derivative becomes <span class="math display">\[\frac{d^2\psi}{dx^2}\Big|_{x_i} \approx \frac{\psi_{i+1} - 2\psi_i + \psi_{i-1}}{\Delta x^2},\]</span> so the Hamiltonian <span class="math inline">\(\hat H = -\tfrac12\frac{d^2}{dx^2} + V(x)\)</span> (units <span class="math inline">\(\hbar = m = \omega = 1\)</span>) becomes an <span class="math inline">\(N_x\times N_x\)</span> <strong>tridiagonal matrix</strong> <span class="math display">\[\bar H = -\frac{1}{2\Delta x^2}\begin{pmatrix}-2 &amp; 1 &amp; &amp; \\ 1 &amp; -2 &amp; 1 &amp; \\ &amp; \ddots &amp; \ddots &amp; \ddots \\ &amp; &amp; 1 &amp; -2\end{pmatrix} + \mathrm{diag}\big(V(x_1),\dots,V(x_{N_x})\big).\]</span> The time-independent Schrödinger equation <span class="math inline">\(\bar H\vec\psi_n = E_n\vec\psi_n\)</span> is now a matrix <strong>eigenvalue problem</strong> — <code>np.linalg.eigh</code> (for Hermitian matrices) solves it. For <span class="math inline">\(V = x^2/2\)</span> we expect <span class="math inline">\(E_n = n + \tfrac12\)</span>.</p>
 <p>Two approximations are made: the matrix ends at the first and last grid point, which means <span class="math inline">\(\psi = 0\)</span> outside the grid (a box with hard walls, harmless if the box is much larger than the wavefunctions), and the second derivative is replaced by a finite difference with an error of order <span class="math inline">\(\Delta x^2\)</span>.</p>
-<p><strong>Choice of the grid.</strong> The classical turning point of a state with energy <span class="math inline">\(E\)</span> is <span class="math inline">\(x_t = \sqrt{2E}\)</span>, i.e.&nbsp;<span class="math inline">\(x_t = 3\)</span> for the highest state we show (<span class="math inline">\(E_4 = 4.5\)</span>). Beyond <span class="math inline">\(x_t\)</span> the wavefunction decays quickly, so a box <span class="math inline">\([-a, a]\)</span> with <span class="math inline">\(a = 6\)</span>, twice as wide, does not disturb the five lowest states. With <span class="math inline">\(N_x = 400\)</span> points the spacing is <span class="math inline">\(\Delta x \approx 0.03\)</span>. Both numbers are a choice, not a requirement: any half-width of 5 or more and a few hundred points give the same picture. A box <span class="math inline">\([-4, 4]\)</span> is already too small for <span class="math inline">\(n = 4\)</span> (its energy then comes out too high by about <span class="math inline">\(0.008\)</span>).</p>
-<p><strong>New functions in the cell below.</strong> - <code>np.diag(v, k=1)</code> with a 1D array <code>v</code> builds a square matrix with <code>v</code> on a diagonal: <code>k=0</code> is the main diagonal, <code>k=1</code> the first diagonal above it, <code>k=-1</code> the first below it. This is why the off-diagonal arrays have length <span class="math inline">\(N_x-1\)</span> (<code>n - 1</code> in the code, where <code>n = x.size</code>). (With a 2D array as argument, <code>np.diag</code> does the opposite and extracts the diagonal.) - <code>np.linalg.eigh</code> diagonalises a symmetric (Hermitian) matrix. It returns real eigenvalues sorted in ascending order and orthonormal eigenvectors. The general routine <code>np.linalg.eig</code> does not use the symmetry: it is slower, does not sort the eigenvalues and can return them with tiny imaginary parts caused by rounding. For a Hamiltonian, <code>eigh</code> is the right choice. - The matrix is stored as a full <span class="math inline">\(400\times400\)</span> array, although almost all entries are zero. This is the simplest way and takes about 0.02 s. The cost of full diagonalisation grows like <span class="math inline">\(N_x^3\)</span> (about 1 s for <span class="math inline">\(N_x = 2000\)</span> on the same computer), so for much larger grids sparse matrices (<code>scipy.sparse</code>) are used.</p>
+<p>The grid has to be chosen with the physics in mind. The classical turning point of a state with energy <span class="math inline">\(E\)</span> is <span class="math inline">\(x_t = \sqrt{2E}\)</span>, i.e.&nbsp;<span class="math inline">\(x_t = 3\)</span> for the highest state we show (<span class="math inline">\(E_4 = 4.5\)</span>). Beyond <span class="math inline">\(x_t\)</span> the wavefunction decays quickly, so a box <span class="math inline">\([-a, a]\)</span> with <span class="math inline">\(a = 6\)</span>, twice as wide, does not disturb the five lowest states. With <span class="math inline">\(N_x = 400\)</span> points the spacing is <span class="math inline">\(\Delta x \approx 0.03\)</span>. Both numbers are a choice, not a requirement: any half-width of 5 or more and a few hundred points give the same picture. A box <span class="math inline">\([-4, 4]\)</span> is already too small for <span class="math inline">\(n = 4\)</span> (its energy then comes out too high by about <span class="math inline">\(0.008\)</span>).</p>
+<p><code>np.diag(v, k)</code> with a 1D array <code>v</code> builds a square matrix with <code>v</code> on the <span class="math inline">\(k\)</span>-th diagonal (<span class="math inline">\(k=\pm1\)</span> for the off-diagonals, which therefore have length <span class="math inline">\(N_x-1\)</span>). <code>np.linalg.eigh</code> diagonalises a symmetric (Hermitian) matrix. It returns real eigenvalues sorted in ascending order and orthonormal eigenvectors. The general routine <code>np.linalg.eig</code> does not use the symmetry: it is slower, does not sort the eigenvalues and can return them with tiny imaginary parts caused by rounding. For a Hamiltonian, <code>eigh</code> is the right choice. The matrix is stored as a full <span class="math inline">\(400\times400\)</span> array, although almost all entries are zero; diagonalising it takes about 0.02 s. The cost of full diagonalisation grows like <span class="math inline">\(N_x^3\)</span> (about 1 s for <span class="math inline">\(N_x = 2000\)</span> on the same computer), so for much larger grids sparse matrices (<code>scipy.sparse</code>) are used.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:27.363160Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:27.363056Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:27.392323Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:27.389645Z&quot;}" data-execution_count="16">
 <details open="">
 <summary>Code</summary>
@@ -874,7 +901,7 @@ expected       : [0.5 1.5 2.5 3.5 4.5]</code></pre>
 </div>
 </div>
 <p>The computed energies lie slightly <strong>below</strong> <span class="math inline">\(n + \tfrac12\)</span>: by about <span class="math inline">\(3\times10^{-5}\)</span> for <span class="math inline">\(n=0\)</span> and about <span class="math inline">\(1.2\times10^{-3}\)</span> for <span class="math inline">\(n=4\)</span> (the printout shows 4 digits after the decimal point). This is the error of the finite-difference formula, of order <span class="math inline">\(\Delta x^2\)</span>. With 200 points (<span class="math inline">\(\Delta x\)</span> twice as large) the errors are about 4 times larger, with 800 points about 4 times smaller, as expected for an error <span class="math inline">\(\propto \Delta x^2\)</span>. Higher states oscillate faster, so the finite difference describes them less accurately.</p>
-<p>The eigenvectors are the <strong>columns</strong> <code>psi[:, n]</code>. A classic textbook figure — eigenfunctions shifted by their energies, drawn inside the potential. Three details of the plotting cell: - <strong>Normalisation.</strong> <code>eigh</code> returns vectors with <span class="math inline">\(\sum_i |\psi_i|^2 = 1\)</span>. The wavefunction of the continuum problem must satisfy <span class="math inline">\(\int|\psi(x)|^2dx \approx \sum_i|\psi_i|^2\,\Delta x = 1\)</span>, so the vector is divided by <span class="math inline">\(\sqrt{\Delta x}\)</span>. - <strong>Sign.</strong> An eigenvector is fixed only up to a factor <span class="math inline">\(-1\)</span>, so <code>eigh</code> may return <span class="math inline">\(-\psi_n\)</span> and a curve can appear upside down compared with a textbook figure. Densities <span class="math inline">\(|\psi_n|^2\)</span> do not depend on this sign. - <strong>Scale.</strong> Each curve is drawn as <span class="math inline">\(E_n + 0.6\,\psi_n(x)\)</span>: it is shifted to the height of its energy, and the factor 0.6 only keeps neighbouring curves from overlapping. The vertical size of a wavefunction in such a plot has no physical meaning.</p>
+<p>The eigenvectors are the <strong>columns</strong> <code>psi[:, n]</code>, drawn as eigenfunctions shifted by their energies inside the potential. Three details matter. The first is normalisation: <code>eigh</code> returns vectors with <span class="math inline">\(\sum_i |\psi_i|^2 = 1\)</span>, while the wavefunction of the continuum problem must satisfy <span class="math inline">\(\int|\psi(x)|^2dx \approx \sum_i|\psi_i|^2\,\Delta x = 1\)</span>, so the vector is divided by <span class="math inline">\(\sqrt{\Delta x}\)</span>. The second is the sign: an eigenvector is fixed only up to a factor <span class="math inline">\(-1\)</span>, so <code>eigh</code> may return <span class="math inline">\(-\psi_n\)</span> and a curve can appear upside down compared with a textbook figure. Densities <span class="math inline">\(|\psi_n|^2\)</span> do not depend on this sign. The third is the scale: each curve is drawn as <span class="math inline">\(E_n + 0.6\,\psi_n(x)\)</span>, i.e.&nbsp;shifted to the height of its energy, and the factor 0.6 only keeps neighbouring curves from overlapping. The vertical size of a wavefunction in such a plot has no physical meaning.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:27.394841Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:27.394699Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:27.506870Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:27.506186Z&quot;}" data-execution_count="17">
 <details open="">
 <summary>Code</summary>
@@ -899,7 +926,7 @@ expected       : [0.5 1.5 2.5 3.5 4.5]</code></pre>
 </section>
 <section id="random-numbers" class="level2">
 <h2 class="anchored" data-anchor-id="random-numbers">8. Random numbers</h2>
-<p>Machine learning uses random numbers in several places: random initialisation of weights, random mini-batches, random noise in data. A <strong>generator with a fixed seed</strong> makes the results reproducible: the same seed always gives the same sequence of numbers. The value of the seed (123 here, 0 or 1 later) is arbitrary; different seeds give different but statistically equivalent results.</p>
+<p>Machine learning uses random numbers in several places: random initialisation of weights, random mini-batches, random noise in data. A <strong>generator with a fixed seed</strong> makes the results reproducible: the same seed always gives the same sequence of numbers. Different seeds give different but statistically equivalent results.</p>
 <p>As with <code>arange</code>, the upper end of a range is excluded: <code>rng.integers(0, 10)</code> returns integers 0, …, 9, and <code>rng.random()</code> returns numbers in <span class="math inline">\([0, 1)\)</span>.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:27.508857Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:27.508718Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:27.516891Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:27.516399Z&quot;}" data-execution_count="18">
 <details open="">
@@ -920,8 +947,7 @@ choice ±1    : [ 1  1  1 -1  1 -1 -1 -1]
 permutation  : [5 2 4 1 0 3]</code></pre>
 </div>
 </div>
-<p><strong>Monte Carlo in one line</strong>: estimate <span class="math inline">\(\pi\)</span> from the fraction of random points in the unit square that fall inside the quarter circle. The error decreases like <span class="math inline">\(1/\sqrt{N}\)</span>; we check this on a log-log plot. On logarithmic axes a power law <span class="math inline">\(\text{error}\propto N^{-1/2}\)</span> becomes a straight line of slope <span class="math inline">\(-1/2\)</span>, so the exponent can be read off directly. On linear axes all points with large <span class="math inline">\(N\)</span> would be squeezed onto the horizontal axis.</p>
-<p>New elements in the cell: - <code>np.logspace(2, 7, 11)</code> returns 11 numbers spaced evenly in the exponent, from <span class="math inline">\(10^2\)</span> to <span class="math inline">\(10^7\)</span> (two values per decade: 100, 316, 1000, …). <code>.astype(int)</code> converts them to integers, because a number of samples must be an integer. - <code>np.sum(pts**2, axis=1) &lt; 1.0</code> is a boolean array: <code>True</code> for points inside the quarter circle. In arithmetic <code>True</code> counts as 1 and <code>False</code> as 0, so <code>np.mean</code> of a boolean array is the fraction of <code>True</code> entries. This fraction estimates the area ratio <span class="math inline">\(\pi/4\)</span>. - The largest sample is an array of shape <span class="math inline">\((10^7, 2)\)</span> of <code>float64</code> numbers, i.e.&nbsp;160 MB of memory; it is generated and processed in well under a second.</p>
+<p>Random numbers give a Monte Carlo estimate of <span class="math inline">\(\pi\)</span> in one line: the fraction of random points in the unit square that fall inside the quarter circle estimates its area <span class="math inline">\(\pi/4\)</span>. The error decreases like <span class="math inline">\(1/\sqrt{N}\)</span>: on a log-log plot the power law <span class="math inline">\(\text{error}\propto N^{-1/2}\)</span> is a straight line of slope <span class="math inline">\(-1/2\)</span>. The sample sizes, from <code>np.logspace(2, 7, 11)</code>, are spaced evenly in the exponent from <span class="math inline">\(10^2\)</span> to <span class="math inline">\(10^7\)</span>. Since <code>True</code> counts as 1 in arithmetic, <code>np.mean</code> of the boolean array <code>np.sum(pts**2, axis=1) &lt; 1.0</code> is the fraction of points inside the quarter circle. The largest sample, an array of shape <span class="math inline">\((10^7, 2)\)</span>, occupies 160 MB and is processed in well under a second.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:27.518311Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:27.518120Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:28.252939Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:28.252270Z&quot;}" data-execution_count="19">
 <details open="">
 <summary>Code</summary>
@@ -943,15 +969,14 @@ permutation  : [5 2 4 1 0 3]</code></pre>
 <p><img src="lab-002-numpy_files/figure-html/cell-20-output-1.png" class="img-fluid"></p>
 </div>
 </div>
-<p>Where the dashed line comes from: each random point falls inside the quarter circle with probability <span class="math inline">\(p = \pi/4\)</span>, independently of the others. The fraction of hits among <span class="math inline">\(N\)</span> points has standard deviation <span class="math inline">\(\sqrt{p(1-p)/N}\)</span> (binomial distribution), so the estimate <span class="math inline">\(4\times\)</span>fraction has standard deviation <span class="math inline">\(4\sqrt{p(1-p)/N} \approx 1.64/\sqrt N\)</span>.</p>
+<p>The dashed line follows from the binomial distribution. Each random point falls inside the quarter circle with probability <span class="math inline">\(p = \pi/4\)</span>, independently of the others. The fraction of hits among <span class="math inline">\(N\)</span> points has standard deviation <span class="math inline">\(\sqrt{p(1-p)/N}\)</span>, so the estimate <span class="math inline">\(4\times\)</span>fraction has standard deviation <span class="math inline">\(4\sqrt{p(1-p)/N} \approx 1.64/\sqrt N\)</span>.</p>
 <p>Each point is the result of <strong>one</strong> random experiment, so the points scatter around the dashed line instead of lying on it. The dashed line is the standard deviation, a typical size of the error, not an upper bound: on average <span class="math inline">\(|\text{error}|\)</span> is about 0.8 of the standard deviation, and in about a quarter of the experiments it is less than 0.3 of it. What the plot confirms is the slope: the cloud of points follows the line over five decades of <span class="math inline">\(N\)</span>.</p>
 <hr>
 </section>
-<section id="towards-neural-networks-a-dense-layer-in-numpy" class="level2">
-<h2 class="anchored" data-anchor-id="towards-neural-networks-a-dense-layer-in-numpy">9. Towards neural networks: a dense layer in NumPy</h2>
+<section id="a-dense-layer-in-numpy" class="level2">
+<h2 class="anchored" data-anchor-id="a-dense-layer-in-numpy">9. A dense layer in NumPy</h2>
 <p>A dense (fully connected) layer maps a vector <span class="math inline">\(\mathbf z\in\mathbb R^{n_\text{in}}\)</span> to <span class="math inline">\(\sigma(\mathbf W\mathbf z + \mathbf b)\in\mathbb R^{n_\text{out}}\)</span>. In practice we process a whole <strong>batch</strong> of <span class="math inline">\(B\)</span> inputs at once, stored as rows of a matrix of shape <code>(B, n_in)</code>. Then <span class="math display">\[\underbrace{\mathbf Z_\text{out}}_{(B,\,n_\text{out})} = \sigma\Big(\underbrace{\mathbf Z_\text{in}}_{(B,\,n_\text{in})}\;\underbrace{\mathbf W^{T}}_{(n_\text{in},\,n_\text{out})} + \underbrace{\mathbf b}_{(n_\text{out},)}\Big)\]</span> — one matrix product plus broadcasting of the bias. (We store <code>W</code> with shape <code>(n_out, n_in)</code>, exactly like PyTorch does.)</p>
-<p>First, the activation functions from the lecture. Each is defined by a one-line <code>def</code> (allowed when the body is a single <code>return</code>). <code>np.maximum(0.0, z)</code> compares element by element and returns the larger value at each position, which is exactly ReLU; it differs from <code>np.max(z)</code>, which returns the single largest element of an array. The list <code>[(sigmoid, "sigmoid"), ...]</code> contains the functions themselves as values: in Python a function is an object like any other and can be stored in a list and called later as <code>f(z)</code>.</p>
-<p>The range <span class="math inline">\([-5, 5]\)</span>, the 400 points and the <span class="math inline">\(y\)</span>-limits are plotting choices only: the range shows where sigmoid and tanh saturate, 400 points make the curves look smooth, and the upper limit 2.5 cuts the ReLU line.</p>
+<p>The activation functions from the lecture are one-line functions. ReLU is <code>np.maximum(0.0, z)</code>, the element-wise maximum, not to be confused with <code>np.max(z)</code>, the single largest element of an array. The range <span class="math inline">\([-5, 5]\)</span> shows where sigmoid and tanh saturate.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:28.254852Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:28.254660Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:28.337148Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:28.336620Z&quot;}" data-execution_count="20">
 <details open="">
 <summary>Code</summary>
@@ -971,8 +996,9 @@ permutation  : [5 2 4 1 0 3]</code></pre>
 <p><img src="lab-002-numpy_files/figure-html/cell-21-output-1.png" class="img-fluid"></p>
 </div>
 </div>
-<p>A dense layer applied to a batch, and a random network <span class="math inline">\(1\to20\to1\)</span> evaluated on 300 inputs.</p>
-<p><strong>Choice of the random weights.</strong> - <code>rng.normal(0, 3, (n_hidden, n_in))</code> draws normally distributed numbers; the three arguments are the mean, the <strong>standard deviation</strong> (not the variance) and the shape of the returned array. - Hidden neuron <span class="math inline">\(i\)</span> computes <span class="math inline">\(\tanh(W_i x + b_i)\)</span>. It switches between <span class="math inline">\(-1\)</span> and <span class="math inline">\(+1\)</span> (upwards if <span class="math inline">\(W_i&gt;0\)</span>, downwards if <span class="math inline">\(W_i&lt;0\)</span>) around <span class="math inline">\(x = -b_i/W_i\)</span>, over an interval of width about <span class="math inline">\(1/|W_i|\)</span>. Because <span class="math inline">\(W_i\)</span> and <span class="math inline">\(b_i\)</span> are drawn with the same standard deviation, the switching points do not depend on that standard deviation (about 70% of them fall inside the plotted range <span class="math inline">\([-2, 2]\)</span>). The standard deviation sets how <strong>steep</strong> the neurons are. The value 3 is an arbitrary choice that gives visibly curved functions; with 0.3 the neurons are so flat that the network output is close to a straight line on <span class="math inline">\([-2, 2]\)</span>. Any value of order 1–5 gives a picture similar to the one below. - The output is a sum of <code>n_hidden</code> = 20 terms <span class="math inline">\(W^{(2)}_i h_i\)</span>. If each term has a variance of order 1, the sum has a variance of order <code>n_hidden</code>. Dividing the output weights by <span class="math inline">\(\sqrt{n_\text{hidden}}\)</span> keeps the output of order 1 for any width. The same rule appears in Exercise 5 and in the initialisation of neural-network weights. - <code>lambda s: s</code> is a short unnamed function that returns its argument unchanged (the identity), used as the “activation” of the linear output layer. <code>lambda args: expression</code> is equivalent to a one-line <code>def</code>.</p>
+<p>A dense layer applied to a batch gives a random network <span class="math inline">\(1\to20\to1\)</span>, evaluated on 300 inputs.</p>
+<p><code>rng.normal(0, 3, (n_hidden, n_in))</code> draws normally distributed numbers; the three arguments are the mean, the <strong>standard deviation</strong> (not the variance) and the shape of the returned array. Hidden neuron <span class="math inline">\(i\)</span> computes <span class="math inline">\(\tanh(W_i x + b_i)\)</span>. It switches between <span class="math inline">\(-1\)</span> and <span class="math inline">\(+1\)</span> (upwards if <span class="math inline">\(W_i&gt;0\)</span>, downwards if <span class="math inline">\(W_i&lt;0\)</span>) around <span class="math inline">\(x = -b_i/W_i\)</span>, over an interval of width about <span class="math inline">\(1/|W_i|\)</span>. Because <span class="math inline">\(W_i\)</span> and <span class="math inline">\(b_i\)</span> are drawn with the same standard deviation, the switching points do not depend on that standard deviation (about 70% of them fall inside the plotted range <span class="math inline">\([-2, 2]\)</span>). The standard deviation sets how <strong>steep</strong> the neurons are. The value 3 is an arbitrary choice that gives visibly curved functions; with 0.3 the neurons are so flat that the network output is close to a straight line on <span class="math inline">\([-2, 2]\)</span>. Any value of order 1–5 gives a picture similar to the one below.</p>
+<p>The output is a sum of <code>n_hidden</code> = 20 terms <span class="math inline">\(W^{(2)}_i h_i\)</span>. If each term has a variance of order 1, the sum has a variance of order <code>n_hidden</code>. Dividing the output weights by <span class="math inline">\(\sqrt{n_\text{hidden}}\)</span> keeps the output of order 1 for any width. The same rule appears in Exercise 5 and in the initialisation of neural-network weights. The linear output layer uses the identity <code>lambda s: s</code> as its “activation”.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:28.338860Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:28.338716Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:28.343673Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:28.343213Z&quot;}" data-execution_count="21">
 <details open="">
 <summary>Code</summary>
@@ -994,7 +1020,7 @@ permutation  : [5 2 4 1 0 3]</code></pre>
 <pre><code>X: (300, 1)  H1: (300, 20)  Y: (300, 1)</code></pre>
 </div>
 </div>
-<p><strong>A randomly initialised network is a random non-linear function.</strong> Below, several of them (different random weights). <em>Training</em> means choosing the weights so that this function matches the data.</p>
+<p>Six sets of random weights show that a randomly initialised network is a random non-linear function. <em>Training</em> means choosing the weights so that this function matches the data.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:28.345019Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:28.344892Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:28.630070Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:28.629268Z&quot;}" data-execution_count="22">
 <details open="">
 <summary>Code</summary>
@@ -1018,29 +1044,23 @@ permutation  : [5 2 4 1 0 3]</code></pre>
 The output is a weighted sum of shifted and stretched <span class="math inline">\(\tanh\)</span>’s (right panel). Sums of this form (with enough hidden neurons) can approximate any continuous function on a bounded interval to any accuracy — this is the content of the <strong>Universal Approximation Theorem</strong> (see the lecture).
 <hr>
 </section>
-<section id="what-numpy-cannot-do" class="level2">
-<h2 class="anchored" data-anchor-id="what-numpy-cannot-do">10. What NumPy cannot do</h2>
-<p>NumPy is enough to <em>evaluate</em> a network. To <em>train</em> it we need the gradient <span class="math inline">\(\nabla_{\vec\theta}\mathcal L\)</span> of the loss with respect to all parameters (the <em>loss</em> <span class="math inline">\(\mathcal L(\vec\theta)\)</span> is a single number that measures how far the network outputs are from the training data, e.g.&nbsp;the mean squared error; training minimises it). NumPy does not compute derivatives. We would have to derive them by hand: for one hidden layer this is half a page, for a network with 50 layers of different types it is not practical, and every change of the architecture would require a new derivation.</p>
-<p>The second limitation is hardware: NumPy runs only on the CPU. Training large networks requires GPUs (graphics processors, with thousands of simple arithmetic units working in parallel), which perform the same matrix operations much faster.</p>
-<p>Both problems are solved by <strong>PyTorch</strong>: the same array operations as NumPy, plus - <strong>automatic differentiation</strong>: the gradient of any computation is obtained with one call, <code>loss.backward()</code>; - <strong>GPU support</strong>: the same code runs on a GPU after moving the data with <code>.to("cuda")</code>.</p>
-PyTorch (together with JAX) is the standard tool in deep-learning research and industry, and we will use it for all networks in this course. NumPy remains the common format for data exchange: Matplotlib, Pandas and SciPy expect NumPy arrays, so conversions between the two are frequent.
+<section id="limits-of-numpy" class="level2">
+<h2 class="anchored" data-anchor-id="limits-of-numpy">10. Limits of NumPy</h2>
+<p>NumPy is enough to <em>evaluate</em> a network. To <em>train</em> it we need the gradient <span class="math inline">\(\nabla_{\vec\theta}\mathcal L\)</span> of the loss with respect to all parameters (the <em>loss</em> <span class="math inline">\(\mathcal L(\vec\theta)\)</span> is a single number that measures how far the network outputs are from the training data, e.g.&nbsp;the mean squared error; training minimises it). NumPy does not compute derivatives. We would have to derive them ourselves on paper: for one hidden layer this is half a page, for a network with 50 layers of different types it is not practical, and every change of the architecture would require a new derivation.</p>
+<p>The second limitation is hardware: NumPy runs only on the CPU (central processing unit). Training large networks requires GPUs (graphics processing units, with thousands of simple arithmetic units working in parallel), which perform the same matrix operations much faster.</p>
+<p>Both problems are solved by <strong>PyTorch</strong>, which offers the same array operations as NumPy and adds two things. The first is <strong>automatic differentiation</strong>: the gradient of any computation is obtained with one call, <code>loss.backward()</code>. The second is <strong>GPU support</strong>: the same code runs on a GPU after moving the data with <code>.to("cuda")</code>.</p>
+PyTorch (together with JAX) is the standard tool in deep-learning research and industry, and the networks of this course use it. NumPy remains the common format for data exchange: Matplotlib, Pandas and SciPy expect NumPy arrays, so conversions between the two are frequent.
 <hr>
 </section>
 <section id="summary" class="level2">
 <h2 class="anchored" data-anchor-id="summary">11. Summary</h2>
-<ul>
-<li>Think in <strong>arrays</strong>, not loops; check shapes with <code>print(x.shape)</code>.</li>
-<li><code>linspace</code> for grids, <code>reshape(-1)</code>, <code>[:, None]</code> for new axes, <code>.copy()</code> to avoid view surprises.</li>
-<li>Broadcasting: shapes compared from the right; size-1 dimensions are stretched.</li>
-<li>Reductions with <code>axis=</code>: the axis named disappears. Convention: axis 0 = samples.</li>
-<li><code>@</code> is matrix product, <code>*</code> is element-wise; <code>np.linalg.eigh</code> diagonalises Hermitian matrices.</li>
-<li><code>rng = np.random.default_rng(seed)</code> for reproducible randomness.</li>
-<li>A dense layer on a batch: <code>sigma(Z @ W.T + b)</code>.
+The central habit of this notebook is to think in <strong>arrays</strong>, not loops, and to check shapes with <code>print(x.shape)</code>. Grids are made with <code>linspace</code>; <code>reshape(-1)</code> flattens, <code>[:, None]</code> adds a new axis, and <code>.copy()</code> avoids surprises with views. Broadcasting compares shapes from the right and stretches size-1 dimensions. Reductions with <code>axis=</code> remove the named axis, and by convention axis 0 holds the samples. <code>@</code> is the matrix product while <code>*</code> is element-wise, and <code>np.linalg.eigh</code> diagonalises Hermitian matrices. <code>rng = np.random.default_rng(seed)</code> gives reproducible randomness, and a dense layer on a batch is the single line <code>sigma(Z @ W.T + b)</code>.
 <hr>
-<h2 id="exercises" class="anchored">12. Exercises</h2></li>
-</ul>
-<section id="exercise-1-vectorise-the-ising-energy" class="level3">
-<h3 class="anchored" data-anchor-id="exercise-1-vectorise-the-ising-energy">Exercise 1 — Vectorise the Ising energy</h3>
+</section>
+<section id="exercises" class="level2">
+<h2 class="anchored" data-anchor-id="exercises">12. Exercises</h2>
+<section id="exercise-1-vectorised-ising-energy" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-1-vectorised-ising-energy">Exercise 1 — Vectorised Ising energy</h3>
 <p>The energy of a classical 1D Ising chain of <span class="math inline">\(L\)</span> spins <span class="math inline">\(s_i=\pm1\)</span> with periodic boundary conditions is <span class="math inline">\(E(\mathbf s) = -J\sum_{i=1}^{L} s_i s_{i+1}\)</span>, with <span class="math inline">\(s_{L+1}\equiv s_1\)</span>. Below, <code>configs</code> holds <span class="math inline">\(M = 10\,000\)</span> random configurations as rows of an array of shape <code>(M, L)</code>. 1. A loop version is given. Write a <strong>vectorised</strong> version <code>energy_vec(configs)</code> without any Python loop (<em>hint:</em> <code>np.roll(configs, -1, axis=1)</code> shifts every row by one site). 2. Check both give the same result and compare the run times. 3. Plot a histogram of the energies. What are the minimal and maximal possible values?</p>
 <section id="solution" class="level4">
 <h4 class="anchored" data-anchor-id="solution">Solution</h4>
@@ -1094,9 +1114,9 @@ PyTorch (together with JAX) is the standard tool in deep-learning research and i
 </div>
 </section>
 </section>
-<section id="exercise-2-softmax-one-hot-encoding-and-cross-entropy-from-the-lecture" class="level3">
-<h3 class="anchored" data-anchor-id="exercise-2-softmax-one-hot-encoding-and-cross-entropy-from-the-lecture">Exercise 2 — Softmax, one-hot encoding and cross-entropy (from the lecture)</h3>
-<p>For classification the network outputs raw numbers (“logits”) <span class="math inline">\(\mathbf z\)</span> which are turned into probabilities by <span class="math inline">\(\mathrm{softmax}(\mathbf z)_i = e^{z_i}/\sum_j e^{z_j}\)</span>; the loss is the categorical cross-entropy <span class="math inline">\(\mathcal L_\text{ce} = -\sum_i p_i\log q_i\)</span>, where <span class="math inline">\(\mathbf p\)</span> is the true distribution (for a labelled example, 1 at the true class and 0 elsewhere: the <em>one-hot</em> vector) and <span class="math inline">\(\mathbf q\)</span> the probabilities predicted by the network. 1. Implement <code>softmax(Z)</code> for a batch <code>Z</code> of shape <code>(B, K)</code> (each row normalised). Try <code>Z = [[1000, 1001, 1002]]</code> — what goes wrong? Fix it using <span class="math inline">\(\mathrm{softmax}(\mathbf z) = \mathrm{softmax}(\mathbf z - \max_j z_j)\)</span>. 2. Implement <code>one_hot(labels, K)</code> turning integer labels, e.g.&nbsp;<code>[2, 0, 1]</code>, into a <code>(B, K)</code> array of 0/1 (<em>hint:</em> <code>np.eye(K)[labels]</code>). 3. Implement <code>cross_entropy(P, Q)</code> averaged over the batch. Evaluate it for the lecture example: true digit 2, <span class="math inline">\(\mathbf q = [0.1, 0, 0.7, 0.01, 0.1, 0.02, 0, 0.02, 0, 0.05]\)</span>. Why is it necessary to guard against <span class="math inline">\(\log 0\)</span>?</p>
+<section id="exercise-2-softmax-one-hot-encoding-and-cross-entropy" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-2-softmax-one-hot-encoding-and-cross-entropy">Exercise 2 — Softmax, one-hot encoding and cross-entropy</h3>
+<p>For classification the network outputs raw numbers (“logits”) <span class="math inline">\(\mathbf z\)</span> which are turned into probabilities by <span class="math inline">\(\mathrm{softmax}(\mathbf z)_i = e^{z_i}/\sum_j e^{z_j}\)</span>; the loss, as in the lecture, is the categorical cross-entropy <span class="math inline">\(\mathcal L_\text{ce} = -\sum_i p_i\log q_i\)</span>, where <span class="math inline">\(\mathbf p\)</span> is the true distribution (for a labelled example, 1 at the true class and 0 elsewhere: the <em>one-hot</em> vector) and <span class="math inline">\(\mathbf q\)</span> the probabilities predicted by the network. 1. Implement <code>softmax(Z)</code> for a batch <code>Z</code> of shape <code>(B, K)</code> (each row normalised). Try <code>Z = [[1000, 1001, 1002]]</code> — what goes wrong? Fix it using <span class="math inline">\(\mathrm{softmax}(\mathbf z) = \mathrm{softmax}(\mathbf z - \max_j z_j)\)</span>. 2. Implement <code>one_hot(labels, K)</code> turning integer labels, e.g.&nbsp;<code>[2, 0, 1]</code>, into a <code>(B, K)</code> array of 0/1 (<em>hint:</em> <code>np.eye(K)[labels]</code>). 3. Implement <code>cross_entropy(P, Q)</code> averaged over the batch. Evaluate it for the lecture example: true digit 2, <span class="math inline">\(\mathbf q = [0.1, 0, 0.7, 0.01, 0.1, 0.02, 0, 0.02, 0, 0.05]\)</span>. Why is it necessary to guard against <span class="math inline">\(\log 0\)</span>?</p>
 <section id="solution-1" class="level4">
 <h4 class="anchored" data-anchor-id="solution-1">Solution</h4>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T07:55:29.267022Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T07:55:29.266864Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T07:55:29.273521Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T07:55:29.273031Z&quot;}" data-execution_count="24">
@@ -1217,8 +1237,8 @@ cross-entropy : 0.3566749439373039   -log(0.7) = 0.35667494393873245</code></pre
 </div>
 </section>
 </section>
-<section id="exercise-4-particles-without-loops-broadcasting" class="level3">
-<h3 class="anchored" data-anchor-id="exercise-4-particles-without-loops-broadcasting">Exercise 4 — Particles without loops (broadcasting)</h3>
+<section id="exercise-4-pairwise-distances-with-broadcasting" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-4-pairwise-distances-with-broadcasting">Exercise 4 — Pairwise distances with broadcasting</h3>
 <p><span class="math inline">\(N=200\)</span> particles sit at random positions in a 2D box <span class="math inline">\([0, 10]^2\)</span> (array <code>R</code> of shape <code>(N, 2)</code>). 1. Compute the matrix of all pairwise distances <span class="math inline">\(d_{ij} = |\mathbf r_i - \mathbf r_j|\)</span> <strong>without loops</strong> (<em>hint:</em> <code>R[:, None, :] - R[None, :, :]</code> has shape <code>(N, N, 2)</code>). 2. The Lennard-Jones pair potential is <span class="math inline">\(V_\text{LJ}(d) = 4\epsilon\big[(\sigma_\text{LJ}/d)^{12} - (\sigma_\text{LJ}/d)^{6}\big]\)</span>, with <span class="math inline">\(\epsilon\)</span> the well depth and <span class="math inline">\(\sigma_\text{LJ}\)</span> the distance where <span class="math inline">\(V_\text{LJ} = 0\)</span>. Compute the total Lennard-Jones energy <span class="math inline">\(E = \sum_{i&lt;j} 4\big[(1/d_{ij})^{12} - (1/d_{ij})^{6}\big]\)</span> in reduced units (lengths in units of <span class="math inline">\(\sigma_\text{LJ}\)</span>, energies in units of <span class="math inline">\(\epsilon\)</span>) (<em>hint:</em> <code>np.triu_indices(N, k=1)</code> gives the pairs <span class="math inline">\(i&lt;j\)</span>). Restricting to <span class="math inline">\(i&lt;j\)</span> counts every pair once and skips the diagonal <span class="math inline">\(d_{ii} = 0\)</span>, where <span class="math inline">\(1/d\)</span> is infinite. 3. Plot a histogram of the distances <span class="math inline">\(d_{ij}\)</span>, <span class="math inline">\(i&lt;j\)</span>.</p>
 <section id="solution-3" class="level4">
 <h4 class="anchored" data-anchor-id="solution-3">Solution</h4>
@@ -1229,20 +1249,20 @@ cross-entropy : 0.3566749439373039   -log(0.7) = 0.35667494393873245</code></pre
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">200</span></span>
 <span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>R <span class="op">=</span> <span class="dv">10</span> <span class="op">*</span> rng.random((N, <span class="dv">2</span>))                   <span class="co"># positions: N rows, columns = (x, y)</span></span>
 <span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: all difference vectors r_i - r_j at once.</span></span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="co"># all difference vectors r_i - r_j at once.</span></span>
 <span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a><span class="co"># R[:, None, :] has shape (N, 1, 2), R[None, :, :] has shape (1, N, 2); broadcasting gives (N, N, 2).</span></span>
 <span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>diff <span class="op">=</span> R[:, <span class="va">None</span>, :] <span class="op">-</span> R[<span class="va">None</span>, :, :]</span>
 <span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2: lengths of the difference vectors -&gt; distance matrix of shape (N, N)</span></span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a><span class="co"># lengths of the difference vectors -&gt; distance matrix of shape (N, N)</span></span>
 <span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>D <span class="op">=</span> np.sqrt(np.<span class="bu">sum</span>(diff<span class="op">**</span><span class="dv">2</span>, axis<span class="op">=-</span><span class="dv">1</span>))         <span class="co"># axis=-1 = the last axis (the x, y components)</span></span>
 <span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 3: every pair once. triu_indices(N, k=1) gives the (row, column) indices above the diagonal, i.e. i &lt; j.</span></span>
+<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a><span class="co"># every pair once: triu_indices(N, k=1) gives the (row, column) indices above the diagonal, i.e. i &lt; j.</span></span>
 <span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a>iu <span class="op">=</span> np.triu_indices(N, k<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a><span class="co"># iu is a pair (rows, columns) of integer arrays; D[iu] picks D[rows[k], cols[k]] for every k</span></span>
 <span id="cb46-15"><a href="#cb46-15" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> D[iu]                                     <span class="co"># 1D array of N(N-1)/2 distances</span></span>
 <span id="cb46-16"><a href="#cb46-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"number of pairs:"</span>, d.size, <span class="st">"= N(N-1)/2 ="</span>, N <span class="op">*</span> (N <span class="op">-</span> <span class="dv">1</span>) <span class="op">//</span> <span class="dv">2</span>)</span>
 <span id="cb46-17"><a href="#cb46-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-18"><a href="#cb46-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 4: Lennard-Jones energy 4 eps [(sigma/d)^12 - (sigma/d)^6] summed over all pairs, in reduced units</span></span>
+<span id="cb46-18"><a href="#cb46-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Lennard-Jones energy 4 eps [(sigma/d)^12 - (sigma/d)^6] summed over all pairs, in reduced units</span></span>
 <span id="cb46-19"><a href="#cb46-19" aria-hidden="true" tabindex="-1"></a><span class="co"># eps = sigma = 1 (lengths in units of sigma, energies in units of eps). Box size 10 and N = 200 are arbitrary.</span></span>
 <span id="cb46-20"><a href="#cb46-20" aria-hidden="true" tabindex="-1"></a>E_LJ <span class="op">=</span> np.<span class="bu">sum</span>(<span class="dv">4</span> <span class="op">*</span> (d<span class="op">**-</span><span class="dv">12</span> <span class="op">-</span> d<span class="op">**-</span><span class="dv">6</span>))</span>
 <span id="cb46-21"><a href="#cb46-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"LJ energy: </span><span class="sc">{</span>E_LJ<span class="sc">:.4g}</span><span class="ss">   (closest pair at distance </span><span class="sc">{</span>d<span class="sc">.</span><span class="bu">min</span>()<span class="sc">:.3f}</span><span class="ss">)"</span>)</span>
@@ -1263,8 +1283,8 @@ LJ energy: 2.179e+16   (closest pair at distance 0.051)</code></pre>
 </div>
 </section>
 </section>
-<section id="exercise-5-advanced-a-two-hidden-layer-network-by-hand" class="level3">
-<h3 class="anchored" data-anchor-id="exercise-5-advanced-a-two-hidden-layer-network-by-hand">Exercise 5 (advanced) — A two-hidden-layer network, by hand</h3>
+<section id="exercise-5-advanced-a-network-with-two-hidden-layers" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-5-advanced-a-network-with-two-hidden-layers">Exercise 5 (advanced) — A network with two hidden layers</h3>
 <ol type="1">
 <li>Using <code>dense</code>, build a network <span class="math inline">\(1 \to 32 \to 32 \to 1\)</span> with <span class="math inline">\(\tanh\)</span> activations in hidden layers and a linear output. Initialise <span class="math inline">\(W\)</span> from <span class="math inline">\(\mathcal N(0, 1/n_\text{in})\)</span> (the second argument of <span class="math inline">\(\mathcal N(\mu, \sigma^2)\)</span> is the <em>variance</em>; here <span class="math inline">\(\sigma\)</span> denotes a standard deviation, not the activation function; so the standard deviation passed to <code>rng.normal</code> is <span class="math inline">\(1/\sqrt{n_\text{in}}\)</span>) and biases to zero. Evaluate it on a batch of 500 points in <span class="math inline">\([-3, 3]\)</span> and plot.</li>
 <li>Count the total number of parameters (all entries of all <span class="math inline">\(W\)</span> and <span class="math inline">\(b\)</span>). Derive the general formula for a network <span class="math inline">\(n_0\to n_1\to\cdots\to n_L\)</span>.</li>

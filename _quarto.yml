@@ -39,8 +39,10 @@ website:
             href: lectures/lecture-04.qmd
           - text: "5 · Unsupervised Learning"
             href: lectures/lecture-05.qmd
-          - text: "6 · Generative Models"
+          - text: "6 · Probability and Variational Autoencoders"
             href: lectures/lecture-06.qmd
+          - text: "7 · Adversarial and Diffusion Models"
+            href: lectures/lecture-07.qmd
       - text: "Course flyer"
         href: assets/course-flyer.pdf
       - text: "About"
@@ -78,6 +80,8 @@ website:
       - section: "3 · Convolutional Neural Networks"
         href: lectures/lecture-03.qmd
         contents:
+          - notebooks/lecture-03/lab-013a-cnn-pytorch.ipynb
+          - notebooks/lecture-03/lab-013b-cnn-jax.ipynb
           - notebooks/lecture-03/limits-of-deep-networks.ipynb
       - section: "4 · CNNs on Scientific Data and the 2D Ising Model"
         href: lectures/lecture-04.qmd
@@ -91,11 +95,15 @@ website:
         href: lectures/lecture-05.qmd
         contents:
           - notebooks/lecture-05/unsupervised-learning.ipynb
-      - section: "6 · Generative Models"
+      - section: "6 · Probability and Variational Autoencoders"
         href: lectures/lecture-06.qmd
         contents:
           - notebooks/lecture-06/generative-models.ipynb
           - notebooks/lecture-06/conditional-generation.ipynb
+      - section: "7 · Adversarial and Diffusion Models"
+        href: lectures/lecture-07.qmd
+        contents:
+          - notebooks/lecture-07/generative-models.ipynb
       - text: "About"
         href: about.qmd
   page-footer:

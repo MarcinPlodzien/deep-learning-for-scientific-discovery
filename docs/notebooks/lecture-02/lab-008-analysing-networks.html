@@ -179,7 +179,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </li>  
         <li>
     <a class="dropdown-item" href="../../lectures/lecture-06.html">
- <span class="dropdown-text">6 · Generative Models</span></a>
+ <span class="dropdown-text">6 · Probability and Variational Autoencoders</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-07.html">
+ <span class="dropdown-text">7 · Adversarial and Diffusion Models</span></a>
   </li>  
     </ul>
   </li>
@@ -316,6 +320,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-03/lab-013a-cnn-pytorch.html" class="sidebar-item-text sidebar-link">Lab 013a: CNNs on MNIST and CIFAR-10 in PyTorch</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-03/lab-013b-cnn-jax.html" class="sidebar-item-text sidebar-link">Lab 013b: CNNs on MNIST and CIFAR-10 in JAX</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../notebooks/lecture-03/limits-of-deep-networks.html" class="sidebar-item-text sidebar-link">Limits of deep networks</a>
   </div>
 </li>
@@ -373,7 +387,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../lectures/lecture-06.html" class="sidebar-item-text sidebar-link">6 · Generative Models</a>
+            <a href="../../lectures/lecture-06.html" class="sidebar-item-text sidebar-link">6 · Probability and Variational Autoencoders</a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -387,6 +401,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/lecture-06/conditional-generation.html" class="sidebar-item-text sidebar-link">Conditional generation of digits and blood cells</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-07.html" class="sidebar-item-text sidebar-link">7 · Adversarial and Diffusion Models</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-07/generative-models.html" class="sidebar-item-text sidebar-link">Generative models: probability, VAE, GAN and diffusion</a>
   </div>
 </li>
       </ul>
@@ -410,30 +439,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul class="collapse">
   <li><a href="#the-architecture" id="toc-the-architecture" class="nav-link" data-scroll-target="#the-architecture">1. The architecture</a>
   <ul class="collapse">
-  <li><a href="#drawing" id="toc-drawing" class="nav-link" data-scroll-target="#drawing">1.1 Drawing</a></li>
+  <li><a href="#drawing-of-the-network" id="toc-drawing-of-the-network" class="nav-link" data-scroll-target="#drawing-of-the-network">1.1 Drawing of the network</a></li>
   <li><a href="#a-table-of-the-layers" id="toc-a-table-of-the-layers" class="nav-link" data-scroll-target="#a-table-of-the-layers">1.2 A table of the layers</a></li>
   <li><a href="#counting-parameters" id="toc-counting-parameters" class="nav-link" data-scroll-target="#counting-parameters">1.3 Counting parameters</a></li>
   <li><a href="#number-of-parameters-against-width-and-depth" id="toc-number-of-parameters-against-width-and-depth" class="nav-link" data-scroll-target="#number-of-parameters-against-width-and-depth">1.4 Number of parameters against width and depth</a></li>
   <li><a href="#trainable-and-frozen-parameters" id="toc-trainable-and-frozen-parameters" class="nav-link" data-scroll-target="#trainable-and-frozen-parameters">1.5 Trainable and frozen parameters</a></li>
   <li><a href="#memory-and-computational-cost" id="toc-memory-and-computational-cost" class="nav-link" data-scroll-target="#memory-and-computational-cost">1.6 Memory and computational cost</a></li>
-  <li><a href="#the-same-with-ready-made-tools" id="toc-the-same-with-ready-made-tools" class="nav-link" data-scroll-target="#the-same-with-ready-made-tools">1.7 The same with ready-made tools</a></li>
+  <li><a href="#ready-made-tools" id="toc-ready-made-tools" class="nav-link" data-scroll-target="#ready-made-tools">1.7 Ready-made tools</a></li>
   </ul></li>
   <li><a href="#the-network-before-training" id="toc-the-network-before-training" class="nav-link" data-scroll-target="#the-network-before-training">2. The network before training</a>
   <ul class="collapse">
-  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">2.1 Data</a></li>
-  <li><a href="#weights" id="toc-weights" class="nav-link" data-scroll-target="#weights">2.2 Weights</a></li>
+  <li><a href="#damped-oscillation-data" id="toc-damped-oscillation-data" class="nav-link" data-scroll-target="#damped-oscillation-data">2.1 Damped-oscillation data</a></li>
+  <li><a href="#initial-weights" id="toc-initial-weights" class="nav-link" data-scroll-target="#initial-weights">2.2 Initial weights</a></li>
   <li><a href="#activations-and-saturated-nodes" id="toc-activations-and-saturated-nodes" class="nav-link" data-scroll-target="#activations-and-saturated-nodes">2.3 Activations and saturated nodes</a></li>
   <li><a href="#gradients-in-every-layer" id="toc-gradients-in-every-layer" class="nav-link" data-scroll-target="#gradients-in-every-layer">2.4 Gradients in every layer</a></li>
   <li><a href="#the-influence-of-the-initialisation-scale" id="toc-the-influence-of-the-initialisation-scale" class="nav-link" data-scroll-target="#the-influence-of-the-initialisation-scale">2.5 The influence of the initialisation scale</a></li>
   </ul></li>
   <li><a href="#monitoring-training" id="toc-monitoring-training" class="nav-link" data-scroll-target="#monitoring-training">3. Monitoring training</a>
   <ul class="collapse">
-  <li><a href="#loss-on-the-training-and-validation-sets-versus-epoch" id="toc-loss-on-the-training-and-validation-sets-versus-epoch" class="nav-link" data-scroll-target="#loss-on-the-training-and-validation-sets-versus-epoch">3.1 Loss on the training and validation sets versus epoch</a></li>
+  <li><a href="#learning-curves" id="toc-learning-curves" class="nav-link" data-scroll-target="#learning-curves">3.1 Learning curves</a></li>
   <li><a href="#gradients-and-weight-changes-per-layer" id="toc-gradients-and-weight-changes-per-layer" class="nav-link" data-scroll-target="#gradients-and-weight-changes-per-layer">3.2 Gradients and weight changes per layer</a></li>
   </ul></li>
-  <li><a href="#the-final-evaluation-on-the-test-set" id="toc-the-final-evaluation-on-the-test-set" class="nav-link" data-scroll-target="#the-final-evaluation-on-the-test-set">5. The final evaluation on the test set</a></li>
-  <li><a href="#a-summary-table-of-the-characteristics-of-a-model" id="toc-a-summary-table-of-the-characteristics-of-a-model" class="nav-link" data-scroll-target="#a-summary-table-of-the-characteristics-of-a-model">6. A summary table of the characteristics of a model</a></li>
-  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">7. Summary</a>
+  <li><a href="#overfitting-and-the-choice-of-the-epoch" id="toc-overfitting-and-the-choice-of-the-epoch" class="nav-link" data-scroll-target="#overfitting-and-the-choice-of-the-epoch">4. Overfitting and the choice of the epoch</a></li>
+  <li><a href="#evaluation-on-the-test-set" id="toc-evaluation-on-the-test-set" class="nav-link" data-scroll-target="#evaluation-on-the-test-set">5. Evaluation on the test set</a></li>
+  <li><a href="#model-characteristics-table" id="toc-model-characteristics-table" class="nav-link" data-scroll-target="#model-characteristics-table">6. Model characteristics table</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">7. Summary</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">8. Exercises</a>
   <ul class="collapse">
   <li><a href="#exercise-1-analysing-an-image-classifier" id="toc-exercise-1-analysing-an-image-classifier" class="nav-link" data-scroll-target="#exercise-1-analysing-an-image-classifier">Exercise 1 — Analysing an image classifier</a></li>
   <li><a href="#exercise-2-early-stopping-with-patience" id="toc-exercise-2-early-stopping-with-patience" class="nav-link" data-scroll-target="#exercise-2-early-stopping-with-patience">Exercise 2 — Early stopping with patience</a></li>
@@ -474,10 +505,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="lab-008-analysing-a-neural-network" class="level1">
 <h1>Lab 008 — Analysing a neural network</h1>
 <p>This notebook is about <strong>looking at</strong> a network: what can be measured about it before, during and after training, and what these measurements tell us. All quantities are computed with a few lines of PyTorch and plotted with Matplotlib.</p>
-<p><strong>Plan</strong> 1. The architecture: drawing, a table of layers, counting parameters, trainable and frozen parameters, memory and cost, and the same with ready-made tools (<code>torchinfo</code>, <code>torchview</code>) 2. The network before training: weights, activations, saturated nodes and gradients in every layer 3. Monitoring training: loss on the training and validation sets versus epoch, gradient and weight changes per layer 4. Overfitting and the choice of the epoch with the help of the validation set 5. The final evaluation on the test set 6. A summary table of the characteristics of a model 7. Summary 8. Exercises (with solutions)</p>
+<p>We start with the architecture alone (Section 1): a drawing, a table of the layers, the number of parameters and how it grows with width and depth, trainable and frozen parameters, memory and computational cost, and finally the same information obtained with the ready-made tools <code>torchinfo</code> and <code>torchview</code>. Section 2 examines the network before training, layer by layer: its weights, its activations and how many of its nodes are saturated, and the gradients that the first optimisation step would use, together with the role of the initialisation scale. Section 3 follows the network during training, through the losses on the training and validation sets and through the gradients and weight changes of every layer. These curves show when the network begins to overfit, and Section 4 uses the validation set to choose the epoch at which training should have stopped. The chosen model is evaluated once on the test set in Section 5, and Section 6 collects all characteristics of a model in one table. A summary (Section 7) and exercises with solutions (Section 8) close the notebook.</p>
 <p>Methods for interpreting <em>what</em> a network has learned (e.g.&nbsp;class activation maps for images) need convolutional networks and are discussed in later classes.</p>
 <blockquote class="blockquote">
-<p><strong>How to run this notebook in Google Colab</strong> 1. Go to <a href="https://colab.research.google.com" class="uri">https://colab.research.google.com</a> → <em>File → Upload notebook</em> (or open it from Google Drive). 2. Run cells one by one with <strong>Shift + Enter</strong>. Run them <em>in order</em> — later cells use variables defined earlier. 3. The required packages <code>numpy</code>, <code>matplotlib</code>, <code>torch</code>, <code>torchvision</code> and <code>pandas</code> are pre-installed in Colab; <code>torchinfo</code> and <code>torchview</code> are installed in Section 1.7 with <code>%pip</code>. 4. If the notebook state becomes inconsistent: <em>Runtime → Restart session</em> and run from the top.</p>
+<p>To run this notebook in Google Colab, proceed as follows. 1. Go to <a href="https://colab.research.google.com" class="uri">https://colab.research.google.com</a> → <em>File → Upload notebook</em> (or open it from Google Drive). 2. Run cells one by one with <strong>Shift + Enter</strong>. Run them <em>in order</em> — later cells use variables defined earlier. 3. The required packages <code>numpy</code>, <code>matplotlib</code>, <code>torch</code>, <code>torchvision</code> and <code>pandas</code> are pre-installed in Colab; <code>torchinfo</code> and <code>torchview</code> are installed in Section 1.7 with <code>%pip</code>. 4. If the notebook state becomes inconsistent: <em>Runtime → Restart session</em> and run from the top.</p>
 </blockquote>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T08:18:54.336983Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T08:18:54.336875Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T08:18:55.763770Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T08:18:55.763251Z&quot;}" data-execution_count="1">
 <details open="">
@@ -497,7 +528,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>PyTorch 2.14.1+cpu</code></pre>
 </div>
 </div>
-<p>Two helper functions are needed: <code>make_mlp</code> builds a dense network from a list of layer sizes, <code>draw_network</code> draws it.</p>
+<p>Two functions from the previous notebook are needed throughout: <code>make_mlp</code> builds a dense network from a list of layer sizes, and <code>draw_network</code> draws it.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T08:18:55.765698Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T08:18:55.765376Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T08:18:55.768706Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T08:18:55.768300Z&quot;}" data-execution_count="2">
 <details open="">
 <summary>Code</summary>
@@ -511,7 +542,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> nn.Sequential(<span class="op">*</span>layers)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>The drawing function:</p>
+<p>The drawing function is the same as in the previous notebook.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T08:18:55.770166Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T08:18:55.770007Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T08:18:55.793690Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T08:18:55.793328Z&quot;}" data-execution_count="3">
 <details open="">
 <summary>Code</summary>
@@ -568,10 +599,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <hr>
 <section id="the-architecture" class="level2">
 <h2 class="anchored" data-anchor-id="the-architecture">1. The architecture</h2>
-<section id="drawing" class="level3">
-<h3 class="anchored" data-anchor-id="drawing">1.1 Drawing</h3>
+<section id="drawing-of-the-network" class="level3">
+<h3 class="anchored" data-anchor-id="drawing-of-the-network">1.1 Drawing of the network</h3>
 <p>The network analysed in this notebook has layer sizes <span class="math inline">\([1, 64, 64, 64, 1]\)</span> with <span class="math inline">\(\tanh\)</span> activations: one input, three hidden layers of 64 nodes, one output.</p>
-<p>Why this network: it is deliberately much larger than the 30 training points of Section 2 require (8513 parameters, counted in Section 1.3), so that it is able to overfit them (Section 4). Three hidden layers make the effects of depth on activations and gradients visible. <span class="math inline">\(\tanh\)</span> is used because for it “saturated” has a simple meaning (Section 2.3). The width 64 itself is arbitrary: with widths 32 and 128 the same training run also shows a minimum of the validation loss followed by a rise.</p>
+<p>It is deliberately much larger than the 30 training points of Section 2 require (8513 parameters, counted in Section 1.3), so that it is able to overfit them (Section 4). Three hidden layers make the effects of depth on activations and gradients visible. <span class="math inline">\(\tanh\)</span> is used because for it “saturated” has a simple meaning (Section 2.3). The width 64 itself is arbitrary: with widths 32 and 128 the same training run also shows a minimum of the validation loss followed by a rise.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T08:18:55.794771Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T08:18:55.794661Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T08:18:56.147624Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T08:18:56.147054Z&quot;}" data-execution_count="4">
 <details open="">
 <summary>Code</summary>
@@ -720,7 +751,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </div>
-<p>Reading the table: each <code>Linear</code> layer from <span class="math inline">\(n_{\rm in}\)</span> to <span class="math inline">\(n_{\rm out}\)</span> nodes has a weight matrix of shape <span class="math inline">\((n_{\rm out}, n_{\rm in})\)</span> and a bias of length <span class="math inline">\(n_{\rm out}\)</span>; activation layers have no parameters and keep the shape. The batch dimension (8) is carried through unchanged.</p>
+<p>Each <code>Linear</code> layer from <span class="math inline">\(n_{\rm in}\)</span> to <span class="math inline">\(n_{\rm out}\)</span> nodes has a weight matrix of shape <span class="math inline">\((n_{\rm out}, n_{\rm in})\)</span> and a bias of length <span class="math inline">\(n_{\rm out}\)</span>; activation layers have no parameters and keep the shape. The batch dimension (8) is carried through the table unchanged.</p>
 </section>
 <section id="counting-parameters" class="level3">
 <h3 class="anchored" data-anchor-id="counting-parameters">1.3 Counting parameters</h3>
@@ -803,9 +834,9 @@ multiply-adds per input sample in one forward pass: 8320</code></pre>
 </div>
 </div>
 </section>
-<section id="the-same-with-ready-made-tools" class="level3">
-<h3 class="anchored" data-anchor-id="the-same-with-ready-made-tools">1.7 The same with ready-made tools</h3>
-<p>Everything in Sections 1.1–1.6 was computed by hand from the definitions, because this shows what each number means. In practice the same information is obtained with ready-made tools. PyTorch itself offers basic pieces (<code>print(model)</code>, <code>parameters()</code>, <code>requires_grad</code>, <code>modules()</code>, and the operation counter <code>FlopCounterMode</code>); a table of the layers and a drawing come from small additional packages: - <strong><code>torchinfo</code></strong>: the function <code>torchinfo.summary</code> prints a table of the layers with output shapes and parameter counts, the numbers of trainable and frozen parameters, and estimates of memory and cost; - <strong><code>torchview</code></strong>: draws the network as a graph of layers and tensor shapes (it uses the program Graphviz, installed in Colab); - <code>torch.utils.flop_counter.FlopCounterMode</code> (part of PyTorch) counts the floating-point operations of a computation.</p>
+<section id="ready-made-tools" class="level3">
+<h3 class="anchored" data-anchor-id="ready-made-tools">1.7 Ready-made tools</h3>
+<p>Everything in Sections 1.1–1.6 was computed directly from the definitions, because this shows what each number means. In practice the same information is obtained with ready-made tools. PyTorch itself offers basic pieces (<code>print(model)</code>, <code>parameters()</code>, <code>requires_grad</code>, <code>modules()</code>, and the operation counter <code>FlopCounterMode</code> from <code>torch.utils.flop_counter</code>, which counts the floating-point operations of a computation). A table of the layers and a drawing come from two small additional packages. The function <code>torchinfo.summary</code> of the package <code>torchinfo</code> prints a table of the layers with output shapes and parameter counts, the numbers of trainable and frozen parameters, and estimates of memory and cost. The package <code>torchview</code> draws the network as a graph of layers and tensor shapes; it uses the program Graphviz, which is installed in Colab.</p>
 <p>The two packages are not part of Colab’s standard installation. <code>%pip install</code> installs Python packages from inside a notebook into the Python environment that runs the notebook (<code>-q</code>: print less); it takes a few seconds and is needed once per Colab session. The note printed by <code>%pip</code> about restarting the kernel concerns packages that were already imported before the installation; <code>torchinfo</code> and <code>torchview</code> are imported only after it, so no restart is needed.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T08:18:56.534454Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T08:18:56.534344Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T08:18:57.085240Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T08:18:57.084409Z&quot;}" data-execution_count="10">
 <details open="">
@@ -854,7 +885,7 @@ total parameters: torchinfo 8513   our count 8513
 trainable:        torchinfo 8513</code></pre>
 </div>
 </div>
-<p>The columns agree with the table of Section 1.2: 128, 4160, 4160 and 65 parameters in the four <code>Linear</code> layers, 8513 in total. The last lines need a comment: - “Params size (MB): 0.03” is the memory of the parameters, <span class="math inline">\(8513\times4\)</span> bytes <span class="math inline">\(= 34\,052\)</span> bytes, the number of Section 1.6 (here in units of <span class="math inline">\(10^6\)</span> bytes). - “Total mult-adds” is counted differently from Section 1.6. <code>torchinfo</code> counts one multiply-add per parameter, the biases included, and for the whole batch: <span class="math inline">\(8 \times 8513 = 68\,104 \approx 0.07\)</span> M. Section 1.6 counted only the multiplications by weights, for one sample: <span class="math inline">\(8320 = 8513 - 193\)</span>, where 193 is the number of biases. Such counts are estimates of the cost, and different tools use different conventions; it is always necessary to check what a tool counts.</p>
+<p>The columns agree with the table of Section 1.2: 128, 4160, 4160 and 65 parameters in the four <code>Linear</code> layers, 8513 in total. “Params size (MB): 0.03” is the memory of the parameters, <span class="math inline">\(8513\times4\)</span> bytes <span class="math inline">\(= 34\,052\)</span> bytes, the number of Section 1.6 (here in units of <span class="math inline">\(10^6\)</span> bytes). “Total mult-adds”, on the other hand, is counted differently from Section 1.6: <code>torchinfo</code> counts one multiply-add per parameter, the biases included, and for the whole batch, <span class="math inline">\(8 \times 8513 = 68\,104 \approx 0.07\)</span> M, whereas Section 1.6 counted only the multiplications by weights, for one sample: <span class="math inline">\(8320 = 8513 - 193\)</span>, where 193 is the number of biases. Such counts are estimates of the cost, and different tools use different conventions; it is always necessary to check what a tool counts.</p>
 <p>For the copy with the frozen first layer (Section 1.5), <code>col_names</code> selects the columns, and the column “Trainable” shows which layers are frozen:</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T08:18:57.094292Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T08:18:57.094157Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T08:18:57.120985Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T08:18:57.120333Z&quot;}" data-execution_count="12">
 <details open="">
@@ -913,31 +944,36 @@ Estimated Total Size (MB): 0.05
 <pre><code>Linear layers: 4,  Tanh layers: 3</code></pre>
 </div>
 </div>
-<p>Finally the drawing by <code>torchview</code>. <code>draw_graph</code> passes a batch of the given shape through the model and records every layer it meets; <code>.visual_graph</code> is the resulting picture; <code>display(...)</code> (available in every Jupyter/Colab notebook without import) shows it, which is needed here because the picture is created inside a <code>try</code> block. Every box is one layer with the shapes of its input and output; the first dimension (8) is the batch. Unlike our <code>draw_network</code>, which draws individual nodes (up to <code>max_nodes</code> per layer), this drawing shows layers and shapes, and it works for any model, also for models with skip connections. If Graphviz is missing, the <code>except</code> branch prints a message instead.</p>
+<p>Finally the drawing by <code>torchview</code>. <code>draw_graph</code> passes a batch of the given shape through the model and records every layer it meets; <code>.visual_graph</code> is the resulting Graphviz graph, which <code>render</code> writes to a PNG file in the folder <code>figures</code>; <code>display(...)</code> (available in every Jupyter/Colab notebook without import) shows the image, which is needed here because it is created inside a <code>try</code> block. With <code>expand_nested=True</code> the layers are drawn inside the frame of the <code>Sequential</code> container. Every box is one layer with the shapes of its input and output; the first dimension (8) is the batch. Unlike our <code>draw_network</code>, which draws individual nodes (up to <code>max_nodes</code> per layer), this drawing shows layers and shapes, and it works for any model, also for models with skip connections. If Graphviz is missing, the <code>except</code> branch prints a message instead.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T08:18:57.864329Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T08:18:57.864178Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T08:18:57.923535Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T08:18:57.923134Z&quot;}" data-execution_count="15">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> torchview <span class="im">import</span> draw_graph</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    graph <span class="op">=</span> draw_graph(model, input_size<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">1</span>))</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    display(graph.visual_graph)</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> err:</span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"torchview drawing not available:"</span>, err)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> os</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> torchview <span class="im">import</span> draw_graph</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> IPython.display <span class="im">import</span> Image</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    graph <span class="op">=</span> draw_graph(model, input_size<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">1</span>), expand_nested<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    os.makedirs(<span class="st">"figures"</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    png <span class="op">=</span> graph.visual_graph.render(<span class="st">"figures/lab008_model_graph"</span>, <span class="bu">format</span><span class="op">=</span><span class="st">"png"</span>, cleanup<span class="op">=</span><span class="va">True</span>)   <span class="co"># Graphviz writes the PNG file</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    display(Image(png))</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> err:</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"torchview drawing not available:"</span>, err)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <p><img src="lab-008-analysing-networks_files/figure-html/cell-16-output-1.svg" class="img-fluid"></p>
 </div>
 </div>
-<p>The tools are faster to use, and they are the right choice for large models. The hand-made versions of Sections 1.1–1.6 remain useful: they show what the numbers mean, and they can be extended to any quantity a tool does not provide (e.g.&nbsp;the saturation of the activations in Section 2.3).</p>
+<p>The tools are faster to use, and they are the right choice for large models. The <code>torchinfo</code> table is the quickest check of shapes and parameter counts; the <code>torchview</code> graph shows how the layers are connected, which matters once the data flow is not a single chain (skip connections, several inputs). The direct computations of Sections 1.1–1.6 remain useful: they show what the numbers mean, and they can be extended to any quantity a tool does not provide (e.g.&nbsp;the saturation of the activations in Section 2.3).</p>
 <hr>
 </section>
 </section>
 <section id="the-network-before-training" class="level2">
 <h2 class="anchored" data-anchor-id="the-network-before-training">2. The network before training</h2>
-<section id="data" class="level3">
-<h3 class="anchored" data-anchor-id="data">2.1 Data</h3>
-<p>Noisy measurements of a damped oscillation <span class="math inline">\(y(t) = e^{-0.2t}\cos(2t)\)</span>, <span class="math inline">\(t\in[0, 10]\)</span>, with noise of standard deviation <span class="math inline">\(\sigma = 0.1\)</span> and deliberately <strong>few</strong> training points, so that overfitting (Section 4) becomes visible: 30 points for training, 40 for validation, 40 for testing. The input is rescaled to <span class="math inline">\([-1, 1]\)</span>.</p>
-<p>The numbers are chosen for this purpose: - The noise <span class="math inline">\(0.1\)</span> is about 10% of the amplitude of the signal (<span class="math inline">\(y(0) = 1\)</span>): large enough for overfitting to be visible, small enough for the oscillation to remain recognisable. - With only 30 training points the network of Section 1 (8513 parameters) can memorise the training set. The validation and test sets are larger (40 points each) because their losses are used to choose and to evaluate the model, and a larger set gives a less noisy estimate. - The positions <span class="math inline">\(t\)</span> are drawn uniformly at random, so the three sets cover the interval in the same way. All <span class="math inline">\(30+40+40 = 110\)</span> points are drawn at once, and the first 30, the next 40 and the last 40 form the three sets. - <code>t_plot</code> (400 equally spaced values) and the corresponding network input <code>X_plot</code> are not data: they are a dense grid on which functions are evaluated for plotting, and on which the hidden layers are examined in Section 2.3. - The rescaling <span class="math inline">\(t \to t/5 - 1\)</span> maps <span class="math inline">\([0, 10]\)</span> onto <span class="math inline">\([-1, 1]\)</span>. <span class="math inline">\(\tanh\)</span> changes only for arguments of order one; with the raw inputs (up to 10) and first-layer weights in <span class="math inline">\([-1, 1]\)</span>, 52% of the first-layer activations of the untrained network would be saturated (Section 2.3), with the rescaled inputs below 0.1%.</p>
+<section id="damped-oscillation-data" class="level3">
+<h3 class="anchored" data-anchor-id="damped-oscillation-data">2.1 Damped-oscillation data</h3>
+<p>The data are noisy measurements of a damped oscillation <span class="math inline">\(y(t) = e^{-0.2t}\cos(2t)\)</span>, <span class="math inline">\(t\in[0, 10]\)</span>, with noise of standard deviation <span class="math inline">\(\sigma = 0.1\)</span> and deliberately <strong>few</strong> training points, so that overfitting (Section 4) becomes visible: 30 points for training, 40 for validation, 40 for testing. The input is rescaled to <span class="math inline">\([-1, 1]\)</span>.</p>
+<p>The numbers are chosen for this purpose. The noise <span class="math inline">\(0.1\)</span> is about 10% of the amplitude of the signal (<span class="math inline">\(y(0) = 1\)</span>): large enough for overfitting to be visible, small enough for the oscillation to remain recognisable. With only 30 training points the network of Section 1 (8513 parameters) can memorise the training set. The validation and test sets are larger (40 points each) because their losses are used to choose and to evaluate the model, and a larger set gives a less noisy estimate. The positions <span class="math inline">\(t\)</span> are drawn uniformly at random, so the three sets cover the interval in the same way; all <span class="math inline">\(30+40+40 = 110\)</span> points are drawn at once, and the first 30, the next 40 and the last 40 form the three sets.</p>
+<p>Besides the data, the cell creates <code>t_plot</code> (400 equally spaced values) and the corresponding network input <code>X_plot</code>. These are not data: they are a dense grid on which functions are evaluated for plotting, and on which the hidden layers are examined in Section 2.3. The rescaling <span class="math inline">\(t \to t/5 - 1\)</span> maps <span class="math inline">\([0, 10]\)</span> onto <span class="math inline">\([-1, 1]\)</span>. <span class="math inline">\(\tanh\)</span> changes only for arguments of order one; with the raw inputs (up to 10) and first-layer weights in <span class="math inline">\([-1, 1]\)</span>, 52% of the first-layer activations of the untrained network would be saturated (Section 2.3), with the rescaled inputs below 0.1%.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T08:18:57.924863Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T08:18:57.924747Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T08:18:58.015056Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T08:18:58.014537Z&quot;}" data-execution_count="16">
 <details open="">
 <summary>Code</summary>
@@ -977,8 +1013,8 @@ Estimated Total Size (MB): 0.05
 </div>
 </div>
 </section>
-<section id="weights" class="level3">
-<h3 class="anchored" data-anchor-id="weights">2.2 Weights</h3>
+<section id="initial-weights" class="level3">
+<h3 class="anchored" data-anchor-id="initial-weights">2.2 Initial weights</h3>
 <p>PyTorch initialises the weights of <code>nn.Linear(n_in, n_out)</code> uniformly in <span class="math inline">\([-1/\sqrt{n_{\rm in}},\ 1/\sqrt{n_{\rm in}}]\)</span>. The first layer (<span class="math inline">\(n_{\rm in}=1\)</span>) therefore has weights in <span class="math inline">\([-1, 1]\)</span>, the hidden layers (<span class="math inline">\(n_{\rm in}=64\)</span>) in <span class="math inline">\([-0.125, 0.125]\)</span>. The histograms below show the weights of every <code>Linear</code> layer of the untrained model, with these bounds as dashed lines. The biases are drawn from the same interval.</p>
 <p>The scale <span class="math inline">\(1/\sqrt{n_{\rm in}}\)</span> keeps the size of the weighted sum <span class="math inline">\(\sum_{i=1}^{n_{\rm in}} w_i x_i\)</span> independent of the number of inputs: for independent <span class="math inline">\(w_i\)</span> and <span class="math inline">\(x_i\)</span> with zero mean its variance is <span class="math inline">\(n_{\rm in}\,{\rm Var}(w)\,{\rm Var}(x)\)</span>, which does not grow with <span class="math inline">\(n_{\rm in}\)</span> when <span class="math inline">\({\rm Var}(w)\propto 1/n_{\rm in}\)</span>.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T08:18:58.016721Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T08:18:58.016503Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T08:18:58.500694Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T08:18:58.500179Z&quot;}" data-execution_count="17">
@@ -1004,7 +1040,7 @@ Estimated Total Size (MB): 0.05
 </section>
 <section id="activations-and-saturated-nodes" class="level3">
 <h3 class="anchored" data-anchor-id="activations-and-saturated-nodes">2.3 Activations and saturated nodes</h3>
-<p>To see what the hidden layers do, we pass the 400 inputs of the dense grid <code>X_plot</code> through the network and record the output of every activation layer. A node computes <span class="math inline">\(h = \tanh(z)\)</span>, where <span class="math inline">\(z\)</span> is its weighted input, and <span class="math inline">\(\frac{d}{dz}\tanh z = 1 - \tanh^2 z = 1 - h^2\)</span>. A node with <span class="math inline">\(|h| &gt; 0.95\)</span> is <strong>saturated</strong>: its derivative <span class="math inline">\(1-h^2 &lt; 0.0975 \approx 0.1\)</span> is small, so gradients passing through it are damped by a factor of ten or more. The threshold 0.95 is a convention; any value between about 0.9 and 0.99 gives the same qualitative picture. The <em>saturated fraction</em> of a layer, shown in the panel titles below, is the fraction of activation values <span class="math inline">\(h\)</span> (over all nodes and all 400 inputs) with <span class="math inline">\(|h|&gt;0.95\)</span>.</p>
+<p>The 400 inputs of the dense grid <code>X_plot</code> are passed through the network, and the output of every activation layer is recorded. A node computes <span class="math inline">\(h = \tanh(z)\)</span>, where <span class="math inline">\(z\)</span> is its weighted input, and <span class="math inline">\(\frac{d}{dz}\tanh z = 1 - \tanh^2 z = 1 - h^2\)</span>. A node with <span class="math inline">\(|h| &gt; 0.95\)</span> is <strong>saturated</strong>: its derivative <span class="math inline">\(1-h^2 &lt; 0.0975 \approx 0.1\)</span> is small, so gradients passing through it are damped by a factor of ten or more. The threshold 0.95 is a convention; any value between about 0.9 and 0.99 gives the same qualitative picture. The <em>saturated fraction</em> of a layer, shown in the panel titles below, is the fraction of activation values <span class="math inline">\(h\)</span> (over all nodes and all 400 inputs) with <span class="math inline">\(|h|&gt;0.95\)</span>.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T08:18:58.502267Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T08:18:58.502088Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T08:18:58.901267Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T08:18:58.900661Z&quot;}" data-execution_count="18">
 <details open="">
 <summary>Code</summary>
@@ -1062,13 +1098,8 @@ Linear 4: |dL/dW| = 7.12e-01</code></pre>
 <section id="the-influence-of-the-initialisation-scale" class="level3">
 <h3 class="anchored" data-anchor-id="the-influence-of-the-initialisation-scale">2.5 The influence of the initialisation scale</h3>
 <p>The analysis of Sections 2.3–2.4 is repeated for a deeper network (6 hidden layers of width 64) whose weights are drawn from <span class="math inline">\(\mathcal N(0, (c/\sqrt{n_{\rm in}})^2)\)</span>, the normal (Gaussian) distribution with mean 0 and standard deviation <span class="math inline">\(c/\sqrt{n_{\rm in}}\)</span>, for three values of <span class="math inline">\(c\)</span>. The table lists, for every hidden layer, the standard deviation of the activations and the fraction of saturated nodes, and the gradient norm of every weight matrix.</p>
-<ul>
-<li>The three values stand for a too small, a standard and a too large scale. Their effect is multiplied once per layer, so a deeper network than in Section 1 makes it easier to see.</li>
-<li>A normal distribution is used instead of PyTorch’s uniform one; only the standard deviation matters for the argument. For comparison, the default uniform distribution on <span class="math inline">\([-1/\sqrt{n_{\rm in}}, 1/\sqrt{n_{\rm in}}]\)</span> has standard deviation <span class="math inline">\(1/\sqrt{3n_{\rm in}}\)</span>, i.e.&nbsp;<span class="math inline">\(c = 1/\sqrt3 \approx 0.58\)</span>; this is why the activations of Section 2.3 shrink with depth.</li>
-<li>The functions of <code>nn.init</code> overwrite the values of an existing tensor in place (in PyTorch a trailing underscore, as in <code>normal_</code>, marks an in-place operation). The biases are set to zero so that only the weight scale is varied.</li>
-<li>The activations are measured on the dense grid <code>X_plot</code>, which samples the input interval evenly; the gradients are those of the training loss and need the training data.</li>
-<li><code>pivot</code> rearranges the long table (one row per pair (<span class="math inline">\(c\)</span>, layer)) into a wide one with one row per layer and one column per quantity and value of <span class="math inline">\(c\)</span>, so that the three values of <span class="math inline">\(c\)</span> stand side by side. <code>round(4)</code> only affects the display.</li>
-</ul>
+<p>The three values stand for a too small, a standard and a too large scale. Their effect is multiplied once per layer, so a network deeper than that of Section 1 makes it easier to see. A normal distribution is used instead of PyTorch’s uniform one, because only the standard deviation matters for the argument. For comparison, the default uniform distribution on <span class="math inline">\([-1/\sqrt{n_{\rm in}}, 1/\sqrt{n_{\rm in}}]\)</span> has standard deviation <span class="math inline">\(1/\sqrt{3n_{\rm in}}\)</span>, i.e.&nbsp;<span class="math inline">\(c = 1/\sqrt3 \approx 0.58\)</span>; this is why the activations of Section 2.3 shrink with depth.</p>
+<p>In the code, the functions of <code>nn.init</code> overwrite the values of an existing tensor in place (in PyTorch a trailing underscore, as in <code>normal_</code>, marks an in-place operation), and the biases are set to zero so that only the weight scale is varied. The activations are measured on the dense grid <code>X_plot</code>, which samples the input interval evenly; the gradients are those of the training loss and need the training data. Finally, <code>pivot</code> rearranges the long table (one row per pair (<span class="math inline">\(c\)</span>, layer)) into a wide one with one row per layer and one column per quantity and value of <span class="math inline">\(c\)</span>, so that the three values of <span class="math inline">\(c\)</span> stand side by side; <code>round(4)</code> only affects the display.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T08:18:58.908850Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T08:18:58.908688Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T08:18:58.954070Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T08:18:58.953444Z&quot;}" data-execution_count="20">
 <details open="">
 <summary>Code</summary>
@@ -1208,19 +1239,18 @@ Linear 4: |dL/dW| = 7.12e-01</code></pre>
 </div>
 </div>
 </div>
-<ul>
-<li><span class="math inline">\(c = 0.5\)</span>: the activations shrink by about a factor of two per layer, and all gradients are more than twenty times smaller than for <span class="math inline">\(c = 1\)</span>, decreasing slightly towards the first layers: the signal fades in both directions (<strong>vanishing gradients</strong>).</li>
-<li><span class="math inline">\(c = 1\)</span>: the activations decrease with depth only slowly (for <span class="math inline">\(\tanh\)</span> the derivative is below 1, so <span class="math inline">\(c=1\)</span> does not exactly preserve the signal), and the gradients are of similar size in hidden layers 2–6 (layer 1 has only 64 weights, so its norm is smaller; see Section 2.4).</li>
-<li><span class="math inline">\(c = 3\)</span>: a large fraction of the nodes (up to about half in the deeper layers) is saturated, and the gradients are tens of times larger than for <span class="math inline">\(c = 1\)</span>: the first optimisation steps would be very large (<strong>exploding gradients</strong>).</li>
-</ul>
-<p>The weight scale therefore has to be chosen with the depth and the activation in mind; standard choices are derived from such arguments. Xavier (Glorot) initialisation uses <span class="math inline">\({\rm Var}(w) = 2/(n_{\rm in}+n_{\rm out})\)</span>, i.e.&nbsp;<span class="math inline">\(c = 1\)</span> for square layers, and is meant for <span class="math inline">\(\tanh\)</span>-like activations. He initialisation uses <span class="math inline">\({\rm Var}(w) = 2/n_{\rm in}\)</span> (<span class="math inline">\(c = \sqrt2\)</span>), which compensates for the activation ReLU, <span class="math inline">\(\mathrm{ReLU}(z)=\max(0,z)\)</span>, which sets negative inputs (about half of them) to zero.</p>
+<p>For <span class="math inline">\(c = 0.5\)</span> the activations shrink by about a factor of two per layer, and all gradients are more than twenty times smaller than for <span class="math inline">\(c = 1\)</span>, decreasing slightly towards the first layers: the signal fades in both directions (<strong>vanishing gradients</strong>). For <span class="math inline">\(c = 1\)</span> the activations decrease with depth only slowly (for <span class="math inline">\(\tanh\)</span> the derivative is below 1, so <span class="math inline">\(c=1\)</span> does not exactly preserve the signal), and the gradients are of similar size in hidden layers 2–6 (layer 1 has only 64 weights, so its norm is smaller; see Section 2.4). For <span class="math inline">\(c = 3\)</span> a large fraction of the nodes (up to about half in the deeper layers) is saturated, and the gradients are tens of times larger than for <span class="math inline">\(c = 1\)</span>: the first optimisation steps would be very large (<strong>exploding gradients</strong>).</p>
+<p>The weight scale therefore has to be chosen with the depth and the activation in mind; standard choices are derived from such arguments. Xavier (Glorot) initialisation uses <span class="math inline">\({\rm Var}(w) = 2/(n_{\rm in}+n_{\rm out})\)</span>, i.e.&nbsp;<span class="math inline">\(c = 1\)</span> for square layers, and is meant for <span class="math inline">\(\tanh\)</span>-like activations. He initialisation uses <span class="math inline">\({\rm Var}(w) = 2/n_{\rm in}\)</span> (<span class="math inline">\(c = \sqrt2\)</span>), which compensates for the rectified linear unit (ReLU), <span class="math inline">\(\mathrm{ReLU}(z)=\max(0,z)\)</span>, which sets negative inputs (about half of them) to zero.</p>
 <hr>
 </section>
 </section>
 <section id="monitoring-training" class="level2">
 <h2 class="anchored" data-anchor-id="monitoring-training">3. Monitoring training</h2>
-<p>The training function below is a standard training loop (full batch, Adam) with additional bookkeeping. After every epoch it records: - the training loss and the validation loss; - the norm of the gradient of every weight matrix; - the relative change of every weight matrix since the start, <span class="math inline">\(\|W(e) - W(0)\| / \|W(0)\|\)</span>, where <span class="math inline">\(e\)</span> is the epoch; - a copy of the parameters at the epoch with the smallest validation loss so far (used in Section 4).</p>
-<p>Details of the code: - <strong><code>log</code></strong> is a dictionary of lists, one entry appended per epoch. For the gradients and weight changes each entry is a list of 4 numbers (one per <code>Linear</code> layer); at the end <code>np.array</code> turns this list of lists into an array of shape (number of epochs, 4), so that <code>log["grad"][:, k]</code> is the history of layer <span class="math inline">\(k+1\)</span>. - <strong>Full batch.</strong> The 30 training points form one batch, so every epoch is a single exact gradient step and the loss curves contain no noise from a random choice of mini-batches. - <strong><code>lr=1e-2</code>, 3000 epochs.</strong> <span class="math inline">\(10^{-2}\)</span> is a common starting value for Adam on small problems; it was not tuned. With learning rates <span class="math inline">\(10^{-3}\)</span>, <span class="math inline">\(3\cdot10^{-3}\)</span>, <span class="math inline">\(10^{-2}\)</span> and <span class="math inline">\(3\cdot10^{-2}\)</span> the smallest validation loss is reached at epochs 753, 419, 293 and 281, and in every case the validation loss rises afterwards. 3000 epochs is far more than needed to reach the minimum, so that the overfitting after it can be seen. - <strong><code>W0 = [... .detach().clone() ...]</code>.</strong> <code>optimizer.step()</code> changes the weights in place. Without <code>clone()</code> the list would hold the current weight tensors themselves and the relative change would always be zero. <code>detach()</code> keeps the copy out of the gradient computation. - <strong><code>best = {"val": np.inf, ...}</code>.</strong> Starting from infinity, the validation loss of the first epoch is always smaller and becomes the first “best” model. - <strong><code>copy.deepcopy(model.state_dict())</code>.</strong> <code>state_dict()</code> returns a dictionary of the parameter tensors themselves, not of copies. Without <code>deepcopy</code> the stored “best” state would follow every later optimiser step and end up equal to the final parameters. - <strong><code>model.train()</code>, <code>model.eval()</code></strong> switch layers such as dropout and batch normalisation between their training and evaluation behaviour. This network has no such layers, so here the calls change nothing; they are kept because a general training loop needs them. - The training loss of an epoch is computed before <code>optimizer.step()</code>, the validation loss after it. The two curves are shifted by one step, which is irrelevant on a scale of thousands of epochs. - <code>torch.manual_seed(0)</code> before <code>make_mlp</code> gives the same initial weights as in Sections 1–2: the model trained here is exactly the one analysed above.</p>
+<p>The training function below is a standard training loop (full batch, Adam) with additional bookkeeping. After every epoch it records the training loss and the validation loss, the norm of the gradient of every weight matrix, and the relative change of every weight matrix since the start, <span class="math inline">\(\|W(e) - W(0)\| / \|W(0)\|\)</span>, where <span class="math inline">\(e\)</span> is the epoch. It also keeps a copy of the parameters at the epoch with the smallest validation loss so far, which Section 4 uses.</p>
+<p>The record <code>log</code> is a dictionary of lists, with one entry appended per epoch. For the gradients and weight changes each entry is a list of 4 numbers (one per <code>Linear</code> layer); at the end <code>np.array</code> turns this list of lists into an array of shape (number of epochs, 4), so that <code>log["grad"][:, k]</code> is the history of layer <span class="math inline">\(k+1\)</span>. The 30 training points form one batch, so every epoch is a single exact gradient step and the loss curves contain no noise from a random choice of mini-batches.</p>
+<p>The learning rate <code>lr=1e-2</code> is a common starting value for Adam on small problems; it was not tuned. With learning rates <span class="math inline">\(10^{-3}\)</span>, <span class="math inline">\(3\cdot10^{-3}\)</span>, <span class="math inline">\(10^{-2}\)</span> and <span class="math inline">\(3\cdot10^{-2}\)</span> the smallest validation loss is reached at epochs 753, 419, 293 and 281, and in every case the validation loss rises afterwards. The 3000 epochs are far more than needed to reach the minimum, so that the overfitting after it can be seen.</p>
+<p>Three copies in the code protect stored values from later changes. In <code>W0 = [... .detach().clone() ...]</code> the <code>clone()</code> is needed because <code>optimizer.step()</code> changes the weights in place: without it the list would hold the current weight tensors themselves and the relative change would always be zero, while <code>detach()</code> keeps the copy out of the gradient computation. The record <code>best = {"val": np.inf, ...}</code> starts from infinity, so the validation loss of the first epoch is always smaller and becomes the first “best” model. Its parameters are stored with <code>copy.deepcopy(model.state_dict())</code>, because <code>state_dict()</code> returns a dictionary of the parameter tensors themselves, not of copies; without <code>deepcopy</code> the stored “best” state would follow every later optimiser step and end up equal to the final parameters.</p>
+<p><code>model.train()</code> and <code>model.eval()</code> switch layers such as dropout and batch normalisation between their training and evaluation behaviour. This network has no such layers, so here the calls change nothing; they are kept because a general training loop needs them. The training loss of an epoch is computed before <code>optimizer.step()</code>, the validation loss after it; the two curves are shifted by one step, which is irrelevant on a scale of thousands of epochs. Finally, <code>torch.manual_seed(0)</code> before <code>make_mlp</code> gives the same initial weights as in Sections 1–2: the model trained here is exactly the one analysed above.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T08:18:58.955865Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T08:18:58.955613Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T08:19:01.624418Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T08:19:01.623940Z&quot;}" data-execution_count="21">
 <details open="">
 <summary>Code</summary>
@@ -1261,9 +1291,9 @@ Linear 4: |dL/dW| = 7.12e-01</code></pre>
 <pre><code>training took 2.7 s;  smallest validation loss 1.941e-02 at epoch 293</code></pre>
 </div>
 </div>
-<section id="loss-on-the-training-and-validation-sets-versus-epoch" class="level3">
-<h3 class="anchored" data-anchor-id="loss-on-the-training-and-validation-sets-versus-epoch">3.1 Loss on the training and validation sets versus epoch</h3>
-<p>The most important plot of every training run. The dotted line is the noise variance <span class="math inline">\(\sigma^2 = 0.01\)</span>, the smallest mean squared error that any model can reach on new data; the vertical line marks the epoch with the smallest validation loss.</p>
+<section id="learning-curves" class="level3">
+<h3 class="anchored" data-anchor-id="learning-curves">3.1 Learning curves</h3>
+<p>The losses on the training and validation sets against the epoch are the most important plot of every training run. The dotted line is the noise variance <span class="math inline">\(\sigma^2 = 0.01\)</span>, the smallest mean squared error (MSE) that any model can reach on new data; the vertical line marks the epoch with the smallest validation loss.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T08:19:01.626924Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T08:19:01.626673Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T08:19:01.813667Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T08:19:01.812715Z&quot;}" data-execution_count="22">
 <details open="">
 <summary>Code</summary>
@@ -1283,11 +1313,11 @@ Linear 4: |dL/dW| = 7.12e-01</code></pre>
 <pre><code>at the end: training loss 3.65e-03, validation loss 8.35e-02</code></pre>
 </div>
 </div>
-<p>Two phases are visible: 1. At first both losses decrease together: the network learns the function that the training and validation points have in common. 2. Later the training loss keeps decreasing, <strong>below the noise variance</strong>, while the validation loss increases. Below <span class="math inline">\(\sigma^2\)</span> the network can only improve on the training set by reproducing its particular noise, which is useless (in fact harmful) for new points. This is <strong>overfitting</strong>. (With 30 points even the true function has a training MSE that fluctuates by about <span class="math inline">\(\sigma^2\sqrt{2/30} \approx 25\%\)</span> around <span class="math inline">\(\sigma^2\)</span>, so only a training loss well below <span class="math inline">\(\sigma^2\)</span>, as here at the end of training, is a clear sign of fitting the noise.)</p>
+<p>Two phases are visible. At first both losses decrease together: the network learns the function that the training and validation points have in common. Later the training loss keeps decreasing, <strong>below the noise variance</strong>, while the validation loss increases. Below <span class="math inline">\(\sigma^2\)</span> the network can only improve on the training set by reproducing its particular noise, which is useless (in fact harmful) for new points. This is <strong>overfitting</strong>. With 30 points even the true function has a training MSE that fluctuates by about <span class="math inline">\(\sigma^2\sqrt{2/30} \approx 25\%\)</span> around <span class="math inline">\(\sigma^2\)</span>, so only a training loss well below <span class="math inline">\(\sigma^2\)</span>, as here at the end of training, is a clear sign of fitting the noise.</p>
 </section>
 <section id="gradients-and-weight-changes-per-layer" class="level3">
-<h3 class="anchored">3.2 Gradients and weight changes per layer</h3>
-<p>The gradient norms vary over several orders of magnitude and are plotted on a logarithmic axis; the relative weight changes stay between 0 and about 3 and are readable on a linear axis.</p>
+<h3 class="anchored" data-anchor-id="gradients-and-weight-changes-per-layer">3.2 Gradients and weight changes per layer</h3>
+<p>The same run can be followed inside the network. The gradient norms vary over several orders of magnitude and are plotted on a logarithmic axis; the relative weight changes stay between 0 and about 3 and are readable on a linear axis.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T08:19:01.815401Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T08:19:01.815230Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T08:19:02.207501Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T08:19:02.206999Z&quot;}" data-execution_count="23">
 <details open="">
 <summary>Code</summary>
@@ -1304,12 +1334,12 @@ Linear 4: |dL/dW| = 7.12e-01</code></pre>
 <p><img src="lab-008-analysing-networks_files/figure-html/cell-24-output-1.png" class="img-fluid"></p>
 </div>
 </div>
-<ul>
-<li>The gradient norms decay during long stretches, interrupted by sudden spikes: at a spike the Adam step overshoots, the loss jumps up for a few epochs and then decreases again. These episodes are also visible as small jumps in the right panel.</li>
-<li>The right panel shows how far each weight matrix has moved from its initial values. Relative changes of order one mean that training has substantially rewritten the layer; changes that keep growing after the best epoch (dashed line) are the parameters adapting to the noise of the training set.
+The gradient norms decay during long stretches, interrupted by sudden spikes: at a spike the Adam step overshoots, the loss jumps up for a few epochs and then decreases again. These episodes are also visible as small jumps in the right panel, which shows how far each weight matrix has moved from its initial values. Relative changes of order one mean that training has substantially rewritten the layer; changes that keep growing after the best epoch (dashed line) are the parameters adapting to the noise of the training set.
 <hr>
-<h2 id="overfitting-and-the-choice-of-the-epoch" class="anchored" data-anchor-id="gradients-and-weight-changes-per-layer">4. Overfitting and the choice of the epoch</h2></li>
-</ul>
+</section>
+</section>
+<section id="overfitting-and-the-choice-of-the-epoch" class="level2">
+<h2 class="anchored" data-anchor-id="overfitting-and-the-choice-of-the-epoch">4. Overfitting and the choice of the epoch</h2>
 <p><code>train_monitored</code> kept a copy of the parameters from the epoch with the smallest validation loss. Loading it gives the model that would have been obtained by stopping the training there (<strong>early stopping</strong>). Both models are compared with the data.</p>
 <p>A <code>state_dict</code> contains only numbers, not the architecture. A network with the same layer sizes is therefore built first, and its random initial parameters are then overwritten by <code>load_state_dict</code>. <code>final_model = model</code> is not a copy, only a second name for the trained network.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T08:19:02.209063Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T08:19:02.208875Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T08:19:02.311247Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T08:19:02.310645Z&quot;}" data-execution_count="24">
@@ -1334,10 +1364,9 @@ Linear 4: |dL/dW| = 7.12e-01</code></pre>
 The model after the last epoch passes close to the training points and makes large excursions in the gaps between them (e.g.&nbsp;around <span class="math inline">\(t \approx 5\)</span>). The model from the best epoch is smooth and follows the true function over most of the interval, but it misses the small oscillations for <span class="math inline">\(t \gtrsim 6\)</span>. The best epoch was chosen with the <strong>validation</strong> set: the test set has not been used yet.
 <hr>
 </section>
-</section>
-<section id="the-final-evaluation-on-the-test-set" class="level2">
-<h2 class="anchored" data-anchor-id="the-final-evaluation-on-the-test-set">5. The final evaluation on the test set</h2>
-<p>Now, and only now, the chosen model is evaluated on the test set. Its test loss is the estimate of the error on new data that would be reported. For illustration only, the test loss of the overfitted final model is printed as well; it was not used to make any choice.</p>
+<section id="evaluation-on-the-test-set" class="level2">
+<h2 class="anchored" data-anchor-id="evaluation-on-the-test-set">5. Evaluation on the test set</h2>
+<p>Now, and only now, the chosen model is evaluated on the test set. Its test loss is the estimate of the error on new data that would be reported. For illustration only, the test loss of the overfitted final model is printed as well; it was not used to make any choice. The three panels then show the predictions against the measured values, the histogram of the residuals, and the residuals against the input <span class="math inline">\(t\)</span>.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T08:19:02.312774Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T08:19:02.312544Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T08:19:02.611128Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T08:19:02.610577Z&quot;}" data-execution_count="25">
 <details open="">
 <summary>Code</summary>
@@ -1374,11 +1403,11 @@ residuals: mean -0.027, standard deviation 0.177 (noise level sigma = 0.1)</code
 <p><img src="lab-008-analysing-networks_files/figure-html/cell-26-output-2.png" class="img-fluid"></p>
 </div>
 </div>
-For an ideal model the points of the left panel lie around the diagonal, the residuals have a standard deviation equal to the noise level <span class="math inline">\(\sigma = 0.1\)</span>, and they show no trend with the input <span class="math inline">\(t\)</span>. Even for an ideal model the standard deviation of 40 residuals fluctuates by about <span class="math inline">\(\sigma/\sqrt{2\cdot 40} \approx 0.011\)</span> around <span class="math inline">\(0.1\)</span> (for <span class="math inline">\(n\)</span> Gaussian values the sample standard deviation scatters by about <span class="math inline">\(\sigma/\sqrt{2n}\)</span>). Note also that <code>residuals.std()</code> subtracts the mean residual, so a constant offset of the model does not enter it, while <span class="math inline">\(\sqrt{\text{test MSE}}\)</span> includes it. Here the residual standard deviation (in the title of the middle panel) is larger than <span class="math inline">\(\sigma\)</span> by much more than this fluctuation, and the right panel shows why: for <span class="math inline">\(t \gtrsim 9\)</span> all residuals are negative, i.e.&nbsp;the model is systematically too low in this region (it misses the last oscillation, see Section 4), and between <span class="math inline">\(t \approx 7\)</span> and <span class="math inline">\(8.3\)</span> all residuals are positive (the minimum of <span class="math inline">\(y\)</span> near <span class="math inline">\(t \approx 7.9\)</span> is too shallow in the model). In the left panel the points with <span class="math inline">\(t \gtrsim 9\)</span> form a horizontal row: the model predicts almost the same value, about <span class="math inline">\(-0.08\)</span>, for all of them, whatever the measured value. Residual plots reveal such systematic errors, which a single number such as the test MSE hides.
+For an ideal model the points of the left panel lie around the diagonal, the residuals have a standard deviation equal to the noise level <span class="math inline">\(\sigma = 0.1\)</span>, and they show no trend with the input <span class="math inline">\(t\)</span>. Even for an ideal model the standard deviation of 40 residuals fluctuates by about <span class="math inline">\(\sigma/\sqrt{2\cdot 40} \approx 0.011\)</span> around <span class="math inline">\(0.1\)</span> (for <span class="math inline">\(n\)</span> Gaussian values the sample standard deviation scatters by about <span class="math inline">\(\sigma/\sqrt{2n}\)</span>). <code>residuals.std()</code> subtracts the mean residual, so a constant offset of the model does not enter it, while <span class="math inline">\(\sqrt{\text{test MSE}}\)</span> includes it. Here the residual standard deviation (in the title of the middle panel) is larger than <span class="math inline">\(\sigma\)</span> by much more than this fluctuation, and the right panel shows why: for <span class="math inline">\(t \gtrsim 9\)</span> all residuals are negative, i.e.&nbsp;the model is systematically too low in this region (it misses the last oscillation, see Section 4), and between <span class="math inline">\(t \approx 7\)</span> and <span class="math inline">\(8.3\)</span> all residuals are positive (the minimum of <span class="math inline">\(y\)</span> near <span class="math inline">\(t \approx 7.9\)</span> is too shallow in the model). In the left panel the points with <span class="math inline">\(t \gtrsim 9\)</span> form a horizontal row: the model predicts almost the same value, about <span class="math inline">\(-0.08\)</span>, for all of them, whatever the measured value. Residual plots reveal such systematic errors, which a single number such as the test MSE hides.
 <hr>
 </section>
-<section id="a-summary-table-of-the-characteristics-of-a-model" class="level2">
-<h2 class="anchored" data-anchor-id="a-summary-table-of-the-characteristics-of-a-model">6. A summary table of the characteristics of a model</h2>
+<section id="model-characteristics-table" class="level2">
+<h2 class="anchored" data-anchor-id="model-characteristics-table">6. Model characteristics table</h2>
 <p>The quantities of this notebook are collected for two models trained on the same data: the network analysed so far and a small network with one hidden layer of 16 nodes. Both are evaluated at their best epoch. The small network (<span class="math inline">\(16\cdot 2 + 17 = 49\)</span> parameters) serves as a contrast: with one narrow hidden layer it can represent only smooth functions, so it overfits much more slowly; its smallest validation loss is reached only at epoch 2880, near the end of the 3000 epochs, and at that epoch its training loss, <span class="math inline">\(7.8\cdot10^{-3}\)</span>, is only slightly below <span class="math inline">\(\sigma^2\)</span>. (With 30 points the training MSE of even the true function fluctuates by about <span class="math inline">\(\sigma^2\sqrt{2/30} \approx 25\%\)</span> around <span class="math inline">\(\sigma^2\)</span>.) Its width 16 is arbitrary.</p>
 <p><code>DataFrame.style.format</code> changes only how the numbers are displayed, not the stored values: <code>"{:.2f}"</code> means two decimal places, <code>"{:.2e}"</code> scientific notation with two decimals. The training time depends on the computer and on other running processes; it is useful only to compare models trained on the same machine.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T08:19:02.612683Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T08:19:02.612526Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T08:19:07.178852Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T08:19:07.178270Z&quot;}" data-execution_count="26">
@@ -1451,24 +1480,20 @@ For an ideal model the points of the left panel lie around the diagonal, the res
 </table>
 </div>
 </div>
-<p>Reading the table: with these 30 training points the small network has the smaller validation and test errors (test MSE about 0.014 against 0.032). Here, with few data, more parameters do not give a better model. The large network reaches its best validation loss early (epoch 293), when its training error is still above the noise variance; later it improves only on the training set. The small network has a lower training error at its best epoch, because that epoch comes much later.</p>
+<p>With these 30 training points the small network has the smaller validation and test errors (test MSE about 0.014 against 0.032). Here, with few data, more parameters do not give a better model. The large network reaches its best validation loss early (epoch 293), when its training error is still above the noise variance; later it improves only on the training set. The small network has a lower training error at its best epoch, because that epoch comes much later.</p>
 Such a table is the minimum documentation of a trained model: architecture and size, how it was selected (best epoch by validation loss), and its errors on the three data sets. Only the test column is an unbiased estimate of the error on new data.
 <hr>
 </section>
 <section id="summary" class="level2">
 <h2 class="anchored" data-anchor-id="summary">7. Summary</h2>
-<ul>
-<li><strong>Architecture:</strong> layer table (shapes, parameters per layer), total and trainable parameters (<code>requires_grad</code>), memory (<span class="math inline">\(4\)</span> bytes per <code>float32</code> parameter) and multiply-adds per sample. Parameters grow linearly with depth and quadratically with width.</li>
-<li><strong>Before training:</strong> weight and activation histograms, fraction of saturated nodes, gradient norms per layer; the initialisation scale controls whether signals and gradients shrink, survive or saturate with depth.</li>
-<li><strong>During training:</strong> training and validation loss versus epoch; gradient norms and relative weight changes per layer.</li>
-<li><strong>Overfitting:</strong> the training loss falls below the noise level while the validation loss rises; the parameters at the epoch with the smallest validation loss are kept (early stopping).</li>
-<li><strong>Test set:</strong> used once, for the chosen model; residual plots show whether errors are random or systematic.
+The architecture alone already gives a layer table (shapes and parameters per layer), the total and trainable numbers of parameters (<code>requires_grad</code>), the memory (<span class="math inline">\(4\)</span> bytes per <code>float32</code> parameter) and the multiply-adds per sample; the number of parameters grows linearly with depth and quadratically with width. Before training, the weight and activation histograms, the fraction of saturated nodes and the gradient norms per layer show whether the initialisation scale lets signals and gradients shrink, survive or saturate with depth. During training, the training and validation losses against the epoch, together with the gradient norms and relative weight changes per layer, show how the parameters evolve. Overfitting appears as a training loss falling below the noise level while the validation loss rises; the parameters at the epoch with the smallest validation loss are kept (early stopping). The test set is used once, for the chosen model, and residual plots show whether its errors are random or systematic.
 <hr>
-<h2 id="exercises" class="anchored">8. Exercises</h2></li>
-</ul>
+</section>
+<section id="exercises" class="level2">
+<h2 class="anchored" data-anchor-id="exercises">8. Exercises</h2>
 <section id="exercise-1-analysing-an-image-classifier" class="level3">
 <h3 class="anchored" data-anchor-id="exercise-1-analysing-an-image-classifier">Exercise 1 — Analysing an image classifier</h3>
-<p>The image classifier <code>nn.Sequential(nn.Flatten(), nn.Linear(784, 128), nn.ReLU(), nn.Linear(128, 64), nn.ReLU(), nn.Linear(64, 10))</code> assigns a <span class="math inline">\(28\times28\)</span> grey-scale image of a handwritten digit (the MNIST data set) to one of 10 <strong>classes</strong>, the digits <span class="math inline">\(0, \dots, 9\)</span>: it has <span class="math inline">\(784\)</span> inputs, one per pixel, and 10 outputs, one per class. 1. Load the MNIST test images (<code>torchvision.datasets.MNIST</code>, <code>train=False</code>) and show one example of every class with its label. 2. Draw the network and produce its layer table with <code>layer_table</code> for a batch of 16 test images (pixel values divided by 255). 3. Which layer holds most of the parameters, and what fraction? Why is it this layer? 4. Compute the memory of the parameters and the number of multiply-adds per image. 5. Freeze everything except the last layer and report the number of trainable parameters. Check the totals with <code>torchinfo.summary</code> (Section 1.7).</p>
+<p>The image classifier <code>nn.Sequential(nn.Flatten(), nn.Linear(784, 128), nn.ReLU(), nn.Linear(128, 64), nn.ReLU(), nn.Linear(64, 10))</code> assigns a <span class="math inline">\(28\times28\)</span> grey-scale image of a handwritten digit (the MNIST data set, Modified National Institute of Standards and Technology database; Y. LeCun, L. Bottou, Y. Bengio and P. Haffner, <em>Gradient-based learning applied to document recognition</em>, Proc. IEEE <strong>86</strong>, 2278–2324 (1998), <a href="https://doi.org/10.1109/5.726791">doi:10.1109/5.726791</a>) to one of 10 <strong>classes</strong>, the digits <span class="math inline">\(0, \dots, 9\)</span>: it has <span class="math inline">\(784\)</span> inputs, one per pixel, and 10 outputs, one per class. 1. Load the MNIST test images (<code>torchvision.datasets.MNIST</code>, <code>train=False</code>) and show one example of every class with its label. 2. Draw the network and produce its layer table with <code>layer_table</code> for a batch of 16 test images (pixel values divided by 255). 3. Which layer holds most of the parameters, and what fraction? Why is it this layer? 4. Compute the memory of the parameters and the number of multiply-adds per image. 5. Freeze everything except the last layer and report the number of trainable parameters. Check the totals with <code>torchinfo.summary</code> (Section 1.7).</p>
 <section id="solution" class="level4">
 <h4 class="anchored" data-anchor-id="solution">Solution</h4>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T08:19:07.180688Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T08:19:07.180467Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T08:19:07.737362Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T08:19:07.734992Z&quot;}" data-execution_count="27">

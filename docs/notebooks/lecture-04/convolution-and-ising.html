@@ -176,7 +176,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </li>  
         <li>
     <a class="dropdown-item" href="../../lectures/lecture-06.html">
- <span class="dropdown-text">6 · Generative Models</span></a>
+ <span class="dropdown-text">6 · Probability and Variational Autoencoders</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-07.html">
+ <span class="dropdown-text">7 · Adversarial and Diffusion Models</span></a>
   </li>  
     </ul>
   </li>
@@ -313,6 +317,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-03/lab-013a-cnn-pytorch.html" class="sidebar-item-text sidebar-link">Lab 013a: CNNs on MNIST and CIFAR-10 in PyTorch</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-03/lab-013b-cnn-jax.html" class="sidebar-item-text sidebar-link">Lab 013b: CNNs on MNIST and CIFAR-10 in JAX</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../notebooks/lecture-03/limits-of-deep-networks.html" class="sidebar-item-text sidebar-link">Limits of deep networks</a>
   </div>
 </li>
@@ -370,7 +384,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../lectures/lecture-06.html" class="sidebar-item-text sidebar-link">6 · Generative Models</a>
+            <a href="../../lectures/lecture-06.html" class="sidebar-item-text sidebar-link">6 · Probability and Variational Autoencoders</a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -384,6 +398,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/lecture-06/conditional-generation.html" class="sidebar-item-text sidebar-link">Conditional generation of digits and blood cells</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-07.html" class="sidebar-item-text sidebar-link">7 · Adversarial and Diffusion Models</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-07/generative-models.html" class="sidebar-item-text sidebar-link">Generative models: probability, VAE, GAN and diffusion</a>
   </div>
 </li>
       </ul>
@@ -402,14 +431,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#lecture-4-figures-for-convolution-and-the-ising-model" id="toc-lecture-4-figures-for-convolution-and-the-ising-model" class="nav-link active" data-scroll-target="#lecture-4-figures-for-convolution-and-the-ising-model">Lecture 4: Figures for Convolution and the Ising Model</a>
+  <li><a href="#convolution-and-ising-figures" id="toc-convolution-and-ising-figures" class="nav-link active" data-scroll-target="#convolution-and-ising-figures">Convolution and Ising figures</a>
   <ul class="collapse">
-  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a></li>
+  <li><a href="#output-folder-and-colours" id="toc-output-folder-and-colours" class="nav-link" data-scroll-target="#output-folder-and-colours">Output folder and colours</a></li>
   <li><a href="#sobel-filters-on-cell-nuclei" id="toc-sobel-filters-on-cell-nuclei" class="nav-link" data-scroll-target="#sobel-filters-on-cell-nuclei">Sobel filters on cell nuclei</a></li>
   <li><a href="#convolution-in-1d" id="toc-convolution-in-1d" class="nav-link" data-scroll-target="#convolution-in-1d">Convolution in 1D</a></li>
   <li><a href="#the-2d-ising-model-across-t_c" id="toc-the-2d-ising-model-across-t_c" class="nav-link" data-scroll-target="#the-2d-ising-model-across-t_c">The 2D Ising model across <span class="math inline">\(T_c\)</span></a></li>
-  <li><a href="#monte-carlo-data-observables-and-onsagers-solution" id="toc-monte-carlo-data-observables-and-onsagers-solution" class="nav-link" data-scroll-target="#monte-carlo-data-observables-and-onsagers-solution">Monte Carlo data, observables and Onsager’s solution</a></li>
-  <li><a href="#the-cnn-finds-t_c-from-its-confidence" id="toc-the-cnn-finds-t_c-from-its-confidence" class="nav-link" data-scroll-target="#the-cnn-finds-t_c-from-its-confidence">The CNN finds <span class="math inline">\(T_c\)</span> from its confidence</a></li>
+  <li><a href="#monte-carlo-observables-and-onsagers-solution" id="toc-monte-carlo-observables-and-onsagers-solution" class="nav-link" data-scroll-target="#monte-carlo-observables-and-onsagers-solution">Monte Carlo observables and Onsager’s solution</a></li>
+  <li><a href="#t_c-from-the-confidence-of-a-cnn" id="toc-t_c-from-the-confidence-of-a-cnn" class="nav-link" data-scroll-target="#t_c-from-the-confidence-of-a-cnn"><span class="math inline">\(T_c\)</span> from the confidence of a CNN</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/MarcinPlodzien/deep-learning-for-scientific-discovery/blob/main/notebooks/lecture-04/convolution-and-ising.ipynb" class="toc-action">View source</a></p></div></div></nav>
@@ -435,11 +464,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </header>
 
 <p><a href="https://colab.research.google.com/github/MarcinPlodzien/deep-learning-for-scientific-discovery/blob/main/notebooks/lecture-04/convolution-and-ising.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Colab"></a></p>
-<section id="lecture-4-figures-for-convolution-and-the-ising-model" class="level1">
-<h1>Lecture 4: Figures for Convolution and the Ising Model</h1>
-<p>This notebook makes the figures of Lecture 4 that do not come from a trained network: the Sobel filters on a microscopy image, the 1D convolution picture, and the Ising-model snapshots across the phase transition. CPU only, seeded; it runs in under a minute.</p>
-<section id="setup" class="level2">
-<h2 class="anchored" data-anchor-id="setup">Setup</h2>
+<section id="convolution-and-ising-figures" class="level1">
+<h1>Convolution and Ising figures</h1>
+<p>The figures of Lecture 4 that are not made in the laboratory notebooks are the Sobel filters applied to a microscopy image, the picture of a one-dimensional convolution, snapshots of the Ising model across its phase transition, the Monte Carlo observables compared with Onsager’s exact solution, and the temperature dependence of the confidence of the convolutional neural network (CNN) of Lab 011. Everything runs on a CPU with fixed random seeds, and every figure is written to <code>../beamer/figures</code>.</p>
+<section id="output-folder-and-colours" class="level2">
+<h2 class="anchored" data-anchor-id="output-folder-and-colours">Output folder and colours</h2>
+<p>All figures share one output folder and one set of colours.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T16:05:47.626069Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T16:05:47.625675Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T16:05:48.037553Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T16:05:48.037079Z&quot;}" data-execution_count="1">
 <details open="">
 <summary>Code</summary>
@@ -452,7 +482,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="sobel-filters-on-cell-nuclei" class="level2">
 <h2 class="anchored" data-anchor-id="sobel-filters-on-cell-nuclei">Sobel filters on cell nuclei</h2>
-<p>The image is <code>human_mitosis</code> from scikit-image (fluorescence microscopy, CC0; D. Root, Moffat et al., Cell 2006). We apply the two Sobel kernels of the slide with a cross-correlation, exactly as a CNN layer would.</p>
+<p>The image is <code>human_mitosis</code> from scikit-image, a fluorescence microscopy image of human cell nuclei, some of them in mitosis, recorded for the screen of <a href="https://doi.org/10.1016/j.cell.2006.01.040">Moffat et al., <em>Cell</em> <strong>124</strong>, 1283 (2006)</a> (copyright D. Root, CC0). It is a single greyscale image of <span class="math inline">\(512\times512\)</span> pixels with 8-bit intensities (0 to 255), bright where the stained DNA is; we use a <span class="math inline">\(256\times256\)</span> crop. We apply the two Sobel kernels of the slide, <span class="math inline">\(G_x\)</span>, which responds to brightness changes along the horizontal direction (vertical edges), and <span class="math inline">\(G_y\)</span>, which responds to changes along the vertical direction (horizontal edges). They are applied as a cross-correlation, which is exactly the operation a convolutional layer of a CNN performs. In the two filtered images the nuclei appear outlined, bright on the side where the brightness rises and dark where it falls.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T16:05:48.039780Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T16:05:48.039468Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T16:05:48.910670Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T16:05:48.910125Z&quot;}" data-execution_count="2">
 <details open="">
 <summary>Code</summary>
@@ -477,7 +507,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="convolution-in-1d" class="level2">
 <h2 class="anchored" data-anchor-id="convolution-in-1d">Convolution in 1D</h2>
-<p>A signal <span class="math inline">\(f\)</span> with two bumps and an asymmetric kernel <span class="math inline">\(g\)</span> (peak at <span class="math inline">\(u=0.25\)</span>). At one shift <span class="math inline">\(t\)</span> we draw <span class="math inline">\(f(\tau)\)</span>, the flipped and shifted kernel <span class="math inline">\(g(t-\tau)\)</span> and the area under their product; that area is one point of <span class="math inline">\((f*g)(t)\)</span>. The last line checks that the two numbers agree.</p>
+<p>A signal <span class="math inline">\(f\)</span> with two bumps is convolved with an asymmetric kernel <span class="math inline">\(g\)</span> whose peak lies at the argument 0.25. The convolution <span class="math display">\[(f*g)(t)=\int f(\tau)\,g(t-\tau)\,d\tau \tag{1}\]</span> is easiest to picture one value of <span class="math inline">\(t\)</span> at a time. In the upper panel we draw <span class="math inline">\(f(\tau)\)</span>, the flipped and shifted kernel <span class="math inline">\(g(t-\tau)\)</span> and the area under their product; that area is one point of <span class="math inline">\(f*g\)</span>. Sweeping <span class="math inline">\(t\)</span> over the whole axis gives the curve in the lower panel, a smoothed copy of <span class="math inline">\(f\)</span>. The printed line compares the value of the convolution at the time <span class="math inline">\(-0.55\)</span> with the shaded area; both are 0.541367.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T16:05:48.913078Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T16:05:48.912734Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T16:05:49.989978Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T16:05:49.989444Z&quot;}" data-execution_count="3">
 <details open="">
 <summary>Code</summary>
@@ -523,7 +553,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="the-2d-ising-model-across-t_c" class="level2">
 <h2 class="anchored" data-anchor-id="the-2d-ising-model-across-t_c">The 2D Ising model across <span class="math inline">\(T_c\)</span></h2>
-<p>Checkerboard Metropolis on a <span class="math inline">\(128\times128\)</span> lattice (<span class="math inline">\(J=1\)</span>, <span class="math inline">\(h=0\)</span>, periodic boundaries), 3000 sweeps at each of five temperatures. Below <span class="math inline">\(T_c\)</span> we start from all spins up, above <span class="math inline">\(T_c\)</span> from random spins. The printed <span class="math inline">\(|M|\)</span> are the values in the figure titles.</p>
+<p>We run checkerboard Metropolis updates on a <span class="math inline">\(128\times128\)</span> lattice (coupling <span class="math inline">\(J\)</span> set to 1, no external field, periodic boundaries) for 3000 sweeps at each of five temperatures: two below the critical temperature <span class="math display">\[T_c=\frac{2}{\ln\big(1+\sqrt2\big)}\approx 2.269, \tag{2}\]</span> one at <span class="math inline">\(T_c\)</span> and two above. Below <span class="math inline">\(T_c\)</span> the lattice starts with all spins up and above <span class="math inline">\(T_c\)</span> from random spins, so that each run starts near the state it relaxes to. The printed values of <span class="math inline">\(|M|\)</span> are the magnetisations shown in the figure titles: 0.96 and 0.88 in the ordered phase, 0.61 at <span class="math inline">\(T_c\)</span>, and about 0.01 in the disordered phase.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T16:05:49.992089Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T16:05:49.991801Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T16:06:03.525758Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T16:06:03.525180Z&quot;}" data-execution_count="4">
 <details open="">
 <summary>Code</summary>
@@ -571,7 +601,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="convolution-and-ising_files/figure-html/cell-5-output-6.png" class="img-fluid"></p>
 </div>
 </div>
-<p>The configuration at <span class="math inline">\(T_c\)</span> (third panel) is also used alone, on the plain-words slide and as the input of the CNN diagram; we crop it from the figure.</p>
+<p>The configuration at <span class="math inline">\(T_c\)</span> (third panel) is also used on its own, on the slide that describes the Ising model in plain words and as the input of the CNN diagram. It is cropped from the saved figure by locating the black borders of the panels.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T16:06:03.528170Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T16:06:03.527932Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T16:06:03.575129Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T16:06:03.574479Z&quot;}" data-execution_count="5">
 <details open="">
 <summary>Code</summary>
@@ -588,9 +618,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </section>
-<section id="monte-carlo-data-observables-and-onsagers-solution" class="level2">
-<h2 class="anchored" data-anchor-id="monte-carlo-data-observables-and-onsagers-solution">Monte Carlo data, observables and Onsager’s solution</h2>
-<p>The Ising slides of the lecture use configurations made by the Metropolis code of <strong>Labs 010 and 011</strong> (checkerboard Metropolis, periodic boundaries, 51 temperatures from 1.0 to 3.5, 200 configurations per temperature), stored in <code>data/ising_Nx{L}_Ny{L}.npz</code> for <span class="math inline">\(L = 10, 20, 40\)</span>; the same generator is copied below, so that missing files are regenerated (about a minute). Here we load them and compare the Monte Carlo averages of <span class="math inline">\(|M|\)</span> and of the energy per spin with Onsager’s exact results for the infinite lattice: <span class="math display">\[u(T) = -\coth(2\beta)\Big[1 + \tfrac{2}{\pi}\big(2\tanh^2(2\beta) - 1\big)K(\kappa^2)\Big],\qquad \kappa=\frac{2\sinh 2\beta}{\cosh^2 2\beta},\qquad \langle M\rangle = \big[1-\sinh^{-4}(2\beta)\big]^{1/8}\ (T&lt;T_c),\]</span> with <span class="math inline">\(K\)</span> the complete elliptic integral of the first kind and <span class="math inline">\(\beta = 1/T\)</span> (<span class="math inline">\(J = k_B = 1\)</span>).</p>
+<section id="monte-carlo-observables-and-onsagers-solution" class="level2">
+<h2 class="anchored" data-anchor-id="monte-carlo-observables-and-onsagers-solution">Monte Carlo observables and Onsager’s solution</h2>
+<p>The Ising slides of the lecture use configurations made by the Metropolis code of Labs 010 and 011 (checkerboard Metropolis, periodic boundaries, 51 temperatures from 1.0 to 3.5, 200 configurations per temperature), stored in <code>data/ising_Nx{L}_Ny{L}.npz</code> for the lattice sizes <span class="math inline">\(L\)</span> of 10, 20 and 40. One sample is an <span class="math inline">\(L\times L\)</span> array of spins <span class="math inline">\(\pm1\)</span> drawn at a known temperature. The same generator is copied here unchanged, so that missing files are regenerated (about a minute). The Monte Carlo averages of <span class="math inline">\(|M|\)</span> and of the energy per spin are compared with Onsager’s exact results for the infinite lattice. The energy per spin is <span class="math display">\[u(T) = -\coth(2\beta)\Big[1 + \tfrac{2}{\pi}\big(2\tanh^2(2\beta) - 1\big)K(\kappa^2)\Big], \tag{3}\]</span> <span class="math display">\[\kappa=\frac{2\sinh 2\beta}{\cosh^2 2\beta}, \tag{4}\]</span> and the spontaneous magnetisation below <span class="math inline">\(T_c\)</span> is <span class="math display">\[\langle M\rangle = \big[1-\sinh^{-4}(2\beta)\big]^{1/8}, \tag{5}\]</span> with <span class="math inline">\(K\)</span> the complete elliptic integral of the first kind and <span class="math inline">\(\beta\)</span> the inverse temperature, in units in which <span class="math inline">\(J\)</span> and <span class="math inline">\(k_B\)</span> are one. In the figure the energy per spin of all three lattices follows equation (3) at every temperature, and <span class="math inline">\(\langle|M|\rangle\)</span> follows equation (5) below <span class="math inline">\(T_c\)</span>. Above <span class="math inline">\(T_c\)</span>, where the infinite lattice has zero magnetisation, the finite lattices keep a nonzero <span class="math inline">\(\langle|M|\rangle\)</span> that shrinks as <span class="math inline">\(L\)</span> grows: the sharp transition is rounded by the finite size. At temperature 1.5 the exact energy per spin is <span class="math inline">\(-1.9511\)</span>.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T16:06:03.577597Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T16:06:03.577346Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T16:06:05.845152Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T16:06:05.844637Z&quot;}" data-execution_count="6">
 <details open="">
 <summary>Code</summary>
@@ -677,7 +707,7 @@ loaded data/ising_Nx40_Ny40.npz: configs (51, 200, 40, 40)</code></pre>
 <pre><code>u_exact(1.5) = -1.95111657</code></pre>
 </div>
 </div>
-<p>Snapshots from the same data set: one configuration per temperature and lattice size (white and black: the two spin values).</p>
+<p>Snapshots from the same data set show one configuration per temperature and lattice size (white and black are the two spin values).</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T16:06:05.847438Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T16:06:05.847083Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T16:06:07.386095Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T16:06:07.385458Z&quot;}" data-execution_count="7">
 <details open="">
 <summary>Code</summary>
@@ -697,9 +727,10 @@ loaded data/ising_Nx40_Ny40.npz: configs (51, 200, 40, 40)</code></pre>
 </div>
 </div>
 </section>
-<section id="the-cnn-finds-t_c-from-its-confidence" class="level2">
-<h2 class="anchored" data-anchor-id="the-cnn-finds-t_c-from-its-confidence">The CNN finds <span class="math inline">\(T_c\)</span> from its confidence</h2>
-<p>The model and the training are those of <strong>Lab 011</strong>, copied unchanged: two blocks of Conv2D (32 kernels <span class="math inline">\(3\times3\)</span>, circular padding, ReLU) and max pooling, a dense layer of 64 ReLU nodes, 2 outputs with softmax, cross-entropy, Adam. Training data: only <span class="math inline">\(T&lt;1.5\)</span> (label 0, ordered) and <span class="math inline">\(T&gt;3\)</span> (label 1, disordered). After training we predict at every temperature. The <strong>confidence</strong> of a prediction is <span class="math inline">\(\max(p_0, p_1)\)</span>; its average is lowest where the network is least sure. A second estimate of <span class="math inline">\(T_c\)</span> is the temperature where <span class="math inline">\(\langle p_1\rangle_T\)</span> crosses <span class="math inline">\(1/2\)</span>. We train three times (seeds 0, 1, 2) on <span class="math inline">\(L = 40\)</span>.</p>
+<section id="t_c-from-the-confidence-of-a-cnn" class="level2">
+<h2 class="anchored" data-anchor-id="t_c-from-the-confidence-of-a-cnn"><span class="math inline">\(T_c\)</span> from the confidence of a CNN</h2>
+<p>The model and the training are those of Lab 011, copied unchanged: two blocks of a convolutional layer (32 kernels of <span class="math inline">\(3\times3\)</span>, circular padding, ReLU) followed by max pooling, a dense layer of 64 ReLU nodes, and 2 outputs with softmax, trained with the cross-entropy loss and the Adam optimiser. The training data contain only configurations far from the transition, at temperatures below 1.5 (label 0, ordered) and above 3 (label 1, disordered). After training, the network is asked about every temperature, including the window between 1.5 and 3 for which it has seen no labels.</p>
+<p>The <strong>confidence</strong> of a prediction with class probabilities <span class="math inline">\(p_0\)</span> and <span class="math inline">\(p_1\)</span> is <span class="math display">\[c=\max(p_0, p_1). \tag{6}\]</span> Its average over the configurations at one temperature is lowest where the network is least sure, and that temperature is our first estimate of <span class="math inline">\(T_c\)</span>. A second estimate is the temperature at which <span class="math inline">\(\langle p_1\rangle_T\)</span> crosses one half. We train three times, with seeds 0, 1 and 2, on the <span class="math inline">\(40\times40\)</span> lattice.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T16:06:07.389454Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T16:06:07.388771Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T16:06:07.404920Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T16:06:07.404249Z&quot;}" data-execution_count="8">
 <details open="">
 <summary>Code</summary>
@@ -795,7 +826,8 @@ loaded data/ising_Nx40_Ny40.npz: configs (51, 200, 40, 40)</code></pre>
 L = 40: confidence minimum 2.267 +- 0.024;  crossing 2.283 +- 0.029;  exact T_c = 2.2692</code></pre>
 </div>
 </div>
-<p>The figure for the slide (seed 0): on top the temperature bar with the two training windows (<span class="math inline">\(T&lt;1.5\)</span> and <span class="math inline">\(T&gt;3\)</span>; the data end at <span class="math inline">\(T=3.5\)</span>); below, the confidence of every configuration, coloured by the predicted phase, and the average confidence.</p>
+<p>Over the three trainings the minimum of the average confidence lies at the temperature 2.267 ± 0.024, and <span class="math inline">\(\langle p_1\rangle_T\)</span> crosses one half at 2.283 ± 0.029. Both are close to the exact value 2.2692 of equation (2), although the network never saw a label between the temperatures 1.5 and 3.</p>
+<p>The figure for the slide uses seed 0. On top, the temperature bar shows the two training windows (below 1.5 and above 3; the data end at 3.5) and the unlabelled region between them; below, the confidence of every configuration, coloured by the predicted phase, and the average confidence with its minimum.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T16:07:23.982678Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T16:07:23.981524Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T16:07:24.802703Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T16:07:24.802087Z&quot;}" data-execution_count="10">
 <details open="">
 <summary>Code</summary>

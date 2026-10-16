@@ -15,6 +15,18 @@ CIFAR-10 with a flattened dense network, and what flattening throws away. Convol
 ## Notebooks
 
 ::: {.nb-item}
+[Lab 013a: CNNs on MNIST and CIFAR-10 in PyTorch](../notebooks/lecture-03/lab-013a-cnn-pytorch.ipynb)
+
+Convolution computed explicitly and with the library, dense network against CNN, capacity and regularisation on CIFAR-10, extracting and analysing kernels, feature maps, class activation maps implemented from the feature maps and weights, and transfer from CIFAR-10 to MNIST.
+:::
+
+::: {.nb-item}
+[Lab 013b: CNNs on MNIST and CIFAR-10 in JAX](../notebooks/lecture-03/lab-013b-cnn-jax.ipynb)
+
+The same material in JAX and Flax, section by section.
+:::
+
+::: {.nb-item}
 [Limits of deep networks](../notebooks/lecture-03/limits-of-deep-networks.ipynb)
 
 The trained blood-cell network on satellite images and noise, under a colour shift of the staining, and a network that learns a marker instead of the cell.

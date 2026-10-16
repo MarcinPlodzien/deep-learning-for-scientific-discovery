@@ -1,0 +1,21 @@
+---
+title: "7 · Adversarial and Diffusion Models"
+code-tools: false
+toc: false
+---
+
+Generators trained without a likelihood: generative adversarial networks, the best discriminator, the Jensen–Shannon divergence and the Wasserstein distance, mode collapse, conditional GANs. Diffusion models: the forward noising process, training a noise predictor, the reverse step and the score, the U-Net. Spin configurations of the 2D Ising model generated at a chosen temperature and checked against Monte Carlo through physical observables.
+
+## Slides
+
+[Download the slides (PDF)](../slides/lecture-07.pdf){.btn .btn-outline-primary}
+
+<iframe src="../slides/lecture-07.pdf" width="100%" height="620" style="border:1px solid #dde6ef; border-radius:6px;"></iframe>
+
+## Notebooks
+
+::: {.nb-item}
+[Generative models: probability, VAE, GAN and diffusion](../notebooks/lecture-07/generative-models.ipynb)
+
+The GAN, the Wasserstein distance in one dimension, diffusion on two moons and on MNIST, and the conditional VAE for Ising configurations.
+:::

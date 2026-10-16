@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Deep Learning for Scientific Discovery - 6 · Generative Models</title>
+<title>Deep Learning for Scientific Discovery - 6 · Probability and Variational Autoencoders</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -112,7 +112,11 @@ ul.task-list li input[type="checkbox"] {
   </li>  
         <li>
     <a class="dropdown-item" href="../lectures/lecture-06.html">
- <span class="dropdown-text">6 · Generative Models</span></a>
+ <span class="dropdown-text">6 · Probability and Variational Autoencoders</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/lecture-07.html">
+ <span class="dropdown-text">7 · Adversarial and Diffusion Models</span></a>
   </li>  
     </ul>
   </li>
@@ -146,7 +150,7 @@ ul.task-list li input[type="checkbox"] {
     </nav>
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">6 · Generative Models</h1>
+      <h1 class="quarto-secondary-nav-title">6 · Probability and Variational Autoencoders</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -249,6 +253,16 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-03/lab-013a-cnn-pytorch.html" class="sidebar-item-text sidebar-link">Lab 013a: CNNs on MNIST and CIFAR-10 in PyTorch</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-03/lab-013b-cnn-jax.html" class="sidebar-item-text sidebar-link">Lab 013b: CNNs on MNIST and CIFAR-10 in JAX</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../notebooks/lecture-03/limits-of-deep-networks.html" class="sidebar-item-text sidebar-link">Limits of deep networks</a>
   </div>
 </li>
@@ -306,7 +320,7 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../lectures/lecture-06.html" class="sidebar-item-text sidebar-link active">6 · Generative Models</a>
+            <a href="../lectures/lecture-06.html" class="sidebar-item-text sidebar-link active">6 · Probability and Variational Autoencoders</a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -320,6 +334,21 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../notebooks/lecture-06/conditional-generation.html" class="sidebar-item-text sidebar-link">Conditional generation of digits and blood cells</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../lectures/lecture-07.html" class="sidebar-item-text sidebar-link">7 · Adversarial and Diffusion Models</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-07/generative-models.html" class="sidebar-item-text sidebar-link">Generative models: probability, VAE, GAN and diffusion</a>
   </div>
 </li>
       </ul>
@@ -339,7 +368,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">6 · Generative Models</h1>
+<h1 class="title d-none d-lg-block">6 · Probability and Variational Autoencoders</h1>
 </div>
 
 
@@ -354,7 +383,7 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p>Learning a probability distribution from data and drawing new samples from it. The probability toolkit: distributions and densities, expectations as averages over samples, the Gaussian, joint, conditional and marginal distributions, Bayes’ rule, the Kullback–Leibler divergence and maximum likelihood. Latent-variable models and the variational autoencoder: the latent space, the reparametrisation trick, the evidence lower bound; conditional generation of a chosen digit or cell type, checked by a classifier. Generative adversarial networks, the best discriminator and the Wasserstein distance; diffusion models, the forward process, the reverse step and the score. Spin configurations of the Ising model generated at a chosen temperature and checked against Monte Carlo.</p>
+<p>Learning a probability distribution from data alone, and drawing new samples from it. Why an autoencoder cannot generate, and the probability toolkit needed to fix it: distributions and densities, expectations as averages over samples, the Gaussian, joint, conditional and marginal distributions, Bayes’ rule, the Kullback–Leibler divergence and maximum likelihood, latent-variable models. The variational autoencoder: training and sampling, the decoder as a likelihood, binary cross-entropy, the evidence lower bound, the reparametrisation trick, the latent space. Conditional generation of a chosen digit or cell type, checked with classifiers trained on real or synthetic data, and disentangled latent features with the β-VAE.</p>
 <section id="slides" class="level2">
 <h2 class="anchored" data-anchor-id="slides">Slides</h2>
 <p><a href="../slides/lecture-06.pdf" class="btn btn-outline-primary">Download the slides (PDF)</a></p>
@@ -365,7 +394,7 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="notebooks">Notebooks</h2>
 <div class="nb-item">
 <p><a href="../notebooks/lecture-06/generative-models.html">Generative models: probability, VAE, GAN and diffusion</a></p>
-<p>The probability toolkit, VAE and conditional VAE, GAN, diffusion on two moons and on MNIST, and the Ising model.</p>
+<p>The probability toolkit, the VAE and the conditional VAE on MNIST and blood cells; its GAN and diffusion parts belong to Lecture 7.</p>
 </div>
 <div class="nb-item">
 <p><a href="../notebooks/lecture-06/conditional-generation.html">Conditional generation of digits and blood cells</a></p>
