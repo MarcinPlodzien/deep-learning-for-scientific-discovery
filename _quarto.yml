@@ -41,8 +41,6 @@ website:
             href: lectures/lecture-05.qmd
           - text: "6 · Probability and Variational Autoencoders"
             href: lectures/lecture-06.qmd
-          - text: "7 · Adversarial and Diffusion Models"
-            href: lectures/lecture-07.qmd
       - text: "Course flyer"
         href: assets/course-flyer.pdf
       - text: "About"
@@ -100,10 +98,6 @@ website:
         contents:
           - notebooks/lecture-06/generative-models.ipynb
           - notebooks/lecture-06/conditional-generation.ipynb
-      - section: "7 · Adversarial and Diffusion Models"
-        href: lectures/lecture-07.qmd
-        contents:
-          - notebooks/lecture-07/generative-models.ipynb
       - text: "About"
         href: about.qmd
   page-footer:

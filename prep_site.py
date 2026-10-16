@@ -21,7 +21,7 @@ REPO = "MarcinPlodzien/deep-learning-for-scientific-discovery"
 # separately in a temporary copy of the deck's beamer folder: only the listed sections, its own
 # subtitle and footer ("Lecture N"), and "use" files that replace sections changed after delivery.
 FOLDERS = {1: "Lecture_01-02_2026.10.06", 2: "Lecture_03_2026.10.13", 3: "Lecture_04_2026.10.14", 4: "Lecture_04_2026.10.14",
-           5: "Lecture_05_2026.10.20", 6: "Lecture_06_2026.10.27", 7: "Lecture_06_2026.10.27"}
+           5: "Lecture_05_2026.10.20", 6: "Lecture_06_2026.10.27"}
 DECKS = {
     1: dict(sections=["01a_discovery_story", "01_motivation", "02_ai_landscape", "03_learning_recipe", "04_breakthroughs", "05_closing"],
             subtitle=r"Lecture 1: & Scientific Discovery: Understanding from Data\\ & From AI to Deep Learning"),
@@ -35,8 +35,6 @@ DECKS = {
             subtitle=r"Lecture 5: & Unsupervised Learning\\ & PCA, t-SNE, Clustering, Autoencoders\\ & Blood Cells, Credit-Card Fraud and Tumour Genes without Labels"),
     6: dict(sections=["macros_nn", "l6_vae", "closing_l6"],
             subtitle=r"Lecture 6: & Probability and Variational Autoencoders\\ & Latent Spaces, Conditional and Disentangled Generation\\ & Digits and Blood Cells"),
-    7: dict(sections=["macros_nn", "l7_gan_diffusion", "closing_l7"],
-            subtitle=r"Lecture 7: & Adversarial and Diffusion Models\\ & GANs, Wasserstein Distance, Diffusion\\ & Generating Spin Configurations"),
 }
 
 # lecture, source notebook (relative to the lecture folder), web name, title
@@ -61,7 +59,6 @@ NOTEBOOKS = [
     (5, "notebook_2026-10-20-unsupervised_learning.ipynb", "unsupervised-learning", "Unsupervised learning: PCA, t-SNE, clustering, autoencoders and anomalies"),
     (6, "notebook_2026-10-27-generative_models.ipynb", "generative-models", "Generative models: probability, VAE, GAN and diffusion"),
     (6, "notebook_2026-10-27-conditional_generation.ipynb", "conditional-generation", "Conditional generation of digits and blood cells"),
-    (7, "notebook_2026-10-27-generative_models.ipynb", "generative-models", "Generative models: probability, VAE, GAN and diffusion"),
 ]
 
 # files published next to the notebooks: (lecture, source relative to the lecture folder, web path)

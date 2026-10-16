@@ -41,7 +41,6 @@ The course is for doctoral students of physics, mathematics, chemistry, biology 
 | 4 | [CNNs on Scientific Data and the 2D Ising Model](lectures/lecture-04.qmd) | blood cells, convolution and the Ising model, Labs 010–012 |
 | 5 | [Unsupervised Learning](lectures/lecture-05.qmd) | PCA, t-SNE, clustering, autoencoders, anomalies |
 | 6 | [Probability and Variational Autoencoders](lectures/lecture-06.qmd) | VAE, conditional generation, classifier checks |
-| 7 | [Adversarial and Diffusion Models](lectures/lecture-07.qmd) | GAN, diffusion, Ising configurations |
 
 ## Main reading
 
