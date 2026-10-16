@@ -324,7 +324,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../notebooks/lecture-06/generative-models.html" class="sidebar-item-text sidebar-link">Generative models: probability, VAE, GAN and diffusion</a>
+  <a href="../notebooks/lecture-06/generative-models.html" class="sidebar-item-text sidebar-link">Generative models: probability, autoencoder and VAE</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -364,7 +364,7 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p>Learning a probability distribution from data alone, and drawing new samples from it. Why an autoencoder cannot generate, and the probability toolkit needed to fix it: distributions and densities, expectations as averages over samples, the Gaussian, joint, conditional and marginal distributions, Bayes’ rule, the Kullback–Leibler divergence and maximum likelihood, latent-variable models. The variational autoencoder: training and sampling, the decoder as a likelihood, binary cross-entropy, the evidence lower bound, the reparametrisation trick, the latent space. Conditional generation of a chosen digit or cell type, checked with classifiers trained on real or synthetic data, and disentangled latent features with the β-VAE.</p>
+<p>Learning a probability distribution from data alone, and drawing new samples from it. Why an autoencoder cannot generate, and the probability toolkit needed to fix it: distributions and densities, expectations as averages over samples, the Gaussian, joint, conditional and marginal distributions, Bayes’ rule, the Kullback–Leibler divergence and maximum likelihood, latent-variable models. The variational autoencoder: training and sampling, the decoder as a likelihood, binary cross-entropy, the evidence lower bound, the reparametrisation trick, the latent space. Conditional generation of a chosen digit or cell type, checked with classifiers trained on real or synthetic data, disentangled latent features with the β-VAE, latent spaces of data with known causes (a curve, a rotating bar and its vortices), and Ising configurations from a conditional VAE.</p>
 <section id="slides" class="level2">
 <h2 class="anchored" data-anchor-id="slides">Slides</h2>
 <p><a href="../slides/lecture-06.pdf" class="btn btn-outline-primary">Download the slides (PDF)</a></p>
@@ -374,12 +374,24 @@ ul.task-list li input[type="checkbox"] {
 <section id="notebooks" class="level2">
 <h2 class="anchored" data-anchor-id="notebooks">Notebooks</h2>
 <div class="nb-item">
-<p><a href="../notebooks/lecture-06/generative-models.html">Generative models: probability, VAE, GAN and diffusion</a></p>
-<p>The probability toolkit, the VAE and the conditional VAE on MNIST and blood cells; its GAN and diffusion parts belong to Lecture 7.</p>
+<p><a href="../notebooks/lecture-06/generative-models.html">Generative models: probability, autoencoder and VAE</a></p>
+<p>The probability toolkit, maximum likelihood, why an autoencoder cannot generate, the VAE and the conditional VAE on MNIST and blood cells.</p>
 </div>
 <div class="nb-item">
 <p><a href="../notebooks/lecture-06/conditional-generation.html">Conditional generation of digits and blood cells</a></p>
 <p>The VAE in a two-dimensional latent space, the reparametrisation trick, generating a chosen digit or cell type, and classifiers trained on real or synthetic data.</p>
+</div>
+<div class="nb-item">
+<p><a href="../notebooks/lecture-06/latent-space.html">Latent space of a VAE: data with known causes</a></p>
+<p>A curve with one hidden number and bars with an angle and a shift: how the decoder stretches the prior, the VAE as a continuous mixture, vortices of the decoded angle, and encoder clouds against the exact posterior.</p>
+</div>
+<div class="nb-item">
+<p><a href="../notebooks/lecture-06/beta-vae.html">Disentangled latent features with the β-VAE</a></p>
+<p>dSprites and MNIST: information per latent coordinate, traversals, the mutual information gap and interpolation for β = 1, 4, 8.</p>
+</div>
+<div class="nb-item">
+<p><a href="../notebooks/lecture-06/ising-cvae.html">Ising configurations from a conditional VAE</a></p>
+<p>Spin configurations generated at a chosen temperature and checked against Monte Carlo with observables, correlation functions, a phase classifier and a temperature regressor.</p>
 </div>
 
 
@@ -642,7 +654,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
   <div class="nav-page nav-page-next">
       <a href="../notebooks/lecture-06/generative-models.html" class="pagination-link">
-        <span class="nav-page-text">Generative models: probability, VAE, GAN and diffusion</span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text">Generative models: probability, autoencoder and VAE</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

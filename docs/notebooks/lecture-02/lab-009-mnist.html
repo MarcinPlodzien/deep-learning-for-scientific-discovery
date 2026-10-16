@@ -388,7 +388,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../notebooks/lecture-06/generative-models.html" class="sidebar-item-text sidebar-link">Generative models: probability, VAE, GAN and diffusion</a>
+  <a href="../../notebooks/lecture-06/generative-models.html" class="sidebar-item-text sidebar-link">Generative models: probability, autoencoder and VAE</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -437,9 +437,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#mini-batches-from-a-random-permutation" id="toc-mini-batches-from-a-random-permutation" class="nav-link" data-scroll-target="#mini-batches-from-a-random-permutation">4.1 Mini-batches from a random permutation</a></li>
   <li><a href="#dataset-and-dataloader" id="toc-dataset-and-dataloader" class="nav-link" data-scroll-target="#dataset-and-dataloader">4.2 <code>Dataset</code> and <code>DataLoader</code></a></li>
   </ul></li>
-  <li><a href="#classification-as-regression-with-a-single-sigmoid-output" id="toc-classification-as-regression-with-a-single-sigmoid-output" class="nav-link" data-scroll-target="#classification-as-regression-with-a-single-sigmoid-output">5. Classification as regression with a single sigmoid output</a>
+  <li><a href="#model-a-one-sigmoid-output-and-the-mean-squared-error" id="toc-model-a-one-sigmoid-output-and-the-mean-squared-error" class="nav-link" data-scroll-target="#model-a-one-sigmoid-output-and-the-mean-squared-error">5. Model A: one sigmoid output and the mean squared error</a>
   <ul class="collapse">
-  <li><a href="#classification-as-curve-fitting" id="toc-classification-as-curve-fitting" class="nav-link" data-scroll-target="#classification-as-curve-fitting">5.1 Classification as curve fitting</a></li>
+  <li><a href="#regression-targets-for-the-digits" id="toc-regression-targets-for-the-digits" class="nav-link" data-scroll-target="#regression-targets-for-the-digits">5.1 Regression targets for the digits</a></li>
   <li><a href="#single-output-network" id="toc-single-output-network" class="nav-link" data-scroll-target="#single-output-network">5.2 Single-output network</a></li>
   <li><a href="#loss-and-evaluation" id="toc-loss-and-evaluation" class="nav-link" data-scroll-target="#loss-and-evaluation">5.3 Loss and evaluation</a></li>
   <li><a href="#training-loop" id="toc-training-loop" class="nav-link" data-scroll-target="#training-loop">5.4 Training loop</a></li>
@@ -464,7 +464,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#exercise-2-ten-outputs-with-the-mean-squared-error" id="toc-exercise-2-ten-outputs-with-the-mean-squared-error" class="nav-link" data-scroll-target="#exercise-2-ten-outputs-with-the-mean-squared-error">Exercise 2 — Ten outputs with the mean squared error</a></li>
   <li><a href="#exercise-3-batch-size" id="toc-exercise-3-batch-size" class="nav-link" data-scroll-target="#exercise-3-batch-size">Exercise 3 — Batch size</a></li>
   <li><a href="#exercise-4-wider-and-deeper-networks" id="toc-exercise-4-wider-and-deeper-networks" class="nav-link" data-scroll-target="#exercise-4-wider-and-deeper-networks">Exercise 4 — Wider and deeper networks</a></li>
-  <li><a href="#exercise-5-full-batch-gradient-descent-as-in-the-chapter" id="toc-exercise-5-full-batch-gradient-descent-as-in-the-chapter" class="nav-link" data-scroll-target="#exercise-5-full-batch-gradient-descent-as-in-the-chapter">Exercise 5 — Full-batch gradient descent as in the chapter</a></li>
+  <li><a href="#exercise-5-full-batch-gradient-descent-of-the-chapter" id="toc-exercise-5-full-batch-gradient-descent-of-the-chapter" class="nav-link" data-scroll-target="#exercise-5-full-batch-gradient-descent-of-the-chapter">Exercise 5 — Full-batch gradient descent of the chapter</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -500,7 +500,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="lab-009-regression-and-cross-entropy-on-mnist" class="level1">
 <h1>Lab 009 — Regression and cross-entropy on MNIST</h1>
 <p>This notebook follows the MNIST example of Chapter 2 in detail. MNIST (Modified National Institute of Standards and Technology database) is a collection of images of handwritten digits, and the same feed-forward network is trained on it twice, in two different formulations of the task.</p>
-<p>The first formulation, model A, treats classification as regression with a single output node (Section <em>Image Classification with a Single Output Node</em> of the chapter). The flattened image of <span class="math inline">\(784\)</span> pixels goes through one hidden layer of <span class="math inline">\(21\)</span> sigmoid nodes (as in the chapter) to <strong>one</strong> sigmoid output <span class="math inline">\(\bar y\in(0,1)\)</span>. The network is trained with the mean squared error (MSE) to reproduce the digit divided by <span class="math inline">\(10\)</span>, and the prediction is <span class="math inline">\(10\,\bar y\)</span> rounded to an integer. The second formulation, model B, is classification with ten output nodes and the categorical cross-entropy (Section <em>Multiclass Classification and Categorical Cross-Entropy</em>). It has the same hidden layer (784 → 21 sigmoid nodes), but <span class="math inline">\(10\)</span> outputs, turned into probabilities by the softmax and trained with the cross-entropy against one-hot labels.</p>
+<p>The first formulation, model A, treats classification as regression with a single output node (Section <em>Image Classification with a Single Output Node</em> of the chapter). The flattened image of <span class="math inline">\(784\)</span> pixels goes through one hidden layer of <span class="math inline">\(21\)</span> sigmoid nodes (as in the chapter) to <strong>one</strong> sigmoid output <span class="math inline">\(\bar y\)</span> between 0 and 1. The network is trained with the mean squared error (MSE) to reproduce the digit divided by <span class="math inline">\(10\)</span>, and the prediction is <span class="math inline">\(10\,\bar y\)</span> rounded to an integer. The second formulation, model B, is classification with ten output nodes and the categorical cross-entropy (Section <em>Multiclass Classification and Categorical Cross-Entropy</em>). It has the same hidden layer (784 → 21 sigmoid nodes), but <span class="math inline">\(10\)</span> outputs, turned into probabilities by the softmax and trained with the cross-entropy against one-hot labels.</p>
 <blockquote class="blockquote">
 <p>Both networks have the <em>same</em> hidden layer (784 → 21 sigmoid nodes, about <span class="math inline">\(16\,500\)</span> parameters), the same data, the same optimiser, the same number of epochs. They differ only in the output layer and the <strong>loss function</strong>. The single-output regression recognises about <span class="math inline">\(65\%\)</span> of the test digits, the ten-output cross-entropy network about <span class="math inline">\(95\%\)</span> (the chapter reports <span class="math inline">\(56\%\)</span> and <span class="math inline">\(95\%\)</span>). The difference comes from how the task is posed: the output layer and the loss together. Exercise 2 shows that the ten outputs account for most of the gain (ten sigmoid outputs trained with the MSE already reach about <span class="math inline">\(94\%\)</span>).</p>
 </blockquote>
@@ -509,7 +509,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <blockquote class="blockquote">
 <p>To run this notebook in Google Colab, proceed as follows. 1. Go to <a href="https://colab.research.google.com" class="uri">https://colab.research.google.com</a> → <em>File → Upload notebook</em> (or open it from Google Drive). 2. Run cells one by one with <strong>Shift + Enter</strong>. Run them <em>in order</em> — later cells use variables defined earlier. 3. The required packages (<code>numpy</code>, <code>matplotlib</code>, <code>torch</code>) are pre-installed in Colab; no <code>pip install</code> required. 4. The data (about 11 MB) are downloaded once into the folder <code>data/MNIST_raw</code> in the current working directory (in Colab: <code>/content</code>, which is cleared when the runtime is recycled). 5. If the notebook state becomes inconsistent: <em>Runtime → Restart session</em> and run from the top.</p>
 </blockquote>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:53:44.759372Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:53:44.759263Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:53:45.937075Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:53:45.936688Z&quot;}" data-execution_count="1">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:50:29.515151Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:50:29.514890Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:50:32.005723Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:50:32.004590Z&quot;}" data-execution_count="1">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os, gzip, time, urllib.request</span>
@@ -523,7 +523,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"PyTorch"</span>, torch.__version__, <span class="st">"  NumPy"</span>, np.__version__)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>PyTorch 2.9.0+cpu   NumPy 2.1.3</code></pre>
+<pre><code>PyTorch 2.14.1+cpu   NumPy 2.2.6</code></pre>
 </div>
 </div>
 <hr>
@@ -531,9 +531,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 class="anchored" data-anchor-id="the-original-mnist-files">1. The original MNIST files</h2>
 <section id="download" class="level3">
 <h3 class="anchored" data-anchor-id="download">1.1 Download</h3>
-<p>MNIST is distributed as four compressed files (<code>.gz</code>): images and labels, each for the training part (<span class="math inline">\(60\,000\)</span> images) and the test part (<span class="math inline">\(10\,000\)</span> images). Libraries such as <code>torchvision</code> or <code>keras</code> download exactly these files and decode them for you. Here we do both steps ourselves.</p>
+<p>MNIST is distributed as four compressed files (<code>.gz</code>): images and labels, each for the training part (<span class="math inline">\(60\,000\)</span> images) and the test part (<span class="math inline">\(10\,000\)</span> images). Libraries such as <code>torchvision</code> or <code>keras</code> download exactly these files and decode them. Both steps take only a few lines of Python.</p>
 <p><code>urllib.request.urlretrieve(url, path)</code> downloads a file from the internet and saves it on disk. The data set was introduced by Y. LeCun, L. Bottou, Y. Bengio and P. Haffner, <em>Gradient-based learning applied to document recognition</em>, Proc. IEEE <strong>86</strong>, 2278–2324 (1998), <a href="https://doi.org/10.1109/5.726791">doi:10.1109/5.726791</a>; its original web page, <a href="http://yann.lecun.com/exdb/mnist/" class="uri">http://yann.lecun.com/exdb/mnist/</a>, no longer serves the files reliably, so we use two public copies (<em>mirrors</em>) and take the first one that works. A file that is already on disk is not downloaded again.</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:53:45.938728Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:53:45.938534Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:53:45.942909Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:53:45.942577Z&quot;}" data-execution_count="2">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:50:32.008363Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:50:32.007990Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:50:32.017163Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:50:32.016125Z&quot;}" data-execution_count="2">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>DATA_DIR <span class="op">=</span> <span class="st">"data/MNIST_raw"</span></span>
@@ -610,7 +610,7 @@ test_labels   data/MNIST_raw/t10k-labels-idx1-ubyte.gz       0.00 MB</code></pre
 </tbody>
 </table>
 <p><code>gzip.open</code> decompresses on the fly. We read the first 16 bytes of the training images:</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:53:45.944325Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:53:45.944071Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:53:45.946997Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:53:45.946716Z&quot;}" data-execution_count="3">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:50:32.019511Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:50:32.019274Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:50:32.038025Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:50:32.036912Z&quot;}" data-execution_count="3">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> gzip.<span class="bu">open</span>(paths[<span class="st">"train_images"</span>], <span class="st">"rb"</span>) <span class="im">as</span> f:</span>
@@ -627,9 +627,9 @@ as four big-endian integers: [ 2051 60000    28    28]
 data type byte: 8  number of dimensions: 3</code></pre>
 </div>
 </div>
-<p>The four integers are <span class="math inline">\(2051\)</span> (the “magic number” <span class="math inline">\(=\)</span> <code>0x00000803</code>: data type <code>08</code>, <span class="math inline">\(3\)</span> dimensions), <span class="math inline">\(60\,000\)</span> images, <span class="math inline">\(28\)</span> rows and <span class="math inline">\(28\)</span> columns. For example, <span class="math inline">\(60\,000 = 0\cdot256^3 + 0\cdot256^2 + 234\cdot256 + 96\)</span>, which are bytes 4–7 above.</p>
+<p>The four integers are <span class="math inline">\(2051\)</span> (the “magic number”, <code>0x00000803</code>: data type <code>08</code>, <span class="math inline">\(3\)</span> dimensions), <span class="math inline">\(60\,000\)</span> images, <span class="math inline">\(28\)</span> rows and <span class="math inline">\(28\)</span> columns. For example, the number of images follows from bytes 4–7 above as <span class="math display">\[60\,000 = 0\cdot256^3 + 0\cdot256^2 + 234\cdot256 + 96 . \tag{1}\]</span></p>
 <p>A complete reader is a few lines. <code>np.frombuffer</code> interprets raw bytes as an array without copying; <code>offset</code> skips the header.</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:53:45.948164Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:53:45.948044Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:53:46.151024Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:53:46.150550Z&quot;}" data-execution_count="4">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:50:32.040530Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:50:32.040256Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:50:32.517418Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:50:32.516333Z&quot;}" data-execution_count="4">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> read_idx(path):</span>
@@ -668,7 +668,7 @@ first 20 training labels: [5 0 4 1 9 2 1 3 1 4 3 5 3 6 1 7 2 8 6 9]</code></pre>
 <section id="examples-of-every-class" class="level3">
 <h3 class="anchored" data-anchor-id="examples-of-every-class">2.1 Examples of every class</h3>
 <p><code>imshow</code> draws a 2D array as an image; the colour map <code>"gray_r"</code> shows <span class="math inline">\(0\)</span> as white and <span class="math inline">\(255\)</span> as black, as on paper.</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:53:46.152483Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:53:46.152342Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:53:46.721146Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:53:46.720700Z&quot;}" data-execution_count="5">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:50:32.520884Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:50:32.520526Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:50:34.026652Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:50:34.025653Z&quot;}" data-execution_count="5">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">4</span>, <span class="dv">10</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
@@ -690,7 +690,7 @@ first 20 training labels: [5 0 4 1 9 2 1 3 1 4 3 5 3 6 1 7 2 8 6 9]</code></pre>
 <section id="images-per-class" class="level3">
 <h3 class="anchored" data-anchor-id="images-per-class">2.2 Images per class</h3>
 <p><code>np.bincount(y, minlength=10)</code> counts how often each of the values <span class="math inline">\(0,\dots,9\)</span> occurs.</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:53:46.722704Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:53:46.722534Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:53:46.807213Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:53:46.806850Z&quot;}" data-execution_count="6">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:50:34.029714Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:50:34.029377Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:50:34.225970Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:50:34.224973Z&quot;}" data-execution_count="6">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>counts_train <span class="op">=</span> np.bincount(y_train_full, minlength<span class="op">=</span><span class="dv">10</span>)</span>
@@ -717,7 +717,7 @@ test counts    : [ 980 1135 1032 1010  982  892  958 1028  974 1009]</code></pre
 <section id="the-mean-image-of-every-class" class="level3">
 <h3 class="anchored" data-anchor-id="the-mean-image-of-every-class">2.3 The mean image of every class</h3>
 <p>Averaging all training images of one digit shows the “typical” shape and how much it varies (blurred regions = places where different writers put the ink differently).</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:53:46.808689Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:53:46.808496Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:53:47.027058Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:53:47.026692Z&quot;}" data-execution_count="7">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:50:34.229288Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:50:34.228979Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:50:34.880832Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:50:34.879633Z&quot;}" data-execution_count="7">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">10</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="fl">1.6</span>))</span>
@@ -733,8 +733,8 @@ test counts    : [ 980 1135 1032 1010  982  892  958 1028  974 1009]</code></pre
 </section>
 <section id="flattening" class="level3">
 <h3 class="anchored" data-anchor-id="flattening">2.4 Flattening</h3>
-<p>The networks of this notebook (dense / fully connected) take a <strong>vector</strong> as input. A <span class="math inline">\(28\times28\)</span> image becomes a vector of <span class="math inline">\(m = 784\)</span> numbers by writing the rows one after another: pixel <span class="math inline">\((i, j)\)</span> (row <span class="math inline">\(i\)</span>, column <span class="math inline">\(j\)</span>) goes to position <span class="math inline">\(28\,i + j\)</span>. This is what <code>reshape</code> does (NumPy and PyTorch store arrays row by row, so no data are moved).</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:53:47.028497Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:53:47.028352Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:53:47.200382Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:53:47.199910Z&quot;}" data-execution_count="8">
+<p>The networks of this notebook (dense / fully connected) take a <strong>vector</strong> as input. A <span class="math inline">\(28\times28\)</span> image becomes a vector of <span class="math inline">\(m\)</span> numbers, 784 of them, by writing the rows one after another: pixel <span class="math inline">\((i, j)\)</span> (row <span class="math inline">\(i\)</span>, column <span class="math inline">\(j\)</span>) goes to position <span class="math display">\[p = 28\,i + j . \tag{2}\]</span> This is what <code>reshape</code> does (NumPy and PyTorch store arrays row by row, so no data are moved).</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:50:34.883615Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:50:34.883285Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:50:35.267641Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:50:35.266552Z&quot;}" data-execution_count="8">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> X_train_full[<span class="dv">0</span>]                         <span class="co"># one image, shape (28, 28)</span></span>
@@ -768,7 +768,7 @@ test counts    : [ 980 1135 1032 1010  982  892  958 1028  974 1009]</code></pre
 <h3 class="anchored" data-anchor-id="training-validation-and-test-sets">3.1 Training, validation and test sets</h3>
 <p>The three sets have different roles. The <strong>training set</strong> is used to change the parameters (gradient descent). The <strong>validation set</strong> is used <em>during</em> development: to watch for overfitting and to choose settings (number of epochs, learning rate, architecture). The <strong>test set</strong> is used <strong>once</strong>, at the very end, to report the final quality; if it were used to choose settings, it would no longer measure performance on new data. For teaching purposes the analyses and exercises below also look at the test set; in a real project such comparisons would be made on the validation set.</p>
 <p>The MNIST test file is our test set. The <span class="math inline">\(60\,000\)</span> training images are split at random into <span class="math inline">\(50\,000\)</span> for training and <span class="math inline">\(10\,000\)</span> for validation. The split must be <strong>random</strong>: a data file may be ordered (by class, by writer, by date of collection), and the first images of a file need not be representative of the rest. <code>rng.permutation(n)</code> returns the numbers <span class="math inline">\(0,\dots,n-1\)</span> in a random order; the first <span class="math inline">\(50\,000\)</span> of them select the training images.</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:53:47.201871Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:53:47.201702Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:53:47.219599Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:53:47.219319Z&quot;}" data-execution_count="9">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:50:35.270679Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:50:35.270173Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:50:35.304618Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:50:35.303565Z&quot;}" data-execution_count="9">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>n_full <span class="op">=</span> <span class="bu">len</span>(X_train_full)</span>
@@ -790,7 +790,7 @@ common indices: 0   together they cover all images: True</code></pre>
 </div>
 </div>
 <p>Indexing a NumPy array with an array of indices (<code>X_train_full[idx_train]</code>) picks the rows in that order. No image is in both sets, and together they use every image exactly once. The random split gives training and validation sets with the same class proportions, which also match the test file:</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:53:47.220916Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:53:47.220747Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:53:47.312432Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:53:47.312115Z&quot;}" data-execution_count="10">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:50:35.307584Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:50:35.307242Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:50:35.561614Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:50:35.560253Z&quot;}" data-execution_count="10">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="fl">3.2</span>))</span>
@@ -806,10 +806,10 @@ common indices: 0   together they cover all images: True</code></pre>
 </section>
 <section id="flattening-and-standardisation" class="level3">
 <h3 class="anchored" data-anchor-id="flattening-and-standardisation">3.2 Flattening and standardisation</h3>
-<p>As in the chapter, the input vectors are <strong>standardised</strong> to mean <span class="math inline">\(0\)</span> and standard deviation <span class="math inline">\(1\)</span>: <span class="math display">\[\mathbf x \;\leftarrow\; \frac{\mathbf x - \mu}{s},\]</span> with one number <span class="math inline">\(\mu\)</span> (mean) and one number <span class="math inline">\(s\)</span> (standard deviation) computed over all pixels of all <strong>training</strong> images. Inputs of order one keep the pre-activations <span class="math inline">\(\mathbf W\mathbf x + \mathbf b\)</span> in the range where the sigmoid is not flat, which makes gradient descent work well.</p>
+<p>As in the chapter, the input vectors are <strong>standardised</strong> to mean <span class="math inline">\(0\)</span> and standard deviation <span class="math inline">\(1\)</span>: <span class="math display">\[\mathbf x \;\leftarrow\; \frac{\mathbf x - \mu}{s}, \tag{3}\]</span> with one number <span class="math inline">\(\mu\)</span> (mean) and one number <span class="math inline">\(s\)</span> (standard deviation) computed over all pixels of all <strong>training</strong> images. Inputs of order one keep the pre-activations <span class="math inline">\(\mathbf W\mathbf x + \mathbf b\)</span> in the range where the sigmoid is not flat, which makes gradient descent work well.</p>
 <p><span class="math inline">\(\mu\)</span> and <span class="math inline">\(s\)</span> are computed from the training set <strong>only</strong> and then applied unchanged to validation and test data. Using statistics of the test set would let information about the test data leak into the model (<em>data leakage</em>); in a real application the test data are not even available when the model is built.</p>
 <p>Finally the arrays are converted to PyTorch tensors: inputs as <code>float32</code> (the default type of PyTorch parameters), labels as <code>int64</code> (the type PyTorch expects for class indices).</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:53:47.313927Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:53:47.313736Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:53:47.479767Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:53:47.479363Z&quot;}" data-execution_count="11">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:50:35.564522Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:50:35.564214Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:50:35.916416Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:50:35.915368Z&quot;}" data-execution_count="11">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> flatten(images):</span>
@@ -837,7 +837,7 @@ val    X (10000, 784) torch.float32  mean -0.001 std 1.000   y (10000,) torch.in
 test   X (10000, 784) torch.float32  mean +0.006 std 1.008   y (10000,) torch.int64</code></pre>
 </div>
 </div>
-<p>The training inputs have mean <span class="math inline">\(0\)</span> and standard deviation <span class="math inline">\(1\)</span> by construction; validation and test inputs are close to that but not exactly, since they were transformed with the training statistics. The background pixels (<span class="math inline">\(0\)</span>) become <span class="math inline">\(-\mu/s \approx -0.42\)</span>, full ink (<span class="math inline">\(255\)</span>) becomes about <span class="math inline">\(2.8\)</span>.</p>
+<p>The training inputs have mean <span class="math inline">\(0\)</span> and standard deviation <span class="math inline">\(1\)</span> by construction; validation and test inputs are close to that but not exactly, since they were transformed with the training statistics. The background pixels (<span class="math inline">\(0\)</span>) become about <span class="math inline">\(-0.42\)</span>, full ink (<span class="math inline">\(255\)</span>) becomes about <span class="math inline">\(2.8\)</span>.</p>
 <hr>
 </section>
 </section>
@@ -853,7 +853,7 @@ test   X (10000, 784) torch.float32  mean +0.006 std 1.008   y (10000,) torch.in
 </ol>
 <p>Every image is used exactly once per epoch; one epoch makes <span class="math inline">\(\lceil 50\,000/B\rceil\)</span> updates (with <span class="math inline">\(B\)</span> the batch size). The gradient of a mini-batch is a noisy estimate of the full gradient (<em>stochastic</em> gradient descent), but many cheap noisy steps are much faster than a few exact ones.</p>
 <p>The function below produces the index arrays of the mini-batches. It is a Python <strong>generator</strong>: <code>yield</code> hands out one value and pauses the function until the next value is requested by the <code>for</code> loop, so the batches are produced one at a time.</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:53:47.481533Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:53:47.481215Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:53:47.488420Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:53:47.488089Z&quot;}" data-execution_count="12">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:50:35.919361Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:50:35.918770Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:50:35.940118Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:50:35.938662Z&quot;}" data-execution_count="12">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> batch_indices(n, batch_size, shuffle<span class="op">=</span><span class="va">True</span>, generator<span class="op">=</span><span class="va">None</span>):</span>
@@ -877,8 +877,8 @@ first batch indices: [36044, 49165, 37807, 11341, 6091, 16904, 36293, 28026, 246
 every training image used exactly once: True</code></pre>
 </div>
 </div>
-<p><span class="math inline">\(50\,000 = 781\cdot 64 + 16\)</span>, hence <span class="math inline">\(782\)</span> batches, the last one with <span class="math inline">\(16\)</span> images. A batch of data is then <code>X_tr[idx], y_tr[idx]</code>: a matrix <span class="math inline">\(X_i\in\mathbb R^{64\times784}\)</span> (one image per row, as in the chapter’s feed-forward pass) and a vector of <span class="math inline">\(64\)</span> labels.</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:53:47.489778Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:53:47.489614Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:53:48.829006Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:53:48.828511Z&quot;}" data-execution_count="13">
+<p>With batches of 64 images, <span class="math display">\[50\,000 = 781\cdot 64 + 16 , \tag{4}\]</span> hence <span class="math inline">\(782\)</span> batches, the last one with <span class="math inline">\(16\)</span> images. A batch of data is then <code>X_tr[idx], y_tr[idx]</code>: a <span class="math inline">\(64\times784\)</span> matrix <span class="math inline">\(X_i\)</span> (one image per row, as in the chapter’s feed-forward pass) and a vector of <span class="math inline">\(64\)</span> labels.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:50:35.946226Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:50:35.945619Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:50:37.921715Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:50:37.920801Z&quot;}" data-execution_count="13">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>idx <span class="op">=</span> batches[<span class="dv">0</span>]</span>
@@ -904,7 +904,7 @@ every training image used exactly once: True</code></pre>
 <h3 class="anchored" data-anchor-id="dataset-and-dataloader">4.2 <code>Dataset</code> and <code>DataLoader</code></h3>
 <p>PyTorch packages these two steps into two classes from <code>torch.utils.data</code>. A <strong><code>Dataset</code></strong> knows how many samples there are (<code>__len__</code>) and returns sample number <code>i</code> (<code>__getitem__</code>), here a pair (image vector, label). A <strong><code>DataLoader</code></strong> takes a <code>Dataset</code>, shuffles the indices in every epoch, cuts them into batches, calls <code>__getitem__</code> for every index of a batch, and stacks the results into batch tensors (<em>collate</em>).</p>
 <p>Writing our own <code>Dataset</code> shows that there is nothing more to it. (For tensors already in memory PyTorch also offers the ready-made <code>TensorDataset</code>, which does the same.) For large data sets that do not fit into memory, <code>__getitem__</code> would read one image from disk; the <code>DataLoader</code> can then load batches in parallel processes (<code>num_workers</code>). This is the main reason the classes exist.</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:53:48.830615Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:53:48.830402Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:53:48.836826Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:53:48.836520Z&quot;}" data-execution_count="14">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:50:37.923717Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:50:37.923524Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:50:37.940481Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:50:37.937058Z&quot;}" data-execution_count="14">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch.utils.data <span class="im">import</span> Dataset, DataLoader</span>
@@ -936,7 +936,7 @@ one batch from the DataLoader: (64, 784) (64,)</code></pre>
 </div>
 </div>
 <p>With <code>shuffle=False</code> both methods must give identical batches, and indeed they do. The timing shows the price of the generality: the <code>DataLoader</code> calls <code>__getitem__</code> <span class="math inline">\(50\,000\)</span> times per epoch and stacks single images, while <code>X_tr[idx]</code> copies a whole batch in one operation.</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:53:48.838099Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:53:48.837838Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:53:49.275648Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:53:49.275316Z&quot;}" data-execution_count="15">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:50:37.945062Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:50:37.944807Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:50:38.594618Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:50:38.592254Z&quot;}" data-execution_count="15">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>loader_fixed <span class="op">=</span> DataLoader(ds_tr, batch_size<span class="op">=</span><span class="dv">64</span>, shuffle<span class="op">=</span><span class="va">False</span>)</span>
@@ -955,23 +955,23 @@ one batch from the DataLoader: (64, 784) (64,)</code></pre>
 <span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"one epoch of batches: own function </span><span class="sc">{</span>t_hand<span class="sc">:.3f}</span><span class="ss"> s,  DataLoader </span><span class="sc">{</span>t_dl<span class="sc">:.3f}</span><span class="ss"> s"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>DataLoader(shuffle=False) gives the same batches as batching by hand: True</code></pre>
+<pre><code>DataLoader(shuffle=False) gives the same batches as our own batching: True</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>one epoch of batches: by hand 0.015 s,  DataLoader 0.199 s</code></pre>
+<pre><code>one epoch of batches: own function 0.020 s,  DataLoader 0.246 s</code></pre>
 </div>
 </div>
-<p>Both ways are used below: model A (regression) uses our own batching function, model B (cross-entropy) the <code>DataLoader</code>. Each mini-batch has the same size and is drawn the same way, so the choice does not affect the comparison of the two models.</p>
+<p>Both ways are used for training: model A (regression) uses our own batching function, model B (cross-entropy) the <code>DataLoader</code>. Each mini-batch has the same size and is drawn the same way, so the choice does not affect the comparison of the two models.</p>
 <hr>
 </section>
 </section>
-<section id="classification-as-regression-with-a-single-sigmoid-output" class="level2">
-<h2 class="anchored" data-anchor-id="classification-as-regression-with-a-single-sigmoid-output">5. Classification as regression with a single sigmoid output</h2>
-<section id="classification-as-curve-fitting" class="level3">
-<h3 class="anchored" data-anchor-id="classification-as-curve-fitting">5.1 Classification as curve fitting</h3>
-<p>The chapter imagines an unknown function <span class="math inline">\(G:\mathbb R^{784}\to\{0,\dots,9\}\)</span> that maps the pixels of an image to the digit it shows, and treats learning <span class="math inline">\(G\)</span> as <strong>non-linear curve fitting</strong> (regression), just as in the one-dimensional example of the Universal Approximation Theorem. The network (model A) has <strong>one</strong> output node with a sigmoid, so <span class="math inline">\(\bar y = f_{\boldsymbol\theta}(\mathbf x)\in(0,1)\)</span>. The target of an image with digit <span class="math inline">\(y\)</span> is the rescaled digit <span class="math inline">\(y/10\in\{0, 0.1, \dots, 0.9\}\)</span>, and the loss is the mean squared error over a batch of <span class="math inline">\(B\)</span> images, <span class="math display">\[\mathcal L = \frac1B\sum_{i=1}^B \big(\bar y_i - y_i/10\big)^2 .\]</span> The predicted digit is <span class="math inline">\(10\,\bar y\)</span> turned into an integer.</p>
-<p>How it is turned into an integer matters. <code>int()</code> in Python (and <code>.long()</code> in PyTorch) <strong>truncates</strong>, e.g.&nbsp;<span class="math inline">\(2.97\to2\)</span>, although the output is closest to the target <span class="math inline">\(3\)</span>. The correct choice is <strong>rounding</strong> to the nearest integer, then clipping to <span class="math inline">\(0\dots9\)</span>. (With the sigmoid, <span class="math inline">\(10\bar y\in(0,10)\)</span>, so <span class="math inline">\(9.6\)</span> would round to <span class="math inline">\(10\)</span>.)</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:53:49.277157Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:53:49.276977Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:53:49.280097Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:53:49.279797Z&quot;}" data-execution_count="16">
+<section id="model-a-one-sigmoid-output-and-the-mean-squared-error" class="level2">
+<h2 class="anchored" data-anchor-id="model-a-one-sigmoid-output-and-the-mean-squared-error">5. Model A: one sigmoid output and the mean squared error</h2>
+<section id="regression-targets-for-the-digits" class="level3">
+<h3 class="anchored" data-anchor-id="regression-targets-for-the-digits">5.1 Regression targets for the digits</h3>
+<p>The chapter imagines an unknown function <span class="math inline">\(G\)</span> that maps the 784 pixels of an image to the digit <span class="math inline">\(0,\dots,9\)</span> it shows, and treats learning <span class="math inline">\(G\)</span> as <strong>non-linear curve fitting</strong> (regression), just as in the one-dimensional example of the Universal Approximation Theorem. The network (model A) has <strong>one</strong> output node with a sigmoid, so <span class="math display">\[\bar y = f_{\boldsymbol\theta}(\mathbf x)\in(0,1) . \tag{5}\]</span> The target of an image with digit <span class="math inline">\(y\)</span> is the rescaled digit <span class="math display">\[t = y/10\in\{0, 0.1, \dots, 0.9\}, \tag{6}\]</span> and the loss is the mean squared error over a batch of <span class="math inline">\(B\)</span> images, <span class="math display">\[\mathcal L = \frac1B\sum_{i=1}^B \big(\bar y_i - y_i/10\big)^2 . \tag{7}\]</span> The predicted digit is <span class="math inline">\(10\,\bar y\)</span> turned into an integer.</p>
+<p>How it is turned into an integer matters. <code>int()</code> in Python (and <code>.long()</code> in PyTorch) <strong>truncates</strong>, e.g.&nbsp;2.97 becomes 2, although the output is closest to the target <span class="math inline">\(3\)</span>. The correct choice is <strong>rounding</strong> to the nearest integer, then clipping to <span class="math inline">\(0\dots9\)</span>. (With the sigmoid, <span class="math inline">\(10\bar y\)</span> lies between 0 and 10, so <span class="math inline">\(9.6\)</span> would round to <span class="math inline">\(10\)</span>.)</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:50:38.601575Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:50:38.601154Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:50:38.608068Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:50:38.607403Z&quot;}" data-execution_count="16">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>outputs <span class="op">=</span> torch.tensor([<span class="fl">0.031</span>, <span class="fl">0.297</span>, <span class="fl">0.304</span>, <span class="fl">0.649</span>, <span class="fl">0.951</span>])         <span class="co"># example values of the sigmoid output</span></span>
@@ -992,8 +992,8 @@ rounded + clipped: [0, 3, 3, 6, 9]</code></pre>
 </section>
 <section id="single-output-network" class="level3">
 <h3 class="anchored" data-anchor-id="single-output-network">5.2 Single-output network</h3>
-<p>As in the chapter, the input is the flattened standardised image (<span class="math inline">\(m = 784\)</span> numbers), followed by <strong>one hidden layer</strong> of <span class="math inline">\(N^{(1)} = 21\)</span> nodes and the output node, all with the sigmoid <span class="math inline">\(\sigma(z) = 1/(1+e^{-z})\)</span>: <span class="math display">\[\bar{\mathbf h} = \sigma\big(\mathbf x W^{(1)T} + \mathbf b^{(1)}\big)\in(0,1)^{21},\qquad \bar y = \sigma\big(\bar{\mathbf h}W^{(2)T} + b^{(2)}\big)\in(0,1).\]</span> The number of hidden nodes is kept in the variable <code>N_HIDDEN</code>, so that it can be changed in one place (Exercise 4 shows what wider and deeper networks do). <code>nn.Linear(n_in, n_out)</code> holds <span class="math inline">\(W\)</span> of shape <code>(n_out, n_in)</code> and <span class="math inline">\(\mathbf b\)</span> of length <code>n_out</code>, and computes <span class="math inline">\(\mathbf x W^T + \mathbf b\)</span> for a batch of row vectors <span class="math inline">\(\mathbf x\)</span>. (The chapter has no bias in the output layer; with one extra parameter this makes no difference.)</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:53:49.281334Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:53:49.281089Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:53:49.285770Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:53:49.285409Z&quot;}" data-execution_count="17">
+<p>As in the chapter, the input is the flattened standardised image (784 numbers), followed by <strong>one hidden layer</strong> of <span class="math inline">\(N^{(1)}\)</span> = 21 nodes and the output node, all with the sigmoid <span class="math display">\[\sigma(z) = \frac{1}{1+e^{-z}} , \tag{8}\]</span> <span class="math display">\[\bar{\mathbf h} = \sigma\big(\mathbf x W^{(1)T} + \mathbf b^{(1)}\big)\in(0,1)^{21},\qquad \bar y = \sigma\big(\bar{\mathbf h}W^{(2)T} + b^{(2)}\big)\in(0,1). \tag{9}\]</span> The number of hidden nodes is kept in the variable <code>N_HIDDEN</code>, so that it can be changed in one place (Exercise 4 shows what wider and deeper networks do). <code>nn.Linear(n_in, n_out)</code> holds <span class="math inline">\(W\)</span> of shape <code>(n_out, n_in)</code> and <span class="math inline">\(\mathbf b\)</span> of length <code>n_out</code>, and computes the affine map inside the sigmoids of equation (9) for a batch of row vectors <span class="math inline">\(\mathbf x\)</span>. (The chapter has no bias in the output layer; with one extra parameter this makes no difference.)</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:50:38.610812Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:50:38.610518Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:50:38.631803Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:50:38.630938Z&quot;}" data-execution_count="17">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>N_HIDDEN <span class="op">=</span> <span class="dv">21</span>                                     <span class="co"># nodes in the hidden layer, as in the chapter</span></span>
@@ -1031,12 +1031,12 @@ output for 5 images, shape (5, 1) : [0.49288123846054077, 0.5091497898101807, 0.
 </div>
 </div>
 <p>The output has shape <code>(B, 1)</code>, one column. The targets will have shape <code>(B,)</code>, so the output is reshaped with <code>.squeeze(1)</code> before the loss is computed: <code>nn.MSELoss</code> given shapes <code>(B, 1)</code> and <code>(B,)</code> would broadcast them to a <code>(B, B)</code> matrix and compute something else; PyTorch only prints a warning, which is easy to overlook (a classic bug).</p>
-<p>The untrained network gives nearly the same output <span class="math inline">\(\approx 0.5\)</span> for every image (small random differences): it has not learned anything yet.</p>
+<p>The untrained network gives nearly the same output, about 0.5, for every image (small random differences): it has not learned anything yet.</p>
 </section>
 <section id="loss-and-evaluation" class="level3">
 <h3 class="anchored" data-anchor-id="loss-and-evaluation">5.3 Loss and evaluation</h3>
 <p>A function that evaluates a model on a whole data set (all images at once, without gradients) returns the loss and the <strong>accuracy</strong>, the fraction of images whose predicted digit equals the label. The accuracy is what we care about, but it cannot be minimised by gradient descent: it is piecewise constant in the parameters, so its gradient is zero almost everywhere. The MSE changes smoothly.</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:53:49.287007Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:53:49.286803Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:53:49.291921Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:53:49.291599Z&quot;}" data-execution_count="18">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:50:38.634342Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:50:38.633987Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:50:38.659558Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:50:38.657186Z&quot;}" data-execution_count="18">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>mse <span class="op">=</span> nn.MSELoss()</span>
@@ -1061,7 +1061,7 @@ output for 5 images, shape (5, 1) : [0.49288123846054077, 0.5091497898101807, 0.
 <h3 class="anchored" data-anchor-id="training-loop">5.4 Training loop</h3>
 <p>The loop is written out in full. The optimiser is Adam with learning rate <span class="math inline">\(10^{-3}\)</span>; the chapter uses plain gradient descent, while Adam is discussed in the section <em>The Zoo of Optimization Algorithms</em> and is much less sensitive to the choice of the learning rate (plain gradient descent is used in Exercise 5). One epoch is one pass over the <span class="math inline">\(782\)</span> mini-batches of Section 4.1, and for each batch the loop performs the forward pass, computes the loss, clears the old gradients (<code>zero_grad</code>), computes <span class="math inline">\(\partial\mathcal L/\partial\boldsymbol\theta\)</span> (<code>backward</code>) and updates the parameters (<code>step</code>). The loss of every mini-batch is stored, since it is cheap and shows the noise of stochastic gradient descent, and after every epoch the loss and accuracy on the full training and validation sets are computed with <code>evaluate_regression</code>.</p>
 <p><code>model.train()</code> / <code>model.eval()</code> switch layers (such as dropout, which randomly switches off nodes during training) between training and evaluation behaviour. This network has no such layers, but the calls belong to the standard loop.</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:53:49.293198Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:53:49.292997Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:53:58.401180Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:53:58.400766Z&quot;}" data-execution_count="19">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:50:38.663223Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:50:38.662841Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:50:53.932297Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:50:53.931280Z&quot;}" data-execution_count="19">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">0</span>)</span>
@@ -1125,14 +1125,14 @@ output for 5 images, shape (5, 1) : [0.49288123846054077, 0.5091497898101807, 0.
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>epoch 20:  MSE train 0.0062  val 0.0091   accuracy train 0.677  val 0.638
-training took 9 s</code></pre>
+training took 14 s</code></pre>
 </div>
 </div>
 </section>
 <section id="learning-curves" class="level3">
 <h3 class="anchored" data-anchor-id="learning-curves">5.5 Learning curves</h3>
 <p>The left panel shows the MSE: the thin line is the loss of the individual mini-batches (x-axis converted to epochs: batch <span class="math inline">\(k\)</span> is at epoch <span class="math inline">\(k/782\)</span>), and the markers are the losses on the full training and validation sets after every epoch. The right panel shows the accuracies.</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:53:58.402989Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:53:58.402699Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:53:58.789327Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:53:58.788788Z&quot;}" data-execution_count="20">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:50:53.936028Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:50:53.935593Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:50:54.659121Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:50:54.658285Z&quot;}" data-execution_count="20">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_history(hist, loss_name, title):</span>
@@ -1162,8 +1162,8 @@ training took 9 s</code></pre>
 <section id="confusion-matrices-box-2.11" class="level3">
 <h3 class="anchored" data-anchor-id="confusion-matrices-box-2.11">5.6 Confusion matrices (Box 2.11)</h3>
 <p>The <strong>confusion matrix</strong> <span class="math inline">\(C\)</span> counts, for every pair (true digit <span class="math inline">\(i\)</span>, predicted digit <span class="math inline">\(j\)</span>), how many images of digit <span class="math inline">\(i\)</span> (in a given set) were predicted as <span class="math inline">\(j\)</span>. We show it for all three sets: training (the data the parameters were fitted to), validation (used during training to monitor the model) and test (used only now). Each row is normalised to sum to one, so <span class="math inline">\(C_{ij}\)</span> is the fraction of images of digit <span class="math inline">\(i\)</span> that were classified as <span class="math inline">\(j\)</span>; the diagonal element <span class="math inline">\(C_{ii}\)</span> is the fraction of digit <span class="math inline">\(i\)</span> recognised correctly. The mean of the diagonal is the accuracy averaged over classes (Box 2.11); since the MNIST classes are nearly balanced it is almost equal to the plain accuracy.</p>
-<p>The matrix is built with one <code>bincount</code>: the pair <span class="math inline">\((i, j)\)</span> is encoded as the single number <span class="math inline">\(10i + j \in\{0,\dots,99\}\)</span>, the occurrences are counted and arranged as a <span class="math inline">\(10\times10\)</span> matrix.</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:53:58.791041Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:53:58.790820Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:53:59.204535Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:53:59.204023Z&quot;}" data-execution_count="21">
+<p>The matrix is built with one <code>bincount</code>: the pair <span class="math inline">\((i, j)\)</span> is encoded as the single number <span class="math display">\[n = 10\,i + j \in\{0,\dots,99\}, \tag{10}\]</span> the occurrences are counted and arranged as a <span class="math inline">\(10\times10\)</span> matrix.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:50:54.661806Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:50:54.661512Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:50:55.521528Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:50:55.520463Z&quot;}" data-execution_count="21">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> confusion_matrix(y_true, y_pred, k<span class="op">=</span><span class="dv">10</span>):</span>
@@ -1211,7 +1211,7 @@ training took 9 s</code></pre>
 </div>
 <p>The test accuracy is about <span class="math inline">\(65\%\)</span>, higher than the <span class="math inline">\(56\%\)</span> reported in the chapter, which uses full-batch gradient descent instead of Adam with mini-batches (see Exercise 5). The three matrices look almost the same. Training and test accuracies differ by only about 2–3 points, so overfitting is mild; validation and test agree, so the validation set, which we watched during training, was a reliable estimate of the performance on new data. The model is limited by the task as posed. The confusion matrix shows the characteristic pattern of the regression: the errors form <strong>bands next to the diagonal</strong>. A <span class="math inline">\(5\)</span> is predicted as <span class="math inline">\(4\)</span> or <span class="math inline">\(6\)</span> in almost half of the cases, an <span class="math inline">\(8\)</span> as <span class="math inline">\(7\)</span> or <span class="math inline">\(9\)</span> and a <span class="math inline">\(2\)</span> as <span class="math inline">\(1\)</span> or <span class="math inline">\(3\)</span> in more than a third. Confusions between digits of similar <em>shape</em> but distant <em>value</em> (such as <span class="math inline">\(4\)</span> and <span class="math inline">\(9\)</span>) do not appear as such.</p>
 <p>The continuous output shows why. For every true digit we plot the distribution of <span class="math inline">\(10\,\bar y\)</span> over the test images (a <em>violin plot</em>: the width is the histogram of the values). The dashed horizontal lines are the rounding boundaries <span class="math inline">\(k\pm 0.5\)</span>; an image is classified correctly when its value lies in the band around its own digit.</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:53:59.206115Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:53:59.205966Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:53:59.335887Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:53:59.335554Z&quot;}" data-execution_count="22">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:50:55.524042Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:50:55.523814Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:50:55.778042Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:50:55.777330Z&quot;}" data-execution_count="22">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="fl">4.5</span>))</span>
@@ -1242,10 +1242,10 @@ training took 9 s</code></pre>
 <h2 class="anchored" data-anchor-id="ten-outputs-softmax-and-categorical-cross-entropy">6. Ten outputs, softmax and categorical cross-entropy</h2>
 <section id="one-hot-encoding-softmax-and-the-cross-entropy" class="level3">
 <h3 class="anchored" data-anchor-id="one-hot-encoding-softmax-and-the-cross-entropy">6.1 One-hot encoding, softmax and the cross-entropy</h3>
-<p>In model B the network returns, instead of one number, <span class="math inline">\(K = 10\)</span> numbers <span class="math inline">\(z_0,\dots,z_9\)</span> (the <em>logits</em>), one per class. The <strong>softmax</strong> <span class="math display">\[q_k = \mathrm{SoftMax}(\mathbf z)_k = \frac{e^{z_k}}{\sum_{j=0}^{9} e^{z_j}}\]</span> turns them into a probability distribution <span class="math inline">\(\mathbf q\)</span>: <span class="math inline">\(q_k &gt; 0\)</span> and <span class="math inline">\(\sum_k q_k = 1\)</span>. <span class="math inline">\(q_k\)</span> is read as the probability, according to the network, that the image shows digit <span class="math inline">\(k\)</span>. The predicted digit is the most probable one, <span class="math inline">\(\arg\max_k q_k\)</span>.</p>
-<p>The label <span class="math inline">\(y\)</span> is written as a <strong>one-hot</strong> vector <span class="math inline">\(\mathbf p\)</span> with <span class="math inline">\(p_k = \delta_{k,y}\)</span> (Box 2.7): the “true” distribution, all probability on the correct class. Two distributions are compared with the Kullback–Leibler divergence (Box 2.8), <span class="math display">\[\mathrm{KL}(\mathbf p\,\|\,\mathbf q) = \sum_k p_k\log\frac{p_k}{q_k} = \underbrace{\sum_k p_k\log p_k}_{-\,\mathcal H(\mathbf p)\ \text{(no }\boldsymbol\theta\text{)}}\;\underbrace{-\sum_k p_k\log q_k}_{\mathcal L_{\rm ce}} .\]</span> (Here and below <span class="math inline">\(\log\)</span> denotes the natural logarithm.) Only the second term depends on the network, so the loss is the <strong>categorical cross-entropy</strong>, averaged over the batch of <span class="math inline">\(B\)</span> images. For a one-hot <span class="math inline">\(\mathbf p\)</span> only the term of the true class survives: <span class="math display">\[\mathcal L_{\rm ce} = -\frac1B\sum_{i=1}^{B}\sum_{k=0}^{9} p_{ik}\log q_{ik} = -\frac1B\sum_{i=1}^{B}\log q_{i,y_i} .\]</span> It is <span class="math inline">\(0\)</span> if the network gives probability <span class="math inline">\(1\)</span> to the true class and grows without bound as that probability goes to <span class="math inline">\(0\)</span>.</p>
-<p>In PyTorch, <code>nn.CrossEntropyLoss</code> takes the <strong>logits</strong> of shape <code>(B, 10)</code> and the labels as integers of shape <code>(B,)</code>. It applies the softmax itself (in a numerically stable form, via <span class="math inline">\(\log\sum_j e^{z_j}\)</span>), so the model must <strong>not</strong> end with a softmax layer. On random logits the formula above, written out with one-hot vectors, gives the same number.</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:53:59.337268Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:53:59.337078Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:53:59.351918Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:53:59.351653Z&quot;}" data-execution_count="23">
+<p>In model B the network returns, instead of one number, ten numbers <span class="math inline">\(z_0,\dots,z_9\)</span> (the <em>logits</em>), one per class. The <strong>softmax</strong> <span class="math display">\[q_k = \mathrm{SoftMax}(\mathbf z)_k = \frac{e^{z_k}}{\sum_{j=0}^{9} e^{z_j}} \tag{11}\]</span> turns them into a probability distribution <span class="math inline">\(\mathbf q\)</span>, <span class="math display">\[q_k &gt; 0, \qquad \sum_k q_k = 1 . \tag{12}\]</span> <span class="math inline">\(q_k\)</span> is read as the probability, according to the network, that the image shows digit <span class="math inline">\(k\)</span>. The predicted digit is the most probable one, <span class="math display">\[\hat y = \arg\max_k q_k . \tag{13}\]</span></p>
+<p>The label <span class="math inline">\(y\)</span> is written as a <strong>one-hot</strong> vector <span class="math inline">\(\mathbf p\)</span> (Box 2.7), <span class="math display">\[p_k = \delta_{k,y} , \tag{14}\]</span> which is the “true” distribution, with all probability on the correct class. Two distributions are compared with the Kullback–Leibler divergence (Box 2.8), <span class="math display">\[\mathrm{KL}(\mathbf p\,\|\,\mathbf q) = \sum_k p_k\log\frac{p_k}{q_k} = \underbrace{\sum_k p_k\log p_k}_{-\,\mathcal H(\mathbf p)\ \text{(no }\boldsymbol\theta\text{)}}\;\underbrace{-\sum_k p_k\log q_k}_{\mathcal L_{\rm ce}} . \tag{15}\]</span> (Here and below <span class="math inline">\(\log\)</span> denotes the natural logarithm.) Only the second term depends on the network, so the loss is the <strong>categorical cross-entropy</strong>, averaged over the batch of <span class="math inline">\(B\)</span> images. For a one-hot <span class="math inline">\(\mathbf p\)</span> only the term of the true class survives: <span class="math display">\[\mathcal L_{\rm ce} = -\frac1B\sum_{i=1}^{B}\sum_{k=0}^{9} p_{ik}\log q_{ik} = -\frac1B\sum_{i=1}^{B}\log q_{i,y_i} . \tag{16}\]</span> It is <span class="math inline">\(0\)</span> if the network gives probability <span class="math inline">\(1\)</span> to the true class and grows without bound as that probability goes to <span class="math inline">\(0\)</span>.</p>
+<p>In PyTorch, <code>nn.CrossEntropyLoss</code> takes the <strong>logits</strong> of shape <code>(B, 10)</code> and the labels as integers of shape <code>(B,)</code>. It applies the softmax itself (in a numerically stable form, via the logarithm of the denominator of equation (11)), so the model must <strong>not</strong> end with a softmax layer. On random logits equation (16), written out with one-hot vectors, gives the same number.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:50:55.780870Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:50:55.780619Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:50:55.800391Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:50:55.799544Z&quot;}" data-execution_count="23">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">0</span>)</span>
@@ -1271,14 +1271,14 @@ one-hot p:
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]], dtype=torch.int32)
 row sums of q: [0.9999999403953552, 1.0, 1.0, 1.0000001192092896, 0.9999998807907104]
-cross-entropy by hand: 3.534212   nn.CrossEntropyLoss: 3.534213</code></pre>
+cross-entropy from the formula: 3.534212   nn.CrossEntropyLoss: 3.534213</code></pre>
 </div>
 </div>
 </section>
 <section id="ten-output-network" class="level3">
 <h3 class="anchored" data-anchor-id="ten-output-network">6.2 Ten-output network</h3>
 <p>The hidden layer is exactly that of model A. Only the output layer changes: <span class="math inline">\(10\)</span> nodes instead of <span class="math inline">\(1\)</span>, and no sigmoid (the softmax is inside the loss).</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:53:59.352958Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:53:59.352817Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:53:59.356185Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:53:59.355946Z&quot;}" data-execution_count="24">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:50:55.802354Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:50:55.802070Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:50:55.808635Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:50:55.807849Z&quot;}" data-execution_count="24">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_classification_model():</span>
@@ -1299,11 +1299,11 @@ cross-entropy by hand: 3.534212   nn.CrossEntropyLoss: 3.534213</code></pre>
   (1): Sigmoid()
   (2): Linear(in_features=21, out_features=10, bias=True)
 )
-parameters: 16705   (Part A: 16507 ;  difference 9 * (N_HIDDEN + 1) = 198 )</code></pre>
+parameters: 16705   (model A: 16507 ;  difference 9 * (N_HIDDEN + 1) = 198 )</code></pre>
 </div>
 </div>
-<p>An untrained network gives roughly equal probabilities <span class="math inline">\(q_k\approx 1/10\)</span> to all classes, so the cross-entropy should start near <span class="math inline">\(-\log(1/10) = \log 10 \approx 2.30\)</span>:</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:53:59.357262Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:53:59.357152Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:53:59.362254Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:53:59.361960Z&quot;}" data-execution_count="25">
+<p>An untrained network gives roughly equal probabilities, about 1/10, to all classes, so the cross-entropy should start near <span class="math display">\[\mathcal L_{\rm ce} \approx -\log\tfrac{1}{10} = \log 10 \approx 2.30 . \tag{17}\]</span></p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:50:55.810700Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:50:55.810471Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:50:55.862805Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:50:55.861891Z&quot;}" data-execution_count="25">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>ce <span class="op">=</span> nn.CrossEntropyLoss()</span>
@@ -1327,7 +1327,7 @@ parameters: 16705   (Part A: 16507 ;  difference 9 * (N_HIDDEN + 1) = 198 )</cod
 <section id="training-loop-with-the-cross-entropy" class="level3">
 <h3 class="anchored" data-anchor-id="training-loop-with-the-cross-entropy">6.3 Training loop with the cross-entropy</h3>
 <p>The loop is the same as for model A with three differences: the batches come from a <code>DataLoader</code> as in Section 4.2, the target is the integer label itself, and the loss is the cross-entropy of the <span class="math inline">\(10\)</span> logits. Optimiser, learning rate, batch size and number of epochs are the same as for model A.</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:53:59.363495Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:53:59.363341Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:54:12.342480Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:54:12.342023Z&quot;}" data-execution_count="26">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:50:55.865692Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:50:55.865305Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:51:16.513271Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:51:16.512097Z&quot;}" data-execution_count="26">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">0</span>)</span>
@@ -1390,10 +1390,10 @@ parameters: 16705   (Part A: 16507 ;  difference 9 * (N_HIDDEN + 1) = 198 )</cod
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>epoch 20:  CE train 0.1065  val 0.1815   accuracy train 0.970  val 0.946
-training took 13 s</code></pre>
+training took 21 s</code></pre>
 </div>
 </div>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:54:12.344149Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:54:12.343927Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:54:12.641396Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:54:12.640935Z&quot;}" data-execution_count="27">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:51:16.516073Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:51:16.515248Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:51:16.926218Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:51:16.925506Z&quot;}" data-execution_count="27">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb70"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>plot_history(hist_ce, <span class="st">"cross-entropy loss"</span>, <span class="st">"Ten outputs, softmax and cross-entropy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1403,7 +1403,7 @@ training took 13 s</code></pre>
 </div>
 </div>
 <p>The same network, the same optimiser, the same data: after a single epoch the validation accuracy is already about <span class="math inline">\(90\%\)</span>, far above anything the regression reached in twenty epochs. It then rises slowly to about <span class="math inline">\(94.6\%\)</span>. Training and validation curves stay close (training accuracy <span class="math inline">\(97\%\)</span>), so this small network barely overfits.</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:54:12.643061Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:54:12.642849Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:54:13.033418Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:54:13.033015Z&quot;}" data-execution_count="28">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:51:16.928089Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:51:16.927893Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:51:17.624661Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:51:17.623803Z&quot;}" data-execution_count="28">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb71"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():</span>
@@ -1432,8 +1432,8 @@ training took 13 s</code></pre>
 <p><img src="lab-009-mnist_files/figure-html/cell-29-output-2.png" class="img-fluid"></p>
 </div>
 </div>
-<p>The test accuracy is about <span class="math inline">\(95\%\)</span> (the chapter: <span class="math inline">\(95\%\)</span>), with about <span class="math inline">\(500\)</span> misclassified images instead of about <span class="math inline">\(3\,500\)</span>. The diagonal is above <span class="math inline">\(0.9\)</span> for every digit, on all three sets. The few off-diagonal entries no longer follow the number line; they follow the shapes (<span class="math inline">\(4\to9\)</span>, <span class="math inline">\(5\to3\)</span>, <span class="math inline">\(7\to2\)</span> and <span class="math inline">\(7\to9\)</span>).</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:54:13.035056Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:54:13.034861Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:54:13.863029Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:54:13.862605Z&quot;}" data-execution_count="29">
+<p>The test accuracy is about <span class="math inline">\(95\%\)</span> (the chapter: <span class="math inline">\(95\%\)</span>), with about <span class="math inline">\(500\)</span> misclassified images instead of about <span class="math inline">\(3\,500\)</span>. The diagonal is above <span class="math inline">\(0.9\)</span> for every digit, on all three sets. The few off-diagonal entries no longer follow the number line; they follow the shapes (4 read as 9, 5 as 3, 7 as 2 and 7 as 9).</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:51:17.626872Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:51:17.626665Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:51:18.983289Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:51:18.982464Z&quot;}" data-execution_count="29">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb73"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>correct <span class="op">=</span> torch.nonzero(pred_ce_te <span class="op">==</span> y_te)[:, <span class="dv">0</span>][:<span class="dv">5</span>]</span>
@@ -1465,7 +1465,7 @@ training took 13 s</code></pre>
 <section id="comparison-of-the-two-models" class="level3">
 <h3 class="anchored" data-anchor-id="comparison-of-the-two-models">7.1 Comparison of the two models</h3>
 <p>Both networks have the same hidden layer, the same optimiser, learning rate, batch size and number of epochs. They differ only in the output layer and the loss. The figure shows the training and validation accuracies of both models against the epoch next to their test confusion matrices, and the printed table gives the test accuracy and the number of misclassified test images.</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:54:13.864674Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:54:13.864526Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:54:14.221181Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:54:14.220836Z&quot;}" data-execution_count="30">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:51:18.985511Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:51:18.985234Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:51:19.567074Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:51:19.566001Z&quot;}" data-execution_count="30">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb74"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>epochs <span class="op">=</span> np.arange(<span class="dv">1</span>, n_epochs <span class="op">+</span> <span class="dv">1</span>)</span>
@@ -1493,7 +1493,7 @@ misclassified test images               3480                516</code></pre>
 </div>
 </div>
 <p>This is the central result of the notebook. <strong>With the same hidden layer, data and training, the single-output regression reaches about <span class="math inline">\(65\%\)</span> test accuracy and the ten-output cross-entropy network about <span class="math inline">\(95\%\)</span></strong>, with about seven times fewer errors. The difference comes from how the task is posed, that is, from the output layer and the loss together; Exercise 2 shows that the ten outputs account for most of the gain. Model B is better in every epoch: after one epoch it is already far beyond the best value model A ever reaches. The confusion matrices show two different kinds of errors: bands along the diagonal (A: neighbouring <em>values</em>) versus rare, scattered errors (B: similar <em>shapes</em>).</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:54:14.222829Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:54:14.222653Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:54:14.459708Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:54:14.459334Z&quot;}" data-execution_count="31">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:51:19.569473Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:51:19.569218Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:51:19.941698Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:51:19.940702Z&quot;}" data-execution_count="31">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb76"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>top2 <span class="op">=</span> q_te.topk(<span class="dv">2</span>, dim<span class="op">=</span><span class="dv">1</span>)                                <span class="co"># two largest probabilities and their digits</span></span>
@@ -1525,15 +1525,15 @@ misclassified test images               3480                516</code></pre>
 mean |A's output - midpoint of the two candidates|: 1.42</code></pre>
 </div>
 </div>
-<p>In these hesitant cases the regression output tends to land <strong>between</strong> the two candidate digits: for about <span class="math inline">\(60\%\)</span> of the images it is more than <span class="math inline">\(1\)</span> away from both of them. For example, an <span class="math inline">\(8\)</span> that model B reads as <span class="math inline">\(8\)</span> (<span class="math inline">\(0.53\)</span>) or <span class="math inline">\(2\)</span> (<span class="math inline">\(0.44\)</span>) gets <span class="math inline">\(10\bar y\approx5.9\)</span> from model A, which rounds to <span class="math inline">\(6\)</span>, a digit nobody would read in it. This is exactly what the MSE asks for: when the network cannot tell whether the target is <span class="math inline">\(0.2\)</span> or <span class="math inline">\(0.8\)</span>, the value minimising the expected squared error lies in between.</p>
+<p>In these hesitant cases the regression output tends to land <strong>between</strong> the two candidate digits: for about <span class="math inline">\(60\%\)</span> of the images it is more than <span class="math inline">\(1\)</span> away from both of them. For example, an <span class="math inline">\(8\)</span> that model B reads as <span class="math inline">\(8\)</span> (<span class="math inline">\(0.53\)</span>) or <span class="math inline">\(2\)</span> (<span class="math inline">\(0.44\)</span>) gets an output <span class="math inline">\(10\bar y\)</span> of about 5.9 from model A, which rounds to <span class="math inline">\(6\)</span>, a digit nobody would read in it. This is exactly what the MSE asks for: when the network cannot tell whether the target is <span class="math inline">\(0.2\)</span> or <span class="math inline">\(0.8\)</span>, the value minimising the expected squared error lies in between.</p>
 <p>The single-output regression must fit a function that jumps between the values <span class="math inline">\(0, 0.1, \dots, 0.9\)</span> in an arbitrary order of shapes; the rounding then turns every small error into a neighbouring digit, and every hesitation into an average. The ten-output network treats the classes as unordered categories and returns a probability for each.</p>
 </section>
 <section id="architectures-of-models-a-and-b" class="level3">
 <h3 class="anchored" data-anchor-id="architectures-of-models-a-and-b">7.2 Architectures of models A and B</h3>
 <p>The comparison rests on the fact that the two networks differ only in their output layer. Drawings of both networks make this visible at a glance, and a table of the layers shows where the parameters sit.</p>
-<p>The function below is the drawing function used for network diagrams throughout the course. It draws a dense network as columns of circles, one column per layer and one circle per neuron, and joins every circle with every circle of the next column by a thin grey line, one line per weight. The height of a column grows with the logarithm of the layer size, so that a wide layer looks taller than a narrow one and a network that compresses its input visibly narrows. A layer with more neurons than <code>max_nodes</code> is drawn with its first and last few neurons and a vertical ellipsis in between; its true size is always written under the column. The colours follow one convention in all notebooks: grey for the data at the input and at the output, blue for hidden layers, orange for a latent (bottleneck) layer and green for an additional input such as a class label.</p>
+<p><code>draw_network</code> is the drawing function used for network diagrams throughout the course. It draws a dense network as columns of circles, one column per layer and one circle per neuron, and joins every circle with every circle of the next column by a thin grey line, one line per weight. The height of a column grows with the logarithm of the layer size, so that a wide layer looks taller than a narrow one and a network that compresses its input visibly narrows. A layer with more neurons than <code>max_nodes</code> is drawn with its first and last few neurons and a vertical ellipsis in between; its true size is always written under the column. The colours follow one convention in all notebooks: grey for the data at the input and at the output, blue for hidden layers, orange for a latent (bottleneck) layer and green for an additional input such as a class label.</p>
 <p>To draw your own network, pass the list of layer sizes from the input to the output, for example <code>draw_network([784, 128, 64, 10])</code>, and, if you wish, a list of names (<code>labels</code>) and of colours (<code>colors</code>) with one entry per column. An entry of <code>layer_sizes</code> can itself be a list, such as <code>[16, 16]</code>, which stacks two blocks in one column; <code>groups</code> draws a bracket with a name above a range of columns, and <code>no_input</code> lists blocks that receive no edges from the previous column. The function returns the matplotlib axes, so the figure can be changed further or saved with <code>ax.figure.savefig(...)</code>. It needs only NumPy and matplotlib and therefore also runs in Colab. The comments in the code explain each step (node positions, the truncation of large layers, the edges, the labels and the brackets), so that the function can be adapted to other diagrams.</p>
-<div class="cell">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:51:19.943831Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:51:19.943635Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:51:19.961503Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:51:19.960546Z&quot;}" data-execution_count="32">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb79"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -1560,7 +1560,7 @@ mean |A's output - midpoint of the two candidates|: 1.42</code></pre>
 <span id="cb79-22"><a href="#cb79-22" aria-hidden="true" tabindex="-1"></a><span class="co">        and the log-variance of a variational autoencoder, or [784, 10] for an</span></span>
 <span id="cb79-23"><a href="#cb79-23" aria-hidden="true" tabindex="-1"></a><span class="co">        image together with a one-hot condition).</span></span>
 <span id="cb79-24"><a href="#cb79-24" aria-hidden="true" tabindex="-1"></a><span class="co">    labels : list, optional</span></span>
-<span id="cb79-25"><a href="#cb79-25" aria-hidden="true" tabindex="-1"></a><span class="co">        Names written under each column next to the true layer size. An entry</span></span>
+<span id="cb79-25"><a href="#cb79-25" aria-hidden="true" tabindex="-1"></a><span class="co">        Names shown under each column next to the true layer size. An entry</span></span>
 <span id="cb79-26"><a href="#cb79-26" aria-hidden="true" tabindex="-1"></a><span class="co">        may be None (size only), a string, or, for a stacked column, a list</span></span>
 <span id="cb79-27"><a href="#cb79-27" aria-hidden="true" tabindex="-1"></a><span class="co">        with one string per block.</span></span>
 <span id="cb79-28"><a href="#cb79-28" aria-hidden="true" tabindex="-1"></a><span class="co">    colors : list, optional</span></span>
@@ -1570,7 +1570,7 @@ mean |A's output - midpoint of the two candidates|: 1.42</code></pre>
 <span id="cb79-32"><a href="#cb79-32" aria-hidden="true" tabindex="-1"></a><span class="co">    max_nodes : int</span></span>
 <span id="cb79-33"><a href="#cb79-33" aria-hidden="true" tabindex="-1"></a><span class="co">        Largest number of circles drawn for one block. A larger block is shown</span></span>
 <span id="cb79-34"><a href="#cb79-34" aria-hidden="true" tabindex="-1"></a><span class="co">        by its first and last few nodes with a vertical ellipsis in between;</span></span>
-<span id="cb79-35"><a href="#cb79-35" aria-hidden="true" tabindex="-1"></a><span class="co">        the true size is always written in the label.</span></span>
+<span id="cb79-35"><a href="#cb79-35" aria-hidden="true" tabindex="-1"></a><span class="co">        the true size is always shown in the label.</span></span>
 <span id="cb79-36"><a href="#cb79-36" aria-hidden="true" tabindex="-1"></a><span class="co">    groups : list of (text, first_column, last_column), optional</span></span>
 <span id="cb79-37"><a href="#cb79-37" aria-hidden="true" tabindex="-1"></a><span class="co">        Brackets drawn above a range of columns, e.g. ("encoder", 0, 2).</span></span>
 <span id="cb79-38"><a href="#cb79-38" aria-hidden="true" tabindex="-1"></a><span class="co">    no_input : list of (column, block), optional</span></span>
@@ -1697,21 +1697,34 @@ mean |A's output - midpoint of the two candidates|: 1.42</code></pre>
 <span id="cb79-159"><a href="#cb79-159" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ax</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>Both networks start with the 784 standardised pixel values and the hidden layer of <span class="math inline">\(N^{(1)} = 21\)</span> sigmoid nodes (drawn with the ellipsis, since 21 is more than ten). Model A ends in one sigmoid output, the value <span class="math inline">\(\bar y\)</span> that is multiplied by ten and rounded; model B ends in ten logits, one per digit, which the softmax inside the loss turns into probabilities.</p>
-<div class="cell">
+<p>Both networks start with the 784 standardised pixel values and the hidden layer of 21 sigmoid nodes (drawn with the ellipsis, since 21 is more than ten). Model A ends in one sigmoid output, the value <span class="math inline">\(\bar y\)</span> that is multiplied by ten and rounded; model B ends in ten logits, one per digit, which the softmax inside the loss turns into probabilities.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:51:19.963597Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:51:19.963369Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:51:20.623601Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:51:20.622382Z&quot;}" data-execution_count="33">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="fl">5.5</span>))</span>
-<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>draw_network([<span class="dv">784</span>, N_HIDDEN, <span class="dv">1</span>], labels<span class="op">=</span>[<span class="st">"input"</span>, <span class="st">"hidden, sigmoid"</span>, <span class="st">"output, sigmoid"</span>], ax<span class="op">=</span>axes[<span class="dv">0</span>])</span>
-<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">"model A: regression"</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
-<span id="cb80-4"><a href="#cb80-4" aria-hidden="true" tabindex="-1"></a>draw_network([<span class="dv">784</span>, N_HIDDEN, <span class="dv">10</span>], labels<span class="op">=</span>[<span class="st">"input"</span>, <span class="st">"hidden, sigmoid"</span>, <span class="st">"logits"</span>], ax<span class="op">=</span>axes[<span class="dv">1</span>])</span>
-<span id="cb80-5"><a href="#cb80-5" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">"model B: cross-entropy"</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
-<span id="cb80-6"><a href="#cb80-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> linear_sizes(model):</span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Layer sizes [n_0, n_1, ..., n_L] read from the nn.Linear layers of a model, in the order of definition."""</span></span>
+<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a>    linear <span class="op">=</span> [m <span class="cf">for</span> m <span class="kw">in</span> model.modules() <span class="cf">if</span> <span class="bu">isinstance</span>(m, nn.Linear)]</span>
+<span id="cb80-4"><a href="#cb80-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [linear[<span class="dv">0</span>].in_features] <span class="op">+</span> [m.out_features <span class="cf">for</span> m <span class="kw">in</span> linear]</span>
+<span id="cb80-5"><a href="#cb80-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb80-6"><a href="#cb80-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> dense_parameter_count(sizes):</span>
+<span id="cb80-7"><a href="#cb80-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Number of weights and biases of a dense network with these layer sizes."""</span></span>
+<span id="cb80-8"><a href="#cb80-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">sum</span>(n_out <span class="op">*</span> (n_in <span class="op">+</span> <span class="dv">1</span>) <span class="cf">for</span> n_in, n_out <span class="kw">in</span> <span class="bu">zip</span>(sizes[:<span class="op">-</span><span class="dv">1</span>], sizes[<span class="dv">1</span>:]))</span>
+<span id="cb80-9"><a href="#cb80-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb80-10"><a href="#cb80-10" aria-hidden="true" tabindex="-1"></a>sizes_A, sizes_B <span class="op">=</span> linear_sizes(model_reg), linear_sizes(model_ce)    <span class="co"># [784, 21, 1] and [784, 21, 10]</span></span>
+<span id="cb80-11"><a href="#cb80-11" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="fl">5.5</span>))</span>
+<span id="cb80-12"><a href="#cb80-12" aria-hidden="true" tabindex="-1"></a>draw_network(sizes_A, labels<span class="op">=</span>[<span class="st">"input"</span>, <span class="st">"hidden, sigmoid"</span>, <span class="st">"output, sigmoid"</span>], ax<span class="op">=</span>axes[<span class="dv">0</span>])</span>
+<span id="cb80-13"><a href="#cb80-13" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">"model A: regression"</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb80-14"><a href="#cb80-14" aria-hidden="true" tabindex="-1"></a>draw_network(sizes_B, labels<span class="op">=</span>[<span class="st">"input"</span>, <span class="st">"hidden, sigmoid"</span>, <span class="st">"logits"</span>], ax<span class="op">=</span>axes[<span class="dv">1</span>])</span>
+<span id="cb80-15"><a href="#cb80-15" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">"model B: cross-entropy"</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb80-16"><a href="#cb80-16" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output cell-output-display">
+<p><img src="lab-009-mnist_files/figure-html/cell-34-output-1.png" class="img-fluid"></p>
 </div>
-<p>The library <code>torchinfo</code> prints a table of the layers. <code>torchinfo.summary(model, input_size=...)</code> passes a batch of zeros of the given shape through the model and records, for every layer, the shape of its output and the number of its parameters; the lines at the bottom give the totals and an estimate of the memory needed. The first number of <code>input_size</code> is the batch size: it appears as the first dimension of every output shape and does not change the parameter counts. The library <code>torchview</code> passes the same kind of batch through the model and draws the layers as a graph in which every box is one layer with the shapes of its input and output; with <code>expand_nested=True</code> layers that sit inside a container are drawn inside a frame. The graph is rendered by the program Graphviz to a PNG (Portable Network Graphics) file in the folder <code>figures</code>.</p>
+</div>
+<p>The library <code>torchinfo</code> prints a table of the layers. <code>torchinfo.summary(model, input_size=...)</code> passes a batch of zeros of the given shape through the model and records, for every layer, the shape of its output and the number of its parameters; the lines at the bottom give the totals and an estimate of the memory needed. The first number of <code>input_size</code> is the batch size: it appears as the first dimension of every output shape and does not change the parameter counts. The library <code>torchview</code> passes the same kind of batch through the model and draws the layers as a graph in which every box is one layer with the shapes of its input and output; with <code>expand_nested=True</code> a submodule that itself contains layers, such as an <code>nn.Sequential</code> block called inside a larger model, is drawn as a frame around its layers. The graph is rendered by the program Graphviz to a PNG (Portable Network Graphics) file in the folder <code>figures</code>.</p>
 <p>The three views serve different purposes. The neuron-level drawing explains what a dense layer is but is practical only for small dense networks. The <code>torchinfo</code> table is the quickest check of shapes and parameter counts and the first thing to print when a model raises a shape error. The <code>torchview</code> graph shows how the layers are connected, which matters as soon as the data flow is not a single chain, for example with skip connections or several inputs.</p>
-<div class="cell">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:51:20.626144Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:51:20.625907Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:51:20.664269Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:51:20.663373Z&quot;}" data-execution_count="34">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb81"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> importlib.util, os, subprocess, sys</span>
@@ -1725,19 +1738,68 @@ mean |A's output - midpoint of the two candidates|: 1.42</code></pre>
 <span id="cb81-9"><a href="#cb81-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, m <span class="kw">in</span> [(<span class="st">"model A"</span>, model_reg), (<span class="st">"model B"</span>, model_ce)]:</span>
 <span id="cb81-10"><a href="#cb81-10" aria-hidden="true" tabindex="-1"></a>    info <span class="op">=</span> torchinfo.summary(m, input_size<span class="op">=</span>(<span class="dv">64</span>, <span class="dv">784</span>), verbose<span class="op">=</span><span class="dv">0</span>)   <span class="co"># one mini-batch of 64 image vectors</span></span>
 <span id="cb81-11"><a href="#cb81-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(name)<span class="op">;</span> <span class="bu">print</span>(info)</span>
-<span id="cb81-12"><a href="#cb81-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"parameters: torchinfo"</span>, info.total_params, <span class="st">"  our count"</span>, <span class="bu">sum</span>(p.numel() <span class="cf">for</span> p <span class="kw">in</span> m.parameters()), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb81-12"><a href="#cb81-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"parameters: torchinfo"</span>, info.total_params, <span class="st">"  our count"</span>, <span class="bu">sum</span>(p.numel() <span class="cf">for</span> p <span class="kw">in</span> m.parameters()), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb81-13"><a href="#cb81-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> dense_parameter_count(linear_sizes(m)) <span class="op">==</span> info.total_params   <span class="co"># the drawings above agree with the library</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output cell-output-stdout">
+<pre><code>model A
+==========================================================================================
+Layer (type:depth-idx)                   Output Shape              Param #
+==========================================================================================
+Sequential                               [64, 1]                   --
+├─Linear: 1-1                            [64, 21]                  16,485
+├─Sigmoid: 1-2                           [64, 21]                  --
+├─Linear: 1-3                            [64, 1]                   22
+├─Sigmoid: 1-4                           [64, 1]                   --
+==========================================================================================
+Total params: 16,507
+Trainable params: 16,507
+Non-trainable params: 0
+Total mult-adds (M): 1.06
+==========================================================================================
+Input size (MB): 0.20
+Forward/backward pass size (MB): 0.01
+Params size (MB): 0.07
+Estimated Total Size (MB): 0.28
+==========================================================================================
+parameters: torchinfo 16507   our count 16507 
+
+model B
+==========================================================================================
+Layer (type:depth-idx)                   Output Shape              Param #
+==========================================================================================
+Sequential                               [64, 10]                  --
+├─Linear: 1-1                            [64, 21]                  16,485
+├─Sigmoid: 1-2                           [64, 21]                  --
+├─Linear: 1-3                            [64, 10]                  220
+==========================================================================================
+Total params: 16,705
+Trainable params: 16,705
+Non-trainable params: 0
+Total mult-adds (M): 1.07
+==========================================================================================
+Input size (MB): 0.20
+Forward/backward pass size (MB): 0.02
+Params size (MB): 0.07
+Estimated Total Size (MB): 0.28
+==========================================================================================
+parameters: torchinfo 16705   our count 16705 
+</code></pre>
 </div>
-<div class="cell">
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:51:20.668271Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:51:20.667865Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:51:20.722738Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:51:20.722152Z&quot;}" data-execution_count="35">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">"figures"</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb82-2"><a href="#cb82-2" aria-hidden="true" tabindex="-1"></a>graph <span class="op">=</span> draw_graph(model_ce, input_size<span class="op">=</span>(<span class="dv">64</span>, <span class="dv">784</span>), expand_nested<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb82-3"><a href="#cb82-3" aria-hidden="true" tabindex="-1"></a>png <span class="op">=</span> graph.visual_graph.render(<span class="st">"figures/lab009_model_B_graph"</span>, <span class="bu">format</span><span class="op">=</span><span class="st">"png"</span>, cleanup<span class="op">=</span><span class="va">True</span>)   <span class="co"># Graphviz writes the PNG file</span></span>
-<span id="cb82-4"><a href="#cb82-4" aria-hidden="true" tabindex="-1"></a>display(Image(png))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">"figures"</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>graph <span class="op">=</span> draw_graph(model_ce, input_size<span class="op">=</span>(<span class="dv">64</span>, <span class="dv">784</span>), expand_nested<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a>png <span class="op">=</span> graph.visual_graph.render(<span class="st">"figures/lab009_model_B_graph"</span>, <span class="bu">format</span><span class="op">=</span><span class="st">"png"</span>, cleanup<span class="op">=</span><span class="va">True</span>)   <span class="co"># Graphviz writes the PNG file</span></span>
+<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a>display(Image(png))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output cell-output-display">
+<p><img src="lab-009-mnist_files/figure-html/cell-36-output-1.png" class="img-fluid"></p>
 </div>
-<p>The two tables agree with the counts printed in Sections 5.2 and 6.2: 16 507 parameters for model A and 16 705 for model B. The hidden layer holds <span class="math inline">\(784\cdot21 + 21 = 16\,485\)</span> of them in both models, almost all; the output layers differ by <span class="math inline">\(9\cdot(21 + 1) = 198\)</span> parameters. The large difference in accuracy therefore does not come from a larger network: model B has only about 1% more parameters. The graph of model B shows the three layers of the <code>Sequential</code> with the shapes <span class="math inline">\((64, 784)\to(64, 21)\to(64, 21)\to(64, 10)\)</span>; the softmax does not appear, because it is part of the loss function, not of the model.</p>
+</div>
+<p>The two tables agree with the counts printed in Sections 5.2 and 6.2: 16 507 parameters for model A and 16 705 for model B. The hidden layer holds <span class="math display">\[784\cdot21 + 21 = 16\,485 \tag{18}\]</span> of them in both models, almost all; the output layers differ by <span class="math display">\[9\cdot(21 + 1) = 198 \tag{19}\]</span> parameters. The large difference in accuracy therefore does not come from a larger network: model B has only about 1% more parameters. The graph of model B shows the three layers of the <code>Sequential</code> with the shapes <span class="math inline">\((64, 784)\)</span>, <span class="math inline">\((64, 21)\)</span>, <span class="math inline">\((64, 21)\)</span> and <span class="math inline">\((64, 10)\)</span>; the softmax does not appear, because it is part of the loss function, not of the model.</p>
 <hr>
 </section>
 </section>
@@ -1755,28 +1817,28 @@ mean |A's output - midpoint of the two candidates|: 1.42</code></pre>
 <p>Evaluate the trained regression model <code>model_reg</code> on the test set with the prediction <code>(10 * y_bar).long()</code> (truncation, as Python’s <code>int()</code>) instead of rounding. How much accuracy is lost? Then train model A again (10 epochs suffice) with the targets <span class="math inline">\((y + 0.5)/10\)</span> instead of <span class="math inline">\(y/10\)</span>: for which prediction rule (rounding or truncation) are these targets the natural choice, and do you recover the accuracy?</p>
 <section id="solution" class="level4">
 <h4 class="anchored" data-anchor-id="solution">Solution</h4>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:54:14.461371Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:54:14.461175Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:54:18.763851Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:54:18.763474Z&quot;}" data-execution_count="32">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:51:20.725193Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:51:20.724929Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:51:27.557403Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:51:27.556317Z&quot;}" data-execution_count="36">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():</span>
-<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>    y_bar <span class="op">=</span> model_reg(X_te).squeeze(<span class="dv">1</span>)</span>
-<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a>acc_round <span class="op">=</span> (predict_digit_regression(y_bar) <span class="op">==</span> y_te).<span class="bu">float</span>().mean().item()</span>
-<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a>acc_trunc <span class="op">=</span> ((<span class="dv">10</span> <span class="op">*</span> y_bar).<span class="bu">long</span>().clamp(<span class="dv">0</span>, <span class="dv">9</span>) <span class="op">==</span> y_te).<span class="bu">float</span>().mean().item()</span>
-<span id="cb83-5"><a href="#cb83-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"targets y/10:        rounding </span><span class="sc">{</span>acc_round<span class="sc">:.3f}</span><span class="ss">,  truncation </span><span class="sc">{</span>acc_trunc<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
-<span id="cb83-6"><a href="#cb83-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-7"><a href="#cb83-7" aria-hidden="true" tabindex="-1"></a><span class="co"># targets in the middle of the interval [y/10, (y+1)/10): truncation is then the natural rule</span></span>
-<span id="cb83-8"><a href="#cb83-8" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">0</span>)</span>
-<span id="cb83-9"><a href="#cb83-9" aria-hidden="true" tabindex="-1"></a>model_shift <span class="op">=</span> make_regression_model()</span>
-<span id="cb83-10"><a href="#cb83-10" aria-hidden="true" tabindex="-1"></a>opt <span class="op">=</span> torch.optim.Adam(model_shift.parameters(), lr<span class="op">=</span><span class="fl">1e-3</span>)</span>
-<span id="cb83-11"><a href="#cb83-11" aria-hidden="true" tabindex="-1"></a>gen <span class="op">=</span> torch.Generator().manual_seed(<span class="dv">1</span>)</span>
-<span id="cb83-12"><a href="#cb83-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
-<span id="cb83-13"><a href="#cb83-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> idx <span class="kw">in</span> batch_indices(<span class="bu">len</span>(X_tr), <span class="dv">64</span>, generator<span class="op">=</span>gen):</span>
-<span id="cb83-14"><a href="#cb83-14" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> mse(model_shift(X_tr[idx]).squeeze(<span class="dv">1</span>), (y_tr[idx].<span class="bu">float</span>() <span class="op">+</span> <span class="fl">0.5</span>) <span class="op">/</span> <span class="dv">10</span>)</span>
-<span id="cb83-15"><a href="#cb83-15" aria-hidden="true" tabindex="-1"></a>        opt.zero_grad()<span class="op">;</span> loss.backward()<span class="op">;</span> opt.step()</span>
-<span id="cb83-16"><a href="#cb83-16" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():</span>
-<span id="cb83-17"><a href="#cb83-17" aria-hidden="true" tabindex="-1"></a>    y_bar <span class="op">=</span> model_shift(X_te).squeeze(<span class="dv">1</span>)</span>
-<span id="cb83-18"><a href="#cb83-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"targets (y+0.5)/10:  truncation </span><span class="sc">{</span>((<span class="dv">10</span> <span class="op">*</span> y_bar).<span class="bu">long</span>().clamp(<span class="dv">0</span>, <span class="dv">9</span>) <span class="op">==</span> y_te)<span class="sc">.</span><span class="bu">float</span>()<span class="sc">.</span>mean()<span class="sc">:.3f}</span><span class="ss">"</span></span>
-<span id="cb83-19"><a href="#cb83-19" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f",  rounding </span><span class="sc">{</span>(predict_digit_regression(y_bar) <span class="op">==</span> y_te)<span class="sc">.</span><span class="bu">float</span>()<span class="sc">.</span>mean()<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():</span>
+<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a>    y_bar <span class="op">=</span> model_reg(X_te).squeeze(<span class="dv">1</span>)</span>
+<span id="cb84-3"><a href="#cb84-3" aria-hidden="true" tabindex="-1"></a>acc_round <span class="op">=</span> (predict_digit_regression(y_bar) <span class="op">==</span> y_te).<span class="bu">float</span>().mean().item()</span>
+<span id="cb84-4"><a href="#cb84-4" aria-hidden="true" tabindex="-1"></a>acc_trunc <span class="op">=</span> ((<span class="dv">10</span> <span class="op">*</span> y_bar).<span class="bu">long</span>().clamp(<span class="dv">0</span>, <span class="dv">9</span>) <span class="op">==</span> y_te).<span class="bu">float</span>().mean().item()</span>
+<span id="cb84-5"><a href="#cb84-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"targets y/10:        rounding </span><span class="sc">{</span>acc_round<span class="sc">:.3f}</span><span class="ss">,  truncation </span><span class="sc">{</span>acc_trunc<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb84-6"><a href="#cb84-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-7"><a href="#cb84-7" aria-hidden="true" tabindex="-1"></a><span class="co"># targets in the middle of the interval [y/10, (y+1)/10): truncation is then the natural rule</span></span>
+<span id="cb84-8"><a href="#cb84-8" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">0</span>)</span>
+<span id="cb84-9"><a href="#cb84-9" aria-hidden="true" tabindex="-1"></a>model_shift <span class="op">=</span> make_regression_model()</span>
+<span id="cb84-10"><a href="#cb84-10" aria-hidden="true" tabindex="-1"></a>opt <span class="op">=</span> torch.optim.Adam(model_shift.parameters(), lr<span class="op">=</span><span class="fl">1e-3</span>)</span>
+<span id="cb84-11"><a href="#cb84-11" aria-hidden="true" tabindex="-1"></a>gen <span class="op">=</span> torch.Generator().manual_seed(<span class="dv">1</span>)</span>
+<span id="cb84-12"><a href="#cb84-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb84-13"><a href="#cb84-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> idx <span class="kw">in</span> batch_indices(<span class="bu">len</span>(X_tr), <span class="dv">64</span>, generator<span class="op">=</span>gen):</span>
+<span id="cb84-14"><a href="#cb84-14" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> mse(model_shift(X_tr[idx]).squeeze(<span class="dv">1</span>), (y_tr[idx].<span class="bu">float</span>() <span class="op">+</span> <span class="fl">0.5</span>) <span class="op">/</span> <span class="dv">10</span>)</span>
+<span id="cb84-15"><a href="#cb84-15" aria-hidden="true" tabindex="-1"></a>        opt.zero_grad()<span class="op">;</span> loss.backward()<span class="op">;</span> opt.step()</span>
+<span id="cb84-16"><a href="#cb84-16" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():</span>
+<span id="cb84-17"><a href="#cb84-17" aria-hidden="true" tabindex="-1"></a>    y_bar <span class="op">=</span> model_shift(X_te).squeeze(<span class="dv">1</span>)</span>
+<span id="cb84-18"><a href="#cb84-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"targets (y+0.5)/10:  truncation </span><span class="sc">{</span>((<span class="dv">10</span> <span class="op">*</span> y_bar).<span class="bu">long</span>().clamp(<span class="dv">0</span>, <span class="dv">9</span>) <span class="op">==</span> y_te)<span class="sc">.</span><span class="bu">float</span>()<span class="sc">.</span>mean()<span class="sc">:.3f}</span><span class="ss">"</span></span>
+<span id="cb84-19"><a href="#cb84-19" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f",  rounding </span><span class="sc">{</span>(predict_digit_regression(y_bar) <span class="op">==</span> y_te)<span class="sc">.</span><span class="bu">float</span>()<span class="sc">.</span>mean()<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>targets y/10:        rounding 0.652,  truncation 0.445</code></pre>
@@ -1793,25 +1855,25 @@ mean |A's output - midpoint of the two candidates|: 1.42</code></pre>
 <p>Is the improvement of model B due to the ten outputs or to the cross-entropy? Train the network of model B with ten <strong>sigmoid</strong> outputs and the <strong>MSE</strong> between the outputs and the one-hot vectors <span class="math inline">\(\mathbf p\)</span> (predicted digit: the largest output). Use 10 epochs and compare the test accuracy with models A and B.</p>
 <section id="solution-1" class="level4">
 <h4 class="anchored" data-anchor-id="solution-1">Solution</h4>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:54:18.765460Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:54:18.765253Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:54:23.113475Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:54:23.112920Z&quot;}" data-execution_count="33">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:51:27.561007Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:51:27.560462Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:51:33.848065Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:51:33.846598Z&quot;}" data-execution_count="37">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">0</span>)</span>
-<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>model_onehot_mse <span class="op">=</span> nn.Sequential(nn.Linear(<span class="dv">784</span>, N_HIDDEN), nn.Sigmoid(), nn.Linear(N_HIDDEN, <span class="dv">10</span>), nn.Sigmoid())</span>
-<span id="cb86-3"><a href="#cb86-3" aria-hidden="true" tabindex="-1"></a>opt <span class="op">=</span> torch.optim.Adam(model_onehot_mse.parameters(), lr<span class="op">=</span><span class="fl">1e-3</span>)</span>
-<span id="cb86-4"><a href="#cb86-4" aria-hidden="true" tabindex="-1"></a>gen <span class="op">=</span> torch.Generator().manual_seed(<span class="dv">1</span>)</span>
-<span id="cb86-5"><a href="#cb86-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">11</span>):</span>
-<span id="cb86-6"><a href="#cb86-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> idx <span class="kw">in</span> batch_indices(<span class="bu">len</span>(X_tr), <span class="dv">64</span>, generator<span class="op">=</span>gen):</span>
-<span id="cb86-7"><a href="#cb86-7" aria-hidden="true" tabindex="-1"></a>        p <span class="op">=</span> nn.functional.one_hot(y_tr[idx], <span class="dv">10</span>).<span class="bu">float</span>()</span>
-<span id="cb86-8"><a href="#cb86-8" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> mse(model_onehot_mse(X_tr[idx]), p)</span>
-<span id="cb86-9"><a href="#cb86-9" aria-hidden="true" tabindex="-1"></a>        opt.zero_grad()<span class="op">;</span> loss.backward()<span class="op">;</span> opt.step()</span>
-<span id="cb86-10"><a href="#cb86-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> epoch <span class="op">%</span> <span class="dv">5</span> <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb86-11"><a href="#cb86-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> torch.no_grad():</span>
-<span id="cb86-12"><a href="#cb86-12" aria-hidden="true" tabindex="-1"></a>            acc <span class="op">=</span> (model_onehot_mse(X_va).argmax(<span class="dv">1</span>) <span class="op">==</span> y_va).<span class="bu">float</span>().mean().item()</span>
-<span id="cb86-13"><a href="#cb86-13" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"epoch </span><span class="sc">{</span>epoch<span class="sc">:2d}</span><span class="ss">: validation accuracy </span><span class="sc">{</span>acc<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
-<span id="cb86-14"><a href="#cb86-14" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():</span>
-<span id="cb86-15"><a href="#cb86-15" aria-hidden="true" tabindex="-1"></a>    acc_te <span class="op">=</span> (model_onehot_mse(X_te).argmax(<span class="dv">1</span>) <span class="op">==</span> y_te).<span class="bu">float</span>().mean().item()</span>
-<span id="cb86-16"><a href="#cb86-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"test accuracy:  A (1 output, MSE) </span><span class="sc">{</span>acc_reg_te<span class="sc">:.3f}</span><span class="ss">   10 outputs + MSE </span><span class="sc">{</span>acc_te<span class="sc">:.3f}</span><span class="ss">   B (10 outputs, CE) </span><span class="sc">{</span>acc_ce_te<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">0</span>)</span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>model_onehot_mse <span class="op">=</span> nn.Sequential(nn.Linear(<span class="dv">784</span>, N_HIDDEN), nn.Sigmoid(), nn.Linear(N_HIDDEN, <span class="dv">10</span>), nn.Sigmoid())</span>
+<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a>opt <span class="op">=</span> torch.optim.Adam(model_onehot_mse.parameters(), lr<span class="op">=</span><span class="fl">1e-3</span>)</span>
+<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a>gen <span class="op">=</span> torch.Generator().manual_seed(<span class="dv">1</span>)</span>
+<span id="cb87-5"><a href="#cb87-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">11</span>):</span>
+<span id="cb87-6"><a href="#cb87-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> idx <span class="kw">in</span> batch_indices(<span class="bu">len</span>(X_tr), <span class="dv">64</span>, generator<span class="op">=</span>gen):</span>
+<span id="cb87-7"><a href="#cb87-7" aria-hidden="true" tabindex="-1"></a>        p <span class="op">=</span> nn.functional.one_hot(y_tr[idx], <span class="dv">10</span>).<span class="bu">float</span>()</span>
+<span id="cb87-8"><a href="#cb87-8" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> mse(model_onehot_mse(X_tr[idx]), p)</span>
+<span id="cb87-9"><a href="#cb87-9" aria-hidden="true" tabindex="-1"></a>        opt.zero_grad()<span class="op">;</span> loss.backward()<span class="op">;</span> opt.step()</span>
+<span id="cb87-10"><a href="#cb87-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> epoch <span class="op">%</span> <span class="dv">5</span> <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb87-11"><a href="#cb87-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> torch.no_grad():</span>
+<span id="cb87-12"><a href="#cb87-12" aria-hidden="true" tabindex="-1"></a>            acc <span class="op">=</span> (model_onehot_mse(X_va).argmax(<span class="dv">1</span>) <span class="op">==</span> y_va).<span class="bu">float</span>().mean().item()</span>
+<span id="cb87-13"><a href="#cb87-13" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"epoch </span><span class="sc">{</span>epoch<span class="sc">:2d}</span><span class="ss">: validation accuracy </span><span class="sc">{</span>acc<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb87-14"><a href="#cb87-14" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():</span>
+<span id="cb87-15"><a href="#cb87-15" aria-hidden="true" tabindex="-1"></a>    acc_te <span class="op">=</span> (model_onehot_mse(X_te).argmax(<span class="dv">1</span>) <span class="op">==</span> y_te).<span class="bu">float</span>().mean().item()</span>
+<span id="cb87-16"><a href="#cb87-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"test accuracy:  A (1 output, MSE) </span><span class="sc">{</span>acc_reg_te<span class="sc">:.3f}</span><span class="ss">   10 outputs + MSE </span><span class="sc">{</span>acc_te<span class="sc">:.3f}</span><span class="ss">   B (10 outputs, CE) </span><span class="sc">{</span>acc_ce_te<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>epoch  5: validation accuracy 0.922</code></pre>
@@ -1829,34 +1891,34 @@ test accuracy:  A (1 output, MSE) 0.652   10 outputs + MSE 0.938   B (10 outputs
 <p>Train model B for 5 epochs with batch sizes <span class="math inline">\(16\)</span>, <span class="math inline">\(64\)</span>, <span class="math inline">\(512\)</span> and <span class="math inline">\(50\,000\)</span> (full batch), always with Adam and learning rate <span class="math inline">\(10^{-3}\)</span>. Record the validation accuracy after 5 epochs, the number of parameter updates and the training time. Explain the result.</p>
 <section id="solution-2" class="level4">
 <h4 class="anchored" data-anchor-id="solution-2">Solution</h4>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:54:23.115165Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:54:23.114953Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:54:33.507545Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:54:33.507138Z&quot;}" data-execution_count="34">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:51:33.852091Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:51:33.851248Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:51:49.464735Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:51:49.462704Z&quot;}" data-execution_count="38">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> bs <span class="kw">in</span> [<span class="dv">16</span>, <span class="dv">64</span>, <span class="dv">512</span>, <span class="dv">50_000</span>]:</span>
-<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>    torch.manual_seed(<span class="dv">0</span>)</span>
-<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> make_classification_model()</span>
-<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a>    opt <span class="op">=</span> torch.optim.Adam(model.parameters(), lr<span class="op">=</span><span class="fl">1e-3</span>)</span>
-<span id="cb89-5"><a href="#cb89-5" aria-hidden="true" tabindex="-1"></a>    gen <span class="op">=</span> torch.Generator().manual_seed(<span class="dv">1</span>)</span>
-<span id="cb89-6"><a href="#cb89-6" aria-hidden="true" tabindex="-1"></a>    n_updates, t0 <span class="op">=</span> <span class="dv">0</span>, time.perf_counter()</span>
-<span id="cb89-7"><a href="#cb89-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
-<span id="cb89-8"><a href="#cb89-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> idx <span class="kw">in</span> batch_indices(<span class="bu">len</span>(X_tr), bs, generator<span class="op">=</span>gen):</span>
-<span id="cb89-9"><a href="#cb89-9" aria-hidden="true" tabindex="-1"></a>            loss <span class="op">=</span> ce(model(X_tr[idx]), y_tr[idx])</span>
-<span id="cb89-10"><a href="#cb89-10" aria-hidden="true" tabindex="-1"></a>            opt.zero_grad()<span class="op">;</span> loss.backward()<span class="op">;</span> opt.step()</span>
-<span id="cb89-11"><a href="#cb89-11" aria-hidden="true" tabindex="-1"></a>            n_updates <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb89-12"><a href="#cb89-12" aria-hidden="true" tabindex="-1"></a>    _, acc <span class="op">=</span> evaluate_classification(model, X_va, y_va)</span>
-<span id="cb89-13"><a href="#cb89-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"batch size </span><span class="sc">{</span>bs<span class="sc">:6d}</span><span class="ss">: </span><span class="sc">{</span>n_updates<span class="sc">:6d}</span><span class="ss"> updates, </span><span class="sc">{</span>time<span class="sc">.</span>perf_counter() <span class="op">-</span> t0<span class="sc">:5.1f}</span><span class="ss"> s,  validation accuracy </span><span class="sc">{</span>acc<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> bs <span class="kw">in</span> [<span class="dv">16</span>, <span class="dv">64</span>, <span class="dv">512</span>, <span class="dv">50_000</span>]:</span>
+<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a>    torch.manual_seed(<span class="dv">0</span>)</span>
+<span id="cb90-3"><a href="#cb90-3" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> make_classification_model()</span>
+<span id="cb90-4"><a href="#cb90-4" aria-hidden="true" tabindex="-1"></a>    opt <span class="op">=</span> torch.optim.Adam(model.parameters(), lr<span class="op">=</span><span class="fl">1e-3</span>)</span>
+<span id="cb90-5"><a href="#cb90-5" aria-hidden="true" tabindex="-1"></a>    gen <span class="op">=</span> torch.Generator().manual_seed(<span class="dv">1</span>)</span>
+<span id="cb90-6"><a href="#cb90-6" aria-hidden="true" tabindex="-1"></a>    n_updates, t0 <span class="op">=</span> <span class="dv">0</span>, time.perf_counter()</span>
+<span id="cb90-7"><a href="#cb90-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
+<span id="cb90-8"><a href="#cb90-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> idx <span class="kw">in</span> batch_indices(<span class="bu">len</span>(X_tr), bs, generator<span class="op">=</span>gen):</span>
+<span id="cb90-9"><a href="#cb90-9" aria-hidden="true" tabindex="-1"></a>            loss <span class="op">=</span> ce(model(X_tr[idx]), y_tr[idx])</span>
+<span id="cb90-10"><a href="#cb90-10" aria-hidden="true" tabindex="-1"></a>            opt.zero_grad()<span class="op">;</span> loss.backward()<span class="op">;</span> opt.step()</span>
+<span id="cb90-11"><a href="#cb90-11" aria-hidden="true" tabindex="-1"></a>            n_updates <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb90-12"><a href="#cb90-12" aria-hidden="true" tabindex="-1"></a>    _, acc <span class="op">=</span> evaluate_classification(model, X_va, y_va)</span>
+<span id="cb90-13"><a href="#cb90-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"batch size </span><span class="sc">{</span>bs<span class="sc">:6d}</span><span class="ss">: </span><span class="sc">{</span>n_updates<span class="sc">:6d}</span><span class="ss"> updates, </span><span class="sc">{</span>time<span class="sc">.</span>perf_counter() <span class="op">-</span> t0<span class="sc">:5.1f}</span><span class="ss"> s,  validation accuracy </span><span class="sc">{</span>acc<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>batch size     16:  15625 updates,   7.8 s,  validation accuracy 0.944</code></pre>
+<pre><code>batch size     16:  15625 updates,  11.9 s,  validation accuracy 0.944</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>batch size     64:   3910 updates,   2.0 s,  validation accuracy 0.937</code></pre>
+<pre><code>batch size     64:   3910 updates,   2.9 s,  validation accuracy 0.937</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>batch size    512:    490 updates,   0.4 s,  validation accuracy 0.897</code></pre>
+<pre><code>batch size    512:    490 updates,   0.5 s,  validation accuracy 0.897</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>batch size  50000:      5 updates,   0.2 s,  validation accuracy 0.360</code></pre>
+<pre><code>batch size  50000:      5 updates,   0.3 s,  validation accuracy 0.360</code></pre>
 </div>
 </div>
 <p>All runs see the same number of images (5 epochs), but the number of parameter updates differs by a factor of <span class="math inline">\(3\,000\)</span>. The full batch makes only <span class="math inline">\(5\)</span> updates and is still close to guessing (<span class="math inline">\(36\%\)</span>); batch size <span class="math inline">\(512\)</span> reaches about <span class="math inline">\(90\%\)</span>. Batch sizes <span class="math inline">\(16\)</span> and <span class="math inline">\(64\)</span> give similar accuracy (about <span class="math inline">\(94\%\)</span>), but <span class="math inline">\(16\)</span> is almost four times slower: more Python overhead and smaller, less efficient matrix products per image. Batch sizes of a few tens to a few hundred are the usual compromise. Giving the full batch the same <em>number of updates</em> as batch size <span class="math inline">\(64\)</span> would require thousands of epochs.</p>
@@ -1864,45 +1926,45 @@ test accuracy:  A (1 output, MSE) 0.652   10 outputs + MSE 0.938   B (10 outputs
 </section>
 <section id="exercise-4-wider-and-deeper-networks" class="level3">
 <h3 class="anchored" data-anchor-id="exercise-4-wider-and-deeper-networks">Exercise 4 — Wider and deeper networks</h3>
-<p>The chapter’s network is small: <span class="math inline">\(784\cdot21 + 21 + 22 \approx 16\,500\)</span> parameters. Train both models (regression and cross-entropy) for 10 epochs with the hidden layers <code>[21]</code> (models A and B), <code>[128]</code> (one wider layer) and <code>[128, 64]</code> (two hidden layers), all with sigmoids, and compare the test accuracies. Which of the two approaches profits more from a larger network? Does the conclusion of Section 7 change?</p>
+<p>The chapter’s network is small: <span class="math display">\[784\cdot21 + 21 + 22 \approx 16\,500 \tag{20}\]</span> parameters. Train both models (regression and cross-entropy) for 10 epochs with the hidden layers <code>[21]</code> (models A and B), <code>[128]</code> (one wider layer) and <code>[128, 64]</code> (two hidden layers), all with sigmoids, and compare the test accuracies. Which of the two approaches profits more from a larger network? Does the conclusion of Section 7 change?</p>
 <section id="solution-3" class="level4">
 <h4 class="anchored" data-anchor-id="solution-3">Solution</h4>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:54:33.509477Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:54:33.509253Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:55:04.821714Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:55:04.821257Z&quot;}" data-execution_count="35">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:51:49.470020Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:51:49.469486Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:52:54.724696Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:52:54.721298Z&quot;}" data-execution_count="39">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_mlp(hidden, n_out, sigmoid_output):</span>
-<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a>    layers, n_in <span class="op">=</span> [], <span class="dv">784</span></span>
-<span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> n <span class="kw">in</span> hidden:                                     <span class="co"># hidden layers with sigmoids</span></span>
-<span id="cb94-4"><a href="#cb94-4" aria-hidden="true" tabindex="-1"></a>        layers <span class="op">+=</span> [nn.Linear(n_in, n), nn.Sigmoid()]</span>
-<span id="cb94-5"><a href="#cb94-5" aria-hidden="true" tabindex="-1"></a>        n_in <span class="op">=</span> n</span>
-<span id="cb94-6"><a href="#cb94-6" aria-hidden="true" tabindex="-1"></a>    layers.append(nn.Linear(n_in, n_out))</span>
-<span id="cb94-7"><a href="#cb94-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> sigmoid_output:</span>
-<span id="cb94-8"><a href="#cb94-8" aria-hidden="true" tabindex="-1"></a>        layers.append(nn.Sigmoid())</span>
-<span id="cb94-9"><a href="#cb94-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> nn.Sequential(<span class="op">*</span>layers)</span>
-<span id="cb94-10"><a href="#cb94-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb94-11"><a href="#cb94-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> train_quick(model, kind, n_epochs<span class="op">=</span><span class="dv">10</span>):</span>
-<span id="cb94-12"><a href="#cb94-12" aria-hidden="true" tabindex="-1"></a>    opt <span class="op">=</span> torch.optim.Adam(model.parameters(), lr<span class="op">=</span><span class="fl">1e-3</span>)</span>
-<span id="cb94-13"><a href="#cb94-13" aria-hidden="true" tabindex="-1"></a>    gen <span class="op">=</span> torch.Generator().manual_seed(<span class="dv">1</span>)</span>
-<span id="cb94-14"><a href="#cb94-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(n_epochs):</span>
-<span id="cb94-15"><a href="#cb94-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> idx <span class="kw">in</span> batch_indices(<span class="bu">len</span>(X_tr), <span class="dv">64</span>, generator<span class="op">=</span>gen):</span>
-<span id="cb94-16"><a href="#cb94-16" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> kind <span class="op">==</span> <span class="st">"regression"</span>:</span>
-<span id="cb94-17"><a href="#cb94-17" aria-hidden="true" tabindex="-1"></a>                loss <span class="op">=</span> mse(model(X_tr[idx]).squeeze(<span class="dv">1</span>), y_tr[idx].<span class="bu">float</span>() <span class="op">/</span> <span class="dv">10</span>)</span>
-<span id="cb94-18"><a href="#cb94-18" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
-<span id="cb94-19"><a href="#cb94-19" aria-hidden="true" tabindex="-1"></a>                loss <span class="op">=</span> ce(model(X_tr[idx]), y_tr[idx])</span>
-<span id="cb94-20"><a href="#cb94-20" aria-hidden="true" tabindex="-1"></a>            opt.zero_grad()<span class="op">;</span> loss.backward()<span class="op">;</span> opt.step()</span>
-<span id="cb94-21"><a href="#cb94-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> torch.no_grad():</span>
-<span id="cb94-22"><a href="#cb94-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> kind <span class="op">==</span> <span class="st">"regression"</span>:</span>
-<span id="cb94-23"><a href="#cb94-23" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> (predict_digit_regression(model(X_te).squeeze(<span class="dv">1</span>)) <span class="op">==</span> y_te).<span class="bu">float</span>().mean().item()</span>
-<span id="cb94-24"><a href="#cb94-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> (model(X_te).argmax(<span class="dv">1</span>) <span class="op">==</span> y_te).<span class="bu">float</span>().mean().item()</span>
-<span id="cb94-25"><a href="#cb94-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb94-26"><a href="#cb94-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'hidden layers'</span><span class="sc">:14s}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'parameters'</span><span class="sc">:&gt;11s}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'regression'</span><span class="sc">:&gt;11s}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'cross-entropy'</span><span class="sc">:&gt;14s}</span><span class="ss">"</span>)</span>
-<span id="cb94-27"><a href="#cb94-27" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> hidden <span class="kw">in</span> [[<span class="dv">21</span>], [<span class="dv">128</span>], [<span class="dv">128</span>, <span class="dv">64</span>]]:</span>
-<span id="cb94-28"><a href="#cb94-28" aria-hidden="true" tabindex="-1"></a>    torch.manual_seed(<span class="dv">0</span>)</span>
-<span id="cb94-29"><a href="#cb94-29" aria-hidden="true" tabindex="-1"></a>    m_reg <span class="op">=</span> make_mlp(hidden, <span class="dv">1</span>, sigmoid_output<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb94-30"><a href="#cb94-30" aria-hidden="true" tabindex="-1"></a>    torch.manual_seed(<span class="dv">0</span>)</span>
-<span id="cb94-31"><a href="#cb94-31" aria-hidden="true" tabindex="-1"></a>    m_ce <span class="op">=</span> make_mlp(hidden, <span class="dv">10</span>, sigmoid_output<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb94-32"><a href="#cb94-32" aria-hidden="true" tabindex="-1"></a>    n_par <span class="op">=</span> <span class="bu">sum</span>(p.numel() <span class="cf">for</span> p <span class="kw">in</span> m_reg.parameters())</span>
-<span id="cb94-33"><a href="#cb94-33" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="bu">str</span>(hidden)<span class="sc">:14s}</span><span class="ss"> </span><span class="sc">{</span>n_par<span class="sc">:11d}</span><span class="ss"> </span><span class="sc">{</span>train_quick(m_reg, <span class="st">'regression'</span>)<span class="sc">:11.3f}</span><span class="ss"> </span><span class="sc">{</span>train_quick(m_ce, <span class="st">'classification'</span>)<span class="sc">:14.3f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_mlp(hidden, n_out, sigmoid_output):</span>
+<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a>    layers, n_in <span class="op">=</span> [], <span class="dv">784</span></span>
+<span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> n <span class="kw">in</span> hidden:                                     <span class="co"># hidden layers with sigmoids</span></span>
+<span id="cb95-4"><a href="#cb95-4" aria-hidden="true" tabindex="-1"></a>        layers <span class="op">+=</span> [nn.Linear(n_in, n), nn.Sigmoid()]</span>
+<span id="cb95-5"><a href="#cb95-5" aria-hidden="true" tabindex="-1"></a>        n_in <span class="op">=</span> n</span>
+<span id="cb95-6"><a href="#cb95-6" aria-hidden="true" tabindex="-1"></a>    layers.append(nn.Linear(n_in, n_out))</span>
+<span id="cb95-7"><a href="#cb95-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> sigmoid_output:</span>
+<span id="cb95-8"><a href="#cb95-8" aria-hidden="true" tabindex="-1"></a>        layers.append(nn.Sigmoid())</span>
+<span id="cb95-9"><a href="#cb95-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> nn.Sequential(<span class="op">*</span>layers)</span>
+<span id="cb95-10"><a href="#cb95-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-11"><a href="#cb95-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> train_quick(model, kind, n_epochs<span class="op">=</span><span class="dv">10</span>):</span>
+<span id="cb95-12"><a href="#cb95-12" aria-hidden="true" tabindex="-1"></a>    opt <span class="op">=</span> torch.optim.Adam(model.parameters(), lr<span class="op">=</span><span class="fl">1e-3</span>)</span>
+<span id="cb95-13"><a href="#cb95-13" aria-hidden="true" tabindex="-1"></a>    gen <span class="op">=</span> torch.Generator().manual_seed(<span class="dv">1</span>)</span>
+<span id="cb95-14"><a href="#cb95-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(n_epochs):</span>
+<span id="cb95-15"><a href="#cb95-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> idx <span class="kw">in</span> batch_indices(<span class="bu">len</span>(X_tr), <span class="dv">64</span>, generator<span class="op">=</span>gen):</span>
+<span id="cb95-16"><a href="#cb95-16" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> kind <span class="op">==</span> <span class="st">"regression"</span>:</span>
+<span id="cb95-17"><a href="#cb95-17" aria-hidden="true" tabindex="-1"></a>                loss <span class="op">=</span> mse(model(X_tr[idx]).squeeze(<span class="dv">1</span>), y_tr[idx].<span class="bu">float</span>() <span class="op">/</span> <span class="dv">10</span>)</span>
+<span id="cb95-18"><a href="#cb95-18" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
+<span id="cb95-19"><a href="#cb95-19" aria-hidden="true" tabindex="-1"></a>                loss <span class="op">=</span> ce(model(X_tr[idx]), y_tr[idx])</span>
+<span id="cb95-20"><a href="#cb95-20" aria-hidden="true" tabindex="-1"></a>            opt.zero_grad()<span class="op">;</span> loss.backward()<span class="op">;</span> opt.step()</span>
+<span id="cb95-21"><a href="#cb95-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> torch.no_grad():</span>
+<span id="cb95-22"><a href="#cb95-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> kind <span class="op">==</span> <span class="st">"regression"</span>:</span>
+<span id="cb95-23"><a href="#cb95-23" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> (predict_digit_regression(model(X_te).squeeze(<span class="dv">1</span>)) <span class="op">==</span> y_te).<span class="bu">float</span>().mean().item()</span>
+<span id="cb95-24"><a href="#cb95-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> (model(X_te).argmax(<span class="dv">1</span>) <span class="op">==</span> y_te).<span class="bu">float</span>().mean().item()</span>
+<span id="cb95-25"><a href="#cb95-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-26"><a href="#cb95-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'hidden layers'</span><span class="sc">:14s}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'parameters'</span><span class="sc">:&gt;11s}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'regression'</span><span class="sc">:&gt;11s}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'cross-entropy'</span><span class="sc">:&gt;14s}</span><span class="ss">"</span>)</span>
+<span id="cb95-27"><a href="#cb95-27" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> hidden <span class="kw">in</span> [[<span class="dv">21</span>], [<span class="dv">128</span>], [<span class="dv">128</span>, <span class="dv">64</span>]]:</span>
+<span id="cb95-28"><a href="#cb95-28" aria-hidden="true" tabindex="-1"></a>    torch.manual_seed(<span class="dv">0</span>)</span>
+<span id="cb95-29"><a href="#cb95-29" aria-hidden="true" tabindex="-1"></a>    m_reg <span class="op">=</span> make_mlp(hidden, <span class="dv">1</span>, sigmoid_output<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb95-30"><a href="#cb95-30" aria-hidden="true" tabindex="-1"></a>    torch.manual_seed(<span class="dv">0</span>)</span>
+<span id="cb95-31"><a href="#cb95-31" aria-hidden="true" tabindex="-1"></a>    m_ce <span class="op">=</span> make_mlp(hidden, <span class="dv">10</span>, sigmoid_output<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb95-32"><a href="#cb95-32" aria-hidden="true" tabindex="-1"></a>    n_par <span class="op">=</span> <span class="bu">sum</span>(p.numel() <span class="cf">for</span> p <span class="kw">in</span> m_reg.parameters())</span>
+<span id="cb95-33"><a href="#cb95-33" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="bu">str</span>(hidden)<span class="sc">:14s}</span><span class="ss"> </span><span class="sc">{</span>n_par<span class="sc">:11d}</span><span class="ss"> </span><span class="sc">{</span>train_quick(m_reg, <span class="st">'regression'</span>)<span class="sc">:11.3f}</span><span class="ss"> </span><span class="sc">{</span>train_quick(m_ce, <span class="st">'classification'</span>)<span class="sc">:14.3f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>hidden layers   parameters  regression  cross-entropy</code></pre>
@@ -1920,51 +1982,51 @@ test accuracy:  A (1 output, MSE) 0.652   10 outputs + MSE 0.938   B (10 outputs
 <p>Both approaches profit from a larger network, the regression much more (from <span class="math inline">\(63\%\)</span> to <span class="math inline">\(80\%\)</span> in 10 epochs) than the cross-entropy (from <span class="math inline">\(94\%\)</span> to <span class="math inline">\(97\%\)</span>). The gap shrinks but remains large: the cross-entropy with the chapter’s tiny network (<span class="math inline">\(16\,500\)</span> parameters) is still far better than the regression with a network almost seven times larger. A big network can partly compensate for a badly posed task, but it is cheaper to pose the task well.</p>
 </section>
 </section>
-<section id="exercise-5-full-batch-gradient-descent-as-in-the-chapter" class="level3">
-<h3 class="anchored" data-anchor-id="exercise-5-full-batch-gradient-descent-as-in-the-chapter">Exercise 5 — Full-batch gradient descent as in the chapter</h3>
-<p>The chapter trains the smallest version of model A: <span class="math inline">\(784\to21\to1\)</span>, sigmoid everywhere, no bias in the output layer, loss <span class="math inline">\(\frac{1}{2N}\sum_{i=1}^N(\bar y_i - y_i/10)^2\)</span> with <span class="math inline">\(N = 50\,000\)</span> training images, and <strong>full-batch</strong> gradient descent (all <span class="math inline">\(50\,000\)</span> training images in every step) with a large learning rate. Build this network with <code>nn.Sequential</code> (<code>nn.Linear(21, 1, bias=False)</code> for the output), train it with <code>torch.optim.SGD</code> for 500 full-batch steps with <span class="math inline">\(\eta = 50\)</span>, and plot the training and validation accuracy against the step. This is the network of model A; only the optimisation differs. Compare the test accuracy with model A. Why is such a large learning rate needed?</p>
+<section id="exercise-5-full-batch-gradient-descent-of-the-chapter" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-5-full-batch-gradient-descent-of-the-chapter">Exercise 5 — Full-batch gradient descent of the chapter</h3>
+<p>The chapter trains the smallest version of model A: layer sizes 784, 21 and 1, sigmoid everywhere, no bias in the output layer, and the loss <span class="math display">\[\mathcal L = \frac{1}{2N}\sum_{i=1}^N(\bar y_i - y_i/10)^2 \tag{21}\]</span> with <span class="math inline">\(N\)</span> the number of training images, 50 000, and <strong>full-batch</strong> gradient descent (all <span class="math inline">\(50\,000\)</span> training images in every step) with a large learning rate. Build this network with <code>nn.Sequential</code> (<code>nn.Linear(21, 1, bias=False)</code> for the output), train it with <code>torch.optim.SGD</code> for 500 full-batch steps with learning rate <span class="math inline">\(\eta\)</span> of 50, and plot the training and validation accuracy against the step. This is the network of model A; only the optimisation differs. Compare the test accuracy with model A. Why is such a large learning rate needed?</p>
 <section id="solution-4" class="level4">
 <h4 class="anchored" data-anchor-id="solution-4">Solution</h4>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-06T10:55:04.823690Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-06T10:55:04.823470Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-06T10:55:13.910825Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-06T10:55:13.910240Z&quot;}" data-execution_count="36">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T10:52:54.729485Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T10:52:54.729182Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T10:53:13.365528Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T10:53:13.364225Z&quot;}" data-execution_count="40">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">0</span>)</span>
-<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a>model_book <span class="op">=</span> nn.Sequential(nn.Linear(<span class="dv">784</span>, <span class="dv">21</span>), nn.Sigmoid(), nn.Linear(<span class="dv">21</span>, <span class="dv">1</span>, bias<span class="op">=</span><span class="va">False</span>), nn.Sigmoid())</span>
-<span id="cb99-3"><a href="#cb99-3" aria-hidden="true" tabindex="-1"></a>opt <span class="op">=</span> torch.optim.SGD(model_book.parameters(), lr<span class="op">=</span><span class="fl">50.0</span>)</span>
-<span id="cb99-4"><a href="#cb99-4" aria-hidden="true" tabindex="-1"></a>target_tr <span class="op">=</span> y_tr.<span class="bu">float</span>() <span class="op">/</span> <span class="dv">10</span></span>
-<span id="cb99-5"><a href="#cb99-5" aria-hidden="true" tabindex="-1"></a>steps, acc_tr_book, acc_va_book <span class="op">=</span> [], [], []</span>
-<span id="cb99-6"><a href="#cb99-6" aria-hidden="true" tabindex="-1"></a>t0 <span class="op">=</span> time.perf_counter()</span>
-<span id="cb99-7"><a href="#cb99-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> step <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">501</span>):</span>
-<span id="cb99-8"><a href="#cb99-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> step <span class="op">%</span> <span class="dv">10</span> <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb99-9"><a href="#cb99-9" aria-hidden="true" tabindex="-1"></a>        _, a_tr <span class="op">=</span> evaluate_regression(model_book, X_tr, y_tr)</span>
-<span id="cb99-10"><a href="#cb99-10" aria-hidden="true" tabindex="-1"></a>        _, a_va <span class="op">=</span> evaluate_regression(model_book, X_va, y_va)</span>
-<span id="cb99-11"><a href="#cb99-11" aria-hidden="true" tabindex="-1"></a>        steps.append(step)<span class="op">;</span> acc_tr_book.append(a_tr)<span class="op">;</span> acc_va_book.append(a_va)</span>
-<span id="cb99-12"><a href="#cb99-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> step <span class="op">==</span> <span class="dv">500</span>:</span>
-<span id="cb99-13"><a href="#cb99-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">break</span></span>
-<span id="cb99-14"><a href="#cb99-14" aria-hidden="true" tabindex="-1"></a>    model_book.train()</span>
-<span id="cb99-15"><a href="#cb99-15" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> ((model_book(X_tr).squeeze(<span class="dv">1</span>) <span class="op">-</span> target_tr)<span class="op">**</span><span class="dv">2</span>).mean() <span class="op">/</span> <span class="dv">2</span>    <span class="co"># ALL training images: full batch</span></span>
-<span id="cb99-16"><a href="#cb99-16" aria-hidden="true" tabindex="-1"></a>    opt.zero_grad()<span class="op">;</span> loss.backward()<span class="op">;</span> opt.step()</span>
-<span id="cb99-17"><a href="#cb99-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"training took </span><span class="sc">{</span>time<span class="sc">.</span>perf_counter() <span class="op">-</span> t0<span class="sc">:.0f}</span><span class="ss"> s"</span>)</span>
-<span id="cb99-18"><a href="#cb99-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb99-19"><a href="#cb99-19" aria-hidden="true" tabindex="-1"></a>_, acc_book_te <span class="op">=</span> evaluate_regression(model_book, X_te, y_te)</span>
-<span id="cb99-20"><a href="#cb99-20" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="fl">3.8</span>))</span>
-<span id="cb99-21"><a href="#cb99-21" aria-hidden="true" tabindex="-1"></a>ax.plot(steps, acc_tr_book, label<span class="op">=</span><span class="st">"training"</span>)<span class="op">;</span> ax.plot(steps, acc_va_book, label<span class="op">=</span><span class="st">"validation"</span>)</span>
-<span id="cb99-22"><a href="#cb99-22" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"gradient-descent step (full batch = 1 epoch)"</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">"accuracy"</span>)<span class="op">;</span> ax.legend()</span>
-<span id="cb99-23"><a href="#cb99-23" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="ss">f"784-21-1, SGD full batch, eta = 50:  test accuracy </span><span class="sc">{</span>acc_book_te<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
-<span id="cb99-24"><a href="#cb99-24" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
-<span id="cb99-25"><a href="#cb99-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"test accuracy: full-batch gradient descent </span><span class="sc">{</span>acc_book_te<span class="sc">:.3f}</span><span class="ss">   model A (same network, Adam, mini-batches of 64) </span><span class="sc">{</span>acc_reg_te<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">0</span>)</span>
+<span id="cb100-2"><a href="#cb100-2" aria-hidden="true" tabindex="-1"></a>model_book <span class="op">=</span> nn.Sequential(nn.Linear(<span class="dv">784</span>, <span class="dv">21</span>), nn.Sigmoid(), nn.Linear(<span class="dv">21</span>, <span class="dv">1</span>, bias<span class="op">=</span><span class="va">False</span>), nn.Sigmoid())</span>
+<span id="cb100-3"><a href="#cb100-3" aria-hidden="true" tabindex="-1"></a>opt <span class="op">=</span> torch.optim.SGD(model_book.parameters(), lr<span class="op">=</span><span class="fl">50.0</span>)</span>
+<span id="cb100-4"><a href="#cb100-4" aria-hidden="true" tabindex="-1"></a>target_tr <span class="op">=</span> y_tr.<span class="bu">float</span>() <span class="op">/</span> <span class="dv">10</span></span>
+<span id="cb100-5"><a href="#cb100-5" aria-hidden="true" tabindex="-1"></a>steps, acc_tr_book, acc_va_book <span class="op">=</span> [], [], []</span>
+<span id="cb100-6"><a href="#cb100-6" aria-hidden="true" tabindex="-1"></a>t0 <span class="op">=</span> time.perf_counter()</span>
+<span id="cb100-7"><a href="#cb100-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> step <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">501</span>):</span>
+<span id="cb100-8"><a href="#cb100-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> step <span class="op">%</span> <span class="dv">10</span> <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb100-9"><a href="#cb100-9" aria-hidden="true" tabindex="-1"></a>        _, a_tr <span class="op">=</span> evaluate_regression(model_book, X_tr, y_tr)</span>
+<span id="cb100-10"><a href="#cb100-10" aria-hidden="true" tabindex="-1"></a>        _, a_va <span class="op">=</span> evaluate_regression(model_book, X_va, y_va)</span>
+<span id="cb100-11"><a href="#cb100-11" aria-hidden="true" tabindex="-1"></a>        steps.append(step)<span class="op">;</span> acc_tr_book.append(a_tr)<span class="op">;</span> acc_va_book.append(a_va)</span>
+<span id="cb100-12"><a href="#cb100-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> step <span class="op">==</span> <span class="dv">500</span>:</span>
+<span id="cb100-13"><a href="#cb100-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">break</span></span>
+<span id="cb100-14"><a href="#cb100-14" aria-hidden="true" tabindex="-1"></a>    model_book.train()</span>
+<span id="cb100-15"><a href="#cb100-15" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> ((model_book(X_tr).squeeze(<span class="dv">1</span>) <span class="op">-</span> target_tr)<span class="op">**</span><span class="dv">2</span>).mean() <span class="op">/</span> <span class="dv">2</span>    <span class="co"># ALL training images: full batch</span></span>
+<span id="cb100-16"><a href="#cb100-16" aria-hidden="true" tabindex="-1"></a>    opt.zero_grad()<span class="op">;</span> loss.backward()<span class="op">;</span> opt.step()</span>
+<span id="cb100-17"><a href="#cb100-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"training took </span><span class="sc">{</span>time<span class="sc">.</span>perf_counter() <span class="op">-</span> t0<span class="sc">:.0f}</span><span class="ss"> s"</span>)</span>
+<span id="cb100-18"><a href="#cb100-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb100-19"><a href="#cb100-19" aria-hidden="true" tabindex="-1"></a>_, acc_book_te <span class="op">=</span> evaluate_regression(model_book, X_te, y_te)</span>
+<span id="cb100-20"><a href="#cb100-20" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="fl">3.8</span>))</span>
+<span id="cb100-21"><a href="#cb100-21" aria-hidden="true" tabindex="-1"></a>ax.plot(steps, acc_tr_book, label<span class="op">=</span><span class="st">"training"</span>)<span class="op">;</span> ax.plot(steps, acc_va_book, label<span class="op">=</span><span class="st">"validation"</span>)</span>
+<span id="cb100-22"><a href="#cb100-22" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"gradient-descent step (full batch = 1 epoch)"</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">"accuracy"</span>)<span class="op">;</span> ax.legend()</span>
+<span id="cb100-23"><a href="#cb100-23" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="ss">f"784-21-1, SGD full batch, eta = 50:  test accuracy </span><span class="sc">{</span>acc_book_te<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb100-24"><a href="#cb100-24" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb100-25"><a href="#cb100-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"test accuracy: full-batch gradient descent </span><span class="sc">{</span>acc_book_te<span class="sc">:.3f}</span><span class="ss">   model A (same network, Adam, mini-batches of 64) </span><span class="sc">{</span>acc_reg_te<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>training took 9 s</code></pre>
+<pre><code>training took 18 s</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <p><img src="lab-009-mnist_files/figure-html/cell-41-output-2.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>test accuracy: full-batch gradient descent 0.461   Part A (same network, Adam, mini-batches of 64) 0.652</code></pre>
+<pre><code>test accuracy: full-batch gradient descent 0.461   model A (same network, Adam, mini-batches of 64) 0.652</code></pre>
 </div>
 </div>
-<p>With full-batch gradient descent the same network reaches only about <span class="math inline">\(46\%\)</span> after <span class="math inline">\(500\)</span> steps, compared with <span class="math inline">\(65\%\)</span> for model A (the chapter reports <span class="math inline">\(56\%\)</span>; the exact number depends on the initialisation and the number of steps). The curve shows the price of a large learning rate: around step <span class="math inline">\(160\)</span> one step overshoots, the accuracy collapses to <span class="math inline">\(\approx 10\%\)</span> and the network has to recover. A large <span class="math inline">\(\eta\)</span> is nevertheless needed because the gradient is tiny: by the chain rule it contains factors <span class="math inline">\(\sigma'(z) = \sigma(1-\sigma)\le 1/4\)</span> (two factors for the hidden-layer weights, one for the output weights) and the small difference <span class="math inline">\(\bar y - y/10\)</span>. Model A makes <span class="math inline">\(15\,640\)</span> updates (20 epochs × 782 mini-batches) with Adam on mini-batches: about 30 times more updates than the <span class="math inline">\(500\)</span> full-batch steps, each with an adaptive step size.</p>
+<p>With full-batch gradient descent the same network reaches only about <span class="math inline">\(46\%\)</span> after <span class="math inline">\(500\)</span> steps, compared with <span class="math inline">\(65\%\)</span> for model A (the chapter reports <span class="math inline">\(56\%\)</span>; the exact number depends on the initialisation and the number of steps). The curve shows the price of a large learning rate: around step <span class="math inline">\(160\)</span> one step overshoots, the accuracy collapses to about <span class="math inline">\(10\%\)</span> and the network has to recover. A large <span class="math inline">\(\eta\)</span> is nevertheless needed because the gradient is tiny: by the chain rule it contains factors <span class="math display">\[\sigma'(z) = \sigma(1-\sigma)\le \tfrac14 \tag{22}\]</span> (two factors for the hidden-layer weights, one for the output weights) and the small difference <span class="math inline">\(\bar y - y/10\)</span>. Model A makes <span class="math inline">\(15\,640\)</span> updates (20 epochs × 782 mini-batches) with Adam on mini-batches: about 30 times more updates than the <span class="math inline">\(500\)</span> full-batch steps, each with an adaptive step size.</p>
 
 
 </section>

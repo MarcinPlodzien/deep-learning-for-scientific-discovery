@@ -4,7 +4,7 @@ code-tools: false
 toc: false
 ---
 
-Learning a probability distribution from data alone, and drawing new samples from it. Why an autoencoder cannot generate, and the probability toolkit needed to fix it: distributions and densities, expectations as averages over samples, the Gaussian, joint, conditional and marginal distributions, Bayes' rule, the Kullback–Leibler divergence and maximum likelihood, latent-variable models. The variational autoencoder: training and sampling, the decoder as a likelihood, binary cross-entropy, the evidence lower bound, the reparametrisation trick, the latent space. Conditional generation of a chosen digit or cell type, checked with classifiers trained on real or synthetic data, and disentangled latent features with the β-VAE.
+Learning a probability distribution from data alone, and drawing new samples from it. Why an autoencoder cannot generate, and the probability toolkit needed to fix it: distributions and densities, expectations as averages over samples, the Gaussian, joint, conditional and marginal distributions, Bayes' rule, the Kullback–Leibler divergence and maximum likelihood, latent-variable models. The variational autoencoder: training and sampling, the decoder as a likelihood, binary cross-entropy, the evidence lower bound, the reparametrisation trick, the latent space. Conditional generation of a chosen digit or cell type, checked with classifiers trained on real or synthetic data, disentangled latent features with the β-VAE, latent spaces of data with known causes (a curve, a rotating bar and its vortices), and Ising configurations from a conditional VAE.
 
 ## Slides
 
@@ -15,13 +15,31 @@ Learning a probability distribution from data alone, and drawing new samples fro
 ## Notebooks
 
 ::: {.nb-item}
-[Generative models: probability, VAE, GAN and diffusion](../notebooks/lecture-06/generative-models.ipynb)
+[Generative models: probability, autoencoder and VAE](../notebooks/lecture-06/generative-models.ipynb)
 
-The probability toolkit, the VAE and the conditional VAE on MNIST and blood cells; its GAN and diffusion parts belong to Lecture 7.
+The probability toolkit, maximum likelihood, why an autoencoder cannot generate, the VAE and the conditional VAE on MNIST and blood cells.
 :::
 
 ::: {.nb-item}
 [Conditional generation of digits and blood cells](../notebooks/lecture-06/conditional-generation.ipynb)
 
 The VAE in a two-dimensional latent space, the reparametrisation trick, generating a chosen digit or cell type, and classifiers trained on real or synthetic data.
+:::
+
+::: {.nb-item}
+[Latent space of a VAE: data with known causes](../notebooks/lecture-06/latent-space.ipynb)
+
+A curve with one hidden number and bars with an angle and a shift: how the decoder stretches the prior, the VAE as a continuous mixture, vortices of the decoded angle, and encoder clouds against the exact posterior.
+:::
+
+::: {.nb-item}
+[Disentangled latent features with the β-VAE](../notebooks/lecture-06/beta-vae.ipynb)
+
+dSprites and MNIST: information per latent coordinate, traversals, the mutual information gap and interpolation for β = 1, 4, 8.
+:::
+
+::: {.nb-item}
+[Ising configurations from a conditional VAE](../notebooks/lecture-06/ising-cvae.ipynb)
+
+Spin configurations generated at a chosen temperature and checked against Monte Carlo with observables, correlation functions, a phase classifier and a temperature regressor.
 :::

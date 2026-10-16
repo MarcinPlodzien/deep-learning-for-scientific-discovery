@@ -388,7 +388,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../notebooks/lecture-06/generative-models.html" class="sidebar-item-text sidebar-link">Generative models: probability, VAE, GAN and diffusion</a>
+  <a href="../../notebooks/lecture-06/generative-models.html" class="sidebar-item-text sidebar-link">Generative models: probability, autoencoder and VAE</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -807,16 +807,16 @@ always answering 'neutrophil' gives accuracy 19.5% on the training set</code></p
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> torch.tensor([[<span class="fl">2.0</span>, <span class="fl">0.5</span>, <span class="op">-</span><span class="fl">1.0</span>]])        <span class="co"># scores of ONE image for 3 classes</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>true_class <span class="op">=</span> torch.tensor([<span class="dv">0</span>])</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> torch.exp(scores) <span class="op">/</span> torch.exp(scores).<span class="bu">sum</span>()   <span class="co"># softmax by hand</span></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>loss_by_hand <span class="op">=</span> <span class="op">-</span>torch.log(q[<span class="dv">0</span>, true_class])</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> torch.exp(scores) <span class="op">/</span> torch.exp(scores).<span class="bu">sum</span>()   <span class="co"># softmax written out</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>loss_explicit <span class="op">=</span> <span class="op">-</span>torch.log(q[<span class="dv">0</span>, true_class])</span>
 <span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"probabilities:"</span>, q.numpy().<span class="bu">round</span>(<span class="dv">3</span>), <span class="st">"  sum:"</span>, q.<span class="bu">sum</span>().item())</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"loss by hand        :"</span>, loss_by_hand.item())</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"loss, written out   :"</span>, loss_explicit.item())</span>
 <span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"F.cross_entropy     :"</span>, F.cross_entropy(scores, true_class).item())</span>
 <span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"if the true class were 2:"</span>, F.cross_entropy(scores, torch.tensor([<span class="dv">2</span>])).item())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>probabilities: [[0.786 0.175 0.039]]   sum: 1.0
-loss by hand        : 0.24131131172180176
+loss, written out   : 0.24131131172180176
 F.cross_entropy     : 0.24131132662296295
 if the true class were 2: 3.2413113117218018</code></pre>
 </div>
@@ -1016,7 +1016,7 @@ accuracy of the untrained network on the validation set: 0.1822429906542056</cod
 <span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"kernel:</span><span class="ch">\n</span><span class="st">"</span>, sobel.numpy())</span>
 <span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>patch <span class="op">=</span> image5[<span class="dv">0</span>:<span class="dv">3</span>, <span class="dv">0</span>:<span class="dv">3</span>]                                                  <span class="co"># the 3 x 3 patch in the top-left corner</span></span>
-<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"top-left output by hand:"</span>, (patch <span class="op">*</span> sobel).<span class="bu">sum</span>().item())</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"top-left output, explicit sum:"</span>, (patch <span class="op">*</span> sobel).<span class="bu">sum</span>().item())</span>
 <span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>out <span class="op">=</span> F.conv2d(image5[<span class="va">None</span>, <span class="va">None</span>], sobel[<span class="va">None</span>, <span class="va">None</span>])                      <span class="co"># shapes (1, 1, 5, 5) and (1, 1, 3, 3)</span></span>
 <span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"F.conv2d, no padding -&gt; shape"</span>, <span class="bu">tuple</span>(out.shape[<span class="dv">2</span>:]), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>, out[<span class="dv">0</span>, <span class="dv">0</span>].numpy())</span>
@@ -1035,7 +1035,7 @@ kernel:
  [[-1.  0.  1.]
  [-2.  0.  2.]
  [-1.  0.  1.]]
-top-left output by hand: 4.0
+top-left output, explicit sum: 4.0
 F.conv2d, no padding -&gt; shape (3, 3) 
  [[4. 4. 0.]
  [4. 4. 0.]
@@ -2043,35 +2043,52 @@ E: GAP CNN (+ batch norm, augmentation)         288936     93.5%       94.0%   9
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb139"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb139-1"><a href="#cb139-1" aria-hidden="true" tabindex="-1"></a>heads <span class="op">=</span> [(<span class="st">"Model A"</span>, [<span class="dv">3</span> <span class="op">*</span> SIZE <span class="op">*</span> SIZE, <span class="dv">21</span>, N_CLASSES], [<span class="st">"pixels"</span>, <span class="st">"hidden"</span>, <span class="st">"classes"</span>]),</span>
-<span id="cb139-2"><a href="#cb139-2" aria-hidden="true" tabindex="-1"></a>         (<span class="st">"Models B and B2, dense part"</span>, [<span class="dv">32</span> <span class="op">*</span> (SIZE <span class="op">//</span> <span class="dv">2</span>) <span class="op">**</span> <span class="dv">2</span>, <span class="dv">21</span>, N_CLASSES], [<span class="st">"flattened maps"</span>, <span class="st">"hidden"</span>, <span class="st">"classes"</span>]),</span>
-<span id="cb139-3"><a href="#cb139-3" aria-hidden="true" tabindex="-1"></a>         (<span class="st">"Models C and D, dense part"</span>, [<span class="dv">128</span> <span class="op">*</span> (SIZE <span class="op">//</span> <span class="dv">8</span>) <span class="op">**</span> <span class="dv">2</span>, <span class="dv">512</span>, N_CLASSES], [<span class="st">"flattened maps"</span>, <span class="st">"hidden"</span>, <span class="st">"classes"</span>]),</span>
-<span id="cb139-4"><a href="#cb139-4" aria-hidden="true" tabindex="-1"></a>         (<span class="st">"Model E, dense part"</span>, [<span class="dv">128</span>, N_CLASSES], [<span class="st">"averaged maps"</span>, <span class="st">"classes"</span>])]</span>
-<span id="cb139-5"><a href="#cb139-5" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">4</span>, figsize<span class="op">=</span>(<span class="dv">18</span>, <span class="fl">5.5</span>))</span>
-<span id="cb139-6"><a href="#cb139-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, (title, sizes, labels) <span class="kw">in</span> <span class="bu">zip</span>(axes, heads):</span>
-<span id="cb139-7"><a href="#cb139-7" aria-hidden="true" tabindex="-1"></a>    draw_network(sizes, labels<span class="op">=</span>labels, ax<span class="op">=</span>ax)</span>
-<span id="cb139-8"><a href="#cb139-8" aria-hidden="true" tabindex="-1"></a>    ax.set_title(title)</span>
-<span id="cb139-9"><a href="#cb139-9" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb139"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb139-1"><a href="#cb139-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> dense_layers(model):</span>
+<span id="cb139-2"><a href="#cb139-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># the nn.Linear layers of a model, in the order of model.modules()</span></span>
+<span id="cb139-3"><a href="#cb139-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [m <span class="cf">for</span> m <span class="kw">in</span> model.modules() <span class="cf">if</span> <span class="bu">isinstance</span>(m, nn.Linear)]</span>
+<span id="cb139-4"><a href="#cb139-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb139-5"><a href="#cb139-5" aria-hidden="true" tabindex="-1"></a>heads <span class="op">=</span> [(<span class="st">"Model A"</span>, model_A, [<span class="st">"pixels"</span>, <span class="st">"hidden"</span>, <span class="st">"classes"</span>]),</span>
+<span id="cb139-6"><a href="#cb139-6" aria-hidden="true" tabindex="-1"></a>         (<span class="st">"Models B and B2, dense part"</span>, model_B2, [<span class="st">"flattened maps"</span>, <span class="st">"hidden"</span>, <span class="st">"classes"</span>]),</span>
+<span id="cb139-7"><a href="#cb139-7" aria-hidden="true" tabindex="-1"></a>         (<span class="st">"Models C and D, dense part"</span>, model_C, [<span class="st">"flattened maps"</span>, <span class="st">"hidden"</span>, <span class="st">"classes"</span>]),</span>
+<span id="cb139-8"><a href="#cb139-8" aria-hidden="true" tabindex="-1"></a>         (<span class="st">"Model E, dense part"</span>, model_E, [<span class="st">"averaged maps"</span>, <span class="st">"classes"</span>])]</span>
+<span id="cb139-9"><a href="#cb139-9" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">4</span>, figsize<span class="op">=</span>(<span class="dv">18</span>, <span class="fl">5.5</span>))</span>
+<span id="cb139-10"><a href="#cb139-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, (title, m, labels) <span class="kw">in</span> <span class="bu">zip</span>(axes, heads):</span>
+<span id="cb139-11"><a href="#cb139-11" aria-hidden="true" tabindex="-1"></a>    layers <span class="op">=</span> dense_layers(m)</span>
+<span id="cb139-12"><a href="#cb139-12" aria-hidden="true" tabindex="-1"></a>    sizes <span class="op">=</span> [layers[<span class="dv">0</span>].in_features] <span class="op">+</span> [l.out_features <span class="cf">for</span> l <span class="kw">in</span> layers]    <span class="co"># read from the model</span></span>
+<span id="cb139-13"><a href="#cb139-13" aria-hidden="true" tabindex="-1"></a>    draw_network(sizes, labels<span class="op">=</span>labels, ax<span class="op">=</span>ax)</span>
+<span id="cb139-14"><a href="#cb139-14" aria-hidden="true" tabindex="-1"></a>    ax.set_title(title)</span>
+<span id="cb139-15"><a href="#cb139-15" aria-hidden="true" tabindex="-1"></a>    n_drawn <span class="op">=</span> <span class="bu">sum</span>((a <span class="op">+</span> <span class="dv">1</span>) <span class="op">*</span> b <span class="cf">for</span> a, b <span class="kw">in</span> <span class="bu">zip</span>(sizes[:<span class="op">-</span><span class="dv">1</span>], sizes[<span class="dv">1</span>:]))     <span class="co"># weights and biases of the drawn edges</span></span>
+<span id="cb139-16"><a href="#cb139-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> n_drawn <span class="op">==</span> <span class="bu">sum</span>(p.numel() <span class="cf">for</span> l <span class="kw">in</span> layers <span class="cf">for</span> p <span class="kw">in</span> l.parameters())</span>
+<span id="cb139-17"><a href="#cb139-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>title<span class="sc">}</span><span class="ss">: layers </span><span class="sc">{</span>sizes<span class="sc">}</span><span class="ss">, </span><span class="sc">{</span>n_drawn<span class="sc">}</span><span class="ss"> of the </span><span class="sc">{</span>count_parameters(m)<span class="sc">}</span><span class="ss"> parameters"</span>)</span>
+<span id="cb139-18"><a href="#cb139-18" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Model A: layers [12288, 21, 8], 258245 of the 258245 parameters
+Models B and B2, dense part: layers [32768, 21, 8], 688325 of the 689221 parameters</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Models C and D, dense part: layers [8192, 512, 8], 4198920 of the 4292168 parameters
+Model E, dense part: layers [128, 8], 1032 of the 288936 parameters</code></pre>
+</div>
 <div class="cell-output cell-output-display">
-<p><img src="bloodmnist-cnn-regularisation-cam_files/figure-html/cell-39-output-1.png" class="img-fluid"></p>
+<p><img src="bloodmnist-cnn-regularisation-cam_files/figure-html/cell-39-output-3.png" class="img-fluid"></p>
 </div>
 </div>
 <p>The library way to inspect a PyTorch model is <code>torchinfo.summary</code>. It sends one input through the model and prints one row per layer, with the shape of the layer’s output and its number of parameters, followed by the totals, split into trainable and non-trainable parameters. The input is given by its shape, <code>input_size=(1, 3, SIZE, SIZE)</code>, or as a tensor, <code>input_data=...</code>. We pass a tensor of zeros: with <code>input_size</code> the library draws a random input, which would advance PyTorch’s random number generator and change the training runs that follow. <code>col_names</code> selects the columns and <code>depth</code> the level of nested modules that is expanded; the model itself, including its training or evaluation mode, is left unchanged. Both libraries are installed with <code>pip install torchinfo torchview</code>; the first lines of the code install them when they are missing. The totals reproduce the parameter column of the table. Models C and D differ by the scales and shifts of batch normalisation, <span class="math display">\[2\cdot(32+64+128)=448 \tag{13}\]</span> parameters. In Model E the global average pooling is absent from the list: it is the operation <code>f.mean(dim=(2, 3))</code> in <code>forward</code>, not a module.</p>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb140"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb140-1"><a href="#cb140-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> importlib.util, subprocess, sys</span>
-<span id="cb140-2"><a href="#cb140-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> importlib.util.find_spec(<span class="st">"torchinfo"</span>) <span class="kw">is</span> <span class="va">None</span> <span class="kw">or</span> importlib.util.find_spec(<span class="st">"torchview"</span>) <span class="kw">is</span> <span class="va">None</span>:</span>
-<span id="cb140-3"><a href="#cb140-3" aria-hidden="true" tabindex="-1"></a>    subprocess.check_call([sys.executable, <span class="st">"-m"</span>, <span class="st">"pip"</span>, <span class="st">"install"</span>, <span class="st">"-q"</span>, <span class="st">"torchinfo"</span>, <span class="st">"torchview"</span>, <span class="st">"graphviz"</span>])   <span class="co"># e.g. in Google Colab</span></span>
-<span id="cb140-4"><a href="#cb140-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torchinfo <span class="im">import</span> summary</span>
-<span id="cb140-5"><a href="#cb140-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torchview <span class="im">import</span> draw_graph</span>
-<span id="cb140-6"><a href="#cb140-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> IPython.display <span class="im">as</span> ipd</span>
-<span id="cb140-7"><a href="#cb140-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb140-8"><a href="#cb140-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, m <span class="kw">in</span> [(<span class="st">"A"</span>, model_A), (<span class="st">"B2"</span>, model_B2), (<span class="st">"C"</span>, model_C), (<span class="st">"D"</span>, model_D), (<span class="st">"E"</span>, model_E)]:</span>
-<span id="cb140-9"><a href="#cb140-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Model"</span>, name)</span>
-<span id="cb140-10"><a href="#cb140-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(summary(m, input_data<span class="op">=</span>torch.zeros(<span class="dv">1</span>, <span class="dv">3</span>, SIZE, SIZE, device<span class="op">=</span>device), col_names<span class="op">=</span>(<span class="st">"output_size"</span>, <span class="st">"num_params"</span>),</span>
-<span id="cb140-11"><a href="#cb140-11" aria-hidden="true" tabindex="-1"></a>                  depth<span class="op">=</span><span class="dv">2</span>, verbose<span class="op">=</span><span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb142"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb142-1"><a href="#cb142-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> importlib.util, subprocess, sys</span>
+<span id="cb142-2"><a href="#cb142-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> importlib.util.find_spec(<span class="st">"torchinfo"</span>) <span class="kw">is</span> <span class="va">None</span> <span class="kw">or</span> importlib.util.find_spec(<span class="st">"torchview"</span>) <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb142-3"><a href="#cb142-3" aria-hidden="true" tabindex="-1"></a>    subprocess.check_call([sys.executable, <span class="st">"-m"</span>, <span class="st">"pip"</span>, <span class="st">"install"</span>, <span class="st">"-q"</span>, <span class="st">"torchinfo"</span>, <span class="st">"torchview"</span>, <span class="st">"graphviz"</span>])   <span class="co"># e.g. in Google Colab</span></span>
+<span id="cb142-4"><a href="#cb142-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torchinfo <span class="im">import</span> summary</span>
+<span id="cb142-5"><a href="#cb142-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torchview <span class="im">import</span> draw_graph</span>
+<span id="cb142-6"><a href="#cb142-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> IPython.display <span class="im">as</span> ipd</span>
+<span id="cb142-7"><a href="#cb142-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb142-8"><a href="#cb142-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, m <span class="kw">in</span> [(<span class="st">"A"</span>, model_A), (<span class="st">"B"</span>, model_B), (<span class="st">"B2"</span>, model_B2), (<span class="st">"C"</span>, model_C), (<span class="st">"D"</span>, model_D), (<span class="st">"E"</span>, model_E)]:</span>
+<span id="cb142-9"><a href="#cb142-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Model"</span>, name)</span>
+<span id="cb142-10"><a href="#cb142-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(summary(m, input_data<span class="op">=</span>torch.zeros(<span class="dv">1</span>, <span class="dv">3</span>, SIZE, SIZE, device<span class="op">=</span>device), col_names<span class="op">=</span>(<span class="st">"output_size"</span>, <span class="st">"num_params"</span>),</span>
+<span id="cb142-11"><a href="#cb142-11" aria-hidden="true" tabindex="-1"></a>                  depth<span class="op">=</span><span class="dv">2</span>, verbose<span class="op">=</span><span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Model A
@@ -2093,6 +2110,29 @@ Input size (MB): 0.05
 Forward/backward pass size (MB): 0.00
 Params size (MB): 1.03
 Estimated Total Size (MB): 1.08
+==========================================================================================
+Model B
+==========================================================================================
+Layer (type:depth-idx)                   Output Shape              Param #
+==========================================================================================
+Sequential                               [1, 8]                    --
+├─Conv2d: 1-1                            [1, 32, 64, 64]           896
+├─Sigmoid: 1-2                           [1, 32, 64, 64]           --
+├─MaxPool2d: 1-3                         [1, 32, 32, 32]           --
+├─Flatten: 1-4                           [1, 32768]                --
+├─Linear: 1-5                            [1, 21]                   688,149
+├─Sigmoid: 1-6                           [1, 21]                   --
+├─Linear: 1-7                            [1, 8]                    176
+==========================================================================================
+Total params: 689,221
+Trainable params: 689,221
+Non-trainable params: 0
+Total mult-adds (Units.MEGABYTES): 4.36
+==========================================================================================
+Input size (MB): 0.05
+Forward/backward pass size (MB): 1.05
+Params size (MB): 2.76
+Estimated Total Size (MB): 3.85
 ==========================================================================================
 Model B2
 ==========================================================================================
@@ -2210,10 +2250,11 @@ Estimated Total Size (MB): 8.55
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb142"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb142-1"><a href="#cb142-1" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">"figures"</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb142-2"><a href="#cb142-2" aria-hidden="true" tabindex="-1"></a>graph <span class="op">=</span> draw_graph(model_E, input_data<span class="op">=</span>torch.zeros(<span class="dv">1</span>, <span class="dv">3</span>, SIZE, SIZE, device<span class="op">=</span>device), expand_nested<span class="op">=</span><span class="va">True</span>, device<span class="op">=</span>device)</span>
-<span id="cb142-3"><a href="#cb142-3" aria-hidden="true" tabindex="-1"></a>graph.visual_graph.render(<span class="st">"figures/BloodMNIST_model_E_graph"</span>, <span class="bu">format</span><span class="op">=</span><span class="st">"png"</span>, cleanup<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb142-4"><a href="#cb142-4" aria-hidden="true" tabindex="-1"></a>ipd.display(ipd.Image(filename<span class="op">=</span><span class="st">"figures/BloodMNIST_model_E_graph.png"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb144"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb144-1"><a href="#cb144-1" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">"figures"</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb144-2"><a href="#cb144-2" aria-hidden="true" tabindex="-1"></a>graph <span class="op">=</span> draw_graph(model_E, input_data<span class="op">=</span>torch.zeros(<span class="dv">1</span>, <span class="dv">3</span>, SIZE, SIZE, device<span class="op">=</span>device), expand_nested<span class="op">=</span><span class="va">True</span>, depth<span class="op">=</span><span class="dv">2</span>, graph_dir<span class="op">=</span><span class="st">"LR"</span>, device<span class="op">=</span>device)</span>
+<span id="cb144-3"><a href="#cb144-3" aria-hidden="true" tabindex="-1"></a>graph.visual_graph.graph_attr.update(dpi<span class="op">=</span><span class="st">"200"</span>)                  <span class="co"># left to right, wide enough for a 16:9 slide</span></span>
+<span id="cb144-4"><a href="#cb144-4" aria-hidden="true" tabindex="-1"></a>graph.visual_graph.render(<span class="st">"figures/BloodMNIST_model_E_graph"</span>, <span class="bu">format</span><span class="op">=</span><span class="st">"png"</span>, cleanup<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb144-5"><a href="#cb144-5" aria-hidden="true" tabindex="-1"></a>ipd.display(ipd.Image(filename<span class="op">=</span><span class="st">"figures/BloodMNIST_model_E_graph.png"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <p><img src="bloodmnist-cnn-regularisation-cam_files/figure-html/cell-41-output-1.png" class="img-fluid"></p>
@@ -2349,32 +2390,32 @@ Estimated Total Size (MB): 8.55
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T10:16:14.450496Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T10:16:14.450335Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T10:16:16.668103Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T10:16:16.667740Z&quot;}" data-execution_count="37">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb143"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb143-1"><a href="#cb143-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> zipfile, io</span>
-<span id="cb143-2"><a href="#cb143-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PIL <span class="im">import</span> Image</span>
-<span id="cb143-3"><a href="#cb143-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb143-4"><a href="#cb143-4" aria-hidden="true" tabindex="-1"></a>N_PER_CLASS <span class="op">=</span> <span class="dv">1000</span>                      <span class="co"># images per class used here; None = all</span></span>
-<span id="cb143-5"><a href="#cb143-5" aria-hidden="true" tabindex="-1"></a>path_s <span class="op">=</span> os.path.join(DATA_DIR, <span class="st">"EuroSAT.zip"</span>)</span>
-<span id="cb143-6"><a href="#cb143-6" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
-<span id="cb143-7"><a href="#cb143-7" aria-hidden="true" tabindex="-1"></a>    download(<span class="st">"https://huggingface.co/datasets/torchgeo/eurosat/resolve/main/EuroSAT.zip"</span>, path_s, tries<span class="op">=</span><span class="dv">2</span>)</span>
-<span id="cb143-8"><a href="#cb143-8" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">RuntimeError</span>:</span>
-<span id="cb143-9"><a href="#cb143-9" aria-hidden="true" tabindex="-1"></a>    download(<span class="st">"https://zenodo.org/records/7711810/files/EuroSAT_RGB.zip?download=1"</span>, path_s)</span>
-<span id="cb143-10"><a href="#cb143-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb143-11"><a href="#cb143-11" aria-hidden="true" tabindex="-1"></a>archive <span class="op">=</span> zipfile.ZipFile(path_s)</span>
-<span id="cb143-12"><a href="#cb143-12" aria-hidden="true" tabindex="-1"></a>files <span class="op">=</span> <span class="bu">sorted</span>(name <span class="cf">for</span> name <span class="kw">in</span> archive.namelist() <span class="cf">if</span> name.lower().endswith(<span class="st">".jpg"</span>))</span>
-<span id="cb143-13"><a href="#cb143-13" aria-hidden="true" tabindex="-1"></a>names_s <span class="op">=</span> <span class="bu">sorted</span>({name.split(<span class="st">"/"</span>)[<span class="op">-</span><span class="dv">2</span>] <span class="cf">for</span> name <span class="kw">in</span> files})          <span class="co"># the folder name is the class</span></span>
-<span id="cb143-14"><a href="#cb143-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(files), <span class="st">"images in"</span>, <span class="bu">len</span>(names_s), <span class="st">"classes:"</span>, names_s)</span>
-<span id="cb143-15"><a href="#cb143-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb143-16"><a href="#cb143-16" aria-hidden="true" tabindex="-1"></a>rng_s <span class="op">=</span> np.random.default_rng(<span class="dv">0</span>)</span>
-<span id="cb143-17"><a href="#cb143-17" aria-hidden="true" tabindex="-1"></a>chosen_files <span class="op">=</span> []</span>
-<span id="cb143-18"><a href="#cb143-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c, name <span class="kw">in</span> <span class="bu">enumerate</span>(names_s):</span>
-<span id="cb143-19"><a href="#cb143-19" aria-hidden="true" tabindex="-1"></a>    of_class <span class="op">=</span> [f <span class="cf">for</span> f <span class="kw">in</span> files <span class="cf">if</span> f.split(<span class="st">"/"</span>)[<span class="op">-</span><span class="dv">2</span>] <span class="op">==</span> name]</span>
-<span id="cb143-20"><a href="#cb143-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> N_PER_CLASS <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
-<span id="cb143-21"><a href="#cb143-21" aria-hidden="true" tabindex="-1"></a>        of_class <span class="op">=</span> <span class="bu">list</span>(rng_s.choice(of_class, size<span class="op">=</span>N_PER_CLASS, replace<span class="op">=</span><span class="va">False</span>))</span>
-<span id="cb143-22"><a href="#cb143-22" aria-hidden="true" tabindex="-1"></a>    chosen_files <span class="op">+=</span> [(f, c) <span class="cf">for</span> f <span class="kw">in</span> of_class]</span>
-<span id="cb143-23"><a href="#cb143-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb143-24"><a href="#cb143-24" aria-hidden="true" tabindex="-1"></a>S_images <span class="op">=</span> np.stack([np.array(Image.<span class="bu">open</span>(io.BytesIO(archive.read(f))).convert(<span class="st">"RGB"</span>)) <span class="cf">for</span> f, c <span class="kw">in</span> chosen_files])</span>
-<span id="cb143-25"><a href="#cb143-25" aria-hidden="true" tabindex="-1"></a>s_labels <span class="op">=</span> np.array([c <span class="cf">for</span> f, c <span class="kw">in</span> chosen_files])</span>
-<span id="cb143-26"><a href="#cb143-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"images:"</span>, S_images.shape, S_images.dtype, <span class="st">"  labels:"</span>, s_labels.shape, <span class="st">"  images per class:"</span>, np.bincount(s_labels))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb145"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb145-1"><a href="#cb145-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> zipfile, io</span>
+<span id="cb145-2"><a href="#cb145-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PIL <span class="im">import</span> Image</span>
+<span id="cb145-3"><a href="#cb145-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb145-4"><a href="#cb145-4" aria-hidden="true" tabindex="-1"></a>N_PER_CLASS <span class="op">=</span> <span class="dv">1000</span>                      <span class="co"># images per class used here; None = all</span></span>
+<span id="cb145-5"><a href="#cb145-5" aria-hidden="true" tabindex="-1"></a>path_s <span class="op">=</span> os.path.join(DATA_DIR, <span class="st">"EuroSAT.zip"</span>)</span>
+<span id="cb145-6"><a href="#cb145-6" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb145-7"><a href="#cb145-7" aria-hidden="true" tabindex="-1"></a>    download(<span class="st">"https://huggingface.co/datasets/torchgeo/eurosat/resolve/main/EuroSAT.zip"</span>, path_s, tries<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb145-8"><a href="#cb145-8" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">RuntimeError</span>:</span>
+<span id="cb145-9"><a href="#cb145-9" aria-hidden="true" tabindex="-1"></a>    download(<span class="st">"https://zenodo.org/records/7711810/files/EuroSAT_RGB.zip?download=1"</span>, path_s)</span>
+<span id="cb145-10"><a href="#cb145-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb145-11"><a href="#cb145-11" aria-hidden="true" tabindex="-1"></a>archive <span class="op">=</span> zipfile.ZipFile(path_s)</span>
+<span id="cb145-12"><a href="#cb145-12" aria-hidden="true" tabindex="-1"></a>files <span class="op">=</span> <span class="bu">sorted</span>(name <span class="cf">for</span> name <span class="kw">in</span> archive.namelist() <span class="cf">if</span> name.lower().endswith(<span class="st">".jpg"</span>))</span>
+<span id="cb145-13"><a href="#cb145-13" aria-hidden="true" tabindex="-1"></a>names_s <span class="op">=</span> <span class="bu">sorted</span>({name.split(<span class="st">"/"</span>)[<span class="op">-</span><span class="dv">2</span>] <span class="cf">for</span> name <span class="kw">in</span> files})          <span class="co"># the folder name is the class</span></span>
+<span id="cb145-14"><a href="#cb145-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(files), <span class="st">"images in"</span>, <span class="bu">len</span>(names_s), <span class="st">"classes:"</span>, names_s)</span>
+<span id="cb145-15"><a href="#cb145-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb145-16"><a href="#cb145-16" aria-hidden="true" tabindex="-1"></a>rng_s <span class="op">=</span> np.random.default_rng(<span class="dv">0</span>)</span>
+<span id="cb145-17"><a href="#cb145-17" aria-hidden="true" tabindex="-1"></a>chosen_files <span class="op">=</span> []</span>
+<span id="cb145-18"><a href="#cb145-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c, name <span class="kw">in</span> <span class="bu">enumerate</span>(names_s):</span>
+<span id="cb145-19"><a href="#cb145-19" aria-hidden="true" tabindex="-1"></a>    of_class <span class="op">=</span> [f <span class="cf">for</span> f <span class="kw">in</span> files <span class="cf">if</span> f.split(<span class="st">"/"</span>)[<span class="op">-</span><span class="dv">2</span>] <span class="op">==</span> name]</span>
+<span id="cb145-20"><a href="#cb145-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> N_PER_CLASS <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb145-21"><a href="#cb145-21" aria-hidden="true" tabindex="-1"></a>        of_class <span class="op">=</span> <span class="bu">list</span>(rng_s.choice(of_class, size<span class="op">=</span>N_PER_CLASS, replace<span class="op">=</span><span class="va">False</span>))</span>
+<span id="cb145-22"><a href="#cb145-22" aria-hidden="true" tabindex="-1"></a>    chosen_files <span class="op">+=</span> [(f, c) <span class="cf">for</span> f <span class="kw">in</span> of_class]</span>
+<span id="cb145-23"><a href="#cb145-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb145-24"><a href="#cb145-24" aria-hidden="true" tabindex="-1"></a>S_images <span class="op">=</span> np.stack([np.array(Image.<span class="bu">open</span>(io.BytesIO(archive.read(f))).convert(<span class="st">"RGB"</span>)) <span class="cf">for</span> f, c <span class="kw">in</span> chosen_files])</span>
+<span id="cb145-25"><a href="#cb145-25" aria-hidden="true" tabindex="-1"></a>s_labels <span class="op">=</span> np.array([c <span class="cf">for</span> f, c <span class="kw">in</span> chosen_files])</span>
+<span id="cb145-26"><a href="#cb145-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"images:"</span>, S_images.shape, S_images.dtype, <span class="st">"  labels:"</span>, s_labels.shape, <span class="st">"  images per class:"</span>, np.bincount(s_labels))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>27000 images in 10 classes: ['AnnualCrop', 'Forest', 'HerbaceousVegetation', 'Highway', 'Industrial', 'Pasture', 'PermanentCrop', 'Residential', 'River', 'SeaLake']</code></pre>
@@ -2390,12 +2431,12 @@ Estimated Total Size (MB): 8.55
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T10:16:16.669503Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T10:16:16.669343Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T10:16:17.620220Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T10:16:17.619784Z&quot;}" data-execution_count="38">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb146"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb146-1"><a href="#cb146-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">5</span>, <span class="bu">len</span>(names_s), figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="fl">7.8</span>))</span>
-<span id="cb146-2"><a href="#cb146-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(names_s)):</span>
-<span id="cb146-3"><a href="#cb146-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> row, p <span class="kw">in</span> <span class="bu">enumerate</span>(np.flatnonzero(s_labels <span class="op">==</span> c)[:<span class="dv">5</span>]):</span>
-<span id="cb146-4"><a href="#cb146-4" aria-hidden="true" tabindex="-1"></a>        axes[row, c].imshow(S_images[p])<span class="op">;</span> axes[row, c].set_xticks([])<span class="op">;</span> axes[row, c].set_yticks([])</span>
-<span id="cb146-5"><a href="#cb146-5" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>, c].set_title(names_s[c].replace(<span class="st">"Vegetation"</span>, <span class="st">"</span><span class="ch">\n</span><span class="st">Vegetation"</span>), fontsize<span class="op">=</span><span class="dv">9</span>)</span>
-<span id="cb146-6"><a href="#cb146-6" aria-hidden="true" tabindex="-1"></a>fig.suptitle(<span class="st">"EuroSAT: Sentinel-2 patches, 64 x 64 pixels"</span>)<span class="op">;</span> fig.tight_layout()<span class="op">;</span> plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb148"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb148-1"><a href="#cb148-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">5</span>, <span class="bu">len</span>(names_s), figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="fl">7.8</span>))</span>
+<span id="cb148-2"><a href="#cb148-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(names_s)):</span>
+<span id="cb148-3"><a href="#cb148-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> row, p <span class="kw">in</span> <span class="bu">enumerate</span>(np.flatnonzero(s_labels <span class="op">==</span> c)[:<span class="dv">5</span>]):</span>
+<span id="cb148-4"><a href="#cb148-4" aria-hidden="true" tabindex="-1"></a>        axes[row, c].imshow(S_images[p])<span class="op">;</span> axes[row, c].set_xticks([])<span class="op">;</span> axes[row, c].set_yticks([])</span>
+<span id="cb148-5"><a href="#cb148-5" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>, c].set_title(names_s[c].replace(<span class="st">"Vegetation"</span>, <span class="st">"</span><span class="ch">\n</span><span class="st">Vegetation"</span>), fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb148-6"><a href="#cb148-6" aria-hidden="true" tabindex="-1"></a>fig.suptitle(<span class="st">"EuroSAT: Sentinel-2 patches, 64 x 64 pixels"</span>)<span class="op">;</span> fig.tight_layout()<span class="op">;</span> plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <p><img src="bloodmnist-cnn-regularisation-cam_files/figure-html/cell-43-output-1.png" class="img-fluid"></p>
@@ -2408,26 +2449,26 @@ Estimated Total Size (MB): 8.55
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T10:16:17.625678Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T10:16:17.625544Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T10:16:19.903345Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T10:16:19.902793Z&quot;}" data-execution_count="39">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb147"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb147-1"><a href="#cb147-1" aria-hidden="true" tabindex="-1"></a>order <span class="op">=</span> rng_s.permutation(<span class="bu">len</span>(S_images))</span>
-<span id="cb147-2"><a href="#cb147-2" aria-hidden="true" tabindex="-1"></a>n_train, n_val <span class="op">=</span> <span class="bu">int</span>(<span class="fl">0.7</span> <span class="op">*</span> <span class="bu">len</span>(order)), <span class="bu">int</span>(<span class="fl">0.1</span> <span class="op">*</span> <span class="bu">len</span>(order))</span>
-<span id="cb147-3"><a href="#cb147-3" aria-hidden="true" tabindex="-1"></a>i_train, i_val, i_test <span class="op">=</span> order[:n_train], order[n_train:n_train <span class="op">+</span> n_val], order[n_train <span class="op">+</span> n_val:]</span>
-<span id="cb147-4"><a href="#cb147-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"training:"</span>, <span class="bu">len</span>(i_train), <span class="st">" validation:"</span>, <span class="bu">len</span>(i_val), <span class="st">" test:"</span>, <span class="bu">len</span>(i_test))</span>
-<span id="cb147-5"><a href="#cb147-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb147-6"><a href="#cb147-6" aria-hidden="true" tabindex="-1"></a>mean_s <span class="op">=</span> S_images[i_train].reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">3</span>).mean(axis<span class="op">=</span><span class="dv">0</span>) <span class="op">/</span> <span class="dv">255</span>          <span class="co"># statistics of the training part only</span></span>
-<span id="cb147-7"><a href="#cb147-7" aria-hidden="true" tabindex="-1"></a>std_s  <span class="op">=</span> S_images[i_train].reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">3</span>).std(axis<span class="op">=</span><span class="dv">0</span>) <span class="op">/</span> <span class="dv">255</span></span>
-<span id="cb147-8"><a href="#cb147-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb147-9"><a href="#cb147-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> to_tensor_s(X):</span>
-<span id="cb147-10"><a href="#cb147-10" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> torch.tensor(X, dtype<span class="op">=</span>torch.float32).permute(<span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>) <span class="op">/</span> <span class="dv">255</span></span>
-<span id="cb147-11"><a href="#cb147-11" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> torch.tensor(mean_s, dtype<span class="op">=</span>torch.float32)[:, <span class="va">None</span>, <span class="va">None</span>]</span>
-<span id="cb147-12"><a href="#cb147-12" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> torch.tensor(std_s, dtype<span class="op">=</span>torch.float32)[:, <span class="va">None</span>, <span class="va">None</span>]</span>
-<span id="cb147-13"><a href="#cb147-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ((x <span class="op">-</span> m) <span class="op">/</span> s).to(device)</span>
-<span id="cb147-14"><a href="#cb147-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb147-15"><a href="#cb147-15" aria-hidden="true" tabindex="-1"></a>Str, Sva, Ste <span class="op">=</span> to_tensor_s(S_images[i_train]), to_tensor_s(S_images[i_val]), to_tensor_s(S_images[i_test])</span>
-<span id="cb147-16"><a href="#cb147-16" aria-hidden="true" tabindex="-1"></a>ttr <span class="op">=</span> torch.tensor(s_labels[i_train], dtype<span class="op">=</span>torch.<span class="bu">long</span>, device<span class="op">=</span>device)</span>
-<span id="cb147-17"><a href="#cb147-17" aria-hidden="true" tabindex="-1"></a>tva <span class="op">=</span> torch.tensor(s_labels[i_val],   dtype<span class="op">=</span>torch.<span class="bu">long</span>, device<span class="op">=</span>device)</span>
-<span id="cb147-18"><a href="#cb147-18" aria-hidden="true" tabindex="-1"></a>tte <span class="op">=</span> torch.tensor(s_labels[i_test],  dtype<span class="op">=</span>torch.<span class="bu">long</span>, device<span class="op">=</span>device)</span>
-<span id="cb147-19"><a href="#cb147-19" aria-hidden="true" tabindex="-1"></a>S_test, t_test <span class="op">=</span> S_images[i_test], s_labels[i_test]</span>
-<span id="cb147-20"><a href="#cb147-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"always answering one class gives at most"</span>, <span class="ss">f"</span><span class="sc">{</span><span class="dv">100</span> <span class="op">*</span> np<span class="sc">.</span>bincount(s_labels[i_train])<span class="sc">.</span><span class="bu">max</span>() <span class="op">/</span> <span class="bu">len</span>(i_train)<span class="sc">:.1f}</span><span class="ss">% on the training set"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb149"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb149-1"><a href="#cb149-1" aria-hidden="true" tabindex="-1"></a>order <span class="op">=</span> rng_s.permutation(<span class="bu">len</span>(S_images))</span>
+<span id="cb149-2"><a href="#cb149-2" aria-hidden="true" tabindex="-1"></a>n_train, n_val <span class="op">=</span> <span class="bu">int</span>(<span class="fl">0.7</span> <span class="op">*</span> <span class="bu">len</span>(order)), <span class="bu">int</span>(<span class="fl">0.1</span> <span class="op">*</span> <span class="bu">len</span>(order))</span>
+<span id="cb149-3"><a href="#cb149-3" aria-hidden="true" tabindex="-1"></a>i_train, i_val, i_test <span class="op">=</span> order[:n_train], order[n_train:n_train <span class="op">+</span> n_val], order[n_train <span class="op">+</span> n_val:]</span>
+<span id="cb149-4"><a href="#cb149-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"training:"</span>, <span class="bu">len</span>(i_train), <span class="st">" validation:"</span>, <span class="bu">len</span>(i_val), <span class="st">" test:"</span>, <span class="bu">len</span>(i_test))</span>
+<span id="cb149-5"><a href="#cb149-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb149-6"><a href="#cb149-6" aria-hidden="true" tabindex="-1"></a>mean_s <span class="op">=</span> S_images[i_train].reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">3</span>).mean(axis<span class="op">=</span><span class="dv">0</span>) <span class="op">/</span> <span class="dv">255</span>          <span class="co"># statistics of the training part only</span></span>
+<span id="cb149-7"><a href="#cb149-7" aria-hidden="true" tabindex="-1"></a>std_s  <span class="op">=</span> S_images[i_train].reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">3</span>).std(axis<span class="op">=</span><span class="dv">0</span>) <span class="op">/</span> <span class="dv">255</span></span>
+<span id="cb149-8"><a href="#cb149-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb149-9"><a href="#cb149-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> to_tensor_s(X):</span>
+<span id="cb149-10"><a href="#cb149-10" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> torch.tensor(X, dtype<span class="op">=</span>torch.float32).permute(<span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>) <span class="op">/</span> <span class="dv">255</span></span>
+<span id="cb149-11"><a href="#cb149-11" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> torch.tensor(mean_s, dtype<span class="op">=</span>torch.float32)[:, <span class="va">None</span>, <span class="va">None</span>]</span>
+<span id="cb149-12"><a href="#cb149-12" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> torch.tensor(std_s, dtype<span class="op">=</span>torch.float32)[:, <span class="va">None</span>, <span class="va">None</span>]</span>
+<span id="cb149-13"><a href="#cb149-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ((x <span class="op">-</span> m) <span class="op">/</span> s).to(device)</span>
+<span id="cb149-14"><a href="#cb149-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb149-15"><a href="#cb149-15" aria-hidden="true" tabindex="-1"></a>Str, Sva, Ste <span class="op">=</span> to_tensor_s(S_images[i_train]), to_tensor_s(S_images[i_val]), to_tensor_s(S_images[i_test])</span>
+<span id="cb149-16"><a href="#cb149-16" aria-hidden="true" tabindex="-1"></a>ttr <span class="op">=</span> torch.tensor(s_labels[i_train], dtype<span class="op">=</span>torch.<span class="bu">long</span>, device<span class="op">=</span>device)</span>
+<span id="cb149-17"><a href="#cb149-17" aria-hidden="true" tabindex="-1"></a>tva <span class="op">=</span> torch.tensor(s_labels[i_val],   dtype<span class="op">=</span>torch.<span class="bu">long</span>, device<span class="op">=</span>device)</span>
+<span id="cb149-18"><a href="#cb149-18" aria-hidden="true" tabindex="-1"></a>tte <span class="op">=</span> torch.tensor(s_labels[i_test],  dtype<span class="op">=</span>torch.<span class="bu">long</span>, device<span class="op">=</span>device)</span>
+<span id="cb149-19"><a href="#cb149-19" aria-hidden="true" tabindex="-1"></a>S_test, t_test <span class="op">=</span> S_images[i_test], s_labels[i_test]</span>
+<span id="cb149-20"><a href="#cb149-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"always answering one class gives at most"</span>, <span class="ss">f"</span><span class="sc">{</span><span class="dv">100</span> <span class="op">*</span> np<span class="sc">.</span>bincount(s_labels[i_train])<span class="sc">.</span><span class="bu">max</span>() <span class="op">/</span> <span class="bu">len</span>(i_train)<span class="sc">:.1f}</span><span class="ss">% on the training set"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>training: 7000  validation: 1000  test: 2000</code></pre>
@@ -2443,24 +2484,24 @@ Estimated Total Size (MB): 8.55
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T10:16:19.905308Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T10:16:19.905073Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T10:16:20.113640Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T10:16:20.113195Z&quot;}" data-execution_count="40">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb150"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb150-1"><a href="#cb150-1" aria-hidden="true" tabindex="-1"></a>SHIFT_S <span class="op">=</span> <span class="dv">4</span></span>
-<span id="cb150-2"><a href="#cb150-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb150-3"><a href="#cb150-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> augment_satellite(x):</span>
-<span id="cb150-4"><a href="#cb150-4" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> x.clone()</span>
-<span id="cb150-5"><a href="#cb150-5" aria-hidden="true" tabindex="-1"></a>    flip <span class="op">=</span> torch.rand(x.shape[<span class="dv">0</span>], device<span class="op">=</span>x.device) <span class="op">&lt;</span> <span class="fl">0.5</span></span>
-<span id="cb150-6"><a href="#cb150-6" aria-hidden="true" tabindex="-1"></a>    x[flip] <span class="op">=</span> x[flip].flip(<span class="dv">3</span>)</span>
-<span id="cb150-7"><a href="#cb150-7" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> torch.rot90(x, k<span class="op">=</span><span class="bu">int</span>(np.random.randint(<span class="dv">0</span>, <span class="dv">4</span>)), dims<span class="op">=</span>(<span class="dv">2</span>, <span class="dv">3</span>))     <span class="co"># rotation by k * 90 degrees</span></span>
-<span id="cb150-8"><a href="#cb150-8" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> F.pad(x, (SHIFT_S, SHIFT_S, SHIFT_S, SHIFT_S), mode<span class="op">=</span><span class="st">"reflect"</span>)</span>
-<span id="cb150-9"><a href="#cb150-9" aria-hidden="true" tabindex="-1"></a>    i, j <span class="op">=</span> np.random.randint(<span class="dv">0</span>, <span class="dv">2</span> <span class="op">*</span> SHIFT_S <span class="op">+</span> <span class="dv">1</span>, size<span class="op">=</span><span class="dv">2</span>)</span>
-<span id="cb150-10"><a href="#cb150-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x[:, :, i:i <span class="op">+</span> <span class="dv">64</span>, j:j <span class="op">+</span> <span class="dv">64</span>]</span>
-<span id="cb150-11"><a href="#cb150-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb150-12"><a href="#cb150-12" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">8</span>, figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">2</span>))</span>
-<span id="cb150-13"><a href="#cb150-13" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].imshow(S_images[i_train[<span class="dv">0</span>]])<span class="op">;</span> axes[<span class="dv">0</span>].set_title(<span class="st">"original"</span>, fontsize<span class="op">=</span><span class="dv">9</span>)</span>
-<span id="cb150-14"><a href="#cb150-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">8</span>):</span>
-<span id="cb150-15"><a href="#cb150-15" aria-hidden="true" tabindex="-1"></a>    a <span class="op">=</span> augment_satellite(Str[<span class="dv">0</span>:<span class="dv">1</span>])[<span class="dv">0</span>].cpu().numpy().transpose(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">0</span>) <span class="op">*</span> std_s <span class="op">+</span> mean_s</span>
-<span id="cb150-16"><a href="#cb150-16" aria-hidden="true" tabindex="-1"></a>    axes[k].imshow(np.clip(a, <span class="dv">0</span>, <span class="dv">1</span>))<span class="op">;</span> axes[k].set_title(<span class="st">"augmented"</span>, fontsize<span class="op">=</span><span class="dv">9</span>)</span>
-<span id="cb150-17"><a href="#cb150-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax <span class="kw">in</span> axes: ax.set_xticks([])<span class="op">;</span> ax.set_yticks([])</span>
-<span id="cb150-18"><a href="#cb150-18" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()<span class="op">;</span> plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb152"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb152-1"><a href="#cb152-1" aria-hidden="true" tabindex="-1"></a>SHIFT_S <span class="op">=</span> <span class="dv">4</span></span>
+<span id="cb152-2"><a href="#cb152-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb152-3"><a href="#cb152-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> augment_satellite(x):</span>
+<span id="cb152-4"><a href="#cb152-4" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> x.clone()</span>
+<span id="cb152-5"><a href="#cb152-5" aria-hidden="true" tabindex="-1"></a>    flip <span class="op">=</span> torch.rand(x.shape[<span class="dv">0</span>], device<span class="op">=</span>x.device) <span class="op">&lt;</span> <span class="fl">0.5</span></span>
+<span id="cb152-6"><a href="#cb152-6" aria-hidden="true" tabindex="-1"></a>    x[flip] <span class="op">=</span> x[flip].flip(<span class="dv">3</span>)</span>
+<span id="cb152-7"><a href="#cb152-7" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> torch.rot90(x, k<span class="op">=</span><span class="bu">int</span>(np.random.randint(<span class="dv">0</span>, <span class="dv">4</span>)), dims<span class="op">=</span>(<span class="dv">2</span>, <span class="dv">3</span>))     <span class="co"># rotation by k * 90 degrees</span></span>
+<span id="cb152-8"><a href="#cb152-8" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> F.pad(x, (SHIFT_S, SHIFT_S, SHIFT_S, SHIFT_S), mode<span class="op">=</span><span class="st">"reflect"</span>)</span>
+<span id="cb152-9"><a href="#cb152-9" aria-hidden="true" tabindex="-1"></a>    i, j <span class="op">=</span> np.random.randint(<span class="dv">0</span>, <span class="dv">2</span> <span class="op">*</span> SHIFT_S <span class="op">+</span> <span class="dv">1</span>, size<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb152-10"><a href="#cb152-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x[:, :, i:i <span class="op">+</span> <span class="dv">64</span>, j:j <span class="op">+</span> <span class="dv">64</span>]</span>
+<span id="cb152-11"><a href="#cb152-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb152-12"><a href="#cb152-12" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">8</span>, figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">2</span>))</span>
+<span id="cb152-13"><a href="#cb152-13" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].imshow(S_images[i_train[<span class="dv">0</span>]])<span class="op">;</span> axes[<span class="dv">0</span>].set_title(<span class="st">"original"</span>, fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb152-14"><a href="#cb152-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">8</span>):</span>
+<span id="cb152-15"><a href="#cb152-15" aria-hidden="true" tabindex="-1"></a>    a <span class="op">=</span> augment_satellite(Str[<span class="dv">0</span>:<span class="dv">1</span>])[<span class="dv">0</span>].cpu().numpy().transpose(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">0</span>) <span class="op">*</span> std_s <span class="op">+</span> mean_s</span>
+<span id="cb152-16"><a href="#cb152-16" aria-hidden="true" tabindex="-1"></a>    axes[k].imshow(np.clip(a, <span class="dv">0</span>, <span class="dv">1</span>))<span class="op">;</span> axes[k].set_title(<span class="st">"augmented"</span>, fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb152-17"><a href="#cb152-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax <span class="kw">in</span> axes: ax.set_xticks([])<span class="op">;</span> ax.set_yticks([])</span>
+<span id="cb152-18"><a href="#cb152-18" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()<span class="op">;</span> plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <p><img src="bloodmnist-cnn-regularisation-cam_files/figure-html/cell-45-output-1.png" class="img-fluid"></p>
@@ -2473,11 +2514,11 @@ Estimated Total Size (MB): 8.55
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T10:16:20.115492Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T10:16:20.115336Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T10:26:00.471435Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T10:26:00.470556Z&quot;}" data-execution_count="41">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb151"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb151-1"><a href="#cb151-1" aria-hidden="true" tabindex="-1"></a>model_S <span class="op">=</span> GapCNN(n_channels<span class="op">=</span><span class="dv">3</span>, n_classes<span class="op">=</span><span class="bu">len</span>(names_s))</span>
-<span id="cb151-2"><a href="#cb151-2" aria-hidden="true" tabindex="-1"></a>history_S, _ <span class="op">=</span> train(model_S, EPOCHS_CNN, augment<span class="op">=</span>augment_satellite, data<span class="op">=</span>(Str, ttr, Sva, tva))</span>
-<span id="cb151-3"><a href="#cb151-3" aria-hidden="true" tabindex="-1"></a>plot_history(history_S, <span class="st">"EuroSAT: CNN with global average pooling"</span>)</span>
-<span id="cb151-4"><a href="#cb151-4" aria-hidden="true" tabindex="-1"></a>acc_s <span class="op">=</span> {name: evaluate(model_S, X, y)[<span class="dv">0</span>] <span class="cf">for</span> name, X, y <span class="kw">in</span> [(<span class="st">"training"</span>, Str, ttr), (<span class="st">"validation"</span>, Sva, tva), (<span class="st">"test"</span>, Ste, tte)]}</span>
-<span id="cb151-5"><a href="#cb151-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"  "</span>.join(<span class="ss">f"</span><span class="sc">{</span>k<span class="sc">}</span><span class="ss"> </span><span class="sc">{</span><span class="dv">100</span> <span class="op">*</span> v<span class="sc">:.1f}</span><span class="ss">%"</span> <span class="cf">for</span> k, v <span class="kw">in</span> acc_s.items()))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb153"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb153-1"><a href="#cb153-1" aria-hidden="true" tabindex="-1"></a>model_S <span class="op">=</span> GapCNN(n_channels<span class="op">=</span><span class="dv">3</span>, n_classes<span class="op">=</span><span class="bu">len</span>(names_s))</span>
+<span id="cb153-2"><a href="#cb153-2" aria-hidden="true" tabindex="-1"></a>history_S, _ <span class="op">=</span> train(model_S, EPOCHS_CNN, augment<span class="op">=</span>augment_satellite, data<span class="op">=</span>(Str, ttr, Sva, tva))</span>
+<span id="cb153-3"><a href="#cb153-3" aria-hidden="true" tabindex="-1"></a>plot_history(history_S, <span class="st">"EuroSAT: CNN with global average pooling"</span>)</span>
+<span id="cb153-4"><a href="#cb153-4" aria-hidden="true" tabindex="-1"></a>acc_s <span class="op">=</span> {name: evaluate(model_S, X, y)[<span class="dv">0</span>] <span class="cf">for</span> name, X, y <span class="kw">in</span> [(<span class="st">"training"</span>, Str, ttr), (<span class="st">"validation"</span>, Sva, tva), (<span class="st">"test"</span>, Ste, tte)]}</span>
+<span id="cb153-5"><a href="#cb153-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"  "</span>.join(<span class="ss">f"</span><span class="sc">{</span>k<span class="sc">}</span><span class="ss"> </span><span class="sc">{</span><span class="dv">100</span> <span class="op">*</span> v<span class="sc">:.1f}</span><span class="ss">%"</span> <span class="cf">for</span> k, v <span class="kw">in</span> acc_s.items()))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>epoch  1: training loss 0.839 acc 0.719 | validation loss 0.807 acc 0.718  (48 s)</code></pre>
@@ -2523,32 +2564,32 @@ Estimated Total Size (MB): 8.55
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T10:26:00.474742Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T10:26:00.474176Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T10:26:04.419239Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T10:26:04.418799Z&quot;}" data-execution_count="42">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb163"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb163-1"><a href="#cb163-1" aria-hidden="true" tabindex="-1"></a>model_S.<span class="bu">eval</span>()</span>
-<span id="cb163-2"><a href="#cb163-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():</span>
-<span id="cb163-3"><a href="#cb163-3" aria-hidden="true" tabindex="-1"></a>    prob_s <span class="op">=</span> torch.cat([model_S(Ste[k:k <span class="op">+</span> <span class="dv">500</span>]) <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="bu">len</span>(Ste), <span class="dv">500</span>)]).softmax(dim<span class="op">=</span><span class="dv">1</span>).cpu().numpy()</span>
-<span id="cb163-4"><a href="#cb163-4" aria-hidden="true" tabindex="-1"></a>pred_s <span class="op">=</span> prob_s.argmax(axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb163-5"><a href="#cb163-5" aria-hidden="true" tabindex="-1"></a>confusion_s <span class="op">=</span> np.zeros((<span class="bu">len</span>(names_s), <span class="bu">len</span>(names_s)))</span>
-<span id="cb163-6"><a href="#cb163-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t, p <span class="kw">in</span> <span class="bu">zip</span>(t_test, pred_s):</span>
-<span id="cb163-7"><a href="#cb163-7" aria-hidden="true" tabindex="-1"></a>    confusion_s[t, p] <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb163-8"><a href="#cb163-8" aria-hidden="true" tabindex="-1"></a>confusion_s_normalised <span class="op">=</span> confusion_s <span class="op">/</span> confusion_s.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>, keepdims<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb163-9"><a href="#cb163-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb163-10"><a href="#cb163-10" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="fl">7.5</span>, <span class="fl">6.5</span>))</span>
-<span id="cb163-11"><a href="#cb163-11" aria-hidden="true" tabindex="-1"></a>plt.imshow(confusion_s_normalised, cmap<span class="op">=</span><span class="st">"viridis"</span>, vmin<span class="op">=</span><span class="dv">0</span>, vmax<span class="op">=</span><span class="dv">1</span>)<span class="op">;</span> plt.colorbar(label<span class="op">=</span><span class="st">"fraction of the true class"</span>)</span>
-<span id="cb163-12"><a href="#cb163-12" aria-hidden="true" tabindex="-1"></a>plt.xticks(<span class="bu">range</span>(<span class="bu">len</span>(names_s)), names_s, rotation<span class="op">=</span><span class="dv">45</span>, ha<span class="op">=</span><span class="st">"right"</span>)<span class="op">;</span> plt.yticks(<span class="bu">range</span>(<span class="bu">len</span>(names_s)), names_s)</span>
-<span id="cb163-13"><a href="#cb163-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(names_s)):</span>
-<span id="cb163-14"><a href="#cb163-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> p <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(names_s)):</span>
-<span id="cb163-15"><a href="#cb163-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> confusion_s_normalised[t, p] <span class="op">&gt;=</span> <span class="fl">0.01</span>:</span>
-<span id="cb163-16"><a href="#cb163-16" aria-hidden="true" tabindex="-1"></a>            plt.text(p, t, <span class="ss">f"</span><span class="sc">{</span>confusion_s_normalised[t, p]<span class="sc">:.2f}</span><span class="ss">"</span>, ha<span class="op">=</span><span class="st">"center"</span>, va<span class="op">=</span><span class="st">"center"</span>, fontsize<span class="op">=</span><span class="dv">7</span>,</span>
-<span id="cb163-17"><a href="#cb163-17" aria-hidden="true" tabindex="-1"></a>                     color<span class="op">=</span><span class="st">"black"</span> <span class="cf">if</span> confusion_s_normalised[t, p] <span class="op">&gt;</span> <span class="fl">0.6</span> <span class="cf">else</span> <span class="st">"white"</span>)</span>
-<span id="cb163-18"><a href="#cb163-18" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"predicted class"</span>)<span class="op">;</span> plt.ylabel(<span class="st">"true class"</span>)<span class="op">;</span> plt.title(<span class="ss">f"EuroSAT, test accuracy </span><span class="sc">{</span><span class="dv">100</span> <span class="op">*</span> (pred_s <span class="op">==</span> t_test)<span class="sc">.</span>mean()<span class="sc">:.1f}</span><span class="ss">%"</span>)</span>
-<span id="cb163-19"><a href="#cb163-19" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span>
-<span id="cb163-20"><a href="#cb163-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb163-21"><a href="#cb163-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"accuracy per class:"</span>)</span>
-<span id="cb163-22"><a href="#cb163-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c, name <span class="kw">in</span> <span class="bu">enumerate</span>(names_s):</span>
-<span id="cb163-23"><a href="#cb163-23" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>name<span class="sc">:22s}</span><span class="ss"> </span><span class="sc">{</span><span class="dv">100</span> <span class="op">*</span> confusion_s_normalised[c, c]<span class="sc">:5.1f}</span><span class="ss">%"</span>)</span>
-<span id="cb163-24"><a href="#cb163-24" aria-hidden="true" tabindex="-1"></a>off <span class="op">=</span> confusion_s_normalised.copy()<span class="op">;</span> np.fill_diagonal(off, <span class="dv">0</span>)</span>
-<span id="cb163-25"><a href="#cb163-25" aria-hidden="true" tabindex="-1"></a>t_max, p_max <span class="op">=</span> np.unravel_index(off.argmax(), off.shape)</span>
-<span id="cb163-26"><a href="#cb163-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"largest confusion: </span><span class="sc">{</span><span class="dv">100</span> <span class="op">*</span> off[t_max, p_max]<span class="sc">:.1f}</span><span class="ss">% of '</span><span class="sc">{</span>names_s[t_max]<span class="sc">}</span><span class="ss">' classified as '</span><span class="sc">{</span>names_s[p_max]<span class="sc">}</span><span class="ss">'"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb165"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb165-1"><a href="#cb165-1" aria-hidden="true" tabindex="-1"></a>model_S.<span class="bu">eval</span>()</span>
+<span id="cb165-2"><a href="#cb165-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():</span>
+<span id="cb165-3"><a href="#cb165-3" aria-hidden="true" tabindex="-1"></a>    prob_s <span class="op">=</span> torch.cat([model_S(Ste[k:k <span class="op">+</span> <span class="dv">500</span>]) <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="bu">len</span>(Ste), <span class="dv">500</span>)]).softmax(dim<span class="op">=</span><span class="dv">1</span>).cpu().numpy()</span>
+<span id="cb165-4"><a href="#cb165-4" aria-hidden="true" tabindex="-1"></a>pred_s <span class="op">=</span> prob_s.argmax(axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb165-5"><a href="#cb165-5" aria-hidden="true" tabindex="-1"></a>confusion_s <span class="op">=</span> np.zeros((<span class="bu">len</span>(names_s), <span class="bu">len</span>(names_s)))</span>
+<span id="cb165-6"><a href="#cb165-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t, p <span class="kw">in</span> <span class="bu">zip</span>(t_test, pred_s):</span>
+<span id="cb165-7"><a href="#cb165-7" aria-hidden="true" tabindex="-1"></a>    confusion_s[t, p] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb165-8"><a href="#cb165-8" aria-hidden="true" tabindex="-1"></a>confusion_s_normalised <span class="op">=</span> confusion_s <span class="op">/</span> confusion_s.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>, keepdims<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb165-9"><a href="#cb165-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb165-10"><a href="#cb165-10" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="fl">7.5</span>, <span class="fl">6.5</span>))</span>
+<span id="cb165-11"><a href="#cb165-11" aria-hidden="true" tabindex="-1"></a>plt.imshow(confusion_s_normalised, cmap<span class="op">=</span><span class="st">"viridis"</span>, vmin<span class="op">=</span><span class="dv">0</span>, vmax<span class="op">=</span><span class="dv">1</span>)<span class="op">;</span> plt.colorbar(label<span class="op">=</span><span class="st">"fraction of the true class"</span>)</span>
+<span id="cb165-12"><a href="#cb165-12" aria-hidden="true" tabindex="-1"></a>plt.xticks(<span class="bu">range</span>(<span class="bu">len</span>(names_s)), names_s, rotation<span class="op">=</span><span class="dv">45</span>, ha<span class="op">=</span><span class="st">"right"</span>)<span class="op">;</span> plt.yticks(<span class="bu">range</span>(<span class="bu">len</span>(names_s)), names_s)</span>
+<span id="cb165-13"><a href="#cb165-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(names_s)):</span>
+<span id="cb165-14"><a href="#cb165-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> p <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(names_s)):</span>
+<span id="cb165-15"><a href="#cb165-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> confusion_s_normalised[t, p] <span class="op">&gt;=</span> <span class="fl">0.01</span>:</span>
+<span id="cb165-16"><a href="#cb165-16" aria-hidden="true" tabindex="-1"></a>            plt.text(p, t, <span class="ss">f"</span><span class="sc">{</span>confusion_s_normalised[t, p]<span class="sc">:.2f}</span><span class="ss">"</span>, ha<span class="op">=</span><span class="st">"center"</span>, va<span class="op">=</span><span class="st">"center"</span>, fontsize<span class="op">=</span><span class="dv">7</span>,</span>
+<span id="cb165-17"><a href="#cb165-17" aria-hidden="true" tabindex="-1"></a>                     color<span class="op">=</span><span class="st">"black"</span> <span class="cf">if</span> confusion_s_normalised[t, p] <span class="op">&gt;</span> <span class="fl">0.6</span> <span class="cf">else</span> <span class="st">"white"</span>)</span>
+<span id="cb165-18"><a href="#cb165-18" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"predicted class"</span>)<span class="op">;</span> plt.ylabel(<span class="st">"true class"</span>)<span class="op">;</span> plt.title(<span class="ss">f"EuroSAT, test accuracy </span><span class="sc">{</span><span class="dv">100</span> <span class="op">*</span> (pred_s <span class="op">==</span> t_test)<span class="sc">.</span>mean()<span class="sc">:.1f}</span><span class="ss">%"</span>)</span>
+<span id="cb165-19"><a href="#cb165-19" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span>
+<span id="cb165-20"><a href="#cb165-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb165-21"><a href="#cb165-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"accuracy per class:"</span>)</span>
+<span id="cb165-22"><a href="#cb165-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c, name <span class="kw">in</span> <span class="bu">enumerate</span>(names_s):</span>
+<span id="cb165-23"><a href="#cb165-23" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>name<span class="sc">:22s}</span><span class="ss"> </span><span class="sc">{</span><span class="dv">100</span> <span class="op">*</span> confusion_s_normalised[c, c]<span class="sc">:5.1f}</span><span class="ss">%"</span>)</span>
+<span id="cb165-24"><a href="#cb165-24" aria-hidden="true" tabindex="-1"></a>off <span class="op">=</span> confusion_s_normalised.copy()<span class="op">;</span> np.fill_diagonal(off, <span class="dv">0</span>)</span>
+<span id="cb165-25"><a href="#cb165-25" aria-hidden="true" tabindex="-1"></a>t_max, p_max <span class="op">=</span> np.unravel_index(off.argmax(), off.shape)</span>
+<span id="cb165-26"><a href="#cb165-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"largest confusion: </span><span class="sc">{</span><span class="dv">100</span> <span class="op">*</span> off[t_max, p_max]<span class="sc">:.1f}</span><span class="ss">% of '</span><span class="sc">{</span>names_s[t_max]<span class="sc">}</span><span class="ss">' classified as '</span><span class="sc">{</span>names_s[p_max]<span class="sc">}</span><span class="ss">'"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <p><img src="bloodmnist-cnn-regularisation-cam_files/figure-html/cell-47-output-1.png" class="img-fluid"></p>
@@ -2575,17 +2616,17 @@ largest confusion: 13.3% of 'Industrial' classified as 'Highway'</code></pre>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T10:26:04.421090Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T10:26:04.420885Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T10:26:05.009285Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T10:26:05.008723Z&quot;}" data-execution_count="43">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb165"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb165-1"><a href="#cb165-1" aria-hidden="true" tabindex="-1"></a>shown <span class="op">=</span> []</span>
-<span id="cb165-2"><a href="#cb165-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(names_s)):</span>
-<span id="cb165-3"><a href="#cb165-3" aria-hidden="true" tabindex="-1"></a>    candidates <span class="op">=</span> np.flatnonzero((t_test <span class="op">==</span> c) <span class="op">&amp;</span> (pred_s <span class="op">==</span> c))</span>
-<span id="cb165-4"><a href="#cb165-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(candidates) <span class="op">&gt;</span> <span class="dv">0</span>:</span>
-<span id="cb165-5"><a href="#cb165-5" aria-hidden="true" tabindex="-1"></a>        shown.append(rng_s.choice(candidates))</span>
-<span id="cb165-6"><a href="#cb165-6" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="bu">len</span>(shown), figsize<span class="op">=</span>(<span class="fl">1.6</span> <span class="op">*</span> <span class="bu">len</span>(shown), <span class="fl">3.9</span>), squeeze<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb165-7"><a href="#cb165-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k, i <span class="kw">in</span> <span class="bu">enumerate</span>(shown):</span>
-<span id="cb165-8"><a href="#cb165-8" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>, k].imshow(S_test[i])<span class="op">;</span> axes[<span class="dv">0</span>, k].set_xticks([])<span class="op">;</span> axes[<span class="dv">0</span>, k].set_yticks([])</span>
-<span id="cb165-9"><a href="#cb165-9" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>, k].set_title(<span class="ss">f"</span><span class="sc">{</span>names_s[t_test[i]][:<span class="dv">12</span>]<span class="sc">}</span><span class="ch">\n</span><span class="ss">p = </span><span class="sc">{</span>prob_s[i, pred_s[i]]<span class="sc">:.2f}</span><span class="ss">"</span>, fontsize<span class="op">=</span><span class="dv">8</span>)</span>
-<span id="cb165-10"><a href="#cb165-10" aria-hidden="true" tabindex="-1"></a>    draw_cam(axes[<span class="dv">1</span>, k], S_test[i], class_activation_maps(model_S, Ste[i:i <span class="op">+</span> <span class="dv">1</span>])[pred_s[i]])</span>
-<span id="cb165-11"><a href="#cb165-11" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()<span class="op">;</span> plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb167"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb167-1"><a href="#cb167-1" aria-hidden="true" tabindex="-1"></a>shown <span class="op">=</span> []</span>
+<span id="cb167-2"><a href="#cb167-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(names_s)):</span>
+<span id="cb167-3"><a href="#cb167-3" aria-hidden="true" tabindex="-1"></a>    candidates <span class="op">=</span> np.flatnonzero((t_test <span class="op">==</span> c) <span class="op">&amp;</span> (pred_s <span class="op">==</span> c))</span>
+<span id="cb167-4"><a href="#cb167-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(candidates) <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb167-5"><a href="#cb167-5" aria-hidden="true" tabindex="-1"></a>        shown.append(rng_s.choice(candidates))</span>
+<span id="cb167-6"><a href="#cb167-6" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="bu">len</span>(shown), figsize<span class="op">=</span>(<span class="fl">1.6</span> <span class="op">*</span> <span class="bu">len</span>(shown), <span class="fl">3.9</span>), squeeze<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb167-7"><a href="#cb167-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k, i <span class="kw">in</span> <span class="bu">enumerate</span>(shown):</span>
+<span id="cb167-8"><a href="#cb167-8" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>, k].imshow(S_test[i])<span class="op">;</span> axes[<span class="dv">0</span>, k].set_xticks([])<span class="op">;</span> axes[<span class="dv">0</span>, k].set_yticks([])</span>
+<span id="cb167-9"><a href="#cb167-9" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>, k].set_title(<span class="ss">f"</span><span class="sc">{</span>names_s[t_test[i]][:<span class="dv">12</span>]<span class="sc">}</span><span class="ch">\n</span><span class="ss">p = </span><span class="sc">{</span>prob_s[i, pred_s[i]]<span class="sc">:.2f}</span><span class="ss">"</span>, fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb167-10"><a href="#cb167-10" aria-hidden="true" tabindex="-1"></a>    draw_cam(axes[<span class="dv">1</span>, k], S_test[i], class_activation_maps(model_S, Ste[i:i <span class="op">+</span> <span class="dv">1</span>])[pred_s[i]])</span>
+<span id="cb167-11"><a href="#cb167-11" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()<span class="op">;</span> plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <p><img src="bloodmnist-cnn-regularisation-cam_files/figure-html/cell-48-output-1.png" class="img-fluid"></p>

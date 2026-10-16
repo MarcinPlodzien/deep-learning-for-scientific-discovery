@@ -325,7 +325,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../notebooks/lecture-06/generative-models.html" class="sidebar-item-text sidebar-link">Generative models: probability, VAE, GAN and diffusion</a>
+  <a href="../notebooks/lecture-06/generative-models.html" class="sidebar-item-text sidebar-link">Generative models: probability, autoencoder and VAE</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -365,7 +365,7 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p>CNNs on scientific data: blood cells under the microscope (BloodMNIST) and land use from satellite images (EuroSAT), with confusion matrices and class activation maps. A physics example: the 2D Ising model, its partition function and Onsager’s solution, and a CNN that locates the critical temperature from spin configurations alone; the lecture closes with the Chinese Room thought experiment.</p>
+<p>CNNs on scientific data: blood cells under the microscope (BloodMNIST) and land use from satellite images (EuroSAT), with confusion matrices and class activation maps. A physics example: the 2D Ising model, its partition function and Onsager’s solution, and a CNN that locates the critical temperature from spin configurations alone; transfer learning, where a network pretrained on ImageNet does not help on blood cells but does on satellite images; the lecture closes with the Chinese Room thought experiment.</p>
 <section id="slides" class="level2">
 <h2 class="anchored" data-anchor-id="slides">Slides</h2>
 <p><a href="../slides/lecture-04.pdf" class="btn btn-outline-primary">Download the slides (PDF)</a></p>
@@ -393,6 +393,10 @@ ul.task-list li input[type="checkbox"] {
 <div class="nb-item">
 <p><a href="../notebooks/lecture-04/lab-012-onsager.html">Lab 012: Onsager’s exact solution of the 2D Ising model</a></p>
 <p>The partition function, the critical temperature and the critical exponents.</p>
+</div>
+<div class="nb-item">
+<p><a href="../notebooks/lecture-04/lab-014a-transfer-pytorch.html">Lab 014a: Transfer learning in PyTorch</a></p>
+<p>Freezing, replacing and fine-tuning the layers of a CIFAR-10 CNN and of an ImageNet ResNet-18, on BloodMNIST and on EuroSAT, against networks trained from random initialisation.</p>
 </div>
 
 

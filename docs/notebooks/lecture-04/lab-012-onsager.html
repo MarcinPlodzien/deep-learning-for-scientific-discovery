@@ -388,7 +388,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../notebooks/lecture-06/generative-models.html" class="sidebar-item-text sidebar-link">Generative models: probability, VAE, GAN and diffusion</a>
+  <a href="../../notebooks/lecture-06/generative-models.html" class="sidebar-item-text sidebar-link">Generative models: probability, autoencoder and VAE</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -482,13 +482,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="lab-012-onsagers-exact-solution" class="level1">
 <h1>Lab 012 — Onsager’s exact solution</h1>
-<p>In Lab 010 and Lab 011 a convolutional network located the critical temperature of the two-dimensional (2D) Ising model from raw spin images. In the lecture we asked where the exact critical temperature <span class="math display">\[T_c=\frac{2}{\ln\big(1+\sqrt2\big)}\approx2.2692 \tag{1}\]</span> comes from. This notebook follows the slides <em>Onsager’s Exact Solution</em> and reproduces each of their results with a computation.</p>
+<p>In Lab 010 and Lab 011 a convolutional network located the critical temperature of the two-dimensional (2D) Ising model from raw spin images. In the lecture we asked where the exact critical temperature <span class="math display">\[T_c=\frac{2}{\ln\big(1+\sqrt2\big)}\approx2.2692 \tag{1}\]</span> comes from. Each result of the slides <em>Onsager’s Exact Solution</em> is reproduced below by a computation.</p>
 <p>We begin with what it means to “solve” the model: <span class="math inline">\(\ln Z\)</span> of a finite lattice computed by brute force, which turns out to be always smooth. The one-dimensional chain then introduces the transfer matrix, numerically and exactly. In two dimensions the transfer matrix has size <span class="math inline">\(2^L\times2^L\)</span> for a strip of width <span class="math inline">\(L\)</span>; with it we watch the free energy converge to Onsager’s, the specific-heat peak grow and move towards <span class="math inline">\(T_c\)</span>, and the correlation length detect <span class="math inline">\(T_c\)</span>. The high- and low-temperature expansions of <span class="math inline">\(Z\)</span> lead to Kramers–Wannier duality and to the self-dual coupling <span class="math inline">\(K_c\)</span>. From Onsager’s formula we obtain <span class="math inline">\(f\)</span>, <span class="math inline">\(u\)</span>, <span class="math inline">\(c\)</span> and Yang’s magnetisation <span class="math inline">\(M\)</span>, and we derive the energy per spin at <span class="math inline">\(T_c\)</span>, <span class="math inline">\(-\sqrt2\,J\)</span>, both numerically and from duality alone. The last part measures the critical exponents from the exact formulas and from the transfer matrix, compares mean-field theory with the exact solution, and tests universality on the triangular lattice.</p>
 <p>We use units in which <span class="math inline">\(J\)</span> and <span class="math inline">\(k_B\)</span> are one, with no external field unless stated otherwise. The dimensionless coupling is <span class="math display">\[K=\frac{J}{T}=\beta J. \tag{2}\]</span></p>
 <blockquote class="blockquote">
-<p><strong>How to run this notebook in Google Colab</strong> 1. Go to <a href="https://colab.research.google.com" class="uri">https://colab.research.google.com</a> → <em>File → Upload notebook</em> (or open it from Google Drive). 2. Run cells one by one with <strong>Shift + Enter</strong>. Run them <em>in order</em> — later cells use variables defined earlier. 3. Only <code>numpy</code>, <code>scipy</code> and <code>matplotlib</code> are needed; they are pre-installed in Colab, no <code>pip install</code> required. No data are downloaded. 4. The whole notebook runs in a few minutes on a laptop. The slowest cells (transfer matrices of size <span class="math inline">\(2^{10}\times2^{10}\)</span> and <span class="math inline">\(2^{12}\times2^{12}\)</span>) print their running time. 5. If the notebook state becomes inconsistent: <em>Runtime → Restart session</em> and run from the top.</p>
+<p><strong>Running in Google Colab</strong> 1. Go to <a href="https://colab.research.google.com" class="uri">https://colab.research.google.com</a> → <em>File → Upload notebook</em> (or open it from Google Drive). 2. Run cells one by one with <strong>Shift + Enter</strong>. Run them <em>in order</em> — later cells use variables defined earlier. 3. Only <code>numpy</code>, <code>scipy</code> and <code>matplotlib</code> are needed; they are pre-installed in Colab, no <code>pip install</code> required. No data are downloaded. 4. The whole notebook runs in a few minutes on a laptop. The slowest cells (transfer matrices of size <span class="math inline">\(2^{10}\times2^{10}\)</span> and <span class="math inline">\(2^{12}\times2^{12}\)</span>) print their running time. 5. If the notebook state becomes inconsistent: <em>Runtime → Restart session</em> and run from the top.</p>
 </blockquote>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:13.088567Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:13.088050Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:14.866721Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:14.862366Z&quot;}" data-execution_count="1">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T09:46:43.852464Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T09:46:43.852034Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T09:46:44.663193Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T09:46:44.662607Z&quot;}" data-execution_count="1">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
@@ -538,7 +538,7 @@ c = \frac{\partial u}{\partial T} = \frac{\langle H^2\rangle-\langle H\rangle^2}
 <p>Each configuration has the energy <span class="math display">\[E = -2N + 2b, \tag{8}\]</span> where <span class="math inline">\(b\)</span> is the number of <strong>broken bonds</strong> (antiparallel neighbours): the torus has two bonds per site, and each contributes <span class="math inline">\(-1\)</span> if satisfied and <span class="math inline">\(+1\)</span> if broken. So <span class="math inline">\(Z\)</span> is determined by the histogram <span class="math inline">\(n_b\)</span> (the <em>density of states</em>): <span class="math display">\[
 Z(T) = \sum_{b} n_b\, e^{-(-2N+2b)/T}. \tag{9}
 \]</span></p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:14.875904Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:14.874900Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:14.975598Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:14.974300Z&quot;}" data-execution_count="2">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T09:46:44.665555Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T09:46:44.665176Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T09:46:44.696199Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T09:46:44.695585Z&quot;}" data-execution_count="2">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> all_configs(n):</span>
@@ -563,8 +563,8 @@ Z(T) = \sum_{b} n_b\, e^{-(-2N+2b)/T}. \tag{9}
 <span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>({<span class="bu">int</span>(k): <span class="bu">int</span>(v) <span class="cf">for</span> k, v <span class="kw">in</span> <span class="bu">enumerate</span>(dos[<span class="dv">4</span>]) <span class="cf">if</span> v})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>L = 3:    512 configurations enumerated in 0.01 s,  sum n_b = 512
-L = 4:  65536 configurations enumerated in 0.07 s,  sum n_b = 65536
+<pre><code>L = 3:    512 configurations enumerated in 0.00 s,  sum n_b = 512
+L = 4:  65536 configurations enumerated in 0.02 s,  sum n_b = 65536
 4x4 torus, number of configurations with b broken bonds:
 {0: 2, 4: 32, 6: 64, 8: 424, 10: 1728, 12: 6688, 14: 13568, 16: 20524, 18: 13568, 20: 6688, 22: 1728, 24: 424, 26: 64, 28: 32, 32: 2}</code></pre>
 </div>
@@ -579,7 +579,7 @@ u = \frac{\sum_b n_b E_b e^{-E_b/T}}{NZ}, \tag{11}
 \]</span> <span class="math display">\[
 c = \frac{\langle E^2\rangle - \langle E\rangle^2}{NT^2}. \tag{12}
 \]</span> <span class="math inline">\(Z\)</span> is a <strong>finite sum of exponentials</strong>, positive for every real <span class="math inline">\(T\)</span>, so <span class="math inline">\(\ln Z\)</span> is analytic: a finite lattice has <em>no</em> phase transition. A singularity can only appear in the limit of infinitely many spins.</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:14.983075Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:14.982377Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:16.175176Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:16.170460Z&quot;}" data-execution_count="3">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T09:46:44.698385Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T09:46:44.698143Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T09:46:45.123990Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T09:46:45.123433Z&quot;}" data-execution_count="3">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> thermo_from_dos(nb, N, T):</span>
@@ -632,7 +632,7 @@ Z = \sum_{s_1,\dots,s_N}\mathsf T_{s_1s_2}\mathsf T_{s_2s_3}\cdots\mathsf T_{s_N
 \]</span> The eigenvalues of a symmetric <span class="math inline">\(2\times2\)</span> matrix with diagonal entries <span class="math inline">\(a\)</span>, <span class="math inline">\(d\)</span> and off-diagonal entry <span class="math inline">\(b\)</span> are <span class="math display">\[\lambda=\frac{a+d}{2}\pm\sqrt{\left(\frac{a-d}{2}\right)^2+b^2}, \tag{19}\]</span> which for the matrix (17) gives <span class="math display">\[
 \lambda_\pm = e^{K}\cosh\tilde h \pm \sqrt{e^{2K}\sinh^2\tilde h + e^{-2K}}, \tag{20}
 \]</span> and in zero field <span class="math display">\[\lambda_+ = 2\cosh K,\qquad \lambda_- = 2\sinh K . \tag{21}\]</span> The trace in equation (18) is compared with the brute-force sum, and equation (20) with the eigenvalues returned by <code>numpy</code>.</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:16.200176Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:16.198834Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:16.253703Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:16.252419Z&quot;}" data-execution_count="4">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T09:46:45.128897Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T09:46:45.128670Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T09:46:45.145841Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T09:46:45.145260Z&quot;}" data-execution_count="4">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Z_chain_brute(N, K, ht):</span>
@@ -672,7 +672,7 @@ f = -T\ln\big(2\cosh(1/T)\big), \tag{23}
 \]</span> <span class="math display">\[
 \xi = -\frac{1}{\ln\tanh K}. \tag{25}
 \]</span> <span class="math inline">\(\xi\)</span> is finite at every positive temperature and diverges only at zero temperature.</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:16.258638Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:16.258020Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:18.292414Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:18.290643Z&quot;}" data-execution_count="5">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T09:46:45.147979Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T09:46:45.147688Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T09:46:45.849864Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T09:46:45.849345Z&quot;}" data-execution_count="5">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>sz <span class="op">=</span> np.diag([<span class="fl">1.0</span>, <span class="op">-</span><span class="fl">1.0</span>])</span>
@@ -719,7 +719,7 @@ f_L(T) = -\frac{T}{L}\ln\lambda_0(L), \tag{30}
 \]</span> with <span class="math inline">\(\lambda_0\)</span> and <span class="math inline">\(\lambda_1\)</span> the largest and the second-largest eigenvalue. Onsager’s free energy is the limit <span class="math display">\[f = \lim_{L\to\infty}f_L . \tag{32}\]</span></p>
 <p>Symmetry halves the work. Reversing all spins of a column does not change <span class="math inline">\(\mathsf V\)</span>, and in our bit encoding it maps the index <span class="math inline">\(n\)</span> to <span class="math display">\[\bar n = 2^L-1-n. \tag{33}\]</span> Pairing each state with its reversed partner splits <span class="math inline">\(\mathsf V\)</span> into an even and an odd block, <span class="math display">\[\mathsf V^{\pm}_{nm}=\mathsf V_{nm}\pm\mathsf V_{n\bar m}, \tag{34}\]</span> each of size <span class="math inline">\(2^{L-1}\)</span>. <span class="math inline">\(\lambda_0\)</span> is the top of the even block (Perron–Frobenius: all entries are positive), and <span class="math inline">\(\lambda_1\)</span> the top of the odd block, the eigenvalue that describes how a single spin’s orientation is remembered along the strip.</p>
 <p>The construction is first tested on a known case: on an <span class="math inline">\(L\times L'\)</span> torus equation (28) is exact, so for <span class="math inline">\(4\times4\)</span> it must agree with the brute-force histogram of Section 1.</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:18.299328Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:18.298673Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:18.323571Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:18.321500Z&quot;}" data-execution_count="6">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T09:46:45.851757Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T09:46:45.851531Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T09:46:45.859152Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T09:46:45.858752Z&quot;}" data-execution_count="6">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> transfer_matrix(L, K, lattice<span class="op">=</span><span class="st">"square"</span>):</span>
@@ -766,7 +766,7 @@ T = 3.5000:  ln Z (Tr V^4) = 12.600438025330   ln Z (brute force) = 12.600438025
 <section id="free-energy-and-specific-heat-of-strips" class="level3">
 <h3 class="anchored" data-anchor-id="free-energy-and-specific-heat-of-strips">3.1 Free energy and specific heat of strips</h3>
 <p>For the widths 4 to 10 we compute <span class="math display">\[c_L = -T\,\frac{\partial^2 f_L}{\partial T^2} \tag{35}\]</span> by finite differences on a fine grid; the eigenvalues are accurate to machine precision, so the second difference is reliable. Onsager’s <span class="math inline">\(f\)</span> (Section 6) is plotted for comparison.</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:18.335658Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:18.333611Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:27.893037Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:27.892372Z&quot;}" data-execution_count="7">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T09:46:45.860877Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T09:46:45.860533Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T09:46:51.344450Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T09:46:51.343881Z&quot;}" data-execution_count="7">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f_onsager(T):</span>
@@ -811,7 +811,7 @@ T = 3.5000:  ln Z (Tr V^4) = 12.600438025330   ln Z (brute force) = 12.600438025
 <span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>strip transfer matrices: 8.1 s</code></pre>
+<pre><code>strip transfer matrices: 4.6 s</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>L =  4:  c_max = 0.8728 at T = 2.210;   |f_L - f| at T = 1.5, T_c, 3.5:  3.5e-03, 3.9e-02, 1.1e-02
@@ -825,7 +825,7 @@ L = 10:  c_max = 1.3262 at T = 2.260;   |f_L - f| at T = 1.5, T_c, 3.5:  6.8e-06
 </div>
 <p><strong>Away from <span class="math inline">\(T_c\)</span></strong>, <span class="math inline">\(f_L\)</span> converges to Onsager’s <span class="math inline">\(f\)</span> exponentially fast in <span class="math inline">\(L\)</span>: the correlation length is finite, and a strip wider than <span class="math inline">\(\xi\)</span> is effectively “infinite”. <strong>At <span class="math inline">\(T_c\)</span></strong> the convergence is only a power law, because the strip is never wider than the infinite correlation length; the peak of <span class="math inline">\(c_L\)</span> grows (slowly, since the divergence will turn out to be logarithmic, Section 8) and moves towards <span class="math inline">\(T_c\)</span>.</p>
 <p>The ratio <span class="math inline">\(\xi_L/L\)</span> <strong>decreases</strong> with <span class="math inline">\(L\)</span> above <span class="math inline">\(T_c\)</span> (finite <span class="math inline">\(\xi\)</span>), <strong>increases</strong> below <span class="math inline">\(T_c\)</span> (two degenerate ordered states, so that <span class="math inline">\(\lambda_1\)</span> approaches <span class="math inline">\(\lambda_0\)</span>), and is <span class="math inline">\(L\)</span>-independent exactly at <span class="math inline">\(T_c\)</span>, where the only length scale is <span class="math inline">\(L\)</span> itself. The crossing points of the curves for neighbouring widths therefore locate <span class="math inline">\(T_c\)</span>. This is the same logic as the finite-size analysis of the CNN, but with an exact algorithm.</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:27.895360Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:27.895033Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:35.019303Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:35.018183Z&quot;}" data-execution_count="8">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T09:46:51.346900Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T09:46:51.346468Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T09:46:59.195513Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T09:46:59.195127Z&quot;}" data-execution_count="8">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> xi_over_L(L, T, lattice<span class="op">=</span><span class="st">"square"</span>):</span>
@@ -845,10 +845,10 @@ L = 10:  c_max = 1.3262 at T = 2.260;   |f_L - f| at T = 1.5, T_c, 3.5:  6.8e-06
  6,  8   2.27494894      +5.76e-03     (0.0 s)</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code> 8, 10   2.27168848      +2.50e-03     (0.3 s)</code></pre>
+<pre><code> 8, 10   2.27168848      +2.50e-03     (0.2 s)</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>10, 12   2.27050963      +1.32e-03     (6.7 s)
+<pre><code>10, 12   2.27050963      +1.32e-03     (7.6 s)
 exact T_c = 2.26918531</code></pre>
 </div>
 </div>
@@ -865,7 +865,7 @@ Z = 2^N(\cosh K)^{2N}\sum_{\text{closed } G}t^{|G|} = 2^N(\cosh K)^{2N}\big(1 + 
 Z = 2e^{2NK}\big(1 + N x^4 + 2N x^6 + \dots\big). \tag{39}
 \]</span> One flipped spin breaks 4 bonds (<span class="math inline">\(N\)</span> ways), a flipped neighbouring pair breaks 6 bonds (<span class="math inline">\(2N\)</span> ways), and the factor 2 is the all-down copy.</p>
 <p>The counting can be checked directly on the <span class="math inline">\(4\times4\)</span> torus: half the histogram <span class="math inline">\(n_b\)</span> of Section 1 should be 16, the number of sites, for four broken bonds and 32 for six.</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:35.023357Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:35.023012Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:35.029441Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:35.028636Z&quot;}" data-execution_count="9">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T09:46:59.201020Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T09:46:59.200841Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T09:46:59.203762Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T09:46:59.203434Z&quot;}" data-execution_count="9">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">16</span></span>
@@ -882,7 +882,7 @@ R_{\rm high}(K) = \frac{\ln Z/N - \ln2 - 2\ln\cosh K}{t^4 + 2t^6}\xrightarrow{K\
 \]</span> <span class="math display">\[
 R_{\rm low}(K) = \frac{\ln Z/N - 2K}{x^4 + 2x^6}\xrightarrow{K\to\infty}1 \tag{42}
 \]</span> must approach one in their respective limits.</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:35.033131Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:35.032709Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:35.047786Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:35.046631Z&quot;}" data-execution_count="10">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T09:46:59.206241Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T09:46:59.206066Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T09:46:59.212192Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T09:46:59.211857Z&quot;}" data-execution_count="10">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> phi(K):                       <span class="co"># phi = ln Z / N = -beta f  (Onsager, N -&gt; infinity)</span></span>
@@ -916,7 +916,7 @@ R_{\rm low}(K) = \frac{\ln Z/N - 2K}{x^4 + 2x^6}\xrightarrow{K\to\infty}1 \tag{4
 \]</span> An equivalent form of the duality map (45) is <span class="math display">\[\sinh2K\,\sinh2K^* = 1, \tag{47}\]</span> which follows from <span class="math display">\[\sinh 2K^* = \frac{1-\tanh^2K}{2\tanh K} = \frac{1}{\sinh2K}. \tag{48}\]</span> Small <span class="math inline">\(K\)</span> (hot) maps to large <span class="math inline">\(K^*\)</span> (cold). If there is a single singularity, it must sit at the <strong>self-dual point</strong>, the coupling <span class="math inline">\(K_c\)</span> that is its own dual: <span class="math display">\[
 \sinh 2K_c = 1\ \Rightarrow\ e^{2K_c} = 1+\sqrt2\ \Rightarrow\ T_c = \frac{2}{\ln(1+\sqrt2)}, \tag{49}
 \]</span> which is equation (1). We check: (i) equation (47), (ii) Onsager’s modulus <span class="math inline">\(\kappa\)</span> of equation (51) is the same at <span class="math inline">\(K\)</span> and <span class="math inline">\(K^*\)</span>, (iii) the identity (46) holds for Onsager’s <span class="math inline">\(f\)</span>, (iv) the fixed point of the duality map, found by root finding, is <span class="math inline">\(K_c\)</span>.</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:35.051453Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:35.051065Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:35.089365Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:35.088562Z&quot;}" data-execution_count="11">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T09:46:59.216005Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T09:46:59.215838Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T09:46:59.232246Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T09:46:59.231832Z&quot;}" data-execution_count="11">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> K_dual(K):</span>
@@ -962,7 +962,7 @@ ln(1+sqrt2)/2 = 0.440686793510,   sinh(2K) at the fixed point = 1.000000000000</
 <p>The energy per spin, equation (6), can be computed in two independent ways, and we use both. The first is numerical: differentiate the integral formula by finite differences in <span class="math inline">\(\beta\)</span>. The second uses the complete elliptic integral of the first kind, <span class="math display">\[K_1(\kappa) = \int_0^{\pi/2}\frac{d\phi}{\sqrt{1-\kappa^2\sin^2\phi}}, \tag{53}\]</span> in the formula <span class="math display">\[
 u = -\coth2K\Big[1 + \frac2\pi\big(2\tanh^22K - 1\big)K_1(\kappa)\Big]. \tag{54}
 \]</span> <code>scipy.special.ellipkm1(p)</code> returns <span class="math inline">\(K_1\)</span> as a function of the complementary parameter <span class="math display">\[p = 1-\kappa^2 = \Big(\frac{1-s^2}{1+s^2}\Big)^2 . \tag{55}\]</span> Near <span class="math inline">\(T_c\)</span>, <span class="math inline">\(\kappa^2\)</span> is so close to 1 that <span class="math inline">\(p\)</span> must be computed from the right-hand form, without cancellation. Yang’s spontaneous magnetisation is <span class="math display">\[M = \begin{cases}\big[1-\sinh^{-4}2K\big]^{1/8}, &amp; T&lt;T_c,\\[2pt] 0, &amp; T&gt;T_c.\end{cases} \tag{56}\]</span></p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:35.092962Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:35.092572Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:35.124406Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:35.122362Z&quot;}" data-execution_count="12">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T09:46:59.235096Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T09:46:59.234810Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T09:46:59.249231Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T09:46:59.248843Z&quot;}" data-execution_count="12">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> u_elliptic(T):</span>
@@ -995,7 +995,7 @@ u = -\coth2K\Big[1 + \frac2\pi\big(2\tanh^22K - 1\big)K_1(\kappa)\Big]. \tag{54}
   4.00       -0.557272253                -0.557272241     -1.2e-08</code></pre>
 </div>
 </div>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:35.128508Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:35.128163Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:38.368049Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:38.367503Z&quot;}" data-execution_count="13">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T09:46:59.251266Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T09:46:59.250948Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T09:47:01.014112Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T09:47:01.013713Z&quot;}" data-execution_count="13">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>T <span class="op">=</span> np.linspace(<span class="fl">0.8</span>, <span class="fl">4.0</span>, <span class="dv">1601</span>)<span class="op">;</span> T <span class="op">=</span> T[np.<span class="bu">abs</span>(T <span class="op">-</span> TC) <span class="op">&gt;</span> <span class="fl">1e-4</span>]</span>
@@ -1039,7 +1039,7 @@ u = -\coth2K\Big[1 + \frac2\pi\big(2\tanh^22K - 1\big)K_1(\kappa)\Big]. \tag{54}
 <p>At <span class="math inline">\(T_c\)</span> the prefactor of <span class="math inline">\(K_1\)</span> in equation (54) vanishes, because <span class="math display">\[
 \sinh 2K_c = 1 \;\Rightarrow\; \cosh^2 2K_c = 2 \;\Rightarrow\; \tanh^22K_c = \tfrac12 \;\Rightarrow\; 2\tanh^22K_c - 1 = 0 . \tag{57}
 \]</span> It kills the logarithmic divergence of <span class="math inline">\(K_1\)</span> as <span class="math inline">\(\kappa\)</span> approaches 1, and <span class="math display">\[u(T_c) = -\coth2K_c = -\frac{\cosh 2K_c}{\sinh 2K_c} = -\sqrt2 . \tag{58}\]</span> Numerically, equation (54) is evaluated ever closer to <span class="math inline">\(T_c\)</span> from both sides and compared with the central difference of the integral formula in <span class="math inline">\(\beta\)</span> at <span class="math inline">\(T_c\)</span>.</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:38.370872Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:38.370658Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:38.380198Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:38.379665Z&quot;}" data-execution_count="14">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T09:47:01.016063Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T09:47:01.015823Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T09:47:01.023454Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T09:47:01.022965Z&quot;}" data-execution_count="14">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> eps <span class="kw">in</span> (<span class="fl">1e-3</span>, <span class="fl">1e-6</span>, <span class="fl">1e-9</span>):</span>
@@ -1069,7 +1069,7 @@ from the integral, central difference in beta at T_c: -1.41421356</code></pre>
 \]</span> which is <span class="math inline">\(-1\)</span> at <span class="math inline">\(K_c\)</span> by equation (49). At the self-dual point <span class="math inline">\(K\)</span> and <span class="math inline">\(K^*\)</span> both coincide with <span class="math inline">\(K_c\)</span>, and <strong>if <span class="math inline">\(u\)</span> is continuous there</strong> (no latent heat), equation (60) becomes <span class="math display">\[
 \varepsilon - 2\tanh K_c = -(\varepsilon - 2)\ \Rightarrow\ \varepsilon(K_c) = 1 + \tanh K_c . \tag{62}
 \]</span> Finally, by self-duality, <span class="math display">\[\tanh K_c = e^{-2K_c} = \frac{1}{1+\sqrt2} = \sqrt2 - 1, \tag{63}\]</span> so that <span class="math display">\[\varepsilon(K_c) = \sqrt2,\qquad u(T_c) = -\sqrt2 . \tag{64}\]</span> Two exact results, <span class="math inline">\(T_c\)</span> and <span class="math inline">\(u(T_c)\)</span>, thus come from a symmetry argument; each step of the derivation is evaluated numerically below.</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:38.383050Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:38.382711Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:38.388645Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:38.388138Z&quot;}" data-execution_count="15">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T09:47:01.025032Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T09:47:01.024869Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T09:47:01.029130Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T09:47:01.028772Z&quot;}" data-execution_count="15">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>h <span class="op">=</span> <span class="fl">1e-7</span></span>
@@ -1103,7 +1103,7 @@ K = 0.6000:  eps(K) - 2 tanh K = +0.8349870437   (eps(K*) - 2) dK*/dK = +0.83498
 <p>Near <span class="math inline">\(T_c\)</span> the exact formulas behave as powers (or logarithms) of the reduced temperature <span class="math display">\[t = \frac{T-T_c}{T_c}, \tag{65}\]</span> and the exponents of these laws can be read off numerically.</p>
 <p>For the magnetisation, <span class="math display">\[M\sim(-t)^\beta, \tag{66}\]</span> we fit <span class="math inline">\(\ln M\)</span> against <span class="math inline">\(\ln(-t)\)</span> close to <span class="math inline">\(T_c\)</span>, and we also look at the <em>local</em> slope <span class="math inline">\(d\ln M/d\ln(-t)\)</span>, which must tend to <span class="math inline">\(\beta\)</span>.</p>
 <p>The specific heat diverges logarithmically, <span class="math display">\[c\sim -A\ln|t|, \tag{67}\]</span> which corresponds to a vanishing exponent <span class="math inline">\(\alpha\)</span>. We fit <span class="math display">\[c = -A\ln|t| + B_\pm \tag{68}\]</span> on both sides of <span class="math inline">\(T_c\)</span> and compare the fitted amplitude with the exact value <span class="math display">\[A = \frac{2}{\pi}\Big(\frac{2}{T_c}\Big)^2 . \tag{69}\]</span> Here <span class="math inline">\(c\)</span> is obtained from the elliptic <span class="math inline">\(u\)</span> by a central difference with a step much smaller than <span class="math inline">\(|T-T_c|\)</span>.</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:38.391224Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:38.390918Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:39.752927Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:39.751845Z&quot;}" data-execution_count="16">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T09:47:01.030793Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T09:47:01.030529Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T09:47:01.615338Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T09:47:01.614878Z&quot;}" data-execution_count="16">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>tt <span class="op">=</span> np.logspace(<span class="op">-</span><span class="dv">8</span>, <span class="op">-</span><span class="dv">2</span>, <span class="dv">40</span>)                                   <span class="co"># |t|</span></span>
@@ -1155,7 +1155,7 @@ exact amplitude: A = (2/pi)(2/T_c)^2 = 0.494539</code></pre>
 <p>The exponent <span class="math inline">\(\eta\)</span> follows from the correlation length at <span class="math inline">\(T_c\)</span>, which on a strip is proportional to the width. Conformal invariance of the critical point fixes the constant on a periodic strip, <span class="math display">\[\xi_L = \frac{L}{\pi\eta}, \tag{70}\]</span> so <span class="math display">\[\eta_L = \frac{L}{\pi\,\xi_L(T_c)} \tag{71}\]</span> should tend to <span class="math inline">\(\eta\)</span>, whose exact value is 1/4.</p>
 <p>The exponent <span class="math inline">\(\nu\)</span> follows from finite-size scaling. Near <span class="math inline">\(T_c\)</span>, <span class="math inline">\(\xi_L/L\)</span> is a function of <span class="math inline">\(L^{1/\nu}t\)</span> only, so its slope at <span class="math inline">\(T_c\)</span> grows as <span class="math display">\[\frac{d(\xi_L/L)}{dT}\Big|_{T_c}\propto L^{1/\nu}. \tag{72}\]</span> The exact value of <span class="math inline">\(\nu\)</span> is 1.</p>
 <p>As a by-product we test the convergence of the free energy at <span class="math inline">\(T_c\)</span>, <span class="math display">\[f_L - f = -\frac{\pi\,c_{\rm CFT}\,T_c}{6L^2}, \tag{73}\]</span> where the central charge <span class="math inline">\(c_{\rm CFT}\)</span> of conformal field theory (CFT) for the Ising universality class is one half; in other words <span class="math display">\[L^2(f_L - f)\to-\frac{\pi T_c}{12}. \tag{74}\]</span></p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:39.757138Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:39.756765Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:41.345830Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:41.344736Z&quot;}" data-execution_count="17">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T09:47:01.616953Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T09:47:01.616760Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T09:47:03.525169Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T09:47:03.524694Z&quot;}" data-execution_count="17">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">" L    eta_L = L/(pi xi_L(T_c))   L^2 (f_L - f)(T_c)    slope d(xi_L/L)/dT at T_c"</span>)</span>
@@ -1181,12 +1181,12 @@ exact amplitude: A = (2/pi)(2/T_c)^2 = 0.494539</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>12       0.250727               -0.596492            -7.5122
-(computed in 1.6 s)        -pi T_c/12 = -0.594071
+(computed in 1.9 s)        -pi T_c/12 = -0.594071
 1/nu from consecutive pairs of L: 1.0912, 1.0397, 1.0222, 1.0144</code></pre>
 </div>
 </div>
 <p>All three columns converge, monotonically in <span class="math inline">\(L\)</span>, towards the exact values, 1/4 for <span class="math inline">\(\eta\)</span> and 1 for <span class="math inline">\(\nu\)</span>, and towards the conformal prediction of equation (74). Together with the vanishing <span class="math inline">\(\alpha\)</span> (logarithm) and <span class="math inline">\(\beta\)</span> of 1/8, the scaling relations <span class="math display">\[\gamma = \nu(2-\eta),\qquad \alpha + 2\beta + \gamma = 2 \tag{75}\]</span> give the remaining exponent:</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:41.350625Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:41.349765Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:41.355954Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:41.355106Z&quot;}" data-execution_count="18">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T09:47:03.529019Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T09:47:03.528819Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T09:47:03.532830Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T09:47:03.532405Z&quot;}" data-execution_count="18">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>nu, eta, alpha, beta_ <span class="op">=</span> <span class="dv">1</span>, <span class="fl">0.25</span>, <span class="dv">0</span>, <span class="fl">0.125</span></span>
@@ -1205,7 +1205,7 @@ exact amplitude: A = (2/pi)(2/T_c)^2 = 0.494539</code></pre>
 <p>Mean-field (MF) theory replaces the neighbours of each spin by their average <span class="math inline">\(m\)</span>: each spin feels the field <span class="math inline">\(zm\)</span>, where <span class="math inline">\(z\)</span>, the number of neighbours, is 4, so <span class="math display">\[
 m = \tanh\Big(\frac{4m}{T}\Big). \tag{76}
 \]</span> Zero magnetisation is always a solution; a non-zero one exists when the slope of the right-hand side at the origin exceeds 1, that is below <span class="math display">\[T_c^{\rm MF} = 4 . \tag{77}\]</span> Near <span class="math inline">\(T_c^{\rm MF}\)</span> the expansion <span class="math display">\[\tanh x\approx x - \frac{x^3}{3} \tag{78}\]</span> gives <span class="math display">\[m \approx \frac4Tm - \frac13\Big(\frac4T\Big)^3m^3,\qquad m^2\approx \frac{3\big(\frac4T-1\big)}{\big(\frac4T\big)^3}, \tag{79}\]</span> so <span class="math display">\[m\sim\big(1 - T/T_c^{\rm MF}\big)^{1/2},\qquad \beta_{\rm MF} = \tfrac12 . \tag{80}\]</span> The mean-field energy per spin, <span class="math display">\[u_{\rm MF} = -\frac z2m^2 = -2m^2, \tag{81}\]</span> vanishes above <span class="math inline">\(T_c^{\rm MF}\)</span> and has a finite slope below, which gives a <strong>jump</strong> in <span class="math inline">\(c\)</span> instead of a divergence. <span class="math inline">\(T_c^{\rm MF}\)</span>, <span class="math inline">\(\beta_{\rm MF}\)</span> and the specific heat just below <span class="math inline">\(T_c^{\rm MF}\)</span> are also found numerically, and the mean-field magnetisation is plotted together with Yang’s exact <span class="math inline">\(M\)</span>.</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:41.361146Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:41.360289Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:41.672457Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:41.671473Z&quot;}" data-execution_count="19">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T09:47:03.534805Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T09:47:03.534641Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T09:47:03.703310Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T09:47:03.702858Z&quot;}" data-execution_count="19">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> m_meanfield(T):</span>
@@ -1252,7 +1252,7 @@ mean-field specific heat just below T_c^MF: 1.49640, 1.49996   (and exactly 0 ab
 <h2 class="anchored" data-anchor-id="the-triangular-lattice-and-universality">10. The triangular lattice and universality</h2>
 <p>Add one diagonal bond to every plaquette: each spin now has six neighbours. In the transfer matrix this adds the term <span class="math display">\[K\sum_is_is'_{i+1} \tag{82}\]</span> to the exponent of equation (29) (flag <code>lattice="triangular"</code>; <span class="math inline">\(\mathsf V\)</span> is no longer symmetric, so we use a general eigensolver). The exact results are the critical temperature <span class="math display">\[T_c^{\triangle} = \frac{4}{\ln3} \tag{83}\]</span> and <em>the same exponents</em> as on the square lattice. We test both with the crossing method of Section 3 and with <span class="math inline">\(\eta_L\)</span>.</p>
 <p>One geometric correction is needed. In the triangular lattice the columns are <span class="math inline">\(\sqrt3/2\)</span> apart (the sites of one column are at distance 1), so the physical correlation length is <span class="math inline">\(\xi_L\)</span> multiplied by <span class="math inline">\(\sqrt3/2\)</span>, and <span class="math display">\[\eta_L = \frac{L}{\pi\,\tfrac{\sqrt3}{2}\,\xi_L}. \tag{84}\]</span></p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:41.677237Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:41.676445Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:51.527754Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:51.525624Z&quot;}" data-execution_count="20">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T09:47:03.705520Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T09:47:03.705022Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T09:47:18.140466Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T09:47:18.138029Z&quot;}" data-execution_count="20">
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">" L, L+2   crossing T*(L)     eta at the crossing"</span>)</span>
@@ -1265,15 +1265,17 @@ mean-field specific heat just below T_c^MF: 1.49640, 1.49996   (and exactly 0 ab
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code> L, L+2   crossing T*(L)     eta at the crossing
- 4,  6   3.64236593       0.25076
- 6,  8   3.64117712       0.25016</code></pre>
+ 4,  6   3.64236593       0.25076</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code> 6,  8   3.64117712       0.25016</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code> 8, 10   3.64101598       0.25006</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>10, 12   3.64097803       0.25002
-4/ln 3 = 3.64095691    (9.8 s)</code></pre>
+4/ln 3 = 3.64095691    (14.4 s)</code></pre>
 </div>
 </div>
 <p>The critical temperature is different (more neighbours, more order), the exponent <span class="math inline">\(\eta\)</span> is the same: <span class="math inline">\(T_c\)</span> is a lattice detail, the exponents are the physics. A network trained on one lattice can only transfer to another lattice to the extent that it has learned something universal — the interpretability question of the Chinese-room part of the lecture.</p>
@@ -1281,7 +1283,7 @@ mean-field specific heat just below T_c^MF: 1.49640, 1.49996   (and exactly 0 ab
 </section>
 <section id="summary" class="level2">
 <h2 class="anchored" data-anchor-id="summary">11. Summary</h2>
-<p>The table collects the statements of the slides and the section of this notebook where each of them is computed.</p>
+<p>The table collects the statements of the slides and the section where each of them is computed.</p>
 <table class="table">
 <colgroup>
 <col style="width: 50%">
@@ -1345,29 +1347,29 @@ mean-field specific heat just below T_c^MF: 1.49640, 1.49996   (and exactly 0 ab
 <p>Using the transfer matrix, compute the magnetisation per spin of the infinite chain, <span class="math display">\[m = \frac{\partial\ln\lambda_+}{\partial\tilde h}, \tag{85}\]</span> numerically (finite difference) and compare with <span class="math display">\[m = \frac{\sinh\tilde h}{\sqrt{\sinh^2\tilde h + e^{-4K}}}. \tag{86}\]</span> Plot <span class="math inline">\(m(h)\)</span> at several temperatures: is there a spontaneous magnetisation as the field goes to zero from above, at any positive temperature?</p>
 <section id="solution" class="level4">
 <h4 class="anchored" data-anchor-id="solution">Solution</h4>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:51.533127Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:51.532719Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:01:51.952843Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:01:51.951518Z&quot;}" data-execution_count="21">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T09:47:18.144025Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T09:47:18.143828Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T09:47:18.426218Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T09:47:18.425734Z&quot;}" data-execution_count="21">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lam_plus(K, ht):</span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.exp(K) <span class="op">*</span> np.cosh(ht) <span class="op">+</span> np.sqrt(np.exp(<span class="dv">2</span> <span class="op">*</span> K) <span class="op">*</span> np.sinh(ht)<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> np.exp(<span class="op">-</span><span class="dv">2</span> <span class="op">*</span> K))</span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> K, ht <span class="kw">in</span> [(<span class="fl">0.5</span>, <span class="fl">0.1</span>), (<span class="fl">1.0</span>, <span class="fl">0.05</span>), (<span class="fl">2.0</span>, <span class="fl">0.01</span>)]:</span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> <span class="fl">1e-6</span></span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>    m_num <span class="op">=</span> (np.log(lam_plus(K, ht <span class="op">+</span> d)) <span class="op">-</span> np.log(lam_plus(K, ht <span class="op">-</span> d))) <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> d)</span>
-<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>    m_exact <span class="op">=</span> np.sinh(ht) <span class="op">/</span> np.sqrt(np.sinh(ht)<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> np.exp(<span class="op">-</span><span class="dv">4</span> <span class="op">*</span> K))</span>
-<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"K = </span><span class="sc">{</span>K<span class="sc">}</span><span class="ss">, beta h = </span><span class="sc">{</span>ht<span class="sc">}</span><span class="ss">:  m numerical = </span><span class="sc">{</span>m_num<span class="sc">:.8f}</span><span class="ss">,  equation (86) = </span><span class="sc">{</span>m_exact<span class="sc">:.8f}</span><span class="ss">"</span>)</span>
-<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>hgrid <span class="op">=</span> np.linspace(<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="dv">401</span>)</span>
-<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="fl">3.4</span>))</span>
-<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> T, col <span class="kw">in</span> [(<span class="fl">0.5</span>, UJNavy), (<span class="fl">1.0</span>, UJBlue), (<span class="fl">2.0</span>, <span class="st">"#9CC3E6"</span>)]:</span>
-<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a>    K <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> T<span class="op">;</span> ht <span class="op">=</span> hgrid <span class="op">/</span> T</span>
-<span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a>    ax.plot(hgrid, np.sinh(ht) <span class="op">/</span> np.sqrt(np.sinh(ht)<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> np.exp(<span class="op">-</span><span class="dv">4</span> <span class="op">*</span> K)), color<span class="op">=</span>col, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f"T = </span><span class="sc">{</span>T<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb46-15"><a href="#cb46-15" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"$h$"</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">"$m$"</span>)<span class="op">;</span> ax.legend(frameon<span class="op">=</span><span class="va">False</span>)<span class="op">;</span> plt.tight_layout()<span class="op">;</span> plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lam_plus(K, ht):</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.exp(K) <span class="op">*</span> np.cosh(ht) <span class="op">+</span> np.sqrt(np.exp(<span class="dv">2</span> <span class="op">*</span> K) <span class="op">*</span> np.sinh(ht)<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> np.exp(<span class="op">-</span><span class="dv">2</span> <span class="op">*</span> K))</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> K, ht <span class="kw">in</span> [(<span class="fl">0.5</span>, <span class="fl">0.1</span>), (<span class="fl">1.0</span>, <span class="fl">0.05</span>), (<span class="fl">2.0</span>, <span class="fl">0.01</span>)]:</span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> <span class="fl">1e-6</span></span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>    m_num <span class="op">=</span> (np.log(lam_plus(K, ht <span class="op">+</span> d)) <span class="op">-</span> np.log(lam_plus(K, ht <span class="op">-</span> d))) <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> d)</span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>    m_exact <span class="op">=</span> np.sinh(ht) <span class="op">/</span> np.sqrt(np.sinh(ht)<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> np.exp(<span class="op">-</span><span class="dv">4</span> <span class="op">*</span> K))</span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"K = </span><span class="sc">{</span>K<span class="sc">}</span><span class="ss">, beta h = </span><span class="sc">{</span>ht<span class="sc">}</span><span class="ss">:  m numerical = </span><span class="sc">{</span>m_num<span class="sc">:.8f}</span><span class="ss">,  equation (86) = </span><span class="sc">{</span>m_exact<span class="sc">:.8f}</span><span class="ss">"</span>)</span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>hgrid <span class="op">=</span> np.linspace(<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="dv">401</span>)</span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="fl">3.4</span>))</span>
+<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> T, col <span class="kw">in</span> [(<span class="fl">0.5</span>, UJNavy), (<span class="fl">1.0</span>, UJBlue), (<span class="fl">2.0</span>, <span class="st">"#9CC3E6"</span>)]:</span>
+<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a>    K <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> T<span class="op">;</span> ht <span class="op">=</span> hgrid <span class="op">/</span> T</span>
+<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a>    ax.plot(hgrid, np.sinh(ht) <span class="op">/</span> np.sqrt(np.sinh(ht)<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> np.exp(<span class="op">-</span><span class="dv">4</span> <span class="op">*</span> K)), color<span class="op">=</span>col, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f"T = </span><span class="sc">{</span>T<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"$h$"</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">"$m$"</span>)<span class="op">;</span> ax.legend(frameon<span class="op">=</span><span class="va">False</span>)<span class="op">;</span> plt.tight_layout()<span class="op">;</span> plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>K = 0.5, beta h = 0.1:  m numerical = 0.26271701,  closed form = 0.26271701
-K = 1.0, beta h = 0.05:  m numerical = 0.34668443,  closed form = 0.34668443
-K = 2.0, beta h = 0.01:  m numerical = 0.47921470,  closed form = 0.47921470</code></pre>
+<pre><code>K = 0.5, beta h = 0.1:  m numerical = 0.26271701,  equation (86) = 0.26271701
+K = 1.0, beta h = 0.05:  m numerical = 0.34668443,  equation (86) = 0.34668443
+K = 2.0, beta h = 0.01:  m numerical = 0.47921470,  equation (86) = 0.47921470</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <p><img src="lab-012-onsager_files/figure-html/cell-22-output-2.png" class="img-fluid"></p>
@@ -1381,30 +1383,30 @@ K = 2.0, beta h = 0.01:  m numerical = 0.47921470,  closed form = 0.47921470</co
 <p>Using <code>strip</code> from Section 3, plot the maximum of <span class="math inline">\(c_L\)</span> against <span class="math inline">\(\ln L\)</span>. The logarithmic divergence of equation (67), combined with <span class="math display">\[|t|\sim\frac1L \tag{88}\]</span> (because <span class="math inline">\(\nu\)</span> is 1), predicts <span class="math display">\[c_{\max}(L)\approx A\ln L + \text{const}. \tag{89}\]</span> Fit the slope and compare with <span class="math inline">\(A\)</span> found in Section 8.</p>
 <section id="solution-1" class="level4">
 <h4 class="anchored" data-anchor-id="solution-1">Solution</h4>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:01:51.956508Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:01:51.955931Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:02:00.529198Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:02:00.528078Z&quot;}" data-execution_count="22">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T09:47:18.428307Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T09:47:18.427977Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T09:47:28.815864Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T09:47:28.815328Z&quot;}" data-execution_count="22">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>cmax <span class="op">=</span> []</span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>t0 <span class="op">=</span> time.perf_counter()</span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>Lex <span class="op">=</span> [<span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">8</span>, <span class="dv">10</span>, <span class="dv">12</span>]</span>
-<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> L <span class="kw">in</span> Lex:</span>
-<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> L <span class="kw">in</span> strip:</span>
-<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>        cmax.append(strip[L][<span class="st">"c"</span>][<span class="dv">2</span>:<span class="op">-</span><span class="dv">2</span>].<span class="bu">max</span>())</span>
-<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:                                     <span class="co"># L = 12 was not in the scan: maximise c_L near its peak</span></span>
-<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>        <span class="kw">def</span> cL(T, L<span class="op">=</span>L, d<span class="op">=</span><span class="fl">2e-3</span>):</span>
-<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>            fm, f0, fp <span class="op">=</span> (<span class="op">-</span>(T <span class="op">+</span> s) <span class="op">*</span> np.log(lambda01(L, <span class="dv">1</span> <span class="op">/</span> (T <span class="op">+</span> s))[<span class="dv">0</span>]) <span class="op">/</span> L <span class="cf">for</span> s <span class="kw">in</span> (<span class="op">-</span>d, <span class="dv">0</span>, d))</span>
-<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="op">-</span>T <span class="op">*</span> (fp <span class="op">-</span> <span class="dv">2</span> <span class="op">*</span> f0 <span class="op">+</span> fm) <span class="op">/</span> d<span class="op">**</span><span class="dv">2</span></span>
-<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a>        <span class="im">from</span> scipy.optimize <span class="im">import</span> minimize_scalar</span>
-<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a>        res <span class="op">=</span> minimize_scalar(<span class="kw">lambda</span> T: <span class="op">-</span>cL(T), bounds<span class="op">=</span>(<span class="fl">2.24</span>, <span class="fl">2.30</span>), method<span class="op">=</span><span class="st">"bounded"</span>, options<span class="op">=</span>{<span class="st">"xatol"</span>: <span class="fl">1e-3</span>})</span>
-<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a>        cmax.append(<span class="op">-</span>res.fun)</span>
-<span id="cb48-14"><a href="#cb48-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"(L = 12 peak search: </span><span class="sc">{</span>time<span class="sc">.</span>perf_counter()<span class="op">-</span>t0<span class="sc">:.1f}</span><span class="ss"> s)"</span>)</span>
-<span id="cb48-15"><a href="#cb48-15" aria-hidden="true" tabindex="-1"></a>slope <span class="op">=</span> np.polyfit(np.log(Lex[<span class="dv">1</span>:]), cmax[<span class="dv">1</span>:], <span class="dv">1</span>)[<span class="dv">0</span>]</span>
-<span id="cb48-16"><a href="#cb48-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> L, cm <span class="kw">in</span> <span class="bu">zip</span>(Lex, cmax):</span>
-<span id="cb48-17"><a href="#cb48-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"L = </span><span class="sc">{</span>L<span class="sc">:2d}</span><span class="ss">: c_max = </span><span class="sc">{</span>cm<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
-<span id="cb48-18"><a href="#cb48-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"slope of c_max vs ln L (L = 6..12): </span><span class="sc">{</span>slope<span class="sc">:.4f}</span><span class="ss">;   A from Section 8: </span><span class="sc">{</span>A_exact<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>cmax <span class="op">=</span> []</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>t0 <span class="op">=</span> time.perf_counter()</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>Lex <span class="op">=</span> [<span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">8</span>, <span class="dv">10</span>, <span class="dv">12</span>]</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> L <span class="kw">in</span> Lex:</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> L <span class="kw">in</span> strip:</span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>        cmax.append(strip[L][<span class="st">"c"</span>][<span class="dv">2</span>:<span class="op">-</span><span class="dv">2</span>].<span class="bu">max</span>())</span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:                                     <span class="co"># L = 12 was not in the scan: maximise c_L near its peak</span></span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>        <span class="kw">def</span> cL(T, L<span class="op">=</span>L, d<span class="op">=</span><span class="fl">2e-3</span>):</span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>            fm, f0, fp <span class="op">=</span> (<span class="op">-</span>(T <span class="op">+</span> s) <span class="op">*</span> np.log(lambda01(L, <span class="dv">1</span> <span class="op">/</span> (T <span class="op">+</span> s))[<span class="dv">0</span>]) <span class="op">/</span> L <span class="cf">for</span> s <span class="kw">in</span> (<span class="op">-</span>d, <span class="dv">0</span>, d))</span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="op">-</span>T <span class="op">*</span> (fp <span class="op">-</span> <span class="dv">2</span> <span class="op">*</span> f0 <span class="op">+</span> fm) <span class="op">/</span> d<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>        <span class="im">from</span> scipy.optimize <span class="im">import</span> minimize_scalar</span>
+<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a>        res <span class="op">=</span> minimize_scalar(<span class="kw">lambda</span> T: <span class="op">-</span>cL(T), bounds<span class="op">=</span>(<span class="fl">2.24</span>, <span class="fl">2.30</span>), method<span class="op">=</span><span class="st">"bounded"</span>, options<span class="op">=</span>{<span class="st">"xatol"</span>: <span class="fl">1e-3</span>})</span>
+<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a>        cmax.append(<span class="op">-</span>res.fun)</span>
+<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"(L = 12 peak search: </span><span class="sc">{</span>time<span class="sc">.</span>perf_counter()<span class="op">-</span>t0<span class="sc">:.1f}</span><span class="ss"> s)"</span>)</span>
+<span id="cb49-15"><a href="#cb49-15" aria-hidden="true" tabindex="-1"></a>slope <span class="op">=</span> np.polyfit(np.log(Lex[<span class="dv">1</span>:]), cmax[<span class="dv">1</span>:], <span class="dv">1</span>)[<span class="dv">0</span>]</span>
+<span id="cb49-16"><a href="#cb49-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> L, cm <span class="kw">in</span> <span class="bu">zip</span>(Lex, cmax):</span>
+<span id="cb49-17"><a href="#cb49-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"L = </span><span class="sc">{</span>L<span class="sc">:2d}</span><span class="ss">: c_max = </span><span class="sc">{</span>cm<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb49-18"><a href="#cb49-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"slope of c_max vs ln L (L = 6..12): </span><span class="sc">{</span>slope<span class="sc">:.4f}</span><span class="ss">;   A from Section 8: </span><span class="sc">{</span>A_exact<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>(L = 12 peak search: 8.6 s)
+<pre><code>(L = 12 peak search: 10.4 s)
 L =  4: c_max = 0.8728
 L =  6: c_max = 1.0739
 L =  8: c_max = 1.2160
@@ -1421,15 +1423,15 @@ slope of c_max vs ln L (L = 6..12): 0.4947;   A from Section 8: 0.4945</code></p
 <p>For the strip, <span class="math inline">\(\mathsf V\)</span> can be written, like an imaginary-time evolution operator, as a product of diagonal matrices and single-spin factors, <span class="math display">\[\mathsf V = e^{\frac K2\sum_i s_is_{i+1}}\Big[\prod_i\big(e^{K}\mathbb 1 + e^{-K}\sigma^x_i\big)\Big]e^{\frac K2\sum_i s_is_{i+1}} . \tag{90}\]</span> Show that <span class="math display">\[e^{K}\mathbb 1 + e^{-K}\sigma^x = \sqrt{2\sinh2K}\;e^{K^*\sigma^x}, \tag{91}\]</span> so that the transfer matrix is a product of a classical Ising coupling along the column and a <strong>transverse field</strong> of strength <span class="math inline">\(K^*\)</span>. Verify the identity numerically for a few values of <span class="math inline">\(K\)</span>. This is the bridge to the transverse-field Ising chain used later in the course.</p>
 <section id="solution-2" class="level4">
 <h4 class="anchored" data-anchor-id="solution-2">Solution</h4>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T13:02:00.536115Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T13:02:00.535439Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T13:02:00.553591Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T13:02:00.552152Z&quot;}" data-execution_count="23">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T09:47:28.819258Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T09:47:28.818829Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T09:47:28.823605Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T09:47:28.823063Z&quot;}" data-execution_count="23">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>sx <span class="op">=</span> np.array([[<span class="fl">0.0</span>, <span class="fl">1.0</span>], [<span class="fl">1.0</span>, <span class="fl">0.0</span>]])</span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.linalg <span class="im">import</span> expm</span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> K <span class="kw">in</span> (<span class="fl">0.2</span>, KC, <span class="fl">0.8</span>):</span>
-<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>    lhs <span class="op">=</span> np.exp(K) <span class="op">*</span> np.eye(<span class="dv">2</span>) <span class="op">+</span> np.exp(<span class="op">-</span>K) <span class="op">*</span> sx</span>
-<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>    rhs <span class="op">=</span> np.sqrt(<span class="dv">2</span> <span class="op">*</span> np.sinh(<span class="dv">2</span> <span class="op">*</span> K)) <span class="op">*</span> expm(K_dual(K) <span class="op">*</span> sx)</span>
-<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"K = </span><span class="sc">{</span>K<span class="sc">:.4f}</span><span class="ss">:  max |lhs - rhs| = </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">abs</span>(lhs <span class="op">-</span> rhs)<span class="sc">.</span><span class="bu">max</span>()<span class="sc">:.1e}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>sx <span class="op">=</span> np.array([[<span class="fl">0.0</span>, <span class="fl">1.0</span>], [<span class="fl">1.0</span>, <span class="fl">0.0</span>]])</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.linalg <span class="im">import</span> expm</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> K <span class="kw">in</span> (<span class="fl">0.2</span>, KC, <span class="fl">0.8</span>):</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>    lhs <span class="op">=</span> np.exp(K) <span class="op">*</span> np.eye(<span class="dv">2</span>) <span class="op">+</span> np.exp(<span class="op">-</span>K) <span class="op">*</span> sx</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>    rhs <span class="op">=</span> np.sqrt(<span class="dv">2</span> <span class="op">*</span> np.sinh(<span class="dv">2</span> <span class="op">*</span> K)) <span class="op">*</span> expm(K_dual(K) <span class="op">*</span> sx)</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"K = </span><span class="sc">{</span>K<span class="sc">:.4f}</span><span class="ss">:  max |lhs - rhs| = </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">abs</span>(lhs <span class="op">-</span> rhs)<span class="sc">.</span><span class="bu">max</span>()<span class="sc">:.1e}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>K = 0.2000:  max |lhs - rhs| = 1.1e-16

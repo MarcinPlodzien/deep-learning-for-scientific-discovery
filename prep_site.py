@@ -27,9 +27,9 @@ DECKS = {
             subtitle=r"Lecture 1: & Scientific Discovery: Understanding from Data\\ & From AI to Deep Learning"),
     2: dict(sections=["03_learning_recipe", "04_mnist", "05_closing"],
             subtitle=r"Lecture 2: & The Recipe of Deep Learning"),
-    3: dict(sections=["00_recap", "04b_cifar_cnn", "04c_regularisation", "04e_cam", "04g_adversarial", "05_closing"],
+    3: dict(sections=["00_recap", "04b_cifar_cnn", "04c_regularisation", "04e_cam", "04g_adversarial", "05_closing"], use={"05_closing.tex": "05_closing_web3.tex"},
             subtitle=r"Lecture 3: & Convolutional Neural Networks\\ & Regularisation, Class Activation Maps\\ & Adversarial Examples and Limits"),
-    4: dict(sections=["04f_blood", "04h_ising", "04i_chinese_room", "05_closing"],
+    4: dict(sections=["04f_blood", "04j_transfer", "04h_ising", "04i_chinese_room", "05_closing"], use={"05_closing.tex": "05_closing_web4.tex"},
             subtitle=r"Lecture 4: & CNNs on Scientific Data\\ & Blood Cells and Satellite Images\\ & Finding \(T_c\) of the 2D Ising Model"),
     5: dict(sections=["unsupervised", "closing"],
             subtitle=r"Lecture 5: & Unsupervised Learning\\ & PCA, t-SNE, Clustering, Autoencoders\\ & Blood Cells, Credit-Card Fraud and Tumour Genes without Labels"),
@@ -51,19 +51,26 @@ NOTEBOOKS = [
     (3, "notebook_2026-10-14-limits_of_networks.ipynb", "limits-of-deep-networks", "Limits of deep networks"),
     (3, "Lab_013a_CNN_on_MNIST_and_CIFAR10_PyTorch.ipynb", "lab-013a-cnn-pytorch", "Lab 013a: CNNs on MNIST and CIFAR-10 in PyTorch"),
     (3, "Lab_013b_CNN_on_MNIST_and_CIFAR10_JAX.ipynb", "lab-013b-cnn-jax", "Lab 013b: CNNs on MNIST and CIFAR-10 in JAX"),
+    (3, "notebook_2026-10-14-cam_cifar10.ipynb", "cam-cifar10", "Class activation maps of a CIFAR-10 CNN"),
     (4, "notebook_2026-10-14-BloodMNIST_CNN_regularisation_CAM.ipynb", "bloodmnist-cnn-regularisation-cam", "Blood cells: CNNs, regularisation and class activation maps"),
     (4, "notebook_2026-10-14-convolution_and_Ising_figures.ipynb", "convolution-and-ising", "Convolution and the 2D Ising model"),
     (4, "Lab_010_Ising_Monte_Carlo_samples.ipynb", "lab-010-ising-monte-carlo", "Lab 010: Monte Carlo samples of the 2D Ising model"),
     (4, "Lab_011_CNN_Tc_from_confidence.ipynb", "lab-011-cnn-tc", "Lab 011: T_c of the 2D Ising model from the confidence of a CNN"),
     (4, "Lab_012_Onsager_exact_solution.ipynb", "lab-012-onsager", "Lab 012: Onsager's exact solution of the 2D Ising model"),
+    (4, "Lab_014a_Transfer_learning_PyTorch.ipynb", "lab-014a-transfer-pytorch", "Lab 014a: Transfer learning in PyTorch"),
+    # (re-enable when its run has finished) (4, "Lab_014b_Transfer_learning_JAX.ipynb", "lab-014b-transfer-jax", "Lab 014b: Transfer learning in JAX"),
     (5, "notebook_2026-10-20-unsupervised_learning.ipynb", "unsupervised-learning", "Unsupervised learning: PCA, t-SNE, clustering, autoencoders and anomalies"),
-    (6, "notebook_2026-10-27-generative_models.ipynb", "generative-models", "Generative models: probability, VAE, GAN and diffusion"),
+    (6, "notebook_2026-10-27-generative_models.ipynb", "generative-models", "Generative models: probability, autoencoder and VAE"),
     (6, "notebook_2026-10-27-conditional_generation.ipynb", "conditional-generation", "Conditional generation of digits and blood cells"),
+    (6, "notebook_2026-10-27-latent_space.ipynb", "latent-space", "Latent space of a VAE: data with known causes"),
+    (6, "notebook_2026-10-27-beta_vae.ipynb", "beta-vae", "Disentangled latent features with the beta-VAE"),
+    (6, "notebook_2026-10-27-ising_cvae.ipynb", "ising-cvae", "Ising configurations from a conditional VAE"),
 ]
 
 # files published next to the notebooks: (lecture, source relative to the lecture folder, web path)
 EXTRA_FILES = [
     (3, "Notebooks/results/model_E.pt", "weights/lecture-03/model_E.pt"),
+    (3, "Notebooks/results/cam_cifar_gap_cnn.pt", "weights/lecture-03/cam_cifar_gap_cnn.pt"),
 ]
 
 MONTHS = "January|February|March|April|May|June|July|August|September|October|November|December"

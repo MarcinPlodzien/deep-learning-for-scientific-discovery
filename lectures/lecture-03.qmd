@@ -31,3 +31,9 @@ The same material in JAX and Flax, section by section.
 
 The trained blood-cell network on satellite images and noise, under a colour shift of the staining, and a network that learns a marker instead of the cell.
 :::
+
+::: {.nb-item}
+[Class activation maps of a CIFAR-10 CNN](../notebooks/lecture-03/cam-cifar10.ipynb)
+
+The CNN with global average pooling behind the CAM slides: the network, its training, the class activation map derived step by step and the maps on correct and misclassified images. The trained weights are on this site ([cam_cifar_gap_cnn.pt](../weights/lecture-03/cam_cifar_gap_cnn.pt)).
+:::
