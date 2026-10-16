@@ -49,3 +49,9 @@ The partition function, the critical temperature and the critical exponents.
 
 Freezing, replacing and fine-tuning the layers of a CIFAR-10 CNN and of an ImageNet ResNet-18, on BloodMNIST and on EuroSAT, against networks trained from random initialisation.
 :::
+
+::: {.nb-item}
+[Lab 014b: Transfer learning in JAX](../notebooks/lecture-04/lab-014b-transfer-jax.ipynb)
+
+The same in JAX and Flax, with the ImageNet weights converted from PyTorch.
+:::

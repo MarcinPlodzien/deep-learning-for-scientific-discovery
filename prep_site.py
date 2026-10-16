@@ -58,7 +58,7 @@ NOTEBOOKS = [
     (4, "Lab_011_CNN_Tc_from_confidence.ipynb", "lab-011-cnn-tc", "Lab 011: T_c of the 2D Ising model from the confidence of a CNN"),
     (4, "Lab_012_Onsager_exact_solution.ipynb", "lab-012-onsager", "Lab 012: Onsager's exact solution of the 2D Ising model"),
     (4, "Lab_014a_Transfer_learning_PyTorch.ipynb", "lab-014a-transfer-pytorch", "Lab 014a: Transfer learning in PyTorch"),
-    # (re-enable when its run has finished) (4, "Lab_014b_Transfer_learning_JAX.ipynb", "lab-014b-transfer-jax", "Lab 014b: Transfer learning in JAX"),
+    (4, "Lab_014b_Transfer_learning_JAX.ipynb", "lab-014b-transfer-jax", "Lab 014b: Transfer learning in JAX"),
     (5, "notebook_2026-10-20-unsupervised_learning.ipynb", "unsupervised-learning", "Unsupervised learning: PCA, t-SNE, clustering, autoencoders and anomalies"),
     (6, "notebook_2026-10-27-generative_models.ipynb", "generative-models", "Generative models: probability, autoencoder and VAE"),
     (6, "notebook_2026-10-27-conditional_generation.ipynb", "conditional-generation", "Conditional generation of digits and blood cells"),
