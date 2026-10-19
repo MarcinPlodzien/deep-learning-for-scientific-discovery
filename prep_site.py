@@ -66,6 +66,7 @@ NOTEBOOKS = [
     (6, "notebook_2026-10-27-beta_vae.ipynb", "beta-vae", "Disentangled latent features with the beta-VAE"),
     (6, "notebook_2026-10-27-ising_cvae.ipynb", "ising-cvae", "Ising configurations from a conditional VAE"),
     (6, "notebook_2026-10-27-interpretability_beta_vae.ipynb", "galaxy-beta-vae", "Galaxies with a beta-VAE: latent factors and counterfactuals"),
+    (6, "Lab_015_Physical_parameters_from_trajectories.ipynb", "lab-015-trajectories", "Lab 015: Physical parameters from trajectories"),
 ]
 
 # files published next to the notebooks: (lecture, source relative to the lecture folder, web path)

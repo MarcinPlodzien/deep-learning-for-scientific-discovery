@@ -40,7 +40,7 @@ The course is for doctoral students of physics, mathematics, chemistry, biology 
 | 3 | [Supervised Learning on Images: Convolutional Neural Networks](lectures/lecture-03.qmd) | Labs 013a/b: CNNs in PyTorch and JAX; limits of deep networks |
 | 4 | [Supervised Learning on Scientific Images: CNNs, Transfer Learning, Ising Model](lectures/lecture-04.qmd) | blood cells, satellite images, transfer learning (Labs 014a/b), the Ising model, Labs 010–012 |
 | 5 | [Unsupervised Learning I: Dimensionality Reduction, Clustering, Autoencoders](lectures/lecture-05.qmd) | PCA, t-SNE, clustering, autoencoders, anomalies |
-| 6 | [Unsupervised Learning II: Probability and Variational Autoencoders](lectures/lecture-06.qmd) | VAE, latent spaces, conditional generation, β-VAE, Ising configurations, galaxies |
+| 6 | [Unsupervised Learning II: Probability and Variational Autoencoders](lectures/lecture-06.qmd) | VAE, latent spaces, conditional generation, β-VAE, Ising configurations, galaxies, Lab 015: trajectories |
 
 ## Main reading
 

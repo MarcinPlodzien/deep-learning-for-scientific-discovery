@@ -6,7 +6,7 @@ toc: false
 
 An autoencoder compresses data, and its latent codes form a scattered set of points. A point between them decodes to an image that resembles no training sample. Generation of new data requires a probability distribution over the data, and we build the tools for it, from densities, expectations and the Gaussian distribution through joint, conditional and marginal distributions to maximum likelihood and the Kullback–Leibler divergence. The variational autoencoder (VAE) combines these tools. The encoder maps each sample to a small cloud in a latent space whose distribution is fixed in advance, the decoder turns any point of that space into a sample, and the evidence lower bound together with the reparametrisation trick makes the model trainable by gradient descent.
 
-We then study what such a model learns. Data with known causes, a curve with one hidden number and a bar with an angle and a shift, show how the latent space is stretched and why a periodic cause produces vortices in a two-dimensional latent plane. A conditional VAE generates a chosen digit, a chosen cell type or an Ising configuration at a requested temperature, and classifiers and physical observables check the generated samples. The β-VAE pushes each latent coordinate towards a single cause, and the mutual information gap measures how far it succeeds. Galaxy images test the idea on real data. Their latent coordinates are compared with properties measured from the pixels and across independent trainings.
+We then study what such a model learns. Data with known causes, a curve with one hidden number and a bar with an angle and a shift, show how the latent space is stretched and why a periodic cause produces vortices in a two-dimensional latent plane. A conditional VAE generates a chosen digit, a chosen cell type or an Ising configuration at a requested temperature, and classifiers and physical observables check the generated samples. The β-VAE pushes each latent coordinate towards a single cause, and the mutual information gap measures how far it succeeds. Two scientific examples test the idea. For galaxy images the latent coordinates are compared with properties measured from the pixels and across independent trainings. For trajectories of a damped oscillator driven by noise the true physical parameters are known and serve as the reference.
 
 ## Slides
 
@@ -50,4 +50,10 @@ A conditional VAE generates spin configurations at a requested temperature. We c
 [Galaxies with a β-VAE: latent factors and counterfactuals](../notebooks/lecture-06/galaxy-beta-vae.ipynb)
 
 A β-VAE is trained on Galaxy10 DECaLS images without labels. We compare its latent coordinates with the size, brightness, elongation and colour measured from the pixels, test whether they reappear in a second training, and use them to explain a morphology classifier by counterfactuals. The first run downloads the data set (2.7 GB) from Zenodo.
+:::
+
+::: {.nb-item}
+[Lab 015: Physical parameters from trajectories](../notebooks/lecture-06/lab-015-trajectories.ipynb)
+
+We simulate a damped oscillator driven by a random force and train β-VAEs on its trajectories without labels. Because the frequency, the damping and the initial conditions of every trajectory are known, we measure which of them the latent coordinates recover and explain the outcome with the Fisher information of the trajectories. We then reimplement the question-answering network SciNet of Iten et al., compare it with the β-VAE on their pendulum data, and ask whether two coupled masses are described by their springs or by their normal modes.
 :::

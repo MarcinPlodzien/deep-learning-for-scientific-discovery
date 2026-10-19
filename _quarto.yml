@@ -105,6 +105,7 @@ website:
           - notebooks/lecture-06/beta-vae.ipynb
           - notebooks/lecture-06/ising-cvae.ipynb
           - notebooks/lecture-06/galaxy-beta-vae.ipynb
+          - notebooks/lecture-06/lab-015-trajectories.ipynb
       - text: "About"
         href: about.qmd
   page-footer:
