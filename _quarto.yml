@@ -29,17 +29,17 @@ website:
         href: index.qmd
       - text: "Lectures"
         menu:
-          - text: "1 · From AI to Deep Learning"
+          - text: "1 · AI, Machine Learning and Scientific Discovery: Paradigms and Applications"
             href: lectures/lecture-01.qmd
-          - text: "2 · The Recipe of Deep Learning"
+          - text: "2 · Supervised Learning: the Recipe of Deep Learning"
             href: lectures/lecture-02.qmd
-          - text: "3 · Convolutional Neural Networks"
+          - text: "3 · Supervised Learning on Images: Convolutional Neural Networks"
             href: lectures/lecture-03.qmd
-          - text: "4 · CNNs on Scientific Data and the 2D Ising Model"
+          - text: "4 · Supervised Learning on Scientific Images: CNNs, Transfer Learning, Ising Model"
             href: lectures/lecture-04.qmd
-          - text: "5 · Unsupervised Learning"
+          - text: "5 · Unsupervised Learning I: Dimensionality Reduction, Clustering, Autoencoders"
             href: lectures/lecture-05.qmd
-          - text: "6 · Probability and Variational Autoencoders"
+          - text: "6 · Unsupervised Learning II: Probability and Variational Autoencoders"
             href: lectures/lecture-06.qmd
       - text: "Course flyer"
         href: assets/course-flyer.pdf
@@ -60,13 +60,13 @@ website:
     contents:
       - text: "Start here"
         href: index.qmd
-      - section: "1 · From AI to Deep Learning"
+      - section: "1 · AI, Machine Learning and Scientific Discovery: Paradigms and Applications"
         href: lectures/lecture-01.qmd
         contents:
           - notebooks/lecture-01/lab-001-python-matplotlib-pandas.ipynb
           - notebooks/lecture-01/lab-002-numpy.ipynb
           - notebooks/lecture-01/lab-003-pytorch.ipynb
-      - section: "2 · The Recipe of Deep Learning"
+      - section: "2 · Supervised Learning: the Recipe of Deep Learning"
         href: lectures/lecture-02.qmd
         contents:
           - notebooks/lecture-02/lab-004-automatic-differentiation.ipynb
@@ -75,13 +75,14 @@ website:
           - notebooks/lecture-02/lab-007-building-and-training.ipynb
           - notebooks/lecture-02/lab-008-analysing-networks.ipynb
           - notebooks/lecture-02/lab-009-mnist.ipynb
-      - section: "3 · Convolutional Neural Networks"
+      - section: "3 · Supervised Learning on Images: Convolutional Neural Networks"
         href: lectures/lecture-03.qmd
         contents:
           - notebooks/lecture-03/lab-013a-cnn-pytorch.ipynb
           - notebooks/lecture-03/lab-013b-cnn-jax.ipynb
           - notebooks/lecture-03/limits-of-deep-networks.ipynb
-      - section: "4 · CNNs on Scientific Data and the 2D Ising Model"
+          - notebooks/lecture-03/cam-cifar10.ipynb
+      - section: "4 · Supervised Learning on Scientific Images: CNNs, Transfer Learning, Ising Model"
         href: lectures/lecture-04.qmd
         contents:
           - notebooks/lecture-04/bloodmnist-cnn-regularisation-cam.ipynb
@@ -89,15 +90,21 @@ website:
           - notebooks/lecture-04/lab-010-ising-monte-carlo.ipynb
           - notebooks/lecture-04/lab-011-cnn-tc.ipynb
           - notebooks/lecture-04/lab-012-onsager.ipynb
-      - section: "5 · Unsupervised Learning"
+          - notebooks/lecture-04/lab-014a-transfer-pytorch.ipynb
+          - notebooks/lecture-04/lab-014b-transfer-jax.ipynb
+      - section: "5 · Unsupervised Learning I: Dimensionality Reduction, Clustering, Autoencoders"
         href: lectures/lecture-05.qmd
         contents:
           - notebooks/lecture-05/unsupervised-learning.ipynb
-      - section: "6 · Probability and Variational Autoencoders"
+      - section: "6 · Unsupervised Learning II: Probability and Variational Autoencoders"
         href: lectures/lecture-06.qmd
         contents:
           - notebooks/lecture-06/generative-models.ipynb
           - notebooks/lecture-06/conditional-generation.ipynb
+          - notebooks/lecture-06/latent-space.ipynb
+          - notebooks/lecture-06/beta-vae.ipynb
+          - notebooks/lecture-06/ising-cvae.ipynb
+          - notebooks/lecture-06/galaxy-beta-vae.ipynb
       - text: "About"
         href: about.qmd
   page-footer:

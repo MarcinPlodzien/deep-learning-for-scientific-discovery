@@ -1,10 +1,12 @@
 ---
-title: "5 · Unsupervised Learning"
+title: "5 · Unsupervised Learning I: Dimensionality Reduction, Clustering, Autoencoders"
 code-tools: false
 toc: false
 ---
 
-Learning from data without labels. Principal component analysis (the covariance matrix, its eigenvectors and the variance they keep), t-SNE (neighbour probabilities, the Kullback–Leibler loss, the crowding problem and the heavy tail of the Student-t, perplexity), clustering with k-means and DBSCAN and its evaluation with the silhouette and the adjusted Rand index, and autoencoders: compression into a latent space and anomaly detection by the reconstruction error. Data: MNIST, CIFAR-10, blood cells, credit-card transactions and the gene expression of 801 tumours.
+Most scientific data come without labels. The first questions then concern the data themselves, namely which few variables describe a sample, whether the samples form groups, and which samples are unusual. Principal component analysis (PCA) gives every sample new coordinates along the eigenvectors of the covariance matrix, the directions of largest variance. The method t-SNE (t-distributed stochastic neighbour embedding) drops the linear map and places the samples in a plane so that neighbours in the data stay neighbours in the plane, which makes groups visible that a linear projection mixes. Clustering with k-means and DBSCAN (density-based spatial clustering of applications with noise) turns these groups into labels, and the silhouette score and the adjusted Rand index measure their quality.
+
+An autoencoder learns its own compression. An encoder maps each sample to a few latent numbers, a decoder rebuilds the sample from them, and samples that are rebuilt badly are flagged as anomalies. We apply these methods to handwritten digits (MNIST), photographs (CIFAR-10) and blood cells, then to the detection of credit-card fraud and of an unseen tumour type from the expression of 20 531 genes. We return finally to the Ising model, where the first principal component turns out to be the magnetisation and an autoencoder trained without labels detects the phase transition.
 
 ## Slides
 
@@ -17,5 +19,5 @@ Learning from data without labels. Principal component analysis (the covariance 
 ::: {.nb-item}
 [Unsupervised learning: PCA, t-SNE, clustering, autoencoders and anomalies](../notebooks/lecture-05/unsupervised-learning.ipynb)
 
-Every figure and number of the slides: PCA, t-SNE, k-means, DBSCAN, autoencoders and anomaly detection on images and on tables.
+The notebook reproduces every figure and number of the slides. We reduce the dimension of images and tables with PCA and t-SNE, group them with k-means and DBSCAN, compress them with autoencoders and flag anomalies by the reconstruction error.
 :::

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Deep Learning for Scientific Discovery - 2 · The Recipe of Deep Learning</title>
+<title>Deep Learning for Scientific Discovery - 2 · Supervised Learning: the Recipe of Deep Learning</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -92,27 +92,27 @@ ul.task-list li input[type="checkbox"] {
     <ul class="dropdown-menu" aria-labelledby="nav-menu-lectures">    
         <li>
     <a class="dropdown-item" href="../lectures/lecture-01.html">
- <span class="dropdown-text">1 · From AI to Deep Learning</span></a>
+ <span class="dropdown-text">1 · AI, Machine Learning and Scientific Discovery: Paradigms and Applications</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../lectures/lecture-02.html">
- <span class="dropdown-text">2 · The Recipe of Deep Learning</span></a>
+ <span class="dropdown-text">2 · Supervised Learning: the Recipe of Deep Learning</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../lectures/lecture-03.html">
- <span class="dropdown-text">3 · Convolutional Neural Networks</span></a>
+ <span class="dropdown-text">3 · Supervised Learning on Images: Convolutional Neural Networks</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../lectures/lecture-04.html">
- <span class="dropdown-text">4 · CNNs on Scientific Data and the 2D Ising Model</span></a>
+ <span class="dropdown-text">4 · Supervised Learning on Scientific Images: CNNs, Transfer Learning, Ising Model</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../lectures/lecture-05.html">
- <span class="dropdown-text">5 · Unsupervised Learning</span></a>
+ <span class="dropdown-text">5 · Unsupervised Learning I: Dimensionality Reduction, Clustering, Autoencoders</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../lectures/lecture-06.html">
- <span class="dropdown-text">6 · Probability and Variational Autoencoders</span></a>
+ <span class="dropdown-text">6 · Unsupervised Learning II: Probability and Variational Autoencoders</span></a>
   </li>  
     </ul>
   </li>
@@ -146,7 +146,7 @@ ul.task-list li input[type="checkbox"] {
     </nav>
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">2 · The Recipe of Deep Learning</h1>
+      <h1 class="quarto-secondary-nav-title">2 · Supervised Learning: the Recipe of Deep Learning</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -176,7 +176,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../lectures/lecture-01.html" class="sidebar-item-text sidebar-link">1 · From AI to Deep Learning</a>
+            <a href="../lectures/lecture-01.html" class="sidebar-item-text sidebar-link">1 · AI, Machine Learning and Scientific Discovery: Paradigms and Applications</a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -201,7 +201,7 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../lectures/lecture-02.html" class="sidebar-item-text sidebar-link active">2 · The Recipe of Deep Learning</a>
+            <a href="../lectures/lecture-02.html" class="sidebar-item-text sidebar-link active">2 · Supervised Learning: the Recipe of Deep Learning</a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -241,7 +241,7 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../lectures/lecture-03.html" class="sidebar-item-text sidebar-link">3 · Convolutional Neural Networks</a>
+            <a href="../lectures/lecture-03.html" class="sidebar-item-text sidebar-link">3 · Supervised Learning on Images: Convolutional Neural Networks</a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -262,11 +262,16 @@ ul.task-list li input[type="checkbox"] {
   <a href="../notebooks/lecture-03/limits-of-deep-networks.html" class="sidebar-item-text sidebar-link">Limits of deep networks</a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-03/cam-cifar10.html" class="sidebar-item-text sidebar-link">Class activation maps of a CIFAR-10 CNN</a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../lectures/lecture-04.html" class="sidebar-item-text sidebar-link">4 · CNNs on Scientific Data and the 2D Ising Model</a>
+            <a href="../lectures/lecture-04.html" class="sidebar-item-text sidebar-link">4 · Supervised Learning on Scientific Images: CNNs, Transfer Learning, Ising Model</a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -297,11 +302,21 @@ ul.task-list li input[type="checkbox"] {
   <a href="../notebooks/lecture-04/lab-012-onsager.html" class="sidebar-item-text sidebar-link">Lab 012: Onsager’s exact solution of the 2D Ising model</a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-04/lab-014a-transfer-pytorch.html" class="sidebar-item-text sidebar-link">Lab 014a: Transfer learning in PyTorch</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-04/lab-014b-transfer-jax.html" class="sidebar-item-text sidebar-link">Lab 014b: Transfer learning in JAX</a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../lectures/lecture-05.html" class="sidebar-item-text sidebar-link">5 · Unsupervised Learning</a>
+            <a href="../lectures/lecture-05.html" class="sidebar-item-text sidebar-link">5 · Unsupervised Learning I: Dimensionality Reduction, Clustering, Autoencoders</a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -316,7 +331,7 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../lectures/lecture-06.html" class="sidebar-item-text sidebar-link">6 · Probability and Variational Autoencoders</a>
+            <a href="../lectures/lecture-06.html" class="sidebar-item-text sidebar-link">6 · Unsupervised Learning II: Probability and Variational Autoencoders</a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -330,6 +345,26 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../notebooks/lecture-06/conditional-generation.html" class="sidebar-item-text sidebar-link">Conditional generation of digits and blood cells</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-06/latent-space.html" class="sidebar-item-text sidebar-link">Latent space of a VAE: data with known causes</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-06/beta-vae.html" class="sidebar-item-text sidebar-link">Disentangled latent features with the beta-VAE</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-06/ising-cvae.html" class="sidebar-item-text sidebar-link">Ising configurations from a conditional VAE</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-06/galaxy-beta-vae.html" class="sidebar-item-text sidebar-link">Galaxies with a beta-VAE: latent factors and counterfactuals</a>
   </div>
 </li>
       </ul>
@@ -349,7 +384,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">2 · The Recipe of Deep Learning</h1>
+<h1 class="title d-none d-lg-block">2 · Supervised Learning: the Recipe of Deep Learning</h1>
 </div>
 
 
@@ -364,7 +399,8 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p>A neural network as a non-linear function with trainable parameters: neurons, layers and activations, the universal approximation theorem, loss functions, gradient descent, backpropagation and automatic differentiation. The first full example is MNIST: a single output trained with the mean squared error against ten outputs trained with the categorical cross-entropy, compared through their confusion matrices.</p>
+<p>A neural network is a function with many adjustable parameters, assembled from simple pieces. Each neuron forms a weighted sum of its inputs and passes it through a non-linear activation function, and a layer of neurons is a matrix product followed by these activations. The universal approximation theorem guarantees that such functions can approximate any continuous function on a bounded domain, given enough neurons. Training finds the parameters. We define a loss that measures the error of the network on the data and lower it by gradient descent, with the gradients computed by backpropagation, the chain rule organised so that a computer applies it automatically.</p>
+<p>The first complete example is the recognition of handwritten digits in the MNIST data set (Modified National Institute of Standards and Technology). We first train a network with a single output and the mean squared error, which treats the ten digits as points on a line. We then train a network with ten outputs and the categorical cross-entropy, which treats them as ten categories. The confusion matrices of the two networks show how the choice of the loss shapes what the network learns.</p>
 <section id="slides" class="level2">
 <h2 class="anchored" data-anchor-id="slides">Slides</h2>
 <p><a href="../slides/lecture-02.pdf" class="btn btn-outline-primary">Download the slides (PDF)</a></p>
@@ -375,27 +411,27 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="notebooks">Notebooks</h2>
 <div class="nb-item">
 <p><a href="../notebooks/lecture-02/lab-004-automatic-differentiation.html">Lab 004: Automatic differentiation</a></p>
-<p>Derivatives computed by the machine, exactly.</p>
+<p>A computer can differentiate any program built from elementary operations, to the accuracy of floating-point arithmetic. We show how automatic differentiation does it and why it is the basis of training.</p>
 </div>
 <div class="nb-item">
 <p><a href="../notebooks/lecture-02/lab-005-n-pendulum.html">Lab 005: The N-link pendulum with SymPy and automatic differentiation</a></p>
-<p>Equations of motion obtained symbolically and by automatic differentiation.</p>
+<p>We derive the equations of motion of a pendulum with N links twice, symbolically with SymPy and numerically by automatic differentiation of the Lagrangian, and compare the two.</p>
 </div>
 <div class="nb-item">
 <p><a href="../notebooks/lecture-02/lab-006-uat-and-minimisers.html">Lab 006: Universal approximation and the choice of minimiser</a></p>
-<p>Fitting functions with networks, and the role of the optimiser.</p>
+<p>Networks of growing width fit a target function more closely, as the universal approximation theorem promises. How close a trained network actually gets depends on the optimiser, and we compare several.</p>
 </div>
 <div class="nb-item">
 <p><a href="../notebooks/lecture-02/lab-007-building-and-training.html">Lab 007: Building and training neural networks</a></p>
-<p>A complete training loop in PyTorch.</p>
+<p>We assemble a complete training loop in PyTorch, with data loading, the forward pass, the loss, backpropagation and the parameter update.</p>
 </div>
 <div class="nb-item">
 <p><a href="../notebooks/lecture-02/lab-008-analysing-networks.html">Lab 008: Analysing a neural network</a></p>
-<p>Architecture, parameter counts and what a trained network does.</p>
+<p>After training, a network can be inspected. We read off its architecture and parameter counts and examine what its layers compute.</p>
 </div>
 <div class="nb-item">
 <p><a href="../notebooks/lecture-02/lab-009-mnist.html">Lab 009: MNIST, regression versus cross-entropy</a></p>
-<p>The two formulations of digit classification on the slides.</p>
+<p>We reproduce the two formulations of digit classification from the slides, a single output with the mean squared error and ten outputs with the categorical cross-entropy, together with their confusion matrices.</p>
 </div>
 
 

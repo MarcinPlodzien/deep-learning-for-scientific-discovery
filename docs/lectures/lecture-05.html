@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Deep Learning for Scientific Discovery - 5 · Unsupervised Learning</title>
+<title>Deep Learning for Scientific Discovery - 5 · Unsupervised Learning I: Dimensionality Reduction, Clustering, Autoencoders</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,7 +30,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
 <link href="../notebooks/lecture-05/unsupervised-learning.html" rel="next">
-<link href="../notebooks/lecture-04/lab-012-onsager.html" rel="prev">
+<link href="../notebooks/lecture-04/lab-014b-transfer-jax.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -92,27 +92,27 @@ ul.task-list li input[type="checkbox"] {
     <ul class="dropdown-menu" aria-labelledby="nav-menu-lectures">    
         <li>
     <a class="dropdown-item" href="../lectures/lecture-01.html">
- <span class="dropdown-text">1 · From AI to Deep Learning</span></a>
+ <span class="dropdown-text">1 · AI, Machine Learning and Scientific Discovery: Paradigms and Applications</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../lectures/lecture-02.html">
- <span class="dropdown-text">2 · The Recipe of Deep Learning</span></a>
+ <span class="dropdown-text">2 · Supervised Learning: the Recipe of Deep Learning</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../lectures/lecture-03.html">
- <span class="dropdown-text">3 · Convolutional Neural Networks</span></a>
+ <span class="dropdown-text">3 · Supervised Learning on Images: Convolutional Neural Networks</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../lectures/lecture-04.html">
- <span class="dropdown-text">4 · CNNs on Scientific Data and the 2D Ising Model</span></a>
+ <span class="dropdown-text">4 · Supervised Learning on Scientific Images: CNNs, Transfer Learning, Ising Model</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../lectures/lecture-05.html">
- <span class="dropdown-text">5 · Unsupervised Learning</span></a>
+ <span class="dropdown-text">5 · Unsupervised Learning I: Dimensionality Reduction, Clustering, Autoencoders</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../lectures/lecture-06.html">
- <span class="dropdown-text">6 · Probability and Variational Autoencoders</span></a>
+ <span class="dropdown-text">6 · Unsupervised Learning II: Probability and Variational Autoencoders</span></a>
   </li>  
     </ul>
   </li>
@@ -146,7 +146,7 @@ ul.task-list li input[type="checkbox"] {
     </nav>
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">5 · Unsupervised Learning</h1>
+      <h1 class="quarto-secondary-nav-title">5 · Unsupervised Learning I: Dimensionality Reduction, Clustering, Autoencoders</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -176,7 +176,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../lectures/lecture-01.html" class="sidebar-item-text sidebar-link">1 · From AI to Deep Learning</a>
+            <a href="../lectures/lecture-01.html" class="sidebar-item-text sidebar-link">1 · AI, Machine Learning and Scientific Discovery: Paradigms and Applications</a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -201,7 +201,7 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../lectures/lecture-02.html" class="sidebar-item-text sidebar-link">2 · The Recipe of Deep Learning</a>
+            <a href="../lectures/lecture-02.html" class="sidebar-item-text sidebar-link">2 · Supervised Learning: the Recipe of Deep Learning</a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -241,7 +241,7 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../lectures/lecture-03.html" class="sidebar-item-text sidebar-link">3 · Convolutional Neural Networks</a>
+            <a href="../lectures/lecture-03.html" class="sidebar-item-text sidebar-link">3 · Supervised Learning on Images: Convolutional Neural Networks</a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -262,11 +262,16 @@ ul.task-list li input[type="checkbox"] {
   <a href="../notebooks/lecture-03/limits-of-deep-networks.html" class="sidebar-item-text sidebar-link">Limits of deep networks</a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-03/cam-cifar10.html" class="sidebar-item-text sidebar-link">Class activation maps of a CIFAR-10 CNN</a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../lectures/lecture-04.html" class="sidebar-item-text sidebar-link">4 · CNNs on Scientific Data and the 2D Ising Model</a>
+            <a href="../lectures/lecture-04.html" class="sidebar-item-text sidebar-link">4 · Supervised Learning on Scientific Images: CNNs, Transfer Learning, Ising Model</a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -297,11 +302,21 @@ ul.task-list li input[type="checkbox"] {
   <a href="../notebooks/lecture-04/lab-012-onsager.html" class="sidebar-item-text sidebar-link">Lab 012: Onsager’s exact solution of the 2D Ising model</a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-04/lab-014a-transfer-pytorch.html" class="sidebar-item-text sidebar-link">Lab 014a: Transfer learning in PyTorch</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-04/lab-014b-transfer-jax.html" class="sidebar-item-text sidebar-link">Lab 014b: Transfer learning in JAX</a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../lectures/lecture-05.html" class="sidebar-item-text sidebar-link active">5 · Unsupervised Learning</a>
+            <a href="../lectures/lecture-05.html" class="sidebar-item-text sidebar-link active">5 · Unsupervised Learning I: Dimensionality Reduction, Clustering, Autoencoders</a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -316,7 +331,7 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../lectures/lecture-06.html" class="sidebar-item-text sidebar-link">6 · Probability and Variational Autoencoders</a>
+            <a href="../lectures/lecture-06.html" class="sidebar-item-text sidebar-link">6 · Unsupervised Learning II: Probability and Variational Autoencoders</a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -330,6 +345,26 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../notebooks/lecture-06/conditional-generation.html" class="sidebar-item-text sidebar-link">Conditional generation of digits and blood cells</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-06/latent-space.html" class="sidebar-item-text sidebar-link">Latent space of a VAE: data with known causes</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-06/beta-vae.html" class="sidebar-item-text sidebar-link">Disentangled latent features with the beta-VAE</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-06/ising-cvae.html" class="sidebar-item-text sidebar-link">Ising configurations from a conditional VAE</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-06/galaxy-beta-vae.html" class="sidebar-item-text sidebar-link">Galaxies with a beta-VAE: latent factors and counterfactuals</a>
   </div>
 </li>
       </ul>
@@ -349,7 +384,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">5 · Unsupervised Learning</h1>
+<h1 class="title d-none d-lg-block">5 · Unsupervised Learning I: Dimensionality Reduction, Clustering, Autoencoders</h1>
 </div>
 
 
@@ -364,7 +399,8 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p>Learning from data without labels. Principal component analysis (the covariance matrix, its eigenvectors and the variance they keep), t-SNE (neighbour probabilities, the Kullback–Leibler loss, the crowding problem and the heavy tail of the Student-t, perplexity), clustering with k-means and DBSCAN and its evaluation with the silhouette and the adjusted Rand index, and autoencoders: compression into a latent space and anomaly detection by the reconstruction error. Data: MNIST, CIFAR-10, blood cells, credit-card transactions and the gene expression of 801 tumours.</p>
+<p>Most scientific data come without labels. The first questions then concern the data themselves, namely which few variables describe a sample, whether the samples form groups, and which samples are unusual. Principal component analysis (PCA) gives every sample new coordinates along the eigenvectors of the covariance matrix, the directions of largest variance. The method t-SNE (t-distributed stochastic neighbour embedding) drops the linear map and places the samples in a plane so that neighbours in the data stay neighbours in the plane, which makes groups visible that a linear projection mixes. Clustering with k-means and DBSCAN (density-based spatial clustering of applications with noise) turns these groups into labels, and the silhouette score and the adjusted Rand index measure their quality.</p>
+<p>An autoencoder learns its own compression. An encoder maps each sample to a few latent numbers, a decoder rebuilds the sample from them, and samples that are rebuilt badly are flagged as anomalies. We apply these methods to handwritten digits (MNIST), photographs (CIFAR-10) and blood cells, then to the detection of credit-card fraud and of an unseen tumour type from the expression of 20 531 genes. We return finally to the Ising model, where the first principal component turns out to be the magnetisation and an autoencoder trained without labels detects the phase transition.</p>
 <section id="slides" class="level2">
 <h2 class="anchored" data-anchor-id="slides">Slides</h2>
 <p><a href="../slides/lecture-05.pdf" class="btn btn-outline-primary">Download the slides (PDF)</a></p>
@@ -375,7 +411,7 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="notebooks">Notebooks</h2>
 <div class="nb-item">
 <p><a href="../notebooks/lecture-05/unsupervised-learning.html">Unsupervised learning: PCA, t-SNE, clustering, autoencoders and anomalies</a></p>
-<p>Every figure and number of the slides: PCA, t-SNE, k-means, DBSCAN, autoencoders and anomaly detection on images and on tables.</p>
+<p>The notebook reproduces every figure and number of the slides. We reduce the dimension of images and tables with PCA and t-SNE, group them with k-means and DBSCAN, compress them with autoencoders and flag anomalies by the reconstruction error.</p>
 </div>
 
 
@@ -632,8 +668,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../notebooks/lecture-04/lab-012-onsager.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Lab 012: Onsager’s exact solution of the 2D Ising model</span>
+      <a href="../notebooks/lecture-04/lab-014b-transfer-jax.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Lab 014b: Transfer learning in JAX</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

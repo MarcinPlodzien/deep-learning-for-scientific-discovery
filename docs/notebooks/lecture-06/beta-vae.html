@@ -92,6 +92,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
+<link href="../../notebooks/lecture-06/ising-cvae.html" rel="next">
+<link href="../../notebooks/lecture-06/latent-space.html" rel="prev">
 <script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -154,27 +156,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <ul class="dropdown-menu" aria-labelledby="nav-menu-lectures">    
         <li>
     <a class="dropdown-item" href="../../lectures/lecture-01.html">
- <span class="dropdown-text">1 · From AI to Deep Learning</span></a>
+ <span class="dropdown-text">1 · AI, Machine Learning and Scientific Discovery: Paradigms and Applications</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../../lectures/lecture-02.html">
- <span class="dropdown-text">2 · The Recipe of Deep Learning</span></a>
+ <span class="dropdown-text">2 · Supervised Learning: the Recipe of Deep Learning</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../../lectures/lecture-03.html">
- <span class="dropdown-text">3 · Convolutional Neural Networks</span></a>
+ <span class="dropdown-text">3 · Supervised Learning on Images: Convolutional Neural Networks</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../../lectures/lecture-04.html">
- <span class="dropdown-text">4 · CNNs on Scientific Data and the 2D Ising Model</span></a>
+ <span class="dropdown-text">4 · Supervised Learning on Scientific Images: CNNs, Transfer Learning, Ising Model</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../../lectures/lecture-05.html">
- <span class="dropdown-text">5 · Unsupervised Learning</span></a>
+ <span class="dropdown-text">5 · Unsupervised Learning I: Dimensionality Reduction, Clustering, Autoencoders</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../../lectures/lecture-06.html">
- <span class="dropdown-text">6 · Probability and Variational Autoencoders</span></a>
+ <span class="dropdown-text">6 · Unsupervised Learning II: Probability and Variational Autoencoders</span></a>
   </li>  
     </ul>
   </li>
@@ -238,7 +240,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../lectures/lecture-01.html" class="sidebar-item-text sidebar-link">1 · From AI to Deep Learning</a>
+            <a href="../../lectures/lecture-01.html" class="sidebar-item-text sidebar-link">1 · AI, Machine Learning and Scientific Discovery: Paradigms and Applications</a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -263,7 +265,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../lectures/lecture-02.html" class="sidebar-item-text sidebar-link">2 · The Recipe of Deep Learning</a>
+            <a href="../../lectures/lecture-02.html" class="sidebar-item-text sidebar-link">2 · Supervised Learning: the Recipe of Deep Learning</a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -303,7 +305,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../lectures/lecture-03.html" class="sidebar-item-text sidebar-link">3 · Convolutional Neural Networks</a>
+            <a href="../../lectures/lecture-03.html" class="sidebar-item-text sidebar-link">3 · Supervised Learning on Images: Convolutional Neural Networks</a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -324,11 +326,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="../../notebooks/lecture-03/limits-of-deep-networks.html" class="sidebar-item-text sidebar-link">Limits of deep networks</a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-03/cam-cifar10.html" class="sidebar-item-text sidebar-link">Class activation maps of a CIFAR-10 CNN</a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../lectures/lecture-04.html" class="sidebar-item-text sidebar-link">4 · CNNs on Scientific Data and the 2D Ising Model</a>
+            <a href="../../lectures/lecture-04.html" class="sidebar-item-text sidebar-link">4 · Supervised Learning on Scientific Images: CNNs, Transfer Learning, Ising Model</a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -359,11 +366,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="../../notebooks/lecture-04/lab-012-onsager.html" class="sidebar-item-text sidebar-link">Lab 012: Onsager’s exact solution of the 2D Ising model</a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-04/lab-014a-transfer-pytorch.html" class="sidebar-item-text sidebar-link">Lab 014a: Transfer learning in PyTorch</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-04/lab-014b-transfer-jax.html" class="sidebar-item-text sidebar-link">Lab 014b: Transfer learning in JAX</a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../lectures/lecture-05.html" class="sidebar-item-text sidebar-link">5 · Unsupervised Learning</a>
+            <a href="../../lectures/lecture-05.html" class="sidebar-item-text sidebar-link">5 · Unsupervised Learning I: Dimensionality Reduction, Clustering, Autoencoders</a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -378,12 +395,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../lectures/lecture-06.html" class="sidebar-item-text sidebar-link">6 · Probability and Variational Autoencoders</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
+            <a href="../../lectures/lecture-06.html" class="sidebar-item-text sidebar-link">6 · Unsupervised Learning II: Probability and Variational Autoencoders</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/lecture-06/generative-models.html" class="sidebar-item-text sidebar-link">Generative models: probability, autoencoder and VAE</a>
@@ -392,6 +409,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../notebooks/lecture-06/conditional-generation.html" class="sidebar-item-text sidebar-link">Conditional generation of digits and blood cells</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-06/latent-space.html" class="sidebar-item-text sidebar-link">Latent space of a VAE: data with known causes</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-06/beta-vae.html" class="sidebar-item-text sidebar-link active">Disentangled latent features with the beta-VAE</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-06/ising-cvae.html" class="sidebar-item-text sidebar-link">Ising configurations from a conditional VAE</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-06/galaxy-beta-vae.html" class="sidebar-item-text sidebar-link">Galaxies with a beta-VAE: latent factors and counterfactuals</a>
   </div>
 </li>
       </ul>
@@ -947,8 +984,10 @@ beta = 8: weights loaded from results/beta_vae_dsprites_beta8.pt</code></pre>
 </section>
 <section id="factor-alignment" class="level2">
 <h2 class="anchored" data-anchor-id="factor-alignment">Factor alignment</h2>
-<p>Since the factors <span class="math inline">\(v_1,\dots,v_5\)</span> of every test image are known, the alignment between latent coordinates and factors can be measured. For each pair of a coordinate <span class="math inline">\(z_k\)</span> and a factor <span class="math inline">\(v_j\)</span> we estimate the mutual information <span class="math display">\[I(z_k;v_j)=\sum_{a,b}p(a,b)\,\ln\frac{p(a,b)}{p(a)\,p(b)}, \tag{10}\]</span> where <span class="math inline">\(a\)</span> runs over 20 equal-width bins of the posterior mean <span class="math inline">\(\mu_k\)</span> over the test set and <span class="math inline">\(b\)</span> over the values of <span class="math inline">\(v_j\)</span>; the probabilities are frequencies in the 10,000 test images. The largest value equation (10) can take is the entropy <span class="math inline">\(H(v_j)\)</span> of the factor, so the normalised mutual information <span class="math display">\[\tilde I(z_k;v_j)=\frac{I(z_k;v_j)}{H(v_j)} \tag{11}\]</span> lies between 0 (the coordinate says nothing about the factor) and 1 (it determines the factor). For a disentangled representation the matrix of these values has one large entry per factor, each in a different row.</p>
-<p>The mutual information gap (MIG) of Chen et al.&nbsp;(2018) condenses the matrix into one number. For each factor it takes the normalised mutual information of the most informative coordinate, <span class="math inline">\(z_{(1)}\)</span>, minus that of the second most informative one, <span class="math inline">\(z_{(2)}\)</span>, and averages over the <span class="math inline">\(K\)</span> factors: <span class="math display">\[\mathrm{MIG}=\frac1K\sum_{j=1}^{K}\Big[\tilde I\big(z_{(1)};v_j\big)-\tilde I\big(z_{(2)};v_j\big)\Big]. \tag{12}\]</span> A factor captured by one coordinate scores close to its normalised mutual information; a factor smeared over two coordinates scores close to zero even if the representation contains it completely. Chen et al.&nbsp;estimate the mutual information by sampling from <span class="math inline">\(q_\phi(\mathbf z\,|\,\mathbf x)\)</span>; we use the binned means, a common simplification.</p>
+<p>Since the factors <span class="math inline">\(v_1,\dots,v_5\)</span> of every test image are known, the alignment between latent coordinates and factors can be measured. Two quantities from information theory do it, and both are expectations of logarithms of probabilities, like the KL divergence of the β-VAE loss.</p>
+<p>The entropy of a factor measures how uncertain its value is before anything is observed. An outcome <span class="math inline">\(b\)</span> of probability <span class="math inline">\(p(b)\)</span> carries the surprise <span class="math inline">\(-\ln p(b)\)</span>: a certain outcome surprises by nothing, a rare one by much. The entropy <span class="math inline">\(H(v_j)\)</span> in the second line of equation (10) is the average surprise. For a factor whose <span class="math inline">\(n\)</span> values are equally likely it is the logarithm of <span class="math inline">\(n\)</span>, the larger the more values have to be told apart. In dSprites the shape takes three values and has an entropy of 1.10 nats, the scale six values and 1.79 nats, each position 32 values and 3.47 nats, and the orientation 40 values and 3.69 nats.</p>
+<p>The mutual information <span class="math inline">\(I(z_k;v_j)\)</span> in the first line of equation (10) measures how much of this uncertainty disappears once the coordinate <span class="math inline">\(z_k\)</span> is known: it is the entropy of the factor minus the conditional entropy, the uncertainty about the factor that remains after reading the coordinate. Written out, it is the KL divergence between the joint distribution <span class="math inline">\(p(a,b)\)</span> and the product <span class="math inline">\(p(a)\,p(b)\)</span> that the two variables would have if they were independent. It is therefore zero exactly when the coordinate and the factor are independent, and it reaches <span class="math inline">\(H(v_j)\)</span> when the coordinate determines the factor completely. Unlike a correlation coefficient, it also detects relations that are not linear or not monotonic, for example a coordinate that encodes an angle on a circle. For each pair of a coordinate <span class="math inline">\(z_k\)</span> and a factor <span class="math inline">\(v_j\)</span> we estimate <span class="math display">\[I(z_k;v_j)=\sum_{a,b}p(a,b)\,\ln\frac{p(a,b)}{p(a)\,p(b)},\qquad H(v_j)=-\sum_b p(b)\ln p(b), \tag{10}\]</span> where <span class="math inline">\(a\)</span> runs over 20 equal-width bins of the posterior mean <span class="math inline">\(\mu_k\)</span> over the test set and <span class="math inline">\(b\)</span> over the values of <span class="math inline">\(v_j\)</span>; the probabilities are frequencies in the 10,000 test images. Since equation (10) cannot exceed the entropy <span class="math inline">\(H(v_j)\)</span> of the factor, the normalised mutual information <span class="math display">\[\tilde I(z_k;v_j)=\frac{I(z_k;v_j)}{H(v_j)} \tag{11}\]</span> lies between 0 (the coordinate says nothing about the factor) and 1 (it determines the factor), and it can be read as the fraction of the uncertainty about the factor that the coordinate removes. For a disentangled representation the matrix of these values has one large entry per factor, each in a different row.</p>
+<p>The mutual information gap (MIG) of Chen et al.&nbsp;(2018) condenses the matrix into one number. For each factor it takes the normalised mutual information of the most informative coordinate, <span class="math inline">\(z_{(1)}\)</span>, minus that of the second most informative one, <span class="math inline">\(z_{(2)}\)</span>, and averages over the <span class="math inline">\(K\)</span> factors: <span class="math display">\[\mathrm{MIG}=\frac1K\sum_{j=1}^{K}\Big[\tilde I\big(z_{(1)};v_j\big)-\tilde I\big(z_{(2)};v_j\big)\Big]. \tag{12}\]</span> A factor captured by one coordinate scores close to its normalised mutual information. A factor smeared over two coordinates, say 0.35 and 0.30, scores 0.05 even if the representation contains it completely; so does a factor copied into two coordinates, 0.60 and 0.60, which a score based on the largest value alone would reward. The gap rewards exactly what disentanglement asks for: one coordinate per factor, and only one. The measure needs the true factors of every image, which is why it is computed on synthetic data such as dSprites; for real data such as galaxy images, where the causes are unknown, only correlations with measured properties remain. Chen et al.&nbsp;estimate the mutual information by sampling from <span class="math inline">\(q_\phi(\mathbf z\,|\,\mathbf x)\)</span>; we use the binned means, a common simplification.</p>
 <p>A complementary question is how much each factor is present in the representation at all, irrespective of alignment. A linear probe answers it: a logistic regression predicting the shape from the ten means (accuracy, chance level one third) and linear regressions predicting the scale and the two positions (coefficient of determination <span class="math inline">\(R^2\)</span>), fitted on 8,000 test images and evaluated on the other 2,000. Orientation is left out of the probe, since the image does not determine it for the symmetric shapes.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T11:59:02.456560Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T11:59:02.456252Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T11:59:03.615749Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T11:59:03.614973Z&quot;}" data-execution_count="13">
 <details open="">
@@ -2171,6 +2210,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../notebooks/lecture-06/latent-space.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Latent space of a VAE: data with known causes</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../notebooks/lecture-06/ising-cvae.html" class="pagination-link">
+        <span class="nav-page-text">Ising configurations from a conditional VAE</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">

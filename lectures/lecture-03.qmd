@@ -1,10 +1,12 @@
 ---
-title: "3 · Convolutional Neural Networks"
+title: "3 · Supervised Learning on Images: Convolutional Neural Networks"
 code-tools: false
 toc: false
 ---
 
-CIFAR-10 with a flattened dense network, and what flattening throws away. Convolution, continuous and discrete, images with three channels, learnable kernels, stride, padding and pooling; convolutional networks on CIFAR-10 and their regularisation (L1 and L2 penalties, dropout, batch normalisation). Class activation maps and Grad-CAM show where a network looks; adversarial examples show how easily it is fooled. Three experiments on the trained blood-cell network show what a high test accuracy does not guarantee: confident answers for satellite images and noise, a collapse of the accuracy under a change of staining, and a shortcut learned from a marker.
+We start from colour photographs of the CIFAR-10 data set (Canadian Institute for Advanced Research, ten classes). A dense network flattens each image into one long vector and loses the information about which pixels are neighbours. Convolution keeps it. A small kernel slides over the image and responds to the same local pattern wherever it appears, and stacking convolutional layers with pooling builds a hierarchy of features from edges to textures and parts of objects. We train convolutional neural networks (CNNs) on CIFAR-10 and control their overfitting with weight penalties, dropout and batch normalisation.
+
+A test accuracy says little about where a network looks or how far it can be trusted. Class activation maps and their gradient-based generalisation, Grad-CAM, show which regions of an image drive a decision. Adversarial examples show that a change of a few pixels, invisible to a human, can reverse it. Three experiments on a trained blood-cell network complete the picture. The network gives confident answers for satellite images and pure noise, its accuracy collapses when the staining of the cells changes, and it learns a shortcut from a marker added to the images.
 
 ## Slides
 
@@ -17,23 +19,23 @@ CIFAR-10 with a flattened dense network, and what flattening throws away. Convol
 ::: {.nb-item}
 [Lab 013a: CNNs on MNIST and CIFAR-10 in PyTorch](../notebooks/lecture-03/lab-013a-cnn-pytorch.ipynb)
 
-Convolution computed explicitly and with the library, dense network against CNN, capacity and regularisation on CIFAR-10, extracting and analysing kernels, feature maps, class activation maps implemented from the feature maps and weights, and transfer from CIFAR-10 to MNIST.
+We compute a convolution explicitly and with the library, then compare a dense network with a convolutional neural network (CNN) on CIFAR-10 and study capacity and regularisation. The trained kernels, the feature maps and class activation maps built from the feature maps and the weights show what the network has learnt, and a final section transfers a CIFAR-10 network to MNIST.
 :::
 
 ::: {.nb-item}
 [Lab 013b: CNNs on MNIST and CIFAR-10 in JAX](../notebooks/lecture-03/lab-013b-cnn-jax.ipynb)
 
-The same material in JAX and Flax, section by section.
+The material of Lab 013a, section by section, written with JAX and Flax.
 :::
 
 ::: {.nb-item}
 [Limits of deep networks](../notebooks/lecture-03/limits-of-deep-networks.ipynb)
 
-The trained blood-cell network on satellite images and noise, under a colour shift of the staining, and a network that learns a marker instead of the cell.
+A blood-cell network with a high test accuracy is confronted with satellite images and noise, with a colour shift of the staining, and with images that carry a marker. Each experiment shows a different way in which a good test score fails to carry over.
 :::
 
 ::: {.nb-item}
 [Class activation maps of a CIFAR-10 CNN](../notebooks/lecture-03/cam-cifar10.ipynb)
 
-The CNN with global average pooling behind the CAM slides: the network, its training, the class activation map derived step by step and the maps on correct and misclassified images. The trained weights are on this site ([cam_cifar_gap_cnn.pt](../weights/lecture-03/cam_cifar_gap_cnn.pt)).
+We train the CNN with global average pooling that produces the class activation maps of the slides, derive the map from the last layers of the network, and display it on correctly and wrongly classified images. The trained weights are on this site ([cam_cifar_gap_cnn.pt](../weights/lecture-03/cam_cifar_gap_cnn.pt)).
 :::

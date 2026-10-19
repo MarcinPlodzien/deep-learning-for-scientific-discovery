@@ -24,17 +24,17 @@ FOLDERS = {1: "Lecture_01-02_2026.10.06", 2: "Lecture_03_2026.10.13", 3: "Lectur
            5: "Lecture_05_2026.10.20", 6: "Lecture_06_2026.10.27"}
 DECKS = {
     1: dict(sections=["01a_discovery_story", "01_motivation", "02_ai_landscape", "03_learning_recipe", "04_breakthroughs", "05_closing"],
-            subtitle=r"Lecture 1: & Scientific Discovery: Understanding from Data\\ & From AI to Deep Learning"),
+            subtitle=r"Lecture 1: & AI and Machine Learning\\ & Paradigms and Scientific Discovery"),
     2: dict(sections=["03_learning_recipe", "04_mnist", "05_closing"],
-            subtitle=r"Lecture 2: & The Recipe of Deep Learning"),
+            subtitle=r"Lecture 2: & Supervised Learning\\ & The Recipe of Deep Learning"),
     3: dict(sections=["00_recap", "04b_cifar_cnn", "04c_regularisation", "04e_cam", "04g_adversarial", "05_closing"], use={"05_closing.tex": "05_closing_web3.tex"},
-            subtitle=r"Lecture 3: & Convolutional Neural Networks\\ & Regularisation, Class Activation Maps\\ & Adversarial Examples and Limits"),
+            subtitle=r"Lecture 3: & Supervised Learning on Images\\ & Convolutional Neural Networks and Regularisation\\ & Class Activation Maps, Adversarial Examples, Limits"),
     4: dict(sections=["04f_blood", "04j_transfer", "04h_ising", "04i_chinese_room", "05_closing"], use={"05_closing.tex": "05_closing_web4.tex"},
-            subtitle=r"Lecture 4: & CNNs on Scientific Data\\ & Blood Cells and Satellite Images\\ & Finding \(T_c\) of the 2D Ising Model"),
+            subtitle=r"Lecture 4: & Supervised Learning\\ & CNNs on Scientific Images\\ & Blood Cells, Satellites, Transfer Learning\\ & Finding \(T_c\) of the 2D Ising Model"),
     5: dict(sections=["unsupervised", "closing"],
-            subtitle=r"Lecture 5: & Unsupervised Learning\\ & PCA, t-SNE, Clustering, Autoencoders\\ & Blood Cells, Credit-Card Fraud and Tumour Genes without Labels"),
+            subtitle=r"Lecture 5: & Unsupervised Learning I\\ & PCA, t-SNE, Clustering, Autoencoders\\ & Blood Cells, Fraud and Tumour Genes"),
     6: dict(sections=["macros_nn", "l6_vae", "closing_l6"],
-            subtitle=r"Lecture 6: & Probability and Variational Autoencoders\\ & Latent Spaces, Conditional and Disentangled Generation\\ & Digits and Blood Cells"),
+            subtitle=r"Lecture 6: & Unsupervised Learning II\\ & Probability and Variational Autoencoders\\ & Conditional and Disentangled Generation\\ & Digits, Blood Cells, Ising Configurations, Galaxies"),
 }
 
 # lecture, source notebook (relative to the lecture folder), web name, title
@@ -65,6 +65,7 @@ NOTEBOOKS = [
     (6, "notebook_2026-10-27-latent_space.ipynb", "latent-space", "Latent space of a VAE: data with known causes"),
     (6, "notebook_2026-10-27-beta_vae.ipynb", "beta-vae", "Disentangled latent features with the beta-VAE"),
     (6, "notebook_2026-10-27-ising_cvae.ipynb", "ising-cvae", "Ising configurations from a conditional VAE"),
+    (6, "notebook_2026-10-27-interpretability_beta_vae.ipynb", "galaxy-beta-vae", "Galaxies with a beta-VAE: latent factors and counterfactuals"),
 ]
 
 # files published next to the notebooks: (lecture, source relative to the lecture folder, web path)

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Deep Learning for Scientific Discovery - 6 · Probability and Variational Autoencoders</title>
+<title>Deep Learning for Scientific Discovery - 6 · Unsupervised Learning II: Probability and Variational Autoencoders</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -92,27 +92,27 @@ ul.task-list li input[type="checkbox"] {
     <ul class="dropdown-menu" aria-labelledby="nav-menu-lectures">    
         <li>
     <a class="dropdown-item" href="../lectures/lecture-01.html">
- <span class="dropdown-text">1 · From AI to Deep Learning</span></a>
+ <span class="dropdown-text">1 · AI, Machine Learning and Scientific Discovery: Paradigms and Applications</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../lectures/lecture-02.html">
- <span class="dropdown-text">2 · The Recipe of Deep Learning</span></a>
+ <span class="dropdown-text">2 · Supervised Learning: the Recipe of Deep Learning</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../lectures/lecture-03.html">
- <span class="dropdown-text">3 · Convolutional Neural Networks</span></a>
+ <span class="dropdown-text">3 · Supervised Learning on Images: Convolutional Neural Networks</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../lectures/lecture-04.html">
- <span class="dropdown-text">4 · CNNs on Scientific Data and the 2D Ising Model</span></a>
+ <span class="dropdown-text">4 · Supervised Learning on Scientific Images: CNNs, Transfer Learning, Ising Model</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../lectures/lecture-05.html">
- <span class="dropdown-text">5 · Unsupervised Learning</span></a>
+ <span class="dropdown-text">5 · Unsupervised Learning I: Dimensionality Reduction, Clustering, Autoencoders</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../lectures/lecture-06.html">
- <span class="dropdown-text">6 · Probability and Variational Autoencoders</span></a>
+ <span class="dropdown-text">6 · Unsupervised Learning II: Probability and Variational Autoencoders</span></a>
   </li>  
     </ul>
   </li>
@@ -146,7 +146,7 @@ ul.task-list li input[type="checkbox"] {
     </nav>
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">6 · Probability and Variational Autoencoders</h1>
+      <h1 class="quarto-secondary-nav-title">6 · Unsupervised Learning II: Probability and Variational Autoencoders</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -176,7 +176,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../lectures/lecture-01.html" class="sidebar-item-text sidebar-link">1 · From AI to Deep Learning</a>
+            <a href="../lectures/lecture-01.html" class="sidebar-item-text sidebar-link">1 · AI, Machine Learning and Scientific Discovery: Paradigms and Applications</a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -201,7 +201,7 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../lectures/lecture-02.html" class="sidebar-item-text sidebar-link">2 · The Recipe of Deep Learning</a>
+            <a href="../lectures/lecture-02.html" class="sidebar-item-text sidebar-link">2 · Supervised Learning: the Recipe of Deep Learning</a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -241,7 +241,7 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../lectures/lecture-03.html" class="sidebar-item-text sidebar-link">3 · Convolutional Neural Networks</a>
+            <a href="../lectures/lecture-03.html" class="sidebar-item-text sidebar-link">3 · Supervised Learning on Images: Convolutional Neural Networks</a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -262,11 +262,16 @@ ul.task-list li input[type="checkbox"] {
   <a href="../notebooks/lecture-03/limits-of-deep-networks.html" class="sidebar-item-text sidebar-link">Limits of deep networks</a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-03/cam-cifar10.html" class="sidebar-item-text sidebar-link">Class activation maps of a CIFAR-10 CNN</a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../lectures/lecture-04.html" class="sidebar-item-text sidebar-link">4 · CNNs on Scientific Data and the 2D Ising Model</a>
+            <a href="../lectures/lecture-04.html" class="sidebar-item-text sidebar-link">4 · Supervised Learning on Scientific Images: CNNs, Transfer Learning, Ising Model</a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -297,11 +302,21 @@ ul.task-list li input[type="checkbox"] {
   <a href="../notebooks/lecture-04/lab-012-onsager.html" class="sidebar-item-text sidebar-link">Lab 012: Onsager’s exact solution of the 2D Ising model</a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-04/lab-014a-transfer-pytorch.html" class="sidebar-item-text sidebar-link">Lab 014a: Transfer learning in PyTorch</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-04/lab-014b-transfer-jax.html" class="sidebar-item-text sidebar-link">Lab 014b: Transfer learning in JAX</a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../lectures/lecture-05.html" class="sidebar-item-text sidebar-link">5 · Unsupervised Learning</a>
+            <a href="../lectures/lecture-05.html" class="sidebar-item-text sidebar-link">5 · Unsupervised Learning I: Dimensionality Reduction, Clustering, Autoencoders</a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -316,7 +331,7 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../lectures/lecture-06.html" class="sidebar-item-text sidebar-link active">6 · Probability and Variational Autoencoders</a>
+            <a href="../lectures/lecture-06.html" class="sidebar-item-text sidebar-link active">6 · Unsupervised Learning II: Probability and Variational Autoencoders</a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -330,6 +345,26 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../notebooks/lecture-06/conditional-generation.html" class="sidebar-item-text sidebar-link">Conditional generation of digits and blood cells</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-06/latent-space.html" class="sidebar-item-text sidebar-link">Latent space of a VAE: data with known causes</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-06/beta-vae.html" class="sidebar-item-text sidebar-link">Disentangled latent features with the beta-VAE</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-06/ising-cvae.html" class="sidebar-item-text sidebar-link">Ising configurations from a conditional VAE</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/lecture-06/galaxy-beta-vae.html" class="sidebar-item-text sidebar-link">Galaxies with a beta-VAE: latent factors and counterfactuals</a>
   </div>
 </li>
       </ul>
@@ -349,7 +384,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">6 · Probability and Variational Autoencoders</h1>
+<h1 class="title d-none d-lg-block">6 · Unsupervised Learning II: Probability and Variational Autoencoders</h1>
 </div>
 
 
@@ -364,7 +399,8 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p>Learning a probability distribution from data alone, and drawing new samples from it. Why an autoencoder cannot generate, and the probability toolkit needed to fix it: distributions and densities, expectations as averages over samples, the Gaussian, joint, conditional and marginal distributions, Bayes’ rule, the Kullback–Leibler divergence and maximum likelihood, latent-variable models. The variational autoencoder: training and sampling, the decoder as a likelihood, binary cross-entropy, the evidence lower bound, the reparametrisation trick, the latent space. Conditional generation of a chosen digit or cell type, checked with classifiers trained on real or synthetic data, disentangled latent features with the β-VAE, latent spaces of data with known causes (a curve, a rotating bar and its vortices), and Ising configurations from a conditional VAE.</p>
+<p>An autoencoder compresses data, and its latent codes form a scattered set of points. A point between them decodes to an image that resembles no training sample. Generation of new data requires a probability distribution over the data, and we build the tools for it, from densities, expectations and the Gaussian distribution through joint, conditional and marginal distributions to maximum likelihood and the Kullback–Leibler divergence. The variational autoencoder (VAE) combines these tools. The encoder maps each sample to a small cloud in a latent space whose distribution is fixed in advance, the decoder turns any point of that space into a sample, and the evidence lower bound together with the reparametrisation trick makes the model trainable by gradient descent.</p>
+<p>We then study what such a model learns. Data with known causes, a curve with one hidden number and a bar with an angle and a shift, show how the latent space is stretched and why a periodic cause produces vortices in a two-dimensional latent plane. A conditional VAE generates a chosen digit, a chosen cell type or an Ising configuration at a requested temperature, and classifiers and physical observables check the generated samples. The β-VAE pushes each latent coordinate towards a single cause, and the mutual information gap measures how far it succeeds. Galaxy images test the idea on real data. Their latent coordinates are compared with properties measured from the pixels and across independent trainings.</p>
 <section id="slides" class="level2">
 <h2 class="anchored" data-anchor-id="slides">Slides</h2>
 <p><a href="../slides/lecture-06.pdf" class="btn btn-outline-primary">Download the slides (PDF)</a></p>
@@ -375,23 +411,27 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="notebooks">Notebooks</h2>
 <div class="nb-item">
 <p><a href="../notebooks/lecture-06/generative-models.html">Generative models: probability, autoencoder and VAE</a></p>
-<p>The probability toolkit, maximum likelihood, why an autoencoder cannot generate, the VAE and the conditional VAE on MNIST and blood cells.</p>
+<p>We build the probability tools of the lecture, show why points between the codes of an autoencoder decode to images that resemble no training sample, and train a variational autoencoder (VAE) and a conditional VAE on MNIST and blood cells.</p>
 </div>
 <div class="nb-item">
 <p><a href="../notebooks/lecture-06/conditional-generation.html">Conditional generation of digits and blood cells</a></p>
-<p>The VAE in a two-dimensional latent space, the reparametrisation trick, generating a chosen digit or cell type, and classifiers trained on real or synthetic data.</p>
+<p>A VAE with a two-dimensional latent space makes the reparametrisation trick visible. Conditioned on the class, it generates a chosen digit or cell type, and classifiers trained on real or synthetic data test how faithful the generated samples are.</p>
 </div>
 <div class="nb-item">
 <p><a href="../notebooks/lecture-06/latent-space.html">Latent space of a VAE: data with known causes</a></p>
-<p>A curve with one hidden number and bars with an angle and a shift: how the decoder stretches the prior, the VAE as a continuous mixture, vortices of the decoded angle, and encoder clouds against the exact posterior.</p>
+<p>A curve with one hidden number and bars with an angle and a shift have known causes, so the latent space can be compared with the truth. We follow how the decoder stretches the prior, read the VAE as a continuous mixture, locate the vortices of the decoded angle, and compare the encoder clouds with the exact posterior.</p>
 </div>
 <div class="nb-item">
 <p><a href="../notebooks/lecture-06/beta-vae.html">Disentangled latent features with the β-VAE</a></p>
-<p>dSprites and MNIST: information per latent coordinate, traversals, the mutual information gap and interpolation for β = 1, 4, 8.</p>
+<p>On dSprites, whose generating factors are known, we measure the information carried by each latent coordinate, display traversals, and compute the mutual information gap for β = 1, 4 and 8. Interpolations and a section on handwritten digits complete the picture.</p>
 </div>
 <div class="nb-item">
 <p><a href="../notebooks/lecture-06/ising-cvae.html">Ising configurations from a conditional VAE</a></p>
-<p>Spin configurations generated at a chosen temperature and checked against Monte Carlo with observables, correlation functions, a phase classifier and a temperature regressor.</p>
+<p>A conditional VAE generates spin configurations at a requested temperature. We check them against Monte Carlo samples with observables and correlation functions, with a phase classifier and with a regressor that reads the temperature back.</p>
+</div>
+<div class="nb-item">
+<p><a href="../notebooks/lecture-06/galaxy-beta-vae.html">Galaxies with a β-VAE: latent factors and counterfactuals</a></p>
+<p>A β-VAE is trained on Galaxy10 DECaLS images without labels. We compare its latent coordinates with the size, brightness, elongation and colour measured from the pixels, test whether they reappear in a second training, and use them to explain a morphology classifier by counterfactuals. The first run downloads the data set (2.7 GB) from Zenodo.</p>
 </div>
 
 
