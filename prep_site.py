@@ -61,7 +61,7 @@ NOTEBOOKS = [
     (5, "notebook_2026-10-20-unsupervised_learning.ipynb", "unsupervised-learning", "Unsupervised learning: PCA, t-SNE, clustering, autoencoders and anomalies"),
     (6, "notebook_2026-10-27-generative_models.ipynb", "generative-models", "Generative models: probability, autoencoder and VAE"),
     (6, "notebook_2026-10-27-conditional_generation.ipynb", "conditional-generation", "Conditional generation of digits and blood cells"),
-    (6, "notebook_2026-10-27-latent_space.ipynb", "latent-space", "Latent space of a VAE: data with known causes"),
+    (6, "notebook_2026-10-27-latent_space.ipynb", "latent-space", "Latent space of a VAE for a curve and a bar"),
     (6, "notebook_2026-10-27-beta_vae.ipynb", "beta-vae", "Disentangled latent features with the beta-VAE"),
     (6, "notebook_2026-10-27-ising_cvae.ipynb", "ising-cvae", "Ising configurations from a conditional VAE"),
     (6, "notebook_2026-10-27-interpretability_beta_vae.ipynb", "galaxy-beta-vae", "Galaxies with a beta-VAE: latent factors and counterfactuals"),

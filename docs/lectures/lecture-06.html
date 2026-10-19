@@ -349,7 +349,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../notebooks/lecture-06/latent-space.html" class="sidebar-item-text sidebar-link">Latent space of a VAE: data with known causes</a>
+  <a href="../notebooks/lecture-06/latent-space.html" class="sidebar-item-text sidebar-link">Latent space of a VAE for a curve and a bar</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -405,7 +405,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 <p>An autoencoder compresses data, and its latent codes form a scattered set of points. A point between them decodes to an image that resembles no training sample. Generation of new data requires a probability distribution over the data, and we build the tools for it, from densities, expectations and the Gaussian distribution through joint, conditional and marginal distributions to maximum likelihood and the Kullback–Leibler divergence. The variational autoencoder (VAE) combines these tools. The encoder maps each sample to a small cloud in a latent space whose distribution is fixed in advance, the decoder turns any point of that space into a sample, and the evidence lower bound together with the reparametrisation trick makes the model trainable by gradient descent.</p>
-<p>We then study what such a model learns. Data with known causes, a curve with one hidden number and a bar with an angle and a shift, show how the latent space is stretched and why a periodic cause produces vortices in a two-dimensional latent plane. A conditional VAE generates a chosen digit, a chosen cell type or an Ising configuration at a requested temperature, and classifiers and physical observables check the generated samples. The β-VAE pushes each latent coordinate towards a single cause, and the mutual information gap measures how far it succeeds. Two scientific examples test the idea. For galaxy images the latent coordinates are compared with properties measured from the pixels and across independent trainings. For trajectories of a damped oscillator driven by noise the true physical parameters are known and serve as the reference.</p>
+<p>We then study what such a model learns. Simple data made from known parameters, a curve with one hidden number and a bar with an angle and a shift, show how the latent space is stretched and why a periodic parameter produces vortices in a two-dimensional latent plane. A conditional VAE generates a chosen digit, a chosen cell type or an Ising configuration at a requested temperature, and classifiers and physical observables check the generated samples. The β-VAE pushes each latent coordinate towards a single parameter, and the mutual information gap measures how far it succeeds. Two scientific examples test the idea. For galaxy images the latent coordinates are compared with properties measured from the pixels and across independent trainings. For trajectories of a damped oscillator driven by noise the true physical parameters are known and serve as the reference.</p>
 <section id="slides" class="level2">
 <h2 class="anchored" data-anchor-id="slides">Slides</h2>
 <p><a href="../slides/lecture-06.pdf" class="btn btn-outline-primary">Download the slides (PDF)</a></p>
@@ -423,8 +423,8 @@ ul.task-list li input[type="checkbox"] {
 <p>A VAE with a two-dimensional latent space makes the reparametrisation trick visible. Conditioned on the class, it generates a chosen digit or cell type, and classifiers trained on real or synthetic data test how faithful the generated samples are.</p>
 </div>
 <div class="nb-item">
-<p><a href="../notebooks/lecture-06/latent-space.html">Latent space of a VAE: data with known causes</a></p>
-<p>A curve with one hidden number and bars with an angle and a shift have known causes, so the latent space can be compared with the truth. We follow how the decoder stretches the prior, read the VAE as a continuous mixture, locate the vortices of the decoded angle, and compare the encoder clouds with the exact posterior.</p>
+<p><a href="../notebooks/lecture-06/latent-space.html">Latent space of a VAE for a curve and a bar</a></p>
+<p>A curve with one hidden number and bars with an angle and a shift are made from known parameters, so the latent space can be compared with the truth. We follow how the decoder stretches the prior, read the VAE as a continuous mixture, locate the vortices of the decoded angle, and compare the encoder clouds with the exact posterior.</p>
 </div>
 <div class="nb-item">
 <p><a href="../notebooks/lecture-06/beta-vae.html">Disentangled latent features with the β-VAE</a></p>
