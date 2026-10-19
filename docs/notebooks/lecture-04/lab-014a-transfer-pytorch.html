@@ -536,7 +536,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ol>
 <p>Everything runs on the central processing unit (CPU); the whole notebook takes about 24 minutes.</p>
 <blockquote class="blockquote">
-<p><strong>Running this notebook in Google Colab</strong> 1. Go to <a href="https://colab.research.google.com" class="uri">https://colab.research.google.com</a> → <em>File → Upload notebook</em> (or open it from Google Drive). 2. Run the cells in order with <strong>Shift + Enter</strong>: later cells use variables defined earlier. 3. The required packages (<code>numpy</code>, <code>matplotlib</code>, <code>torch</code>, <code>torchvision</code>, <code>scikit-learn</code>) are pre-installed in Colab. 4. BloodMNIST is read from <code>data/</code> and downloaded from Zenodo if missing (35 MB for <span class="math inline">\(28\times28\)</span> pixels, 156 MB for <span class="math inline">\(64\times64\)</span>). CIFAR-10 is looked for in <code>~/.keras/datasets/cifar-10-batches-py</code> and <code>data/</code>, otherwise downloaded (163 MB). The ResNet-18 weights (45 MB) are downloaded by <code>torchvision</code> on first use. 5. The CIFAR-10 network is loaded from <code>results/Lab_013a_regularised_cnn.pt</code>, written by Lab 013a. Without that file it is retrained briefly, and the numbers of Section 2 change. 6. Trained weights are written to <code>results/</code>, the two summary figures to <code>../beamer/figures/</code>.</p>
+<p><strong>Running this notebook in Google Colab</strong> 1. Go to <a href="https://colab.research.google.com" class="uri">https://colab.research.google.com</a> → <em>File → Upload notebook</em> (or open it from Google Drive). 2. Run the cells in order with <strong>Shift + Enter</strong>: later cells use variables defined earlier. 3. The required packages (<code>numpy</code>, <code>matplotlib</code>, <code>torch</code>, <code>torchvision</code>, <code>scikit-learn</code>) are pre-installed in Colab. 4. BloodMNIST is downloaded once from Zenodo (35 MB for <span class="math inline">\(28\times28\)</span> pixels, 156 MB for <span class="math inline">\(64\times64\)</span>), and CIFAR-10 once from the authors’ page (163 MB). The ResNet-18 weights (45 MB) are downloaded by <code>torchvision</code> on first use. 5. The CIFAR-10 network is the one trained and saved by Lab 013a. Without it the network is retrained briefly, and the numbers of Section 2 change. 6. Trained weights and the summary figures are saved.</p>
 </blockquote>
 <p>The first cell hides every graphics card from the frameworks, so that all computations run on the CPU; this must happen before <code>torch</code> is imported. It also limits PyTorch to at most 8 threads and fixes the random seeds.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T12:11:38.287098Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T12:11:38.286709Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T12:11:41.010529Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T12:11:41.010131Z&quot;}" data-execution_count="1">
@@ -566,7 +566,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"axes.labelsize"</span>: <span class="dv">15</span>, <span class="st">"xtick.labelsize"</span>: <span class="dv">13</span>, <span class="st">"ytick.labelsize"</span>: <span class="dv">13</span>, <span class="st">"legend.fontsize"</span>: <span class="dv">13</span>, <span class="st">"figure.titlesize"</span>: <span class="dv">17</span>})</span>
 <span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>DATA, RESULTS <span class="op">=</span> <span class="st">"data"</span>, <span class="st">"results"</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>FIGS <span class="op">=</span> os.path.join(<span class="st">".."</span>, <span class="st">"beamer"</span>, <span class="st">"figures"</span>)          <span class="co"># figures for the lecture slides</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>FIGS <span class="op">=</span> <span class="st">"figures"</span>                                        <span class="co"># figures for the lecture slides</span></span>
 <span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> d <span class="kw">in</span> (DATA, RESULTS, FIGS): os.makedirs(d, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>T_START <span class="op">=</span> time.time()</span>
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"PyTorch"</span>, torch.__version__, <span class="st">"| torchvision"</span>, torchvision.__version__, <span class="st">"| threads:"</span>, torch.get_num_threads(),</span>
@@ -614,40 +614,39 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>CIFAR_URL <span class="op">=</span> <span class="st">"https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz"</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>CIFAR_CANDIDATES <span class="op">=</span> [os.path.expanduser(<span class="st">"~/.keras/datasets/cifar-10-batches-py"</span>), os.path.join(DATA, <span class="st">"cifar-10-batches-py"</span>)]</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cifar_dir():</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># local copy of the CIFAR-10 batches, downloaded from the authors' page if missing (163 MB)</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> d <span class="kw">in</span> CIFAR_CANDIDATES:</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> os.path.exists(os.path.join(d, <span class="st">"test_batch"</span>)): <span class="cf">return</span> d</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    tgz <span class="op">=</span> os.path.join(DATA, <span class="st">"cifar-10-python.tar.gz"</span>)</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"downloading CIFAR-10 (163 MB) ..."</span>)</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    urllib.request.urlretrieve(CIFAR_URL, tgz)</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> tarfile.<span class="bu">open</span>(tgz) <span class="im">as</span> t: t.extractall(DATA, <span class="bu">filter</span><span class="op">=</span><span class="st">"data"</span>)</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> os.path.join(DATA, <span class="st">"cifar-10-batches-py"</span>)</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_batch(d, name):</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(os.path.join(d, name), <span class="st">"rb"</span>) <span class="im">as</span> f:</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        b <span class="op">=</span> pickle.load(f, encoding<span class="op">=</span><span class="st">"bytes"</span>)</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> b[<span class="st">b"data"</span>].reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">32</span>, <span class="dv">32</span>).transpose(<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>), np.array(b[<span class="st">b"labels"</span>], dtype<span class="op">=</span>np.int64)  <span class="co"># (N, 32, 32, 3)</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>D_CIFAR <span class="op">=</span> cifar_dir()</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>Xc_tr_raw <span class="op">=</span> np.concatenate([load_batch(D_CIFAR, <span class="ss">f"data_batch_</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span>)[<span class="dv">0</span>] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">6</span>)])</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>yc_tr <span class="op">=</span> np.concatenate([load_batch(D_CIFAR, <span class="ss">f"data_batch_</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span>)[<span class="dv">1</span>] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">6</span>)])</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>Xc_te_raw, yc_te <span class="op">=</span> load_batch(D_CIFAR, <span class="st">"test_batch"</span>)</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(os.path.join(D_CIFAR, <span class="st">"batches.meta"</span>), <span class="st">"rb"</span>) <span class="im">as</span> f:</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    CIFAR_CLASSES <span class="op">=</span> [c.decode() <span class="cf">for</span> c <span class="kw">in</span> pickle.load(f, encoding<span class="op">=</span><span class="st">"bytes"</span>)[<span class="st">b"label_names"</span>]]</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>CIFAR_MEAN <span class="op">=</span> (Xc_tr_raw <span class="op">/</span> <span class="fl">255.0</span>).mean(axis<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>)).astype(np.float32)   <span class="co"># (3,) as in Lab 013a</span></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>CIFAR_STD <span class="op">=</span> (Xc_tr_raw <span class="op">/</span> <span class="fl">255.0</span>).std(axis<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>)).astype(np.float32)     <span class="co"># (3,)</span></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>MEAN_T, STD_T <span class="op">=</span> torch.tensor(CIFAR_MEAN)[<span class="va">None</span>, :, <span class="va">None</span>, <span class="va">None</span>], torch.tensor(CIFAR_STD)[<span class="va">None</span>, :, <span class="va">None</span>, <span class="va">None</span>]</span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cifar_tensor(X_raw):</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># uint8 (N, 32, 32, 3) -&gt; standardised float32 tensor (N, 3, 32, 32)</span></span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (torch.from_numpy(X_raw).permute(<span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>).<span class="bu">float</span>() <span class="op">/</span> <span class="dv">255</span> <span class="op">-</span> MEAN_T) <span class="op">/</span> STD_T</span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>Xc_te <span class="op">=</span> cifar_tensor(Xc_te_raw)</span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"CIFAR-10 training:"</span>, Xc_tr_raw.shape, Xc_tr_raw.dtype, <span class="st">"| test:"</span>, Xc_te_raw.shape, <span class="st">"| classes:"</span>, CIFAR_CLASSES)</span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"CIFAR-10 test:"</span>, <span class="bu">tuple</span>(Xc_te.shape), <span class="st">"| channel means"</span>, CIFAR_MEAN.<span class="bu">round</span>(<span class="dv">3</span>), <span class="st">"| standard deviations"</span>, CIFAR_STD.<span class="bu">round</span>(<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cifar_dir():</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># local copy of the CIFAR-10 batches, downloaded from the authors' page if missing (163 MB)</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> os.path.join(DATA, <span class="st">"cifar-10-batches-py"</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> os.path.exists(os.path.join(d, <span class="st">"test_batch"</span>)): <span class="cf">return</span> d</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    tgz <span class="op">=</span> os.path.join(DATA, <span class="st">"cifar-10-python.tar.gz"</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"downloading CIFAR-10 (163 MB) ..."</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    urllib.request.urlretrieve(CIFAR_URL, tgz)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> tarfile.<span class="bu">open</span>(tgz) <span class="im">as</span> t: t.extractall(DATA, <span class="bu">filter</span><span class="op">=</span><span class="st">"data"</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> os.path.join(DATA, <span class="st">"cifar-10-batches-py"</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_batch(d, name):</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(os.path.join(d, name), <span class="st">"rb"</span>) <span class="im">as</span> f:</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        b <span class="op">=</span> pickle.load(f, encoding<span class="op">=</span><span class="st">"bytes"</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> b[<span class="st">b"data"</span>].reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">32</span>, <span class="dv">32</span>).transpose(<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>), np.array(b[<span class="st">b"labels"</span>], dtype<span class="op">=</span>np.int64)  <span class="co"># (N, 32, 32, 3)</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>D_CIFAR <span class="op">=</span> cifar_dir()</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>Xc_tr_raw <span class="op">=</span> np.concatenate([load_batch(D_CIFAR, <span class="ss">f"data_batch_</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span>)[<span class="dv">0</span>] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">6</span>)])</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>yc_tr <span class="op">=</span> np.concatenate([load_batch(D_CIFAR, <span class="ss">f"data_batch_</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span>)[<span class="dv">1</span>] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">6</span>)])</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>Xc_te_raw, yc_te <span class="op">=</span> load_batch(D_CIFAR, <span class="st">"test_batch"</span>)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(os.path.join(D_CIFAR, <span class="st">"batches.meta"</span>), <span class="st">"rb"</span>) <span class="im">as</span> f:</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    CIFAR_CLASSES <span class="op">=</span> [c.decode() <span class="cf">for</span> c <span class="kw">in</span> pickle.load(f, encoding<span class="op">=</span><span class="st">"bytes"</span>)[<span class="st">b"label_names"</span>]]</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>CIFAR_MEAN <span class="op">=</span> (Xc_tr_raw <span class="op">/</span> <span class="fl">255.0</span>).mean(axis<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>)).astype(np.float32)   <span class="co"># (3,) as in Lab 013a</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>CIFAR_STD <span class="op">=</span> (Xc_tr_raw <span class="op">/</span> <span class="fl">255.0</span>).std(axis<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>)).astype(np.float32)     <span class="co"># (3,)</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>MEAN_T, STD_T <span class="op">=</span> torch.tensor(CIFAR_MEAN)[<span class="va">None</span>, :, <span class="va">None</span>, <span class="va">None</span>], torch.tensor(CIFAR_STD)[<span class="va">None</span>, :, <span class="va">None</span>, <span class="va">None</span>]</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cifar_tensor(X_raw):</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># uint8 (N, 32, 32, 3) -&gt; standardised float32 tensor (N, 3, 32, 32)</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (torch.from_numpy(X_raw).permute(<span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>).<span class="bu">float</span>() <span class="op">/</span> <span class="dv">255</span> <span class="op">-</span> MEAN_T) <span class="op">/</span> STD_T</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>Xc_te <span class="op">=</span> cifar_tensor(Xc_te_raw)</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"CIFAR-10 training:"</span>, Xc_tr_raw.shape, Xc_tr_raw.dtype, <span class="st">"| test:"</span>, Xc_te_raw.shape, <span class="st">"| classes:"</span>, CIFAR_CLASSES)</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"CIFAR-10 test:"</span>, <span class="bu">tuple</span>(Xc_te.shape), <span class="st">"| channel means"</span>, CIFAR_MEAN.<span class="bu">round</span>(<span class="dv">3</span>), <span class="st">"| standard deviations"</span>, CIFAR_STD.<span class="bu">round</span>(<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>CIFAR-10 training: (50000, 32, 32, 3) uint8 | test: (10000, 32, 32, 3) | classes: ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
@@ -657,30 +656,29 @@ CIFAR-10 test: (10000, 3, 32, 32) | channel means [0.491 0.482 0.447] | standard
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T12:11:42.676705Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T12:11:42.676464Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T12:11:42.683618Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T12:11:42.683193Z&quot;}" data-execution_count="4">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>MNIST_RAW, LOCAL_MNIST <span class="op">=</span> os.path.join(DATA, <span class="st">"MNIST_raw"</span>), os.path.expanduser(<span class="st">"~/.pytorch/MNIST_data/MNIST/raw"</span>)</span>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>MNIST_RAW <span class="op">=</span> os.path.join(DATA, <span class="st">"MNIST_raw"</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>MNIST_MIRRORS <span class="op">=</span> [<span class="st">"https://ossci-datasets.s3.amazonaws.com/mnist/"</span>, <span class="st">"https://storage.googleapis.com/cvdf-datasets/mnist/"</span>]</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mnist_idx(name):</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># one MNIST file in the IDX format: images -&gt; (n, 28, 28) uint8, labels -&gt; (n,) uint8</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> d <span class="kw">in</span> (MNIST_RAW, LOCAL_MNIST):</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        p <span class="op">=</span> os.path.join(d, name)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> os.path.exists(p): raw <span class="op">=</span> <span class="bu">open</span>(p, <span class="st">"rb"</span>).read()<span class="op">;</span> <span class="cf">break</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> os.path.exists(p <span class="op">+</span> <span class="st">".gz"</span>): raw <span class="op">=</span> gzip.<span class="bu">open</span>(p <span class="op">+</span> <span class="st">".gz"</span>).read()<span class="op">;</span> <span class="cf">break</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>        os.makedirs(MNIST_RAW, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> m <span class="kw">in</span> MNIST_MIRRORS:</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">try</span>:</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>                urllib.request.urlretrieve(m <span class="op">+</span> name <span class="op">+</span> <span class="st">".gz"</span>, os.path.join(MNIST_RAW, name <span class="op">+</span> <span class="st">".gz"</span>))<span class="op">;</span> <span class="cf">break</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">except</span> <span class="pp">Exception</span>: <span class="cf">pass</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>        raw <span class="op">=</span> gzip.<span class="bu">open</span>(os.path.join(MNIST_RAW, name <span class="op">+</span> <span class="st">".gz"</span>)).read()</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> raw[<span class="dv">3</span>] <span class="op">==</span> <span class="dv">3</span>:</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>        n, r, c <span class="op">=</span> np.frombuffer(raw[<span class="dv">4</span>:<span class="dv">16</span>], <span class="st">"&gt;i4"</span>)</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> np.frombuffer(raw[<span class="dv">16</span>:], np.uint8).reshape(n, r, c)</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.frombuffer(raw[<span class="dv">8</span>:], np.uint8)</span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>Xm_te, ym_te <span class="op">=</span> mnist_idx(<span class="st">"t10k-images-idx3-ubyte"</span>), mnist_idx(<span class="st">"t10k-labels-idx1-ubyte"</span>)     <span class="co"># test images suffice for the figure</span></span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> Xm_te.shape <span class="op">==</span> (<span class="dv">10000</span>, <span class="dv">28</span>, <span class="dv">28</span>)</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"MNIST test images:"</span>, Xm_te.shape, Xm_te.dtype, <span class="st">"| digits per class:"</span>, np.bincount(ym_te))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    p <span class="op">=</span> os.path.join(MNIST_RAW, name)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> os.path.exists(p): raw <span class="op">=</span> <span class="bu">open</span>(p, <span class="st">"rb"</span>).read()</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> os.path.exists(p <span class="op">+</span> <span class="st">".gz"</span>): raw <span class="op">=</span> gzip.<span class="bu">open</span>(p <span class="op">+</span> <span class="st">".gz"</span>).read()</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        os.makedirs(MNIST_RAW, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> m <span class="kw">in</span> MNIST_MIRRORS:</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>            <span class="cf">try</span>:</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>                urllib.request.urlretrieve(m <span class="op">+</span> name <span class="op">+</span> <span class="st">".gz"</span>, os.path.join(MNIST_RAW, name <span class="op">+</span> <span class="st">".gz"</span>))<span class="op">;</span> <span class="cf">break</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>            <span class="cf">except</span> <span class="pp">Exception</span>: <span class="cf">pass</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        raw <span class="op">=</span> gzip.<span class="bu">open</span>(os.path.join(MNIST_RAW, name <span class="op">+</span> <span class="st">".gz"</span>)).read()</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> raw[<span class="dv">3</span>] <span class="op">==</span> <span class="dv">3</span>:</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>        n, r, c <span class="op">=</span> np.frombuffer(raw[<span class="dv">4</span>:<span class="dv">16</span>], <span class="st">"&gt;i4"</span>)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> np.frombuffer(raw[<span class="dv">16</span>:], np.uint8).reshape(n, r, c)</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.frombuffer(raw[<span class="dv">8</span>:], np.uint8)</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>Xm_te, ym_te <span class="op">=</span> mnist_idx(<span class="st">"t10k-images-idx3-ubyte"</span>), mnist_idx(<span class="st">"t10k-labels-idx1-ubyte"</span>)     <span class="co"># test images suffice for the figure</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> Xm_te.shape <span class="op">==</span> (<span class="dv">10000</span>, <span class="dv">28</span>, <span class="dv">28</span>)</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"MNIST test images:"</span>, Xm_te.shape, Xm_te.dtype, <span class="st">"| digits per class:"</span>, np.bincount(ym_te))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>MNIST test images: (10000, 28, 28) uint8 | digits per class: [ 980 1135 1032 1010  982  892  958 1028  974 1009]</code></pre>
@@ -832,7 +830,7 @@ platelet                   1643    470</code></pre>
 <span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>fig.suptitle(<span class="st">"the first cell of each type at 28×28 pixels"</span>)<span class="op">;</span> plt.tight_layout()<span class="op">;</span> plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>saved ../beamer/figures/transfer_blood_examples.png</code></pre>
+<pre><code>saved figures/transfer_blood_examples.png</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <p><img src="lab-014a-transfer-pytorch_files/figure-html/cell-8-output-2.png" class="img-fluid"></p>
@@ -869,7 +867,7 @@ platelet                   1643    470</code></pre>
 </section>
 <section id="the-cifar-10-network-of-lab-013" class="level3">
 <h3 class="anchored" data-anchor-id="the-cifar-10-network-of-lab-013">The CIFAR-10 network of Lab 013</h3>
-<p>Lab 013a saved the weights of its regularised CNN in <code>results/Lab_013a_regularised_cnn.pt</code>. Loading them needs the same class definition. The body consists of three convolutional blocks (convolution <span class="math inline">\(3\times3\)</span>, batch normalisation, ReLU (rectified linear unit), max pooling <span class="math inline">\(2\times2\)</span>, and dropout in the second and third block); it maps an image of shape <span class="math inline">\((N,3,32,32)\)</span> to feature maps of shape <span class="math inline">\((N,128,4,4)\)</span>. The head flattens them to 2048 numbers and applies a dense layer with 512 units, ReLU and a dense layer with 10 outputs. The network was trained for 12 epochs on 10 000 CIFAR-10 images with augmentation and weight decay. The CIFAR-10 test set of Section 1 checks that the loaded weights reproduce the accuracy of Lab 013a.</p>
+<p>Lab 013a saved the weights of its regularised CNN. Loading them needs the same class definition. The body consists of three convolutional blocks (convolution <span class="math inline">\(3\times3\)</span>, batch normalisation, ReLU (rectified linear unit), max pooling <span class="math inline">\(2\times2\)</span>, and dropout in the second and third block); it maps an image of shape <span class="math inline">\((N,3,32,32)\)</span> to feature maps of shape <span class="math inline">\((N,128,4,4)\)</span>. The head flattens them to 2048 numbers and applies a dense layer with 512 units, ReLU and a dense layer with 10 outputs. The network was trained for 12 epochs on 10 000 CIFAR-10 images with augmentation and weight decay. The CIFAR-10 test set of Section 1 checks that the loaded weights reproduce the accuracy of Lab 013a.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T12:11:45.889189Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T12:11:45.888881Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T12:11:48.033938Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T12:11:48.032935Z&quot;}" data-execution_count="9">
 <details open="">
 <summary>Code</summary>
@@ -1449,7 +1447,7 @@ frozen                                 0
 <span id="cb43-17"><a href="#cb43-17" aria-hidden="true" tabindex="-1"></a>            <span class="st">"CIFAR-10 CNN → BloodMNIST (PyTorch)"</span>, os.path.join(FIGS, <span class="st">"transfer_partA_blood.png"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>saved ../beamer/figures/transfer_partA_blood.png</code></pre>
+<pre><code>saved figures/transfer_partA_blood.png</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <p><img src="lab-014a-transfer-pytorch_files/figure-html/cell-21-output-2.png" class="img-fluid"></p>
@@ -1518,7 +1516,7 @@ frozen                                 0
 <p>ImageNet (J. Deng, W. Dong, R. Socher, L.-J. Li, K. Li, L. Fei-Fei, <em>ImageNet: A large-scale hierarchical image database</em>, CVPR 2009, pp.&nbsp;248–255, <a href="https://doi.org/10.1109/CVPR.2009.5206848">doi:10.1109/CVPR.2009.5206848</a>) is a collection of photographs organised by the noun hierarchy of WordNet. The subset used for the ImageNet Large Scale Visual Recognition Challenge (O. Russakovsky et al., International Journal of Computer Vision 115, 211 (2015), <a href="https://doi.org/10.1007/s11263-015-0816-y">doi:10.1007/s11263-015-0816-y</a>, <a href="https://arxiv.org/abs/1409.0575">arXiv:1409.0575</a>), called ImageNet-1k, has 1 281 167 training images, 50 000 validation images and 1000 classes, listed on <a href="https://www.image-net.org/download.php">image-net.org</a>. The classes are everyday objects, animals, plants, food and scenes, with a strong share of fine-grained categories such as breeds of dogs; photographs vary in size and are typically a few hundred pixels wide. The images may be used for non-commercial research and education under the ImageNet terms of access. A pretrained ResNet-18 has therefore seen many textures, colours and shapes, but no microscope images of stained blood. Twenty class names drawn at random give an impression of its world.</p>
 <section id="downloading-the-weights" class="level3">
 <h3 class="anchored" data-anchor-id="downloading-the-weights">Downloading the weights</h3>
-<p><code>ResNet18_Weights.IMAGENET1K_V1</code> names one set of trained weights; passing it to <code>torchvision.models.resnet18</code> downloads the file (about 45 MB) to <code>~/.cache/torch/hub/checkpoints/</code> on the first call and loads it. The object also carries metadata: the accuracy on the ImageNet validation set, the class names, and the preprocessing used during training.</p>
+<p><code>ResNet18_Weights.IMAGENET1K_V1</code> names one set of trained weights; passing it to <code>torchvision.models.resnet18</code> downloads the file (about 45 MB) on the first call and loads it. The object also carries metadata: the accuracy on the ImageNet validation set, the class names, and the preprocessing used during training.</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-16T12:15:19.530148Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-16T12:15:19.529750Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-16T12:15:19.667506Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-16T12:15:19.666178Z&quot;}" data-execution_count="22">
 <details open="">
 <summary>Code</summary>
@@ -2193,7 +2191,7 @@ logistic regression, 100 cells per type: 64 px 78.3%, 128 px 82.7%</code></pre>
            800 |                              86.6% (  8 s) |                              88.6% ( 44 s) |                              83.5% (  9 s) |                              85.7% ( 58 s) |       92.9% ( 95 s)</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>saved ../beamer/figures/transfer_partB_resnet18.png</code></pre>
+<pre><code>saved figures/transfer_partB_resnet18.png</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <p><img src="lab-014a-transfer-pytorch_files/figure-html/cell-39-output-3.png" class="img-fluid"></p>
@@ -2247,7 +2245,7 @@ saved results/Lab_014a_resnet18_features_logreg_100_per_type.npz</code></pre>
 <p>On blood cells, neither our CIFAR-10 network nor the ImageNet ResNet-18 beat a small CNN trained from random initialisation. The same recipe is now applied to a target that resembles the source much more closely: small colour images of European landscapes taken from orbit, with ten classes defined by textures and colours (fields, forest, water, roads, houses) of the kind that fill ImageNet photographs.</p>
 <section id="satellite-images-eurosat" class="level3">
 <h3 class="anchored" data-anchor-id="satellite-images-eurosat">Satellite images (EuroSAT)</h3>
-<p>EuroSAT (P. Helber, B. Bischke, A. Dengel, D. Borth, <em>EuroSAT: A Novel Dataset and Deep Learning Benchmark for Land Use and Land Cover Classification</em>, IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing 12, 2217–2226 (2019), <a href="https://doi.org/10.1109/JSTARS.2019.2918242">doi:10.1109/JSTARS.2019.2918242</a>) consists of 27 000 image patches from the Sentinel-2 satellites of the European Copernicus programme, covering 34 European countries. One sample is a <span class="math inline">\(64\times64\)</span> pixel patch; at the 10 m ground resolution of the visible bands it shows a square of 640 m by 640 m. The satellites record 13 spectral bands; the RGB version used here keeps the red, green and blue bands (Sentinel-2 bands B04, B03, B02) as an 8-bit colour JPEG image, three integers from 0 to 255 per pixel. The data are distributed under the MIT licence on <a href="https://zenodo.org/records/7711810">Zenodo</a> and on the <a href="https://github.com/phelber/EuroSAT">authors’ page</a>; the Sentinel data themselves are free under the Copernicus terms. The local file <code>data/EuroSAT.zip</code> is the RGB version; without it the notebook downloads <code>EuroSAT_RGB.zip</code> (95 MB) from Zenodo.</p>
+<p>EuroSAT (P. Helber, B. Bischke, A. Dengel, D. Borth, <em>EuroSAT: A Novel Dataset and Deep Learning Benchmark for Land Use and Land Cover Classification</em>, IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing 12, 2217–2226 (2019), <a href="https://doi.org/10.1109/JSTARS.2019.2918242">doi:10.1109/JSTARS.2019.2918242</a>) consists of 27 000 image patches from the Sentinel-2 satellites of the European Copernicus programme, covering 34 European countries. One sample is a <span class="math inline">\(64\times64\)</span> pixel patch; at the 10 m ground resolution of the visible bands it shows a square of 640 m by 640 m. The satellites record 13 spectral bands; the RGB version used here keeps the red, green and blue bands (Sentinel-2 bands B04, B03, B02) as an 8-bit colour JPEG image, three integers from 0 to 255 per pixel. The data are distributed under the MIT licence on <a href="https://zenodo.org/records/7711810">Zenodo</a> and on the <a href="https://github.com/phelber/EuroSAT">authors’ page</a>; the Sentinel data themselves are free under the Copernicus terms. The notebook uses the RGB version and downloads it once (95 MB) from Zenodo.</p>
 <table class="table">
 <thead>
 <tr class="header">
@@ -2376,7 +2374,7 @@ SeaLake                   3000</code></pre>
 <span id="cb103-9"><a href="#cb103-9" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>saved ../beamer/figures/transfer_eurosat_examples.png</code></pre>
+<pre><code>saved figures/transfer_eurosat_examples.png</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <p><img src="lab-014a-transfer-pytorch_files/figure-html/cell-42-output-2.png" class="img-fluid"></p>
@@ -2642,7 +2640,7 @@ features 128 px + logistic regression      77.2 ± 1.4 (  0 s)   88.4 ± 0.7 (  
 small CNN, random initialisation           54.9 ± 2.3 ( 17 s)   78.0 ± 0.6 ( 17 s)   91.9 ± 0.0 (388 s)</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>saved ../beamer/figures/transfer_partC_eurosat.png</code></pre>
+<pre><code>saved figures/transfer_partC_eurosat.png</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <p><img src="lab-014a-transfer-pytorch_files/figure-html/cell-48-output-3.png" class="img-fluid"></p>
@@ -2673,7 +2671,7 @@ small CNN, random initialisation           54.9 ± 2.3 ( 17 s)   78.0 ± 0.6 ( 1
 <span id="cb131-19"><a href="#cb131-19" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>saved ../beamer/figures/transfer_blood_vs_eurosat.png</code></pre>
+<pre><code>saved figures/transfer_blood_vs_eurosat.png</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <p><img src="lab-014a-transfer-pytorch_files/figure-html/cell-49-output-2.png" class="img-fluid"></p>

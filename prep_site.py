@@ -5,8 +5,7 @@
   everything else), Lectures 1 and 2 are split from their common deck, and the PDF is
   compressed for the web (Ghostscript, 150 dpi) into ./slides/lecture-NN.pdf;
 * notebooks: copied with their stored outputs into ./notebooks/lecture-NN/<name>.ipynb,
-  with a Quarto title, an "Open in Colab" badge, dates removed, and figure paths that
-  work outside the course folder.
+  with a Quarto title, an "Open in Colab" badge and dates removed.
 
 The lecture folders are never modified. Run from ./build.sh.
 """
@@ -141,12 +140,6 @@ def build_notebooks():
             if c.cell_type == "markdown":
                 c.source = strip_dates(c.source)
                 c.source = re.sub(r"(?m)^\s*---\s*$", "<hr/>", c.source)
-            elif c.cell_type == "code":
-                c.source = c.source.replace('OUT = "../beamer/figures"',
-                                            'import os\nOUT = "figures"; os.makedirs(OUT, exist_ok=True)')
-                c.source = c.source.replace('"../../Lecture_04_2026.10.14/Notebooks/data/bloodmnist.npz"', '"data/bloodmnist.npz"')
-                c.source = c.source.replace('"../../Lecture_04_2026.10.14/Notebooks/data/ising_Nx20_Ny20.npz"', '"data/ising_Nx20_Ny20.npz"')
-                c.source = c.source.replace('"../../Lecture_07_2026.11.03/Notebooks/data/rnaseq.zip"', '"data/rnaseq.zip"')
         safe = title.replace("'", "''").replace("T_c", "Tc")
         front = nbformat.v4.new_raw_cell(f"---\ntitle: '{safe}'\n---")
         badge = nbformat.v4.new_markdown_cell(
