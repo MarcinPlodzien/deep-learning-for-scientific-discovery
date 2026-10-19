@@ -30,8 +30,8 @@ DECKS = {
             subtitle=r"Lecture 3: & Supervised Learning on Images\\ & Convolutional Neural Networks and Regularisation\\ & Class Activation Maps, Adversarial Examples, Limits"),
     4: dict(sections=["04f_blood", "04j_transfer", "04h_ising", "04i_chinese_room", "05_closing"], use={"05_closing.tex": "05_closing_web4.tex"},
             subtitle=r"Lecture 4: & Supervised Learning\\ & CNNs on Scientific Images\\ & Blood Cells, Satellites, Transfer Learning\\ & Finding \(T_c\) of the 2D Ising Model"),
-    5: dict(sections=["unsupervised", "closing"],
-            subtitle=r"Lecture 5: & Unsupervised Learning I\\ & PCA, t-SNE, Clustering, Autoencoders\\ & Blood Cells, Fraud and Tumour Genes"),
+    5: dict(sections=["unsupervised", "closing", "backup"],
+            subtitle=r"Lecture 5: & Unsupervised Learning I\\ & PCA, t-SNE, Autoencoders, Anomaly Detection\\ & Blood Cells, Fraud and Tumour Genes"),
     6: dict(sections=["macros_nn", "l6_vae", "closing_l6"],
             subtitle=r"Lecture 6: & Unsupervised Learning II\\ & Probability and Variational Autoencoders\\ & Conditional and Disentangled Generation\\ & Digits, Blood Cells, Ising Configurations, Galaxies"),
 }
