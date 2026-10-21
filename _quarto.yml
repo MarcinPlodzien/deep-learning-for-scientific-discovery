@@ -66,6 +66,7 @@ website:
           - notebooks/lecture-01/lab-001-python-matplotlib-pandas.ipynb
           - notebooks/lecture-01/lab-002-numpy.ipynb
           - notebooks/lecture-01/lab-003-pytorch.ipynb
+          - notebooks/lecture-01/universal-approximation-steps.ipynb
       - section: "2 · Supervised Learning: the Recipe of Deep Learning"
         href: lectures/lecture-02.qmd
         contents:

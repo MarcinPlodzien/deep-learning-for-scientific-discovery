@@ -20,7 +20,7 @@ REPO = "MarcinPlodzien/deep-learning-for-scientific-discovery"
 # separately in a temporary copy of the deck's beamer folder: only the listed sections, its own
 # subtitle and footer ("Lecture N"), and "use" files that replace sections changed after delivery.
 FOLDERS = {1: "Lecture_01-02_2026.10.06", 2: "Lecture_03_2026.10.13", 3: "Lecture_04_2026.10.14", 4: "Lecture_04_2026.10.14",
-           5: "Lecture_05_2026.10.20", 6: "Lecture_06_2026.10.27"}
+           5: "Lecture_05_2026.10.20", 6: "Lecture_06_2026.10.21"}
 DECKS = {
     1: dict(sections=["01a_discovery_story", "01_motivation", "02_ai_landscape", "03_learning_recipe", "04_breakthroughs", "05_closing"],
             subtitle=r"Lecture 1: & AI and Machine Learning\\ & Paradigms and Scientific Discovery"),
@@ -41,6 +41,7 @@ NOTEBOOKS = [
     (1, "Lab_001_Python_Matplotlib_Pandas_warmup.ipynb", "lab-001-python-matplotlib-pandas", "Lab 001: Python, Matplotlib and Pandas"),
     (1, "Lab_002_NumPy_basics.ipynb", "lab-002-numpy", "Lab 002: NumPy"),
     (1, "Lab_003_PyTorch_basics.ipynb", "lab-003-pytorch", "Lab 003: PyTorch tensors, devices and layers"),
+    (1, "Lab_004_Universal_approximation_steps.ipynb", "universal-approximation-steps", "Universal approximation from step functions"),
     (2, "Lab_004_Automatic_differentiation.ipynb", "lab-004-automatic-differentiation", "Lab 004: Automatic differentiation"),
     (2, "Lab_005_N_pendulum_SymPy_and_autodiff.ipynb", "lab-005-n-pendulum", "Lab 005: The N-link pendulum with SymPy and automatic differentiation"),
     (2, "Lab_006_UAT_and_minimizers.ipynb", "lab-006-uat-and-minimisers", "Lab 006: Universal approximation and the choice of minimiser"),

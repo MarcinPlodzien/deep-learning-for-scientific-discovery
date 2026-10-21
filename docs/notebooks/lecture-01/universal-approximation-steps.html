@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.280">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Deep Learning for Scientific Discovery - Universal approximation from step functions</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../lectures/lecture-02.html" rel="next">
+<link href="../../notebooks/lecture-01/lab-003-pytorch.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script src="https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js" crossorigin="anonymous"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Deep Learning for Scientific Discovery</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../../index.html" aria-current="page">
+ <span class="menu-text">Start here</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-lectures" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Lectures</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-lectures">    
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-01.html">
+ <span class="dropdown-text">1 · AI, Machine Learning and Scientific Discovery: Paradigms and Applications</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-02.html">
+ <span class="dropdown-text">2 · Supervised Learning: the Recipe of Deep Learning</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-03.html">
+ <span class="dropdown-text">3 · Supervised Learning on Images: Convolutional Neural Networks</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-04.html">
+ <span class="dropdown-text">4 · Supervised Learning on Scientific Images: CNNs, Transfer Learning, Ising Model</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-05.html">
+ <span class="dropdown-text">5 · Unsupervised Learning I: Dimensionality Reduction, Clustering, Autoencoders</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-06.html">
+ <span class="dropdown-text">6 · Unsupervised Learning II: Probability and Variational Autoencoders</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../../assets/course-flyer.pdf">
+ <span class="menu-text">Course flyer</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">
+ <span class="menu-text">About</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/MarcinPlodzien/deep-learning-for-scientific-discovery"><i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://chaos.if.uj.edu.pl/marcinplodzien/"><i class="bi bi-house" role="img" aria-label="Homepage">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div class="quarto-toggle-container">
+                  <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+              </div>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Universal approximation from step functions</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+      <a href="../../index.html" class="sidebar-logo-link">
+      <img src="../../assets/qusml_logo.svg" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">Start here</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-01.html" class="sidebar-item-text sidebar-link">1 · AI, Machine Learning and Scientific Discovery: Paradigms and Applications</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-01/lab-001-python-matplotlib-pandas.html" class="sidebar-item-text sidebar-link">Lab 001: Python, Matplotlib and Pandas</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-01/lab-002-numpy.html" class="sidebar-item-text sidebar-link">Lab 002: NumPy</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-01/lab-003-pytorch.html" class="sidebar-item-text sidebar-link">Lab 003: PyTorch tensors, devices and layers</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-01/universal-approximation-steps.html" class="sidebar-item-text sidebar-link active">Universal approximation from step functions</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-02.html" class="sidebar-item-text sidebar-link">2 · Supervised Learning: the Recipe of Deep Learning</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-02/lab-004-automatic-differentiation.html" class="sidebar-item-text sidebar-link">Lab 004: Automatic differentiation</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-02/lab-005-n-pendulum.html" class="sidebar-item-text sidebar-link">Lab 005: The N-link pendulum with SymPy and automatic differentiation</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-02/lab-006-uat-and-minimisers.html" class="sidebar-item-text sidebar-link">Lab 006: Universal approximation and the choice of minimiser</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-02/lab-007-building-and-training.html" class="sidebar-item-text sidebar-link">Lab 007: Building and training neural networks</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-02/lab-008-analysing-networks.html" class="sidebar-item-text sidebar-link">Lab 008: Analysing a neural network</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-02/lab-009-mnist.html" class="sidebar-item-text sidebar-link">Lab 009: MNIST, regression versus cross-entropy</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-03.html" class="sidebar-item-text sidebar-link">3 · Supervised Learning on Images: Convolutional Neural Networks</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-03/lab-013a-cnn-pytorch.html" class="sidebar-item-text sidebar-link">Lab 013a: CNNs on MNIST and CIFAR-10 in PyTorch</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-03/lab-013b-cnn-jax.html" class="sidebar-item-text sidebar-link">Lab 013b: CNNs on MNIST and CIFAR-10 in JAX</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-03/limits-of-deep-networks.html" class="sidebar-item-text sidebar-link">Limits of deep networks</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-03/cam-cifar10.html" class="sidebar-item-text sidebar-link">Class activation maps of a CIFAR-10 CNN</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-04.html" class="sidebar-item-text sidebar-link">4 · Supervised Learning on Scientific Images: CNNs, Transfer Learning, Ising Model</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-04/bloodmnist-cnn-regularisation-cam.html" class="sidebar-item-text sidebar-link">Blood cells: CNNs, regularisation and class activation maps</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-04/convolution-and-ising.html" class="sidebar-item-text sidebar-link">Convolution and the 2D Ising model</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-04/lab-010-ising-monte-carlo.html" class="sidebar-item-text sidebar-link">Lab 010: Monte Carlo samples of the 2D Ising model</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-04/lab-011-cnn-tc.html" class="sidebar-item-text sidebar-link">Lab 011: Tc of the 2D Ising model from the confidence of a CNN</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-04/lab-012-onsager.html" class="sidebar-item-text sidebar-link">Lab 012: Onsager’s exact solution of the 2D Ising model</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-04/lab-014a-transfer-pytorch.html" class="sidebar-item-text sidebar-link">Lab 014a: Transfer learning in PyTorch</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-04/lab-014b-transfer-jax.html" class="sidebar-item-text sidebar-link">Lab 014b: Transfer learning in JAX</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-05.html" class="sidebar-item-text sidebar-link">5 · Unsupervised Learning I: Dimensionality Reduction, Clustering, Autoencoders</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-05/unsupervised-learning.html" class="sidebar-item-text sidebar-link">Unsupervised learning: PCA, t-SNE, clustering, autoencoders and anomalies</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-06.html" class="sidebar-item-text sidebar-link">6 · Unsupervised Learning II: Probability and Variational Autoencoders</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-06/generative-models.html" class="sidebar-item-text sidebar-link">Generative models: probability, autoencoder and VAE</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-06/conditional-generation.html" class="sidebar-item-text sidebar-link">Conditional generation of digits and blood cells</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-06/latent-space.html" class="sidebar-item-text sidebar-link">Latent space of a VAE for a curve and a bar</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-06/beta-vae.html" class="sidebar-item-text sidebar-link">Disentangled latent features with the beta-VAE</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-06/ising-cvae.html" class="sidebar-item-text sidebar-link">Ising configurations from a conditional VAE</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-06/galaxy-beta-vae.html" class="sidebar-item-text sidebar-link">Galaxies with a beta-VAE: latent factors and counterfactuals</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-06/lab-015-trajectories.html" class="sidebar-item-text sidebar-link">Lab 015: Physical parameters from trajectories</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../about.html" class="sidebar-item-text sidebar-link">About</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#deep-learning-for-scientific-discovery" id="toc-deep-learning-for-scientific-discovery" class="nav-link active" data-scroll-target="#deep-learning-for-scientific-discovery">Deep Learning for Scientific Discovery</a></li>
+  <li><a href="#lab-004-universal-approximation-from-step-functions" id="toc-lab-004-universal-approximation-from-step-functions" class="nav-link" data-scroll-target="#lab-004-universal-approximation-from-step-functions">Lab 004 — Universal approximation from step functions</a>
+  <ul class="collapse">
+  <li><a href="#the-claim" id="toc-the-claim" class="nav-link" data-scroll-target="#the-claim">The claim</a></li>
+  <li><a href="#the-target-function" id="toc-the-target-function" class="nav-link" data-scroll-target="#the-target-function">1. The target function</a></li>
+  <li><a href="#the-building-block-a-step-function" id="toc-the-building-block-a-step-function" class="nav-link" data-scroll-target="#the-building-block-a-step-function">2. The building block: a step function</a>
+  <ul class="collapse">
+  <li><a href="#two-steps-make-a-bump" id="toc-two-steps-make-a-bump" class="nav-link" data-scroll-target="#two-steps-make-a-bump">Two steps make a bump</a></li>
+  </ul></li>
+  <li><a href="#a-staircase-approximation" id="toc-a-staircase-approximation" class="nav-link" data-scroll-target="#a-staircase-approximation">3. A staircase approximation</a>
+  <ul class="collapse">
+  <li><a href="#interactive-choose-the-number-of-steps" id="toc-interactive-choose-the-number-of-steps" class="nav-link" data-scroll-target="#interactive-choose-the-number-of-steps">Interactive: choose the number of steps</a></li>
+  <li><a href="#how-fast-does-the-error-shrink" id="toc-how-fast-does-the-error-shrink" class="nav-link" data-scroll-target="#how-fast-does-the-error-shrink">How fast does the error shrink?</a></li>
+  </ul></li>
+  <li><a href="#from-steps-to-neurons" id="toc-from-steps-to-neurons" class="nav-link" data-scroll-target="#from-steps-to-neurons">4. From steps to neurons</a>
+  <ul class="collapse">
+  <li><a href="#the-staircase-is-a-one-hidden-layer-network" id="toc-the-staircase-is-a-one-hidden-layer-network" class="nav-link" data-scroll-target="#the-staircase-is-a-one-hidden-layer-network">The staircase is a one-hidden-layer network</a></li>
+  <li><a href="#look-inside-each-neuron-contributes-one-step" id="toc-look-inside-each-neuron-contributes-one-step" class="nav-link" data-scroll-target="#look-inside-each-neuron-contributes-one-step">Look inside: each neuron contributes one step</a></li>
+  <li><a href="#interactive-number-of-neurons-and-steepness" id="toc-interactive-number-of-neurons-and-steepness" class="nav-link" data-scroll-target="#interactive-number-of-neurons-and-steepness">Interactive: number of neurons and steepness</a></li>
+  <li><a href="#your-turn-be-the-optimiser" id="toc-your-turn-be-the-optimiser" class="nav-link" data-scroll-target="#your-turn-be-the-optimiser">Your turn: be the optimiser</a></li>
+  <li><a href="#error-vs-number-of-neurons" id="toc-error-vs-number-of-neurons" class="nav-link" data-scroll-target="#error-vs-number-of-neurons">Error vs number of neurons</a></li>
+  </ul></li>
+  <li><a href="#hand-made-vs-trained" id="toc-hand-made-vs-trained" class="nav-link" data-scroll-target="#hand-made-vs-trained">5. Hand-made vs trained</a></li>
+  <li><a href="#bonus-two-dimensions-need-a-second-layer-of-steps" id="toc-bonus-two-dimensions-need-a-second-layer-of-steps" class="nav-link" data-scroll-target="#bonus-two-dimensions-need-a-second-layer-of-steps">6. Bonus: two dimensions need a second layer of steps</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/MarcinPlodzien/deep-learning-for-scientific-discovery/blob/main/notebooks/lecture-01/universal-approximation-steps.ipynb" class="toc-action">View source</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title d-none d-lg-block">Universal approximation from step functions</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li></ul></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p><a href="https://colab.research.google.com/github/MarcinPlodzien/deep-learning-for-scientific-discovery/blob/main/notebooks/lecture-01/universal-approximation-steps.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Colab"></a></p>
+<hr>
+<section id="deep-learning-for-scientific-discovery" class="level1">
+<h1>Deep Learning for Scientific Discovery</h1>
+<strong>Author:</strong> Marcin Płodzień
+<hr>
+</section>
+<section id="lab-004-universal-approximation-from-step-functions" class="level1">
+<h1>Lab 004 — Universal approximation from step functions</h1>
+<section id="the-claim" class="level2">
+<h2 class="anchored" data-anchor-id="the-claim">The claim</h2>
+<p>A neural network with <strong>one hidden layer</strong> and enough neurons can approximate any continuous function <span class="math inline">\(f:[a,b]\to\mathbb{R}\)</span> as accurately as we like (Cybenko 1989, Hornik 1991). The idea behind the proof fits in one picture:</p>
+<ol type="1">
+<li>a single neuron with a steep sigmoid is (almost) a <strong>step function</strong>;</li>
+<li>a sum of shifted and scaled steps is a <strong>staircase</strong>;</li>
+<li>a staircase with enough steps follows any continuous curve as closely as we like.</li>
+</ol>
+<p>This notebook builds each of these pieces in code, then compares the hand-made network with one trained by gradient descent.</p>
+<blockquote class="blockquote">
+<p>The notebook runs in Google Colab without any installation: 1. Go to <a href="https://colab.research.google.com" class="uri">https://colab.research.google.com</a> → <em>File → Upload notebook</em>. 2. Run cells one by one with <strong>Shift + Enter</strong>, <em>in order</em>. 3. The required packages (<code>numpy</code>, <code>matplotlib</code>, <code>torch</code>) are pre-installed in Colab.</p>
+</blockquote>
+<div class="cell" data-execution_count="1">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn <span class="im">as</span> nn</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> io</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ipywidgets <span class="im">as</span> widgets</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> display</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"figure.dpi"</span>] <span class="op">=</span> <span class="dv">110</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">0</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">0</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> live_plot(draw, controls, layout<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Show sliders + a figure; redraw draw(**slider_values) whenever a slider moves.</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># The figure is sent as a PNG into an Image widget, which works in every Jupyter version and in Colab.</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    img <span class="op">=</span> widgets.Image(<span class="bu">format</span><span class="op">=</span><span class="st">"png"</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> update(change<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        fig <span class="op">=</span> draw(<span class="op">**</span>{k: c.value <span class="cf">for</span> k, c <span class="kw">in</span> controls.items()})</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        buf <span class="op">=</span> io.BytesIO()</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        fig.savefig(buf, <span class="bu">format</span><span class="op">=</span><span class="st">"png"</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>        plt.close(fig)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        img.value <span class="op">=</span> buf.getvalue()</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> c <span class="kw">in</span> controls.values():</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>        c.observe(update, names<span class="op">=</span><span class="st">"value"</span>)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    update()</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    display(widgets.VBox([layout <span class="kw">or</span> widgets.VBox(<span class="bu">list</span>(controls.values())), img]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<hr>
+</section>
+<section id="the-target-function" class="level2">
+<h2 class="anchored" data-anchor-id="the-target-function">1. The target function</h2>
+<p>We pick a function with no special structure — a few wiggles and a trend:</p>
+<p><span class="math display">\[ f(x) = \sin(3x) + 0.3\,x^2 - 0.5\,e^{-4(x-1)^2}, \qquad x\in[-3, 3]. \]</span></p>
+<p>Nothing below uses the formula; the approximations only ever <strong>sample</strong> <span class="math inline">\(f\)</span> at a few points.</p>
+<div class="cell" data-execution_count="2">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f(x):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.sin(<span class="dv">3</span> <span class="op">*</span> x) <span class="op">+</span> <span class="fl">0.3</span> <span class="op">*</span> x<span class="op">**</span><span class="dv">2</span> <span class="op">-</span> <span class="fl">0.5</span> <span class="op">*</span> np.exp(<span class="op">-</span><span class="dv">4</span> <span class="op">*</span> (x <span class="op">-</span> <span class="dv">1</span>)<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>a, b <span class="op">=</span> <span class="op">-</span><span class="fl">3.0</span>, <span class="fl">3.0</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(a, b, <span class="dv">2000</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="fl">3.5</span>))</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>plt.plot(x, f(x), <span class="st">"k"</span>, lw<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"$x$"</span>)<span class="op">;</span> plt.ylabel(<span class="st">"$f(x)$"</span>)<span class="op">;</span> plt.title(<span class="st">"Target function"</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>plt.grid(alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="universal-approximation-steps_files/figure-html/cell-3-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<hr>
+</section>
+<section id="the-building-block-a-step-function" class="level2">
+<h2 class="anchored" data-anchor-id="the-building-block-a-step-function">2. The building block: a step function</h2>
+<p>The <strong>Heaviside step function</strong> <span class="math inline">\(\Theta\)</span> switches from 0 to 1 at position <span class="math inline">\(c\)</span>:</p>
+<p><span class="math display">\[ \Theta(x - c) = \begin{cases} 0, &amp; x &lt; c \\ 1, &amp; x \ge c \end{cases} \]</span></p>
+<p>Multiplying by a height <span class="math inline">\(h\)</span> gives a step of height <span class="math inline">\(h\)</span>. Two parameters: <strong>where</strong> it jumps (<span class="math inline">\(c\)</span>) and <strong>how much</strong> (<span class="math inline">\(h\)</span>).</p>
+<div class="cell" data-execution_count="3">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> theta(z):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (z <span class="op">&gt;=</span> <span class="dv">0</span>).astype(<span class="bu">float</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">3</span>))</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>plt.plot(x, <span class="fl">1.0</span> <span class="op">*</span> theta(x <span class="op">-</span> (<span class="op">-</span><span class="dv">1</span>)), label<span class="op">=</span><span class="vs">r"$1.0\cdot \Theta(x+1)$"</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>plt.plot(x, <span class="fl">0.5</span> <span class="op">*</span> theta(x <span class="op">-</span> <span class="fl">1.5</span>), label<span class="op">=</span><span class="vs">r"$0.5\cdot \Theta(x-1.5)$"</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>plt.plot(x, <span class="op">-</span><span class="fl">0.7</span> <span class="op">*</span> theta(x <span class="op">-</span> <span class="dv">0</span>), label<span class="op">=</span><span class="vs">r"$-0.7\cdot \Theta(x)$"</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"$x$"</span>)<span class="op">;</span> plt.legend()<span class="op">;</span> plt.grid(alpha<span class="op">=</span><span class="fl">0.3</span>)<span class="op">;</span> plt.title(<span class="st">"Shifted and scaled steps"</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="universal-approximation-steps_files/figure-html/cell-4-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<section id="two-steps-make-a-bump" class="level3">
+<h3 class="anchored" data-anchor-id="two-steps-make-a-bump">Two steps make a bump</h3>
+<p>The difference of two steps is a rectangle (“bump”) of height <span class="math inline">\(h\)</span> on <span class="math inline">\([c_1, c_2)\)</span>:</p>
+<p><span class="math display">\[ h\,[\Theta(x-c_1) - \Theta(x-c_2)]. \]</span></p>
+<p>With bumps we can place a block of any height on any interval — that is already enough to build a histogram-like approximation of any function.</p>
+<div class="cell" data-execution_count="4">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>c1, c2, h <span class="op">=</span> <span class="op">-</span><span class="fl">1.0</span>, <span class="fl">0.5</span>, <span class="fl">0.8</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">3</span>))</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>plt.plot(x, h <span class="op">*</span> theta(x <span class="op">-</span> c1), <span class="st">"--"</span>, alpha<span class="op">=</span><span class="fl">0.6</span>, label<span class="op">=</span><span class="vs">r"$h\,\Theta(x-c_1)$"</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>plt.plot(x, <span class="op">-</span>h <span class="op">*</span> theta(x <span class="op">-</span> c2), <span class="st">"--"</span>, alpha<span class="op">=</span><span class="fl">0.6</span>, label<span class="op">=</span><span class="vs">r"$-h\,\Theta(x-c_2)$"</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>plt.plot(x, h <span class="op">*</span> (theta(x <span class="op">-</span> c1) <span class="op">-</span> theta(x <span class="op">-</span> c2)), <span class="st">"k"</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">"sum = bump"</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"$x$"</span>)<span class="op">;</span> plt.legend()<span class="op">;</span> plt.grid(alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="universal-approximation-steps_files/figure-html/cell-5-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="a-staircase-approximation" class="level2">
+<h2 class="anchored" data-anchor-id="a-staircase-approximation">3. A staircase approximation</h2>
+<p>Split <span class="math inline">\([a,b]\)</span> into <span class="math inline">\(N\)</span> intervals with points <span class="math inline">\(x_0 = a &lt; x_1 &lt; \dots &lt; x_N = b\)</span>. Start at the value <span class="math inline">\(f(x_0)\)</span>, and at every point <span class="math inline">\(x_i\)</span> add a step whose height is the change of <span class="math inline">\(f\)</span> since the previous point:</p>
+<p><span class="math display">\[ f_N(x) = f(x_0) + \sum_{i=1}^{N} \underbrace{\big[f(x_i) - f(x_{i-1})\big]}_{h_i}\; \Theta(x - x_i). \]</span></p>
+<p>For <span class="math inline">\(x\in[x_i, x_{i+1})\)</span> the sum telescopes to exactly <span class="math inline">\(f(x_i)\)</span> — the staircase touches the curve at every grid point.</p>
+<div class="cell" data-execution_count="5">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> staircase(x, f, N, a<span class="op">=</span>a, b<span class="op">=</span>b):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    nodes <span class="op">=</span> np.linspace(a, b, N <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    heights <span class="op">=</span> np.diff(f(nodes))                  <span class="co"># h_i = f(x_i) - f(x_{i-1})</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> np.full_like(x, f(nodes[<span class="dv">0</span>]))</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> c, h <span class="kw">in</span> <span class="bu">zip</span>(nodes[<span class="dv">1</span>:], heights):</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        out <span class="op">+=</span> h <span class="op">*</span> theta(x <span class="op">-</span> c)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> out</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>), sharex<span class="op">=</span><span class="va">True</span>, sharey<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, N <span class="kw">in</span> <span class="bu">zip</span>(axes.flat, [<span class="dv">4</span>, <span class="dv">10</span>, <span class="dv">30</span>, <span class="dv">100</span>]):</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    ax.plot(x, f(x), <span class="st">"k"</span>, lw<span class="op">=</span><span class="dv">2</span>, alpha<span class="op">=</span><span class="fl">0.4</span>, label<span class="op">=</span><span class="st">"$f$"</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    ax.plot(x, staircase(x, f, N), <span class="st">"C3"</span>, lw<span class="op">=</span><span class="fl">1.3</span>, label<span class="op">=</span><span class="ss">f"$f_N$, N=</span><span class="sc">{</span>N<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    err <span class="op">=</span> np.<span class="bu">max</span>(np.<span class="bu">abs</span>(f(x) <span class="op">-</span> staircase(x, f, N)))</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="ss">f"N = </span><span class="sc">{</span>N<span class="sc">}</span><span class="ss"> steps,   max error = </span><span class="sc">{</span>err<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    ax.grid(alpha<span class="op">=</span><span class="fl">0.3</span>)<span class="op">;</span> ax.legend(loc<span class="op">=</span><span class="st">"upper center"</span>)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="universal-approximation-steps_files/figure-html/cell-6-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<section id="interactive-choose-the-number-of-steps" class="level3">
+<h3 class="anchored" data-anchor-id="interactive-choose-the-number-of-steps">Interactive: choose the number of steps</h3>
+<p>Move the slider and watch the staircase follow the curve.</p>
+<div class="cell" data-execution_count="6">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> draw_staircase(N):</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> staircase(x, f, N)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="fl">3.8</span>))</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    plt.plot(x, f(x), <span class="st">"k"</span>, lw<span class="op">=</span><span class="dv">2</span>, alpha<span class="op">=</span><span class="fl">0.4</span>, label<span class="op">=</span><span class="st">"$f$"</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    plt.plot(x, y, <span class="st">"C3"</span>, label<span class="op">=</span><span class="ss">f"staircase, N = </span><span class="sc">{</span>N<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f"max error = </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">max</span>(np.<span class="bu">abs</span>(f(x) <span class="op">-</span> y))<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">"$x$"</span>)<span class="op">;</span> plt.legend()<span class="op">;</span> plt.grid(alpha<span class="op">=</span><span class="fl">0.3</span>)<span class="op">;</span> plt.ylim(<span class="op">-</span><span class="dv">2</span>, <span class="fl">4.5</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> fig</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>live_plot(draw_staircase, {<span class="st">"N"</span>: widgets.IntSlider(value<span class="op">=</span><span class="dv">5</span>, <span class="bu">min</span><span class="op">=</span><span class="dv">1</span>, <span class="bu">max</span><span class="op">=</span><span class="dv">200</span>, description<span class="op">=</span><span class="st">"steps N"</span>)})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"df98e38daa14473ca86822fe875751c5","version_major":2,"version_minor":0}
+</script>
+</div>
+</div>
+</section>
+<section id="how-fast-does-the-error-shrink" class="level3">
+<h3 class="anchored" data-anchor-id="how-fast-does-the-error-shrink">How fast does the error shrink?</h3>
+<p>On an interval of width <span class="math inline">\(\Delta x = (b-a)/N\)</span> the function changes by at most <span class="math inline">\(\max|f'|\,\Delta x\)</span>, so</p>
+<p><span class="math display">\[ \max_x |f(x) - f_N(x)| \;\le\; \max|f'|\,\frac{b-a}{N} \;\propto\; \frac{1}{N}. \]</span></p>
+<p>More steps → smaller error, without limit. That is the whole universal approximation argument in one dimension.</p>
+<div class="cell" data-execution_count="7">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>Ns <span class="op">=</span> np.unique(np.logspace(<span class="fl">0.5</span>, <span class="dv">3</span>, <span class="dv">25</span>).astype(<span class="bu">int</span>))</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>errs <span class="op">=</span> [np.<span class="bu">max</span>(np.<span class="bu">abs</span>(f(x) <span class="op">-</span> staircase(x, f, N))) <span class="cf">for</span> N <span class="kw">in</span> Ns]</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">4</span>))</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>plt.loglog(Ns, errs, <span class="st">"o-"</span>, label<span class="op">=</span><span class="st">"measured max error"</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>plt.loglog(Ns, errs[<span class="dv">0</span>] <span class="op">*</span> Ns[<span class="dv">0</span>] <span class="op">/</span> Ns, <span class="st">"k--"</span>, label<span class="op">=</span><span class="vs">r"$\propto 1/N$"</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"number of steps $N$"</span>)<span class="op">;</span> plt.ylabel(<span class="vs">r"$\max_x |f - f_N|$"</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>plt.legend()<span class="op">;</span> plt.grid(alpha<span class="op">=</span><span class="fl">0.3</span>, which<span class="op">=</span><span class="st">"both"</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="universal-approximation-steps_files/figure-html/cell-8-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="from-steps-to-neurons" class="level2">
+<h2 class="anchored" data-anchor-id="from-steps-to-neurons">4. From steps to neurons</h2>
+<p>A neuron computes <span class="math inline">\(\sigma(w x + b)\)</span>. With the sigmoid <span class="math inline">\(\sigma(z) = 1/(1+e^{-z})\)</span> and <span class="math inline">\(b = -w c\)</span>:</p>
+<p><span class="math display">\[ \sigma\big(w(x - c)\big) \;\xrightarrow{\;w\to\infty\;}\; \Theta(x - c). \]</span></p>
+<ul>
+<li>the <strong>bias</strong> sets <em>where</em> the step is (<span class="math inline">\(c = -b/w\)</span>),</li>
+<li>the <strong>weight</strong> sets <em>how sharp</em> it is,</li>
+<li>the <strong>output weight</strong> of the next layer sets its <em>height</em>.</li>
+</ul>
+<div class="cell" data-execution_count="8">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sigmoid(z):</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">1</span> <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> np.exp(<span class="op">-</span>z))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> <span class="fl">0.5</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="fl">3.5</span>))</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> w <span class="kw">in</span> [<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">10</span>, <span class="dv">100</span>]:</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    plt.plot(x, sigmoid(w <span class="op">*</span> (x <span class="op">-</span> c)), label<span class="op">=</span><span class="ss">f"w = </span><span class="sc">{</span>w<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>plt.plot(x, theta(x <span class="op">-</span> c), <span class="st">"k--"</span>, lw<span class="op">=</span><span class="dv">1</span>, label<span class="op">=</span><span class="st">"Heaviside"</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"$x$"</span>)<span class="op">;</span> plt.title(<span class="vs">r"$\sigma(w(x-c))$ becomes a step as $w$ grows"</span>)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>plt.legend()<span class="op">;</span> plt.grid(alpha<span class="op">=</span><span class="fl">0.3</span>)<span class="op">;</span> plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="universal-approximation-steps_files/figure-html/cell-9-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<section id="the-staircase-is-a-one-hidden-layer-network" class="level3">
+<h3 class="anchored" data-anchor-id="the-staircase-is-a-one-hidden-layer-network">The staircase is a one-hidden-layer network</h3>
+<p>Replace every <span class="math inline">\(\Theta\)</span> by a steep sigmoid:</p>
+<p><span class="math display">\[ \hat f(x) = f(x_0) + \sum_{i=1}^{N} h_i\,\sigma\big(w(x - x_i)\big). \]</span></p>
+<p>This is exactly <code>Linear(1, N)</code> → <code>Sigmoid</code> → <code>Linear(N, 1)</code>, with</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>layer</th>
+<th>parameter</th>
+<th>value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>hidden</td>
+<td>weights</td>
+<td><span class="math inline">\(w\)</span> (all the same)</td>
+</tr>
+<tr class="even">
+<td>hidden</td>
+<td>biases</td>
+<td><span class="math inline">\(-w\,x_i\)</span></td>
+</tr>
+<tr class="odd">
+<td>output</td>
+<td>weights</td>
+<td><span class="math inline">\(h_i = f(x_i) - f(x_{i-1})\)</span></td>
+</tr>
+<tr class="even">
+<td>output</td>
+<td>bias</td>
+<td><span class="math inline">\(f(x_0)\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Below we build this network in PyTorch and <strong>set the weights by hand</strong> — no training.</p>
+<div class="cell" data-execution_count="9">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> handmade_network(N, w):</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    nodes <span class="op">=</span> np.linspace(a, b, N <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    heights <span class="op">=</span> np.diff(f(nodes))</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    net <span class="op">=</span> nn.Sequential(nn.Linear(<span class="dv">1</span>, N), nn.Sigmoid(), nn.Linear(N, <span class="dv">1</span>))</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> torch.no_grad():</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        net[<span class="dv">0</span>].weight[:] <span class="op">=</span> w</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        net[<span class="dv">0</span>].bias[:]   <span class="op">=</span> torch.tensor(<span class="op">-</span>w <span class="op">*</span> nodes[<span class="dv">1</span>:])</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        net[<span class="dv">2</span>].weight[:] <span class="op">=</span> torch.tensor(heights).unsqueeze(<span class="dv">0</span>)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        net[<span class="dv">2</span>].bias[:]   <span class="op">=</span> f(nodes[<span class="dv">0</span>])</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> net</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> evaluate(net, x):</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> torch.no_grad():</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> net(torch.tensor(x, dtype<span class="op">=</span>torch.float32).unsqueeze(<span class="dv">1</span>)).squeeze(<span class="dv">1</span>).numpy()</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">20</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">13</span>, <span class="fl">3.5</span>), sharey<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, w <span class="kw">in</span> <span class="bu">zip</span>(axes, [<span class="dv">2</span>, <span class="dv">10</span>, <span class="dv">100</span>]):</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    y_net <span class="op">=</span> evaluate(handmade_network(N, w), x)</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    ax.plot(x, f(x), <span class="st">"k"</span>, lw<span class="op">=</span><span class="dv">2</span>, alpha<span class="op">=</span><span class="fl">0.4</span>, label<span class="op">=</span><span class="st">"$f$"</span>)</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    ax.plot(x, y_net, <span class="st">"C0"</span>, label<span class="op">=</span><span class="st">"network"</span>)</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="ss">f"N = </span><span class="sc">{</span>N<span class="sc">}</span><span class="ss"> neurons, w = </span><span class="sc">{</span>w<span class="sc">}</span><span class="ch">\n</span><span class="ss">max error = </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">max</span>(np.<span class="bu">abs</span>(f(x) <span class="op">-</span> y_net))<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    ax.grid(alpha<span class="op">=</span><span class="fl">0.3</span>)<span class="op">;</span> ax.legend()</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="universal-approximation-steps_files/figure-html/cell-10-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>Observations: - <span class="math inline">\(w\)</span> too small: steps are blurred into each other, the network is too smooth. - <span class="math inline">\(w\)</span> large: we recover the staircase. - There is a sweet spot — the sigmoid’s own smoothness interpolates <em>between</em> grid points better than a sharp jump.</p>
+</section>
+<section id="look-inside-each-neuron-contributes-one-step" class="level3">
+<h3 class="anchored" data-anchor-id="look-inside-each-neuron-contributes-one-step">Look inside: each neuron contributes one step</h3>
+<div class="cell" data-execution_count="10">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>N, w <span class="op">=</span> <span class="dv">8</span>, <span class="dv">10</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> handmade_network(N, w)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>xt <span class="op">=</span> torch.tensor(x, dtype<span class="op">=</span>torch.float32).unsqueeze(<span class="dv">1</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    hidden <span class="op">=</span> net[<span class="dv">1</span>](net[<span class="dv">0</span>](xt)).numpy()              <span class="co"># (len(x), N) activations</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    contrib <span class="op">=</span> hidden <span class="op">*</span> net[<span class="dv">2</span>].weight.numpy()          <span class="co"># scaled by output weights</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="fl">3.8</span>))</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(N):</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>].plot(x, contrib[:, i], lw<span class="op">=</span><span class="fl">1.2</span>)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="vs">r"individual neurons $h_i\,\sigma(w(x-x_i))$"</span>)<span class="op">;</span> axes[<span class="dv">0</span>].grid(alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(x, f(x), <span class="st">"k"</span>, lw<span class="op">=</span><span class="dv">2</span>, alpha<span class="op">=</span><span class="fl">0.4</span>, label<span class="op">=</span><span class="st">"$f$"</span>)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(x, contrib.<span class="bu">sum</span>(<span class="dv">1</span>) <span class="op">+</span> net[<span class="dv">2</span>].bias.item(), <span class="st">"C0"</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">"sum of neurons + bias"</span>)</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="ss">f"N = </span><span class="sc">{</span>N<span class="sc">}</span><span class="ss">, w = </span><span class="sc">{</span>w<span class="sc">}</span><span class="ss">"</span>)<span class="op">;</span> axes[<span class="dv">1</span>].legend()<span class="op">;</span> axes[<span class="dv">1</span>].grid(alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="universal-approximation-steps_files/figure-html/cell-11-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="interactive-number-of-neurons-and-steepness" class="level3">
+<h3 class="anchored" data-anchor-id="interactive-number-of-neurons-and-steepness">Interactive: number of neurons and steepness</h3>
+<p>Two sliders: the number of hidden neurons <span class="math inline">\(N\)</span> and the common weight <span class="math inline">\(w\)</span> (steepness). Left: every neuron’s contribution; right: their sum, which is the network output.</p>
+<div class="cell" data-execution_count="11">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> draw_network(N, w):</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    net <span class="op">=</span> handmade_network(N, w)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> torch.no_grad():</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>        contrib <span class="op">=</span> net[<span class="dv">1</span>](net[<span class="dv">0</span>](xt)).numpy() <span class="op">*</span> net[<span class="dv">2</span>].weight.numpy()</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    y_net <span class="op">=</span> contrib.<span class="bu">sum</span>(<span class="dv">1</span>) <span class="op">+</span> net[<span class="dv">2</span>].bias.item()</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">13</span>, <span class="fl">3.8</span>))</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>].plot(x, contrib, lw<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>].set_title(<span class="ss">f"</span><span class="sc">{</span>N<span class="sc">}</span><span class="ss"> neurons, each $h_i</span><span class="ch">\\</span><span class="ss">,</span><span class="ch">\\</span><span class="ss">sigma(w(x-x_i))$"</span>)<span class="op">;</span> axes[<span class="dv">0</span>].grid(alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].plot(x, f(x), <span class="st">"k"</span>, lw<span class="op">=</span><span class="dv">2</span>, alpha<span class="op">=</span><span class="fl">0.4</span>, label<span class="op">=</span><span class="st">"$f$"</span>)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].plot(x, y_net, <span class="st">"C0"</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">"network"</span>)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].set_title(<span class="ss">f"N = </span><span class="sc">{</span>N<span class="sc">}</span><span class="ss">, w = </span><span class="sc">{</span>w<span class="sc">:.1f}</span><span class="ss">,   max error = </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">max</span>(np.<span class="bu">abs</span>(f(x) <span class="op">-</span> y_net))<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].set_ylim(<span class="op">-</span><span class="dv">2</span>, <span class="fl">4.5</span>)<span class="op">;</span> axes[<span class="dv">1</span>].legend()<span class="op">;</span> axes[<span class="dv">1</span>].grid(alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    fig.tight_layout()</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> fig</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>live_plot(draw_network, {</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"N"</span>: widgets.IntSlider(value<span class="op">=</span><span class="dv">8</span>, <span class="bu">min</span><span class="op">=</span><span class="dv">1</span>, <span class="bu">max</span><span class="op">=</span><span class="dv">100</span>, description<span class="op">=</span><span class="st">"neurons N"</span>),</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"w"</span>: widgets.FloatLogSlider(value<span class="op">=</span><span class="dv">10</span>, base<span class="op">=</span><span class="dv">10</span>, <span class="bu">min</span><span class="op">=-</span><span class="fl">0.5</span>, <span class="bu">max</span><span class="op">=</span><span class="fl">2.5</span>, step<span class="op">=</span><span class="fl">0.05</span>, description<span class="op">=</span><span class="st">"weight w"</span>),</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"08b47706e40445ddb381821e26e68819","version_major":2,"version_minor":0}
+</script>
+</div>
+</div>
+<hr>
+</section>
+<section id="your-turn-be-the-optimiser" class="level3">
+<h3 class="anchored" data-anchor-id="your-turn-be-the-optimiser">Your turn: be the optimiser</h3>
+<p>Now <strong>you</strong> set every parameter of a network</p>
+<p><span class="math display">\[ \hat f(x) = v_0 + \sum_{i=1}^{N} v_i\,\Theta(w_i x + b_i), \]</span></p>
+<p>built from <strong>Θ step functions</strong> (switch to <code>sigmoid</code> with the toggle to compare).</p>
+<ul>
+<li>The slider <strong>N</strong> sets the number of neurons; one row of sliders appears per neuron.</li>
+<li>For neuron <span class="math inline">\(i\)</span>: weight <span class="math inline">\(w_i\)</span> (steepness; negative = step down), bias <span class="math inline">\(b_i\)</span> (the step sits at <span class="math inline">\(x = -b_i/w_i\)</span>), output weight <span class="math inline">\(v_i\)</span> (height).</li>
+<li>With Θ only the <strong>sign</strong> of <span class="math inline">\(w_i\)</span> (step up or down) and the location <span class="math inline">\(-b_i/w_i\)</span> matter — the size of <span class="math inline">\(w_i\)</span> is irrelevant. With the sigmoid, <span class="math inline">\(|w_i|\)</span> also sets how sharp the step is.</li>
+<li><strong>The sliders start at the loss-minimising values</strong> for the current <span class="math inline">\(N\)</span> and activation (and jump back there whenever <span class="math inline">\(N\)</span> or the activation changes). Move any slider and watch the MSE rise above the optimum — the title shows by how many percent.</li>
+<li><strong>set to optimum</strong> goes back to the best parameters; <strong>set to staircase</strong> loads the uniform hand-made construction from above (compare its MSE with the optimum!); <strong>reset heights</strong> sets all <span class="math inline">\(v_i = 0\)</span>.</li>
+</ul>
+<p>How the optimum is found: with Θ the network is piecewise constant with <span class="math inline">\(N\)</span> jumps, and the best positions of the jumps are found exactly by dynamic programming (every piece takes the mean of <span class="math inline">\(f\)</span> on it). For the sigmoid we start from that solution and refine all <span class="math inline">\(w_i, b_i, v_i\)</span> with gradient descent (Adam).</p>
+<p>Things to try: Which neuron hurts most when you move it? Is the loss more sensitive to the position <span class="math inline">\(-b_i/w_i\)</span> or to the height <span class="math inline">\(v_i\)</span>? How does the optimal MSE fall with <span class="math inline">\(N\)</span>?</p>
+<div class="cell" data-execution_count="12">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>N_MAX <span class="op">=</span> <span class="dv">20</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>W_THETA <span class="op">=</span> <span class="fl">10.0</span>                                        <span class="co"># for Θ only sign(w) matters; any positive value works</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ---------- loss-minimising parameters -------------------------------------------------</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>x_fit <span class="op">=</span> np.linspace(a, b, <span class="dv">600</span>)                        <span class="co"># grid on which the MSE is minimised</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>y_fit <span class="op">=</span> f(x_fit)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> optimal_theta(N):</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># A Θ-network with N neurons is piecewise constant with N jumps. The best such function</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># (minimal MSE) is found exactly by dynamic programming over all positions of the jumps:</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># every piece takes the mean of f on it, and we pick the cut points with the smallest total error.</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> <span class="bu">len</span>(y_fit)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    S1 <span class="op">=</span> np.concatenate([[<span class="dv">0</span>], np.cumsum(y_fit)])</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    S2 <span class="op">=</span> np.concatenate([[<span class="dv">0</span>], np.cumsum(y_fit<span class="op">**</span><span class="dv">2</span>)])</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    i, j <span class="op">=</span> np.meshgrid(np.arange(n <span class="op">+</span> <span class="dv">1</span>), np.arange(n <span class="op">+</span> <span class="dv">1</span>), indexing<span class="op">=</span><span class="st">"ij"</span>)</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> np.errstate(divide<span class="op">=</span><span class="st">"ignore"</span>, invalid<span class="op">=</span><span class="st">"ignore"</span>):</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>        cost <span class="op">=</span> S2[j] <span class="op">-</span> S2[i] <span class="op">-</span> (S1[j] <span class="op">-</span> S1[i])<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> (j <span class="op">-</span> i)   <span class="co"># squared error of one piece x_fit[i:j]</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    cost[j <span class="op">&lt;=</span> i] <span class="op">=</span> np.inf</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    D, back <span class="op">=</span> cost[<span class="dv">0</span>], []                             <span class="co"># D[j] = best error of x_fit[:j] with k pieces</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(N):</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>        tot <span class="op">=</span> D[:, <span class="va">None</span>] <span class="op">+</span> cost</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>        back.append(np.argmin(tot, axis<span class="op">=</span><span class="dv">0</span>))</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>        D <span class="op">=</span> np.<span class="bu">min</span>(tot, axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>    cuts, j <span class="op">=</span> [], n                                   <span class="co"># backtrack the cut positions</span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">reversed</span>(<span class="bu">range</span>(N)):</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>        j <span class="op">=</span> back[k][j]<span class="op">;</span> cuts.append(j)</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>    cuts <span class="op">=</span> <span class="bu">sorted</span>(cuts)</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>    edges <span class="op">=</span> [<span class="dv">0</span>] <span class="op">+</span> cuts <span class="op">+</span> [n]</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>    means <span class="op">=</span> [y_fit[p:q].mean() <span class="cf">for</span> p, q <span class="kw">in</span> <span class="bu">zip</span>(edges[:<span class="op">-</span><span class="dv">1</span>], edges[<span class="dv">1</span>:])]</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>    centers <span class="op">=</span> [(x_fit[c <span class="op">-</span> <span class="dv">1</span>] <span class="op">+</span> x_fit[c]) <span class="op">/</span> <span class="dv">2</span> <span class="cf">for</span> c <span class="kw">in</span> cuts]</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [(W_THETA, <span class="op">-</span>W_THETA <span class="op">*</span> c, h) <span class="cf">for</span> c, h <span class="kw">in</span> <span class="bu">zip</span>(centers, np.diff(means))], means[<span class="dv">0</span>]</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> optimal_sigmoid(N, n_steps<span class="op">=</span><span class="dv">1500</span>):</span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>    <span class="co"># start from the Θ optimum (steep sigmoids) and refine all parameters with Adam</span></span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>    params, v0 <span class="op">=</span> optimal_theta(N)</span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>    w0 <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> N <span class="op">/</span> (b <span class="op">-</span> a) <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>    W <span class="op">=</span> torch.tensor([p[<span class="dv">0</span>] <span class="op">/</span> W_THETA <span class="op">*</span> w0 <span class="cf">for</span> p <span class="kw">in</span> params], requires_grad<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>    B <span class="op">=</span> torch.tensor([p[<span class="dv">1</span>] <span class="op">/</span> W_THETA <span class="op">*</span> w0 <span class="cf">for</span> p <span class="kw">in</span> params], requires_grad<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>    V <span class="op">=</span> torch.tensor([p[<span class="dv">2</span>] <span class="cf">for</span> p <span class="kw">in</span> params], requires_grad<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>    V0 <span class="op">=</span> torch.tensor(<span class="bu">float</span>(v0), requires_grad<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a>    xt_, yt_ <span class="op">=</span> torch.tensor(x_fit), torch.tensor(y_fit)</span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>    opt <span class="op">=</span> torch.optim.Adam([W, B, V, V0], lr<span class="op">=</span><span class="fl">0.02</span>)</span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n_steps):</span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> ((V0 <span class="op">+</span> (V <span class="op">*</span> torch.sigmoid(xt_[:, <span class="va">None</span>] <span class="op">*</span> W <span class="op">+</span> B)).<span class="bu">sum</span>(<span class="dv">1</span>) <span class="op">-</span> yt_)<span class="op">**</span><span class="dv">2</span>).mean()</span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a>        opt.zero_grad()<span class="op">;</span> loss.backward()<span class="op">;</span> opt.step()</span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> torch.no_grad():                         <span class="co"># keep the values inside the slider ranges</span></span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a>            W.clamp_(<span class="op">-</span><span class="dv">30</span>, <span class="dv">30</span>)<span class="op">;</span> B.clamp_(<span class="op">-</span><span class="dv">90</span>, <span class="dv">90</span>)<span class="op">;</span> V.clamp_(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>)<span class="op">;</span> V0.clamp_(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>)</span>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [(w.item(), bb.item(), v.item()) <span class="cf">for</span> w, bb, v <span class="kw">in</span> <span class="bu">zip</span>(W, B, V)], V0.item()</span>
+<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a>optimum_cache <span class="op">=</span> {}</span>
+<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> optimum(act_name, N):</span>
+<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (act_name, N) <span class="kw">not</span> <span class="kw">in</span> optimum_cache:</span>
+<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a>        optimum_cache[(act_name, N)] <span class="op">=</span> optimal_theta(N) <span class="cf">if</span> act_name <span class="op">==</span> <span class="st">"Θ step"</span> <span class="cf">else</span> optimal_sigmoid(N)</span>
+<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> optimum_cache[(act_name, N)]</span>
+<span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-56"><a href="#cb12-56" aria-hidden="true" tabindex="-1"></a><span class="co"># ---------- widgets ---------------------------------------------------------------------</span></span>
+<span id="cb12-57"><a href="#cb12-57" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> neuron_sliders(i):</span>
+<span id="cb12-58"><a href="#cb12-58" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"w"</span>: widgets.FloatSlider(value<span class="op">=</span>W_THETA, <span class="bu">min</span><span class="op">=-</span><span class="dv">30</span>, <span class="bu">max</span><span class="op">=</span><span class="dv">30</span>, step<span class="op">=</span><span class="fl">0.01</span>, description<span class="op">=</span><span class="ss">f"w</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">"</span>),</span>
+<span id="cb12-59"><a href="#cb12-59" aria-hidden="true" tabindex="-1"></a>            <span class="st">"b"</span>: widgets.FloatSlider(value<span class="op">=</span><span class="fl">0.0</span>, <span class="bu">min</span><span class="op">=-</span><span class="dv">90</span>, <span class="bu">max</span><span class="op">=</span><span class="dv">90</span>, step<span class="op">=</span><span class="fl">0.01</span>, description<span class="op">=</span><span class="ss">f"b</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">"</span>),</span>
+<span id="cb12-60"><a href="#cb12-60" aria-hidden="true" tabindex="-1"></a>            <span class="st">"v"</span>: widgets.FloatSlider(value<span class="op">=</span><span class="fl">0.0</span>, <span class="bu">min</span><span class="op">=-</span><span class="dv">5</span>, <span class="bu">max</span><span class="op">=</span><span class="dv">5</span>, step<span class="op">=</span><span class="fl">0.01</span>, description<span class="op">=</span><span class="ss">f"v</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">"</span>)}</span>
+<span id="cb12-61"><a href="#cb12-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-62"><a href="#cb12-62" aria-hidden="true" tabindex="-1"></a>neurons    <span class="op">=</span> [neuron_sliders(i) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(N_MAX)]</span>
+<span id="cb12-63"><a href="#cb12-63" aria-hidden="true" tabindex="-1"></a>rows       <span class="op">=</span> [widgets.HBox([n[<span class="st">"w"</span>], n[<span class="st">"b"</span>], n[<span class="st">"v"</span>]]) <span class="cf">for</span> n <span class="kw">in</span> neurons]</span>
+<span id="cb12-64"><a href="#cb12-64" aria-hidden="true" tabindex="-1"></a>slider_N   <span class="op">=</span> widgets.IntSlider(value<span class="op">=</span><span class="dv">4</span>, <span class="bu">min</span><span class="op">=</span><span class="dv">1</span>, <span class="bu">max</span><span class="op">=</span>N_MAX, description<span class="op">=</span><span class="st">"neurons N"</span>, continuous_update<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb12-65"><a href="#cb12-65" aria-hidden="true" tabindex="-1"></a>slider_v0  <span class="op">=</span> widgets.FloatSlider(value<span class="op">=</span><span class="fl">0.0</span>, <span class="bu">min</span><span class="op">=-</span><span class="dv">4</span>, <span class="bu">max</span><span class="op">=</span><span class="dv">4</span>, step<span class="op">=</span><span class="fl">0.01</span>, description<span class="op">=</span><span class="st">"offset v0"</span>)</span>
+<span id="cb12-66"><a href="#cb12-66" aria-hidden="true" tabindex="-1"></a>activation <span class="op">=</span> widgets.ToggleButtons(options<span class="op">=</span>[<span class="st">"Θ step"</span>, <span class="st">"sigmoid"</span>], value<span class="op">=</span><span class="st">"Θ step"</span>, description<span class="op">=</span><span class="st">"activation"</span>)</span>
+<span id="cb12-67"><a href="#cb12-67" aria-hidden="true" tabindex="-1"></a>btn_opt    <span class="op">=</span> widgets.Button(description<span class="op">=</span><span class="st">"set to optimum"</span>, button_style<span class="op">=</span><span class="st">"success"</span>)</span>
+<span id="cb12-68"><a href="#cb12-68" aria-hidden="true" tabindex="-1"></a>btn_stair  <span class="op">=</span> widgets.Button(description<span class="op">=</span><span class="st">"set to staircase"</span>)</span>
+<span id="cb12-69"><a href="#cb12-69" aria-hidden="true" tabindex="-1"></a>btn_reset  <span class="op">=</span> widgets.Button(description<span class="op">=</span><span class="st">"reset heights"</span>)</span>
+<span id="cb12-70"><a href="#cb12-70" aria-hidden="true" tabindex="-1"></a>rows_box   <span class="op">=</span> widgets.VBox()</span>
+<span id="cb12-71"><a href="#cb12-71" aria-hidden="true" tabindex="-1"></a>img        <span class="op">=</span> widgets.Image(<span class="bu">format</span><span class="op">=</span><span class="st">"png"</span>)</span>
+<span id="cb12-72"><a href="#cb12-72" aria-hidden="true" tabindex="-1"></a>paused     <span class="op">=</span> <span class="va">False</span>                                    <span class="co"># avoids redrawing 3N times when a button sets many sliders</span></span>
+<span id="cb12-73"><a href="#cb12-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-74"><a href="#cb12-74" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> act_fn():</span>
+<span id="cb12-75"><a href="#cb12-75" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> theta <span class="cf">if</span> activation.value <span class="op">==</span> <span class="st">"Θ step"</span> <span class="cf">else</span> sigmoid</span>
+<span id="cb12-76"><a href="#cb12-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-77"><a href="#cb12-77" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> network(params, v0, act):</span>
+<span id="cb12-78"><a href="#cb12-78" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> v0 <span class="op">+</span> <span class="bu">sum</span>(v <span class="op">*</span> act(w <span class="op">*</span> x <span class="op">+</span> bb) <span class="cf">for</span> w, bb, v <span class="kw">in</span> params)</span>
+<span id="cb12-79"><a href="#cb12-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-80"><a href="#cb12-80" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> redraw(change<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb12-81"><a href="#cb12-81" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> paused:</span>
+<span id="cb12-82"><a href="#cb12-82" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span></span>
+<span id="cb12-83"><a href="#cb12-83" aria-hidden="true" tabindex="-1"></a>    N <span class="op">=</span> slider_N.value</span>
+<span id="cb12-84"><a href="#cb12-84" aria-hidden="true" tabindex="-1"></a>    act <span class="op">=</span> act_fn()</span>
+<span id="cb12-85"><a href="#cb12-85" aria-hidden="true" tabindex="-1"></a>    sym <span class="op">=</span> <span class="st">"</span><span class="ch">\\</span><span class="st">Theta"</span> <span class="cf">if</span> activation.value <span class="op">==</span> <span class="st">"Θ step"</span> <span class="cf">else</span> <span class="st">"</span><span class="ch">\\</span><span class="st">sigma"</span></span>
+<span id="cb12-86"><a href="#cb12-86" aria-hidden="true" tabindex="-1"></a>    params <span class="op">=</span> [<span class="bu">tuple</span>(neurons[i][k].value <span class="cf">for</span> k <span class="kw">in</span> <span class="st">"wbv"</span>) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(N)]</span>
+<span id="cb12-87"><a href="#cb12-87" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> network(params, slider_v0.value, act)</span>
+<span id="cb12-88"><a href="#cb12-88" aria-hidden="true" tabindex="-1"></a>    mse <span class="op">=</span> np.mean((f(x) <span class="op">-</span> y)<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb12-89"><a href="#cb12-89" aria-hidden="true" tabindex="-1"></a>    mse_opt <span class="op">=</span> np.mean((f(x) <span class="op">-</span> network(<span class="op">*</span>optimum(activation.value, N), act))<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb12-90"><a href="#cb12-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-91"><a href="#cb12-91" aria-hidden="true" tabindex="-1"></a>    fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">13</span>, <span class="fl">3.8</span>))</span>
+<span id="cb12-92"><a href="#cb12-92" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, (w_i, b_i, v_i) <span class="kw">in</span> <span class="bu">enumerate</span>(params):</span>
+<span id="cb12-93"><a href="#cb12-93" aria-hidden="true" tabindex="-1"></a>        loc <span class="op">=</span> <span class="op">-</span>b_i <span class="op">/</span> w_i <span class="cf">if</span> w_i <span class="op">!=</span> <span class="dv">0</span> <span class="cf">else</span> np.nan</span>
+<span id="cb12-94"><a href="#cb12-94" aria-hidden="true" tabindex="-1"></a>        axes[<span class="dv">0</span>].plot(x, v_i <span class="op">*</span> act(w_i <span class="op">*</span> x <span class="op">+</span> b_i), label<span class="op">=</span><span class="ss">f"neuron </span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">: step at x = </span><span class="sc">{</span>loc<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb12-95"><a href="#cb12-95" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>].set_title(<span class="ss">f"individual neurons $v_i</span><span class="ch">\\</span><span class="ss">,</span><span class="sc">{</span>sym<span class="sc">}</span><span class="ss">(w_i x + b_i)$"</span>)<span class="op">;</span> axes[<span class="dv">0</span>].grid(alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb12-96"><a href="#cb12-96" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> N <span class="op">&lt;=</span> <span class="dv">8</span>:</span>
+<span id="cb12-97"><a href="#cb12-97" aria-hidden="true" tabindex="-1"></a>        axes[<span class="dv">0</span>].legend(fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb12-98"><a href="#cb12-98" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].plot(x, f(x), <span class="st">"k"</span>, lw<span class="op">=</span><span class="dv">2</span>, alpha<span class="op">=</span><span class="fl">0.4</span>, label<span class="op">=</span><span class="st">"$f$"</span>)</span>
+<span id="cb12-99"><a href="#cb12-99" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].plot(x, y, <span class="st">"C2"</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f"your network (</span><span class="sc">{</span>N<span class="sc">}</span><span class="ss"> neurons)"</span>)</span>
+<span id="cb12-100"><a href="#cb12-100" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].set_title(<span class="ss">f"MSE = </span><span class="sc">{</span>mse<span class="sc">:.4f}</span><span class="ss">   (optimum </span><span class="sc">{</span>mse_opt<span class="sc">:.4f}</span><span class="ss">,  +</span><span class="sc">{</span><span class="dv">100</span> <span class="op">*</span> (mse <span class="op">/</span> mse_opt <span class="op">-</span> <span class="dv">1</span>)<span class="sc">:.1f}</span><span class="ss">%)"</span>)</span>
+<span id="cb12-101"><a href="#cb12-101" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].set_ylim(<span class="op">-</span><span class="dv">2</span>, <span class="fl">4.5</span>)<span class="op">;</span> axes[<span class="dv">1</span>].legend()<span class="op">;</span> axes[<span class="dv">1</span>].grid(alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb12-102"><a href="#cb12-102" aria-hidden="true" tabindex="-1"></a>    fig.tight_layout()</span>
+<span id="cb12-103"><a href="#cb12-103" aria-hidden="true" tabindex="-1"></a>    buf <span class="op">=</span> io.BytesIO()<span class="op">;</span> fig.savefig(buf, <span class="bu">format</span><span class="op">=</span><span class="st">"png"</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)<span class="op">;</span> plt.close(fig)</span>
+<span id="cb12-104"><a href="#cb12-104" aria-hidden="true" tabindex="-1"></a>    img.value <span class="op">=</span> buf.getvalue()</span>
+<span id="cb12-105"><a href="#cb12-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-106"><a href="#cb12-106" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> set_many(values, v0):</span>
+<span id="cb12-107"><a href="#cb12-107" aria-hidden="true" tabindex="-1"></a>    <span class="kw">global</span> paused</span>
+<span id="cb12-108"><a href="#cb12-108" aria-hidden="true" tabindex="-1"></a>    paused <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb12-109"><a href="#cb12-109" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, (w_i, b_i, v_i) <span class="kw">in</span> <span class="bu">enumerate</span>(values):</span>
+<span id="cb12-110"><a href="#cb12-110" aria-hidden="true" tabindex="-1"></a>        neurons[i][<span class="st">"w"</span>].value, neurons[i][<span class="st">"b"</span>].value, neurons[i][<span class="st">"v"</span>].value <span class="op">=</span> w_i, b_i, v_i</span>
+<span id="cb12-111"><a href="#cb12-111" aria-hidden="true" tabindex="-1"></a>    slider_v0.value <span class="op">=</span> v0</span>
+<span id="cb12-112"><a href="#cb12-112" aria-hidden="true" tabindex="-1"></a>    paused <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb12-113"><a href="#cb12-113" aria-hidden="true" tabindex="-1"></a>    redraw()</span>
+<span id="cb12-114"><a href="#cb12-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-115"><a href="#cb12-115" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> on_optimum(_<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb12-116"><a href="#cb12-116" aria-hidden="true" tabindex="-1"></a>    set_many(<span class="op">*</span>optimum(activation.value, slider_N.value))</span>
+<span id="cb12-117"><a href="#cb12-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-118"><a href="#cb12-118" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> on_N(change):</span>
+<span id="cb12-119"><a href="#cb12-119" aria-hidden="true" tabindex="-1"></a>    rows_box.children <span class="op">=</span> rows[:slider_N.value]</span>
+<span id="cb12-120"><a href="#cb12-120" aria-hidden="true" tabindex="-1"></a>    on_optimum()                                      <span class="co"># new N -&gt; start again from the optimum</span></span>
+<span id="cb12-121"><a href="#cb12-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-122"><a href="#cb12-122" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> on_staircase(_):</span>
+<span id="cb12-123"><a href="#cb12-123" aria-hidden="true" tabindex="-1"></a>    N <span class="op">=</span> slider_N.value</span>
+<span id="cb12-124"><a href="#cb12-124" aria-hidden="true" tabindex="-1"></a>    nodes <span class="op">=</span> np.linspace(a, b, N <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb12-125"><a href="#cb12-125" aria-hidden="true" tabindex="-1"></a>    w <span class="op">=</span> <span class="bu">min</span>(<span class="dv">2</span> <span class="op">*</span> N <span class="op">/</span> (b <span class="op">-</span> a), <span class="dv">30</span>)</span>
+<span id="cb12-126"><a href="#cb12-126" aria-hidden="true" tabindex="-1"></a>    set_many([(w, <span class="op">-</span>w <span class="op">*</span> c, h) <span class="cf">for</span> c, h <span class="kw">in</span> <span class="bu">zip</span>(nodes[<span class="dv">1</span>:], np.diff(f(nodes)))], f(nodes[<span class="dv">0</span>]))</span>
+<span id="cb12-127"><a href="#cb12-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-128"><a href="#cb12-128" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> on_reset(_):</span>
+<span id="cb12-129"><a href="#cb12-129" aria-hidden="true" tabindex="-1"></a>    set_many([(n[<span class="st">"w"</span>].value, n[<span class="st">"b"</span>].value, <span class="fl">0.0</span>) <span class="cf">for</span> n <span class="kw">in</span> neurons[:slider_N.value]], <span class="fl">0.0</span>)</span>
+<span id="cb12-130"><a href="#cb12-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-131"><a href="#cb12-131" aria-hidden="true" tabindex="-1"></a>slider_N.observe(on_N, names<span class="op">=</span><span class="st">"value"</span>)</span>
+<span id="cb12-132"><a href="#cb12-132" aria-hidden="true" tabindex="-1"></a>activation.observe(on_optimum, names<span class="op">=</span><span class="st">"value"</span>)</span>
+<span id="cb12-133"><a href="#cb12-133" aria-hidden="true" tabindex="-1"></a>slider_v0.observe(redraw, names<span class="op">=</span><span class="st">"value"</span>)</span>
+<span id="cb12-134"><a href="#cb12-134" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> neurons:</span>
+<span id="cb12-135"><a href="#cb12-135" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> s <span class="kw">in</span> n.values():</span>
+<span id="cb12-136"><a href="#cb12-136" aria-hidden="true" tabindex="-1"></a>        s.observe(redraw, names<span class="op">=</span><span class="st">"value"</span>)</span>
+<span id="cb12-137"><a href="#cb12-137" aria-hidden="true" tabindex="-1"></a>btn_opt.on_click(on_optimum)</span>
+<span id="cb12-138"><a href="#cb12-138" aria-hidden="true" tabindex="-1"></a>btn_stair.on_click(on_staircase)</span>
+<span id="cb12-139"><a href="#cb12-139" aria-hidden="true" tabindex="-1"></a>btn_reset.on_click(on_reset)</span>
+<span id="cb12-140"><a href="#cb12-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-141"><a href="#cb12-141" aria-hidden="true" tabindex="-1"></a>rows_box.children <span class="op">=</span> rows[:slider_N.value]</span>
+<span id="cb12-142"><a href="#cb12-142" aria-hidden="true" tabindex="-1"></a>on_optimum()</span>
+<span id="cb12-143"><a href="#cb12-143" aria-hidden="true" tabindex="-1"></a>display(widgets.VBox([activation, widgets.HBox([slider_N, slider_v0]),</span>
+<span id="cb12-144"><a href="#cb12-144" aria-hidden="true" tabindex="-1"></a>                      widgets.HBox([btn_opt, btn_stair, btn_reset]), rows_box, img]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"d950fc7b19b14ec39e05b7ca5b0c3758","version_major":2,"version_minor":0}
+</script>
+</div>
+</div>
+</section>
+<section id="error-vs-number-of-neurons" class="level3">
+<h3 class="anchored" data-anchor-id="error-vs-number-of-neurons">Error vs number of neurons</h3>
+<p>For a fair comparison the steepness has to grow with <span class="math inline">\(N\)</span> (the steps get narrower): we take <span class="math inline">\(w = 2N/(b-a)\)</span>, i.e.&nbsp;every sigmoid rises over about one grid spacing.</p>
+<div class="cell" data-execution_count="13">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>Ns <span class="op">=</span> [<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">8</span>, <span class="dv">16</span>, <span class="dv">32</span>, <span class="dv">64</span>, <span class="dv">128</span>, <span class="dv">256</span>, <span class="dv">512</span>]</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>err_net <span class="op">=</span> []</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> N <span class="kw">in</span> Ns:</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    w <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> N <span class="op">/</span> (b <span class="op">-</span> a)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    err_net.append(np.<span class="bu">max</span>(np.<span class="bu">abs</span>(f(x) <span class="op">-</span> evaluate(handmade_network(N, w), x))))</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">4</span>))</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>plt.loglog(Ns, err_net, <span class="st">"o-"</span>, label<span class="op">=</span><span class="st">"hand-made sigmoid network"</span>)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>plt.loglog(Ns, err_net[<span class="dv">2</span>] <span class="op">*</span> Ns[<span class="dv">2</span>] <span class="op">/</span> np.array(Ns), <span class="st">"k--"</span>, label<span class="op">=</span><span class="vs">r"$\propto 1/N$"</span>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"number of hidden neurons $N$"</span>)<span class="op">;</span> plt.ylabel(<span class="st">"max error"</span>)</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>plt.legend()<span class="op">;</span> plt.grid(alpha<span class="op">=</span><span class="fl">0.3</span>, which<span class="op">=</span><span class="st">"both"</span>)<span class="op">;</span> plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="universal-approximation-steps_files/figure-html/cell-14-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="hand-made-vs-trained" class="level2">
+<h2 class="anchored" data-anchor-id="hand-made-vs-trained">5. Hand-made vs trained</h2>
+<p>The construction above proves that a good set of weights <strong>exists</strong>. It says nothing about whether gradient descent finds it. Let us train the same architecture from a random initialisation, using only samples of <span class="math inline">\(f\)</span>, and compare.</p>
+<div class="cell" data-execution_count="14">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> train_network(N, n_steps<span class="op">=</span><span class="dv">5000</span>, lr<span class="op">=</span><span class="fl">1e-2</span>, seed<span class="op">=</span><span class="dv">0</span>):</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    torch.manual_seed(seed)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    net <span class="op">=</span> nn.Sequential(nn.Linear(<span class="dv">1</span>, N), nn.Sigmoid(), nn.Linear(N, <span class="dv">1</span>))</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    x_train <span class="op">=</span> torch.linspace(a, b, <span class="dv">400</span>).unsqueeze(<span class="dv">1</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    y_train <span class="op">=</span> torch.tensor(f(x_train.numpy()), dtype<span class="op">=</span>torch.float32)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    opt <span class="op">=</span> torch.optim.Adam(net.parameters(), lr<span class="op">=</span>lr)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    losses <span class="op">=</span> []</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> step <span class="kw">in</span> <span class="bu">range</span>(n_steps):</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> ((net(x_train) <span class="op">-</span> y_train)<span class="op">**</span><span class="dv">2</span>).mean()</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>        opt.zero_grad()<span class="op">;</span> loss.backward()<span class="op">;</span> opt.step()</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>        losses.append(loss.item())</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> net, losses</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">16</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>net_trained, losses <span class="op">=</span> train_network(N)</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>net_hand <span class="op">=</span> handmade_network(N, w<span class="op">=</span><span class="dv">2</span> <span class="op">*</span> N <span class="op">/</span> (b <span class="op">-</span> a))</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="fl">3.8</span>))</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].semilogy(losses)<span class="op">;</span> axes[<span class="dv">0</span>].set_xlabel(<span class="st">"step"</span>)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylabel(<span class="st">"MSE"</span>)</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">"training loss"</span>)<span class="op">;</span> axes[<span class="dv">0</span>].grid(alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(x, f(x), <span class="st">"k"</span>, lw<span class="op">=</span><span class="dv">3</span>, alpha<span class="op">=</span><span class="fl">0.3</span>, label<span class="op">=</span><span class="st">"$f$"</span>)</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> net, name <span class="kw">in</span> [(net_hand, <span class="st">"hand-made"</span>), (net_trained, <span class="st">"trained"</span>)]:</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>    y_net <span class="op">=</span> evaluate(net, x)</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].plot(x, y_net, label<span class="op">=</span><span class="ss">f"</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">: max err = </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">max</span>(np.<span class="bu">abs</span>(f(x) <span class="op">-</span> y_net))<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="ss">f"N = </span><span class="sc">{</span>N<span class="sc">}</span><span class="ss"> hidden neurons"</span>)<span class="op">;</span> axes[<span class="dv">1</span>].legend()<span class="op">;</span> axes[<span class="dv">1</span>].grid(alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="universal-approximation-steps_files/figure-html/cell-15-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>What does the trained network do with its neurons? It is not restricted to equal spacing, equal steepness, or the heights <span class="math inline">\(f(x_i)-f(x_{i-1})\)</span>. Each neuron’s step location is <span class="math inline">\(c_i = -b_i / w_i\)</span> — let us see where training put them.</p>
+<div class="cell" data-execution_count="15">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>W <span class="op">=</span> net_trained[<span class="dv">0</span>].weight.detach().squeeze().numpy()</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>B <span class="op">=</span> net_trained[<span class="dv">0</span>].bias.detach().numpy()</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>centers <span class="op">=</span> <span class="op">-</span>B <span class="op">/</span> W</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    contrib <span class="op">=</span> net_trained[<span class="dv">1</span>](net_trained[<span class="dv">0</span>](xt)).numpy() <span class="op">*</span> net_trained[<span class="dv">2</span>].weight.numpy()</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>))</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(N):</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    ax.plot(x, contrib[:, i], lw<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>ax.plot(x, f(x), <span class="st">"k"</span>, lw<span class="op">=</span><span class="dv">2</span>, alpha<span class="op">=</span><span class="fl">0.4</span>, label<span class="op">=</span><span class="st">"$f$"</span>)</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>ax.scatter(centers[(centers <span class="op">&gt;</span> a) <span class="op">&amp;</span> (centers <span class="op">&lt;</span> b)], np.zeros(np.<span class="bu">sum</span>((centers <span class="op">&gt;</span> a) <span class="op">&amp;</span> (centers <span class="op">&lt;</span> b))),</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>           marker<span class="op">=</span><span class="st">"|"</span>, s<span class="op">=</span><span class="dv">300</span>, c<span class="op">=</span><span class="st">"k"</span>, label<span class="op">=</span><span class="st">"step locations $-b_i/w_i$"</span>)</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(a, b)<span class="op">;</span> ax.set_title(<span class="st">"Neurons of the trained network"</span>)<span class="op">;</span> ax.legend()<span class="op">;</span> ax.grid(alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"steepness |w_i| :"</span>, np.<span class="bu">round</span>(np.sort(np.<span class="bu">abs</span>(W)), <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="universal-approximation-steps_files/figure-html/cell-16-output-1.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>steepness |w_i| : [0.04 1.25 2.32 3.18 3.49 3.58 4.21 4.24 4.28 4.3  4.47 4.6  5.55 5.58
+ 6.07 6.33]</code></pre>
+</div>
+</div>
+The trained neurons are placed and shaped <strong>adaptively</strong>: more of them where <span class="math inline">\(f\)</span> curves strongly, with different steepnesses, and some may sit outside <span class="math inline">\([a,b]\)</span> and act as smooth trends. That is why a trained network typically needs far fewer neurons than the uniform staircase for the same accuracy.
+<hr>
+</section>
+<section id="bonus-two-dimensions-need-a-second-layer-of-steps" class="level2">
+<h2 class="anchored" data-anchor-id="bonus-two-dimensions-need-a-second-layer-of-steps">6. Bonus: two dimensions need a second layer of steps</h2>
+<p>In 2D the analogue of a bump is a <strong>tower</strong>: a block of height <span class="math inline">\(h\)</span> over a rectangle <span class="math inline">\([c_1,c_2)\times[d_1,d_2)\)</span>. Four steps (two in <span class="math inline">\(x\)</span>, two in <span class="math inline">\(y\)</span>) add up to 4 only inside the rectangle; a second step with threshold <span class="math inline">\(3.5\)</span> keeps exactly that region:</p>
+<p><span class="math display">\[ \text{tower}(x,y) = \Theta\Big( \Theta(x-c_1) - \Theta(x-c_2) + \Theta(y-d_1) - \Theta(y-d_2) + 2 - 3.5 \Big) \cdot h \]</span></p>
+<p>(the <span class="math inline">\(+2\)</span> accounts for the two negative steps being <span class="math inline">\(-1\)</span> outside — inside the rectangle the sum is <span class="math inline">\(1+0+1+0+2 = 4\)</span>). A sum of towers on a grid approximates any <span class="math inline">\(f(x,y)\)</span> — this is a network with <strong>two</strong> hidden layers of step neurons.</p>
+<div class="cell" data-execution_count="16">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tower(X, Y, c1, c2, d1, d2):</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> theta(X <span class="op">-</span> c1) <span class="op">-</span> theta(X <span class="op">-</span> c2) <span class="op">+</span> theta(Y <span class="op">-</span> d1) <span class="op">-</span> theta(Y <span class="op">-</span> d2) <span class="op">+</span> <span class="dv">2</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> theta(s <span class="op">-</span> <span class="fl">3.5</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> g(X, Y):</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.sin(X) <span class="op">*</span> np.cos(Y) <span class="op">+</span> <span class="fl">0.3</span> <span class="op">*</span> np.exp(<span class="op">-</span>(X<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> Y<span class="op">**</span><span class="dv">2</span>))</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>L <span class="op">=</span> <span class="fl">3.0</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>xs <span class="op">=</span> np.linspace(<span class="op">-</span>L, L, <span class="dv">200</span>)</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>X, Y <span class="op">=</span> np.meshgrid(xs, xs)</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tower_approx(X, Y, n):</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    edges <span class="op">=</span> np.linspace(<span class="op">-</span>L, L, n <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    mids <span class="op">=</span> <span class="fl">0.5</span> <span class="op">*</span> (edges[<span class="dv">1</span>:] <span class="op">+</span> edges[:<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> np.zeros_like(X)</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n):</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(n):</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>            out <span class="op">+=</span> g(mids[i], mids[j]) <span class="op">*</span> tower(X, Y, edges[i], edges[i<span class="op">+</span><span class="dv">1</span>], edges[j], edges[j<span class="op">+</span><span class="dv">1</span>])</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> out</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">4</span>))</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">1</span>, projection<span class="op">=</span><span class="st">"3d"</span>)</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>ax.plot_surface(X, Y, tower(X, Y, <span class="op">-</span><span class="dv">1</span>, <span class="fl">0.5</span>, <span class="op">-</span><span class="fl">0.5</span>, <span class="fl">1.5</span>), cmap<span class="op">=</span><span class="st">"viridis"</span>, rstride<span class="op">=</span><span class="dv">4</span>, cstride<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"one tower"</span>)</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">2</span>, projection<span class="op">=</span><span class="st">"3d"</span>)</span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>ax.plot_surface(X, Y, g(X, Y), cmap<span class="op">=</span><span class="st">"viridis"</span>, rstride<span class="op">=</span><span class="dv">4</span>, cstride<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"target $g(x,y)$"</span>)</span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k, n <span class="kw">in</span> <span class="bu">enumerate</span>([<span class="dv">6</span>, <span class="dv">25</span>]):</span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>    ax <span class="op">=</span> fig.add_subplot(<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">3</span> <span class="op">+</span> k, projection<span class="op">=</span><span class="st">"3d"</span>)</span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>    Z <span class="op">=</span> tower_approx(X, Y, n)</span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>    ax.plot_surface(X, Y, Z, cmap<span class="op">=</span><span class="st">"viridis"</span>, rstride<span class="op">=</span><span class="dv">2</span>, cstride<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="ss">f"</span><span class="sc">{</span>n<span class="sc">}</span><span class="ss">×</span><span class="sc">{</span>n<span class="sc">}</span><span class="ss"> towers, max err = </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">max</span>(np.<span class="bu">abs</span>(Z <span class="op">-</span> g(X, Y)))<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="universal-approximation-steps_files/figure-html/cell-17-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+The price: <span class="math inline">\(n\)</span> towers per dimension in <span class="math inline">\(d\)</span> dimensions means <span class="math inline">\(n^d\)</span> towers — the <strong>curse of dimensionality</strong> for this naive construction. Real networks on real data do far better than this worst-case count, because they learn where to put their neurons (Section 5) and because real data have structure.
+<hr>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<ul>
+<li>One neuron with a steep sigmoid ≈ one step: bias = location, weight = sharpness, output weight = height.</li>
+<li>A sum of <span class="math inline">\(N\)</span> steps reproduces <span class="math inline">\(f\)</span> with error <span class="math inline">\(\propto 1/N\)</span> — no limit on accuracy.</li>
+<li>Therefore a single hidden layer is <strong>in principle</strong> enough (universal approximation theorem).</li>
+<li>The theorem guarantees existence, not efficiency or trainability: gradient descent finds different, adaptive solutions.</li>
+<li>In <span class="math inline">\(d\)</span> dimensions the naive construction needs <span class="math inline">\(\sim n^d\)</span> neurons.</li>
+</ul>
+</section>
+<section id="exercises" class="level2">
+<h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
+<ol type="1">
+<li>Replace <span class="math inline">\(f\)</span> by <span class="math inline">\(|x|\)</span>, by a function with a jump (e.g.&nbsp;<code>np.sign(x)</code>), and by <span class="math inline">\(\sin(10x)\)</span>. Which needs the most steps, and why?</li>
+<li>Replace the sigmoid with <code>nn.ReLU()</code>. Show that <span class="math inline">\(\text{ReLU}(x - c_1) - \text{ReLU}(x - c_2)\)</span> is a ramp, and build a piecewise-linear interpolant of <span class="math inline">\(f\)</span> by hand. How does its error scale with <span class="math inline">\(N\)</span>?</li>
+<li>Repeat Section 5 for <span class="math inline">\(N = 4, 8, 32, 64\)</span> and plot the max error of the trained and hand-made networks on the same log-log plot.</li>
+<li>Evaluate the trained network on <span class="math inline">\(x\in[-5,5]\)</span> (outside the training interval). What happens, and why does the construction give no guarantee there?</li>
+</ol>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../notebooks/lecture-01/lab-003-pytorch.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Lab 003: PyTorch tensors, devices and layers</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../lectures/lecture-02.html" class="pagination-link">
+        <span class="nav-page-text">2 · Supervised Learning: the Recipe of Deep Learning</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">© 2026 Marcin Płodzień</div>   
+    <div class="nav-footer-right"><a href="https://chaos.if.uj.edu.pl/marcinplodzien/">Homepage</a> · <a href="mailto:marcin.plodzien@uj.edu.pl">Email</a> · <a href="https://orcid.org/0000-0002-0835-1644">ORCID</a> · <a href="https://scholar.google.com/citations?user=eC9nCmgAAAAJ&amp;hl=en">Scholar</a> · <a href="https://github.com/MarcinPlodzien">GitHub</a></div>
+  </div>
+</footer>
+
+
+
+</body></html>
