@@ -66,12 +66,12 @@ website:
           - notebooks/lecture-01/lab-001-python-matplotlib-pandas.ipynb
           - notebooks/lecture-01/lab-002-numpy.ipynb
           - notebooks/lecture-01/lab-003-pytorch.ipynb
-          - notebooks/lecture-01/universal-approximation-steps.ipynb
       - section: "2 · Supervised Learning: the Recipe of Deep Learning"
         href: lectures/lecture-02.qmd
         contents:
           - notebooks/lecture-02/lab-004-automatic-differentiation.ipynb
           - notebooks/lecture-02/lab-005-n-pendulum.ipynb
+          - notebooks/lecture-02/universal-approximation-steps.ipynb
           - notebooks/lecture-02/lab-006-uat-and-minimisers.ipynb
           - notebooks/lecture-02/lab-007-building-and-training.ipynb
           - notebooks/lecture-02/lab-008-analysing-networks.ipynb

@@ -33,9 +33,3 @@ NumPy replaces explicit loops by operations on whole arrays. We use it to write 
 
 PyTorch stores data and parameters in tensors that live on a device and builds networks from layers. We introduce these objects before any network is trained.
 :::
-
-::: {.nb-item}
-[Universal approximation from step functions](../notebooks/lecture-01/universal-approximation-steps.ipynb)
-
-A network with one hidden layer can approximate any continuous function on an interval, and the reason fits in one picture. Steps of the right heights placed along the interval form a staircase that follows the function, and a steep sigmoid neuron is such a step. We build the network from these steps, set its weights with sliders, and compare it with the same network trained by gradient descent.
-:::

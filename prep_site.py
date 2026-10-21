@@ -36,14 +36,14 @@ DECKS = {
             subtitle=r"Lecture 6: & Unsupervised Learning II\\ & Probability and Variational Autoencoders\\ & Conditional and Disentangled Generation\\ & Digits, Blood Cells, Ising Configurations, Galaxies"),
 }
 
-# lecture, source notebook (relative to the lecture folder), web name, title
+# lecture, source notebook (relative to the lecture folder), web name, title[, lecture folder if not FOLDERS[lecture]]
 NOTEBOOKS = [
     (1, "Lab_001_Python_Matplotlib_Pandas_warmup.ipynb", "lab-001-python-matplotlib-pandas", "Lab 001: Python, Matplotlib and Pandas"),
     (1, "Lab_002_NumPy_basics.ipynb", "lab-002-numpy", "Lab 002: NumPy"),
     (1, "Lab_003_PyTorch_basics.ipynb", "lab-003-pytorch", "Lab 003: PyTorch tensors, devices and layers"),
-    (1, "Lab_004_Universal_approximation_steps.ipynb", "universal-approximation-steps", "Universal approximation from step functions"),
     (2, "Lab_004_Automatic_differentiation.ipynb", "lab-004-automatic-differentiation", "Lab 004: Automatic differentiation"),
     (2, "Lab_005_N_pendulum_SymPy_and_autodiff.ipynb", "lab-005-n-pendulum", "Lab 005: The N-link pendulum with SymPy and automatic differentiation"),
+    (2, "Lab_004_Universal_approximation_steps.ipynb", "universal-approximation-steps", "Universal approximation from step functions", "Lecture_01-02_2026.10.06"),
     (2, "Lab_006_UAT_and_minimizers.ipynb", "lab-006-uat-and-minimisers", "Lab 006: Universal approximation and the choice of minimiser"),
     (2, "Lab_007_Building_and_training_networks.ipynb", "lab-007-building-and-training", "Lab 007: Building and training neural networks"),
     (2, "Lab_008_Analysing_neural_networks.ipynb", "lab-008-analysing-networks", "Lab 008: Analysing a neural network"),
@@ -132,8 +132,8 @@ def build_notebooks():
     dst = os.path.join(HERE, "notebooks")
     if os.path.isdir(dst):
         shutil.rmtree(dst)
-    for lec, src_name, web_name, title in NOTEBOOKS:
-        folder = FOLDERS[lec]
+    for lec, src_name, web_name, title, *own_folder in NOTEBOOKS:
+        folder = own_folder[0] if own_folder else FOLDERS[lec]
         src = os.path.join(COURSE, folder, "Notebooks", src_name)
         nb = nbformat.read(src, as_version=4)
         rel = f"notebooks/lecture-{lec:02d}/{web_name}.ipynb"

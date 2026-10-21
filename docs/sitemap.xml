@@ -2,150 +2,150 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/about.html</loc>
-    <lastmod>2026-10-21T15:59:30.439Z</lastmod>
+    <lastmod>2026-10-21T16:05:12.294Z</lastmod>
   </url>
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/index.html</loc>
-    <lastmod>2026-10-21T15:59:30.891Z</lastmod>
+    <lastmod>2026-10-21T16:05:12.640Z</lastmod>
   </url>
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/lectures/lecture-01.html</loc>
-    <lastmod>2026-10-21T15:59:31.334Z</lastmod>
+    <lastmod>2026-10-21T16:05:12.976Z</lastmod>
   </url>
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/lectures/lecture-02.html</loc>
-    <lastmod>2026-10-21T15:59:31.748Z</lastmod>
+    <lastmod>2026-10-21T16:05:13.305Z</lastmod>
   </url>
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/lectures/lecture-03.html</loc>
-    <lastmod>2026-10-21T15:59:32.138Z</lastmod>
+    <lastmod>2026-10-21T16:05:13.643Z</lastmod>
   </url>
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/lectures/lecture-04.html</loc>
-    <lastmod>2026-10-21T15:59:32.543Z</lastmod>
+    <lastmod>2026-10-21T16:05:13.970Z</lastmod>
   </url>
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/lectures/lecture-05.html</loc>
-    <lastmod>2026-10-21T15:59:32.946Z</lastmod>
+    <lastmod>2026-10-21T16:05:14.277Z</lastmod>
   </url>
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/lectures/lecture-06.html</loc>
-    <lastmod>2026-10-21T15:59:33.379Z</lastmod>
+    <lastmod>2026-10-21T16:05:14.623Z</lastmod>
   </url>
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/notebooks/lecture-01/lab-001-python-matplotlib-pandas.html</loc>
-    <lastmod>2026-10-21T15:59:35.214Z</lastmod>
+    <lastmod>2026-10-21T16:05:16.193Z</lastmod>
   </url>
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/notebooks/lecture-01/lab-002-numpy.html</loc>
-    <lastmod>2026-10-21T15:59:36.269Z</lastmod>
+    <lastmod>2026-10-21T16:05:16.997Z</lastmod>
   </url>
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/notebooks/lecture-01/lab-003-pytorch.html</loc>
-    <lastmod>2026-10-21T15:59:38.189Z</lastmod>
-  </url>
-  <url>
-    <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/notebooks/lecture-01/universal-approximation-steps.html</loc>
-    <lastmod>2026-10-21T15:59:38.938Z</lastmod>
+    <lastmod>2026-10-21T16:05:18.503Z</lastmod>
   </url>
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/notebooks/lecture-02/lab-004-automatic-differentiation.html</loc>
-    <lastmod>2026-10-21T15:59:40.488Z</lastmod>
+    <lastmod>2026-10-21T16:05:19.576Z</lastmod>
   </url>
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/notebooks/lecture-02/lab-005-n-pendulum.html</loc>
-    <lastmod>2026-10-21T15:59:42.944Z</lastmod>
+    <lastmod>2026-10-21T16:05:21.196Z</lastmod>
   </url>
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/notebooks/lecture-02/lab-006-uat-and-minimisers.html</loc>
-    <lastmod>2026-10-21T15:59:44.525Z</lastmod>
+    <lastmod>2026-10-21T16:05:22.471Z</lastmod>
   </url>
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/notebooks/lecture-02/lab-007-building-and-training.html</loc>
-    <lastmod>2026-10-21T15:59:46.236Z</lastmod>
+    <lastmod>2026-10-21T16:05:23.892Z</lastmod>
   </url>
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/notebooks/lecture-02/lab-008-analysing-networks.html</loc>
-    <lastmod>2026-10-21T15:59:47.287Z</lastmod>
+    <lastmod>2026-10-21T16:05:24.803Z</lastmod>
   </url>
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/notebooks/lecture-02/lab-009-mnist.html</loc>
-    <lastmod>2026-10-21T15:59:48.549Z</lastmod>
+    <lastmod>2026-10-21T16:05:25.924Z</lastmod>
+  </url>
+  <url>
+    <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/notebooks/lecture-02/universal-approximation-steps.html</loc>
+    <lastmod>2026-10-21T16:05:26.490Z</lastmod>
   </url>
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/notebooks/lecture-03/cam-cifar10.html</loc>
-    <lastmod>2026-10-21T15:59:49.370Z</lastmod>
+    <lastmod>2026-10-21T16:05:27.155Z</lastmod>
   </url>
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/notebooks/lecture-03/lab-013a-cnn-pytorch.html</loc>
-    <lastmod>2026-10-21T15:59:50.934Z</lastmod>
+    <lastmod>2026-10-21T16:05:28.524Z</lastmod>
   </url>
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/notebooks/lecture-03/lab-013b-cnn-jax.html</loc>
-    <lastmod>2026-10-21T15:59:52.523Z</lastmod>
+    <lastmod>2026-10-21T16:05:30.013Z</lastmod>
   </url>
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/notebooks/lecture-03/limits-of-deep-networks.html</loc>
-    <lastmod>2026-10-21T15:59:53.067Z</lastmod>
+    <lastmod>2026-10-21T16:05:30.499Z</lastmod>
   </url>
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/notebooks/lecture-04/bloodmnist-cnn-regularisation-cam.html</loc>
-    <lastmod>2026-10-21T15:59:54.640Z</lastmod>
+    <lastmod>2026-10-21T16:05:31.910Z</lastmod>
   </url>
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/notebooks/lecture-04/convolution-and-ising.html</loc>
-    <lastmod>2026-10-21T15:59:55.227Z</lastmod>
+    <lastmod>2026-10-21T16:05:32.435Z</lastmod>
   </url>
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/notebooks/lecture-04/lab-010-ising-monte-carlo.html</loc>
-    <lastmod>2026-10-21T15:59:55.870Z</lastmod>
+    <lastmod>2026-10-21T16:05:32.985Z</lastmod>
   </url>
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/notebooks/lecture-04/lab-011-cnn-tc.html</loc>
-    <lastmod>2026-10-21T15:59:56.643Z</lastmod>
+    <lastmod>2026-10-21T16:05:33.687Z</lastmod>
   </url>
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/notebooks/lecture-04/lab-012-onsager.html</loc>
-    <lastmod>2026-10-21T15:59:57.588Z</lastmod>
+    <lastmod>2026-10-21T16:05:34.503Z</lastmod>
   </url>
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/notebooks/lecture-04/lab-014a-transfer-pytorch.html</loc>
-    <lastmod>2026-10-21T15:59:59.267Z</lastmod>
+    <lastmod>2026-10-21T16:05:36.024Z</lastmod>
   </url>
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/notebooks/lecture-04/lab-014b-transfer-jax.html</loc>
-    <lastmod>2026-10-21T16:00:01.112Z</lastmod>
+    <lastmod>2026-10-21T16:05:37.603Z</lastmod>
   </url>
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/notebooks/lecture-05/unsupervised-learning.html</loc>
-    <lastmod>2026-10-21T16:00:03.213Z</lastmod>
+    <lastmod>2026-10-21T16:05:39.452Z</lastmod>
   </url>
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/notebooks/lecture-06/beta-vae.html</loc>
-    <lastmod>2026-10-21T16:00:04.312Z</lastmod>
+    <lastmod>2026-10-21T16:05:40.382Z</lastmod>
   </url>
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/notebooks/lecture-06/conditional-generation.html</loc>
-    <lastmod>2026-10-21T16:00:05.231Z</lastmod>
+    <lastmod>2026-10-21T16:05:41.213Z</lastmod>
   </url>
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/notebooks/lecture-06/galaxy-beta-vae.html</loc>
-    <lastmod>2026-10-21T16:00:06.388Z</lastmod>
+    <lastmod>2026-10-21T16:05:42.198Z</lastmod>
   </url>
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/notebooks/lecture-06/generative-models.html</loc>
-    <lastmod>2026-10-21T16:00:07.982Z</lastmod>
+    <lastmod>2026-10-21T16:05:43.517Z</lastmod>
   </url>
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/notebooks/lecture-06/ising-cvae.html</loc>
-    <lastmod>2026-10-21T16:00:08.968Z</lastmod>
+    <lastmod>2026-10-21T16:05:44.361Z</lastmod>
   </url>
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/notebooks/lecture-06/lab-015-trajectories.html</loc>
-    <lastmod>2026-10-21T16:00:10.925Z</lastmod>
+    <lastmod>2026-10-21T16:05:46.091Z</lastmod>
   </url>
   <url>
     <loc>https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/notebooks/lecture-06/latent-space.html</loc>
-    <lastmod>2026-10-21T16:00:12.233Z</lastmod>
+    <lastmod>2026-10-21T16:05:47.213Z</lastmod>
   </url>
 </urlset>

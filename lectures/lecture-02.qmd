@@ -29,6 +29,12 @@ We derive the equations of motion of a pendulum with N links twice, symbolically
 :::
 
 ::: {.nb-item}
+[Universal approximation from step functions](../notebooks/lecture-02/universal-approximation-steps.ipynb)
+
+A network with one hidden layer can approximate any continuous function on an interval, and the reason fits in one picture. Steps of the right heights placed along the interval form a staircase that follows the function, and a steep sigmoid neuron is such a step. We build the network from these steps, set its weights with sliders, and compare it with the same network trained by gradient descent.
+:::
+
+::: {.nb-item}
 [Lab 006: Universal approximation and the choice of minimiser](../notebooks/lecture-02/lab-006-uat-and-minimisers.ipynb)
 
 Networks of growing width fit a target function more closely, as the universal approximation theorem promises. How close a trained network actually gets depends on the optimiser, and we compare several.
