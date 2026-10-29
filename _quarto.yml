@@ -1,0 +1,156 @@
+project:
+  type: website
+  output-dir: docs
+  render:
+    - "*.qmd"
+    - "lectures/*.qmd"
+    - "notebooks/**/*.ipynb"
+  resources:
+    - "slides/*.pdf"
+    - "notes/*.pdf"
+    - "assets/course-flyer.pdf"
+
+execute:
+  enabled: false        # notebooks are shown with their stored outputs
+  freeze: auto
+
+website:
+  title: "Deep Learning for Scientific Discovery"
+  description: "Doctoral course at the Jagiellonian University in Kraków: lecture slides and notebooks."
+  site-url: "https://marcinplodzien.github.io/deep-learning-for-scientific-discovery/"
+  repo-url: "https://github.com/MarcinPlodzien/deep-learning-for-scientific-discovery"
+  repo-actions: [source]
+  page-navigation: true
+  navbar:
+    background: primary
+    search: true
+    pinned: true
+    left:
+      - text: "Start here"
+        href: index.qmd
+      - text: "Lectures"
+        menu:
+          - text: "1 · AI, Machine Learning and Scientific Discovery: Paradigms and Applications"
+            href: lectures/lecture-01.qmd
+          - text: "2 · Supervised Learning: the Recipe of Deep Learning"
+            href: lectures/lecture-02.qmd
+          - text: "3 · Supervised Learning on Images: Convolutional Neural Networks"
+            href: lectures/lecture-03.qmd
+          - text: "4 · Supervised Learning on Scientific Images: CNNs, Transfer Learning, Ising Model"
+            href: lectures/lecture-04.qmd
+          - text: "5 · Unsupervised Learning I: Dimensionality Reduction, Clustering, Autoencoders"
+            href: lectures/lecture-05.qmd
+          - text: "6 · Unsupervised Learning II: Probability and Variational Autoencoders"
+            href: lectures/lecture-06.qmd
+          - text: "7 · Time Series: Linear Models, Neural Networks and Neural ODEs"
+            href: lectures/lecture-07.qmd
+      - text: "Course flyer"
+        href: assets/course-flyer.pdf
+      - text: "About"
+        href: about.qmd
+    right:
+      - icon: github
+        href: "https://github.com/MarcinPlodzien/deep-learning-for-scientific-discovery"
+        aria-label: GitHub
+      - icon: house
+        href: "https://chaos.if.uj.edu.pl/marcinplodzien/"
+        aria-label: Homepage
+  sidebar:
+    logo: assets/qusml_logo.svg
+    style: floating
+    search: true
+    collapse-level: 1
+    contents:
+      - text: "Start here"
+        href: index.qmd
+      - section: "1 · AI, Machine Learning and Scientific Discovery: Paradigms and Applications"
+        href: lectures/lecture-01.qmd
+        contents:
+          - notebooks/lecture-01/lab-001-python-matplotlib-pandas.ipynb
+          - notebooks/lecture-01/lab-002-numpy.ipynb
+          - notebooks/lecture-01/lab-003-pytorch.ipynb
+      - section: "2 · Supervised Learning: the Recipe of Deep Learning"
+        href: lectures/lecture-02.qmd
+        contents:
+          - notebooks/lecture-02/lab-004-automatic-differentiation.ipynb
+          - notebooks/lecture-02/lab-005-n-pendulum.ipynb
+          - notebooks/lecture-02/universal-approximation-steps.ipynb
+          - notebooks/lecture-02/lab-006-uat-and-minimisers.ipynb
+          - notebooks/lecture-02/lab-007-building-and-training.ipynb
+          - notebooks/lecture-02/lab-008-analysing-networks.ipynb
+          - notebooks/lecture-02/lab-009-mnist.ipynb
+      - section: "3 · Supervised Learning on Images: Convolutional Neural Networks"
+        href: lectures/lecture-03.qmd
+        contents:
+          - notebooks/lecture-03/lab-013a-cnn-pytorch.ipynb
+          - notebooks/lecture-03/lab-013b-cnn-jax.ipynb
+          - notebooks/lecture-03/limits-of-deep-networks.ipynb
+          - notebooks/lecture-03/cam-cifar10.ipynb
+      - section: "4 · Supervised Learning on Scientific Images: CNNs, Transfer Learning, Ising Model"
+        href: lectures/lecture-04.qmd
+        contents:
+          - notebooks/lecture-04/bloodmnist-cnn-regularisation-cam.ipynb
+          - notebooks/lecture-04/convolution-and-ising.ipynb
+          - notebooks/lecture-04/lab-010-ising-monte-carlo.ipynb
+          - notebooks/lecture-04/lab-011-cnn-tc.ipynb
+          - notebooks/lecture-04/lab-012-onsager.ipynb
+          - notebooks/lecture-04/lab-014a-transfer-pytorch.ipynb
+          - notebooks/lecture-04/lab-014b-transfer-jax.ipynb
+      - section: "5 · Unsupervised Learning I: Dimensionality Reduction, Clustering, Autoencoders"
+        href: lectures/lecture-05.qmd
+        contents:
+          - notebooks/lecture-05/unsupervised-learning.ipynb
+      - section: "6 · Unsupervised Learning II: Probability and Variational Autoencoders"
+        href: lectures/lecture-06.qmd
+        contents:
+          - notebooks/lecture-06/generative-models.ipynb
+          - notebooks/lecture-06/conditional-generation.ipynb
+          - notebooks/lecture-06/latent-space.ipynb
+          - notebooks/lecture-06/beta-vae.ipynb
+          - notebooks/lecture-06/ising-cvae.ipynb
+          - notebooks/lecture-06/galaxy-beta-vae.ipynb
+          - notebooks/lecture-06/lab-015-trajectories.ipynb
+      - section: "7 · Time Series: Linear Models, Neural Networks and Neural ODEs"
+        href: lectures/lecture-07.qmd
+        contents:
+          - notebooks/lecture-07/signals-and-predictability.ipynb
+          - notebooks/lecture-07/linear-models-and-nvar.ipynb
+          - notebooks/lecture-07/mlp-forecaster.ipynb
+          - notebooks/lecture-07/rnn-forecaster.ipynb
+          - notebooks/lecture-07/lstm-forecaster.ipynb
+          - notebooks/lecture-07/comparison-of-models.ipynb
+          - notebooks/lecture-07/koopman-operator.ipynb
+          - notebooks/lecture-07/neural-ode.ipynb
+          - notebooks/lecture-07/pendulum-unknown-friction.ipynb
+          - notebooks/lecture-07/physics-informed-networks.ipynb
+          - notebooks/lecture-07/central-england-temperature.ipynb
+          - notebooks/lecture-07/sunspots.ipynb
+          - notebooks/lecture-07/exercise-sp500.ipynb
+          - notebooks/lecture-07/exercise-enso.ipynb
+      - text: "About"
+        href: about.qmd
+  page-footer:
+    border: true
+    left: "© 2026 Marcin Płodzień"
+    right: >-
+      [Homepage](https://chaos.if.uj.edu.pl/marcinplodzien/) ·
+      [Email](mailto:marcin.plodzien@uj.edu.pl) ·
+      [ORCID](https://orcid.org/0000-0002-0835-1644) ·
+      [Scholar](https://scholar.google.com/citations?user=eC9nCmgAAAAJ&hl=en) ·
+      [GitHub](https://github.com/MarcinPlodzien)
+
+format:
+  html:
+    theme:
+      light: [cosmo, assets/qusml.scss]
+      dark: [darkly, assets/qusml-dark.scss]
+    toc: true
+    toc-depth: 3
+    code-fold: show
+    code-tools: true
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+    html-math-method: mathjax
+    grid:
+      sidebar-width: 340px

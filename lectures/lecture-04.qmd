@@ -1,0 +1,59 @@
+---
+title: "4 · Supervised Learning on Scientific Images: CNNs, Transfer Learning, Ising Model"
+code-tools: false
+toc: false
+---
+
+We apply the convolutional neural networks (CNNs) of Lecture 3 to scientific images. Blood cells under the microscope (BloodMNIST) and land use seen by a satellite (EuroSAT) are classified by a sequence of models, from a dense network to a regularised CNN, and their confusion matrices and class activation maps show which cell types and landscapes the networks confuse and which image regions they use. Transfer learning reuses a network trained on the photographs of ImageNet. On blood cells its frozen features fall behind a small CNN trained on the cells alone. On satellite images with ten labelled examples per class they reach 77.2% accuracy, against 54.9% for the small CNN.
+
+The physics example is the two-dimensional Ising model, a lattice of spins that orders below a critical temperature, for which Onsager derived the partition function and the critical temperature. We sample spin configurations by Monte Carlo, treat them as images and train a CNN to separate the ordered and the disordered phase far from the transition. Its confidence is lowest at a temperature of 2.27 ± 0.02 over three trainings, close to the exact value of 2.269. The lecture closes with the Chinese Room thought experiment, which asks what such a network understands of the phase transition it has located.
+
+## Slides
+
+[Download the slides (PDF)](../slides/lecture-04.pdf){.btn .btn-outline-primary}
+
+<iframe src="../slides/lecture-04.pdf" width="100%" height="620" style="border:1px solid #dde6ef; border-radius:6px;"></iframe>
+
+## Notebooks
+
+::: {.nb-item}
+[Blood cells: CNNs, regularisation and class activation maps](../notebooks/lecture-04/bloodmnist-cnn-regularisation-cam.ipynb)
+
+Six models classify the eight cell types of BloodMNIST, from a dense network to a regularised CNN. Their confusion matrices and class activation maps show which cell types they confuse and which parts of the cell they use.
+:::
+
+::: {.nb-item}
+[Convolution and the 2D Ising model](../notebooks/lecture-04/convolution-and-ising.ipynb)
+
+The notebook behind the figures of the lecture. Sobel filters illustrate convolution, Ising configurations below and above $T_c$ illustrate the phase transition, and Onsager's results serve as the reference for the CNN estimate of $T_c$.
+:::
+
+::: {.nb-item}
+[Lab 010: Monte Carlo samples of the 2D Ising model](../notebooks/lecture-04/lab-010-ising-monte-carlo.ipynb)
+
+We generate the data set of spin configurations with the Metropolis algorithm and check that the samples have reached equilibrium.
+:::
+
+::: {.nb-item}
+[Lab 011: $T_c$ of the 2D Ising model from the confidence of a CNN](../notebooks/lecture-04/lab-011-cnn-tc.ipynb)
+
+A CNN trained on configurations far from the transition is applied at every temperature, and its confidence locates $T_c$. Lattices of different sizes show the finite-size effects.
+:::
+
+::: {.nb-item}
+[Lab 012: Onsager's exact solution of the 2D Ising model](../notebooks/lecture-04/lab-012-onsager.ipynb)
+
+We evaluate Onsager's partition function and derive from it the critical temperature and the critical exponents that the networks are compared with.
+:::
+
+::: {.nb-item}
+[Lab 014a: Transfer learning in PyTorch](../notebooks/lecture-04/lab-014a-transfer-pytorch.ipynb)
+
+We freeze, replace and fine-tune the layers of a CIFAR-10 CNN and of a ResNet-18 trained on ImageNet, apply them to BloodMNIST and EuroSAT, and compare them with networks trained from random initialisation.
+:::
+
+::: {.nb-item}
+[Lab 014b: Transfer learning in JAX](../notebooks/lecture-04/lab-014b-transfer-jax.ipynb)
+
+The transfer-learning experiments of Lab 014a written with JAX and Flax, with the ImageNet weights of ResNet-18 converted from PyTorch.
+:::

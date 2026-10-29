@@ -1,0 +1,19 @@
+---
+title: "About"
+toc: false
+code-tools: false
+---
+
+## The author
+
+[![](assets/qusml_logo.svg){width=320px fig-alt="QuSML: Quantum Systems and Machine Learning"}](https://chaos.if.uj.edu.pl/marcinplodzien/)
+
+### [Marcin Płodzień](https://chaos.if.uj.edu.pl/marcinplodzien/)
+
+Marcin Płodzień is an Assistant Professor at the Institute of Theoretical Physics, Jagiellonian University in Kraków, working at the intersection of many-body quantum systems, quantum simulation, quantum metrology, quantum computing and machine learning.
+
+[www](https://chaos.if.uj.edu.pl/marcinplodzien/) · [Google Scholar](https://scholar.google.com/citations?user=eC9nCmgAAAAJ&hl=en) · [arXiv](https://arxiv.org/search/?searchtype=author&query=P%C5%82odzie%C5%84%2C+M) · [ORCID](https://orcid.org/0000-0002-0835-1644) · [GitHub](https://github.com/MarcinPlodzien)
+
+## The course
+
+*Deep Learning for Scientific Discovery* is a course of the Doctoral School of Exact and Natural Sciences of the Jagiellonian University, winter semester 2026/27.

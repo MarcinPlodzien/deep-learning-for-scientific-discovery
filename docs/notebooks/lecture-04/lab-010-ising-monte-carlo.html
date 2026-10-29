@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.280">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Deep Learning for Scientific Discovery - Lab 010: Monte Carlo samples of the 2D Ising model</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../notebooks/lecture-04/lab-011-cnn-tc.html" rel="next">
+<link href="../../notebooks/lecture-04/convolution-and-ising.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Deep Learning for Scientific Discovery</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../../index.html" aria-current="page">
+ <span class="menu-text">Start here</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-lectures" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Lectures</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-lectures">    
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-01.html">
+ <span class="dropdown-text">1 · AI, Machine Learning and Scientific Discovery: Paradigms and Applications</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-02.html">
+ <span class="dropdown-text">2 · Supervised Learning: the Recipe of Deep Learning</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-03.html">
+ <span class="dropdown-text">3 · Supervised Learning on Images: Convolutional Neural Networks</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-04.html">
+ <span class="dropdown-text">4 · Supervised Learning on Scientific Images: CNNs, Transfer Learning, Ising Model</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-05.html">
+ <span class="dropdown-text">5 · Unsupervised Learning I: Dimensionality Reduction, Clustering, Autoencoders</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-06.html">
+ <span class="dropdown-text">6 · Unsupervised Learning II: Probability and Variational Autoencoders</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../lectures/lecture-07.html">
+ <span class="dropdown-text">7 · Time Series: Linear Models, Neural Networks and Neural ODEs</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../../assets/course-flyer.pdf">
+ <span class="menu-text">Course flyer</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">
+ <span class="menu-text">About</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/MarcinPlodzien/deep-learning-for-scientific-discovery"><i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://chaos.if.uj.edu.pl/marcinplodzien/"><i class="bi bi-house" role="img" aria-label="Homepage">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div class="quarto-toggle-container">
+                  <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+              </div>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Lab 010: Monte Carlo samples of the 2D Ising model</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+      <a href="../../index.html" class="sidebar-logo-link">
+      <img src="../../assets/qusml_logo.svg" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">Start here</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-01.html" class="sidebar-item-text sidebar-link">1 · AI, Machine Learning and Scientific Discovery: Paradigms and Applications</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-01/lab-001-python-matplotlib-pandas.html" class="sidebar-item-text sidebar-link">Lab 001: Python, Matplotlib and Pandas</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-01/lab-002-numpy.html" class="sidebar-item-text sidebar-link">Lab 002: NumPy</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-01/lab-003-pytorch.html" class="sidebar-item-text sidebar-link">Lab 003: PyTorch tensors, devices and layers</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-02.html" class="sidebar-item-text sidebar-link">2 · Supervised Learning: the Recipe of Deep Learning</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-02/lab-004-automatic-differentiation.html" class="sidebar-item-text sidebar-link">Lab 004: Automatic differentiation</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-02/lab-005-n-pendulum.html" class="sidebar-item-text sidebar-link">Lab 005: The N-link pendulum with SymPy and automatic differentiation</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-02/universal-approximation-steps.html" class="sidebar-item-text sidebar-link">Universal approximation from step functions</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-02/lab-006-uat-and-minimisers.html" class="sidebar-item-text sidebar-link">Lab 006: Universal approximation and the choice of minimiser</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-02/lab-007-building-and-training.html" class="sidebar-item-text sidebar-link">Lab 007: Building and training neural networks</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-02/lab-008-analysing-networks.html" class="sidebar-item-text sidebar-link">Lab 008: Analysing a neural network</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-02/lab-009-mnist.html" class="sidebar-item-text sidebar-link">Lab 009: MNIST, regression versus cross-entropy</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-03.html" class="sidebar-item-text sidebar-link">3 · Supervised Learning on Images: Convolutional Neural Networks</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-03/lab-013a-cnn-pytorch.html" class="sidebar-item-text sidebar-link">Lab 013a: CNNs on MNIST and CIFAR-10 in PyTorch</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-03/lab-013b-cnn-jax.html" class="sidebar-item-text sidebar-link">Lab 013b: CNNs on MNIST and CIFAR-10 in JAX</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-03/limits-of-deep-networks.html" class="sidebar-item-text sidebar-link">Limits of deep networks</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-03/cam-cifar10.html" class="sidebar-item-text sidebar-link">Class activation maps of a CIFAR-10 CNN</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-04.html" class="sidebar-item-text sidebar-link">4 · Supervised Learning on Scientific Images: CNNs, Transfer Learning, Ising Model</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-04/bloodmnist-cnn-regularisation-cam.html" class="sidebar-item-text sidebar-link">Blood cells: CNNs, regularisation and class activation maps</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-04/convolution-and-ising.html" class="sidebar-item-text sidebar-link">Convolution and the 2D Ising model</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-04/lab-010-ising-monte-carlo.html" class="sidebar-item-text sidebar-link active">Lab 010: Monte Carlo samples of the 2D Ising model</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-04/lab-011-cnn-tc.html" class="sidebar-item-text sidebar-link">Lab 011: Tc of the 2D Ising model from the confidence of a CNN</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-04/lab-012-onsager.html" class="sidebar-item-text sidebar-link">Lab 012: Onsager’s exact solution of the 2D Ising model</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-04/lab-014a-transfer-pytorch.html" class="sidebar-item-text sidebar-link">Lab 014a: Transfer learning in PyTorch</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-04/lab-014b-transfer-jax.html" class="sidebar-item-text sidebar-link">Lab 014b: Transfer learning in JAX</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-05.html" class="sidebar-item-text sidebar-link">5 · Unsupervised Learning I: Dimensionality Reduction, Clustering, Autoencoders</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-05/unsupervised-learning.html" class="sidebar-item-text sidebar-link">Unsupervised learning: PCA, t-SNE, clustering, autoencoders and anomalies</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-06.html" class="sidebar-item-text sidebar-link">6 · Unsupervised Learning II: Probability and Variational Autoencoders</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-06/generative-models.html" class="sidebar-item-text sidebar-link">Generative models: probability, autoencoder and VAE</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-06/conditional-generation.html" class="sidebar-item-text sidebar-link">Conditional generation of digits and blood cells</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-06/latent-space.html" class="sidebar-item-text sidebar-link">Latent space of a VAE for a curve and a bar</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-06/beta-vae.html" class="sidebar-item-text sidebar-link">Disentangled latent features with the beta-VAE</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-06/ising-cvae.html" class="sidebar-item-text sidebar-link">Ising configurations from a conditional VAE</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-06/galaxy-beta-vae.html" class="sidebar-item-text sidebar-link">Galaxies with a beta-VAE: latent factors and counterfactuals</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-06/lab-015-trajectories.html" class="sidebar-item-text sidebar-link">Lab 015: Physical parameters from trajectories</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../lectures/lecture-07.html" class="sidebar-item-text sidebar-link">7 · Time Series: Linear Models, Neural Networks and Neural ODEs</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-07/signals-and-predictability.html" class="sidebar-item-text sidebar-link">Signals and their predictability</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-07/linear-models-and-nvar.html" class="sidebar-item-text sidebar-link">Linear models and NVAR</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-07/mlp-forecaster.html" class="sidebar-item-text sidebar-link">Multilayer perceptron forecaster</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-07/rnn-forecaster.html" class="sidebar-item-text sidebar-link">Recurrent network forecaster</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-07/lstm-forecaster.html" class="sidebar-item-text sidebar-link">LSTM forecaster</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-07/comparison-of-models.html" class="sidebar-item-text sidebar-link">Comparison of forecasting models</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-07/koopman-operator.html" class="sidebar-item-text sidebar-link">Koopman operator</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-07/neural-ode.html" class="sidebar-item-text sidebar-link">Neural ordinary differential equations</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-07/pendulum-unknown-friction.html" class="sidebar-item-text sidebar-link">Pendulum with unknown friction</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-07/physics-informed-networks.html" class="sidebar-item-text sidebar-link">Physics-informed neural networks</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-07/central-england-temperature.html" class="sidebar-item-text sidebar-link">Forecasting the weather in central England</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-07/sunspots.html" class="sidebar-item-text sidebar-link">Forecasting the sunspot number</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-07/exercise-sp500.html" class="sidebar-item-text sidebar-link">Exercise: forecasting the S&amp;P 500 index</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/lecture-07/exercise-enso.html" class="sidebar-item-text sidebar-link">Exercise: forecasting El Niño</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../about.html" class="sidebar-item-text sidebar-link">About</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#deep-learning-for-scientific-discovery" id="toc-deep-learning-for-scientific-discovery" class="nav-link active" data-scroll-target="#deep-learning-for-scientific-discovery">Deep Learning for Scientific Discovery</a></li>
+  <li><a href="#lab-010-monte-carlo-samples-of-the-2d-ising-model" id="toc-lab-010-monte-carlo-samples-of-the-2d-ising-model" class="nav-link" data-scroll-target="#lab-010-monte-carlo-samples-of-the-2d-ising-model">Lab 010 — Monte Carlo samples of the 2D Ising model</a>
+  <ul class="collapse">
+  <li><a href="#the-model-and-its-observables" id="toc-the-model-and-its-observables" class="nav-link" data-scroll-target="#the-model-and-its-observables">1. The model and its observables</a></li>
+  <li><a href="#the-metropolis-algorithm" id="toc-the-metropolis-algorithm" class="nav-link" data-scroll-target="#the-metropolis-algorithm">2. The Metropolis algorithm</a></li>
+  <li><a href="#equilibration-time" id="toc-equilibration-time" class="nav-link" data-scroll-target="#equilibration-time">3. Equilibration time</a></li>
+  <li><a href="#decorrelation-of-stored-samples" id="toc-decorrelation-of-stored-samples" class="nav-link" data-scroll-target="#decorrelation-of-stored-samples">4. Decorrelation of stored samples</a></li>
+  <li><a href="#generating-the-dataset" id="toc-generating-the-dataset" class="nav-link" data-scroll-target="#generating-the-dataset">5. Generating the dataset</a></li>
+  <li><a href="#sample-configurations" id="toc-sample-configurations" class="nav-link" data-scroll-target="#sample-configurations">6. Sample configurations</a></li>
+  <li><a href="#thermodynamics-and-onsagers-exact-solution" id="toc-thermodynamics-and-onsagers-exact-solution" class="nav-link" data-scroll-target="#thermodynamics-and-onsagers-exact-solution">7. Thermodynamics and Onsager’s exact solution</a></li>
+  <li><a href="#finite-size-effects" id="toc-finite-size-effects" class="nav-link" data-scroll-target="#finite-size-effects">8. Finite-size effects</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">9. Exercises</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/MarcinPlodzien/deep-learning-for-scientific-discovery/blob/main/notebooks/lecture-04/lab-010-ising-monte-carlo.ipynb" class="toc-action">View source</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title d-none d-lg-block">Lab 010: Monte Carlo samples of the 2D Ising model</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li></ul></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p><a href="https://colab.research.google.com/github/MarcinPlodzien/deep-learning-for-scientific-discovery/blob/main/notebooks/lecture-04/lab-010-ising-monte-carlo.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Colab"></a></p>
+<hr>
+<section id="deep-learning-for-scientific-discovery" class="level1">
+<h1>Deep Learning for Scientific Discovery</h1>
+2026/2027 <br> <strong>Author:</strong> Marcin Płodzień <br> <strong>Lab:</strong> 010 <br> <strong>Reading:</strong> Lecture Notes, Chapter 2 (<em>Fundamentals of Deep Learning</em>), Section <em>Deep Learning in the Classical 2D Ising Model</em>
+<hr>
+</section>
+<section id="lab-010-monte-carlo-samples-of-the-2d-ising-model" class="level1">
+<h1>Lab 010 — Monte Carlo samples of the 2D Ising model</h1>
+<p>In Lecture 4 a convolutional neural network (CNN) located the critical temperature <span class="math inline">\(T_c\)</span> of the two-dimensional (2D) Ising model from raw spin images. Those images are produced here by Monte Carlo sampling, and what they tell us is compared with Onsager’s exact solution, also discussed in Lecture 4.</p>
+<p>The tool is the Metropolis algorithm for an <span class="math inline">\(N_x\times N_y\)</span> lattice with periodic boundaries. We implement it in a vectorised <em>checkerboard</em> form, which makes it fast in NumPy. A sampler, however, is only as good as the way it is used: a chain must first forget its starting point (<strong>equilibration</strong>), and consecutive configurations are not independent, so stored samples must be spaced apart (<strong>decorrelation</strong>). Once both times are known, we generate a <strong>dataset</strong> of configurations on a grid of temperatures and save it. Lab 011 trains the CNN on it.</p>
+<p>The samples are then put to a physical test. We measure the magnetisation, energy, specific heat and susceptibility, compare them with the <strong>exact results of Onsager and Yang</strong>, and follow how the transition sharpens as the lattice grows. This finite-size behaviour is the logic behind every attempt to “find <span class="math inline">\(T_c\)</span>” from data, including the attempt made by the network.</p>
+<p>The lattice size <span class="math inline">\((N_x, N_y)\)</span> is set in Section 5 (default <span class="math inline">\(20\times20\)</span>).</p>
+<blockquote class="blockquote">
+<p><strong>Running in Google Colab</strong> 1. Go to <a href="https://colab.research.google.com" class="uri">https://colab.research.google.com</a> → <em>File → Upload notebook</em> (or open it from Google Drive). 2. Run cells one by one with <strong>Shift + Enter</strong>. Run them <em>in order</em> — later cells use variables defined earlier. 3. The required packages (<code>numpy</code>, <code>scipy</code>, <code>matplotlib</code>) are pre-installed in Colab; no <code>pip install</code> required. 4. The dataset is saved next to the notebook. In Colab the file is lost when the runtime is recycled, so download it if you want to keep it. 5. If the notebook state becomes inconsistent: <em>Runtime → Restart session</em> and run from the top.</p>
+</blockquote>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T11:43:43.999914Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T11:43:43.999162Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T11:43:45.057642Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T11:43:45.057114Z&quot;}" data-execution_count="1">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os, time</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.integrate <span class="im">import</span> quad</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.special <span class="im">import</span> ellipk</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">0</span>)          <span class="co"># one random generator for the whole notebook (reproducible results)</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># UJ colours used in all plots</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>UJBlue, UJNavy, DSOrange, UJGray <span class="op">=</span> <span class="st">"#005CA7"</span>, <span class="st">"#002B5C"</span>, <span class="st">"#D35A05"</span>, <span class="st">"#5A6270"</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>plt.rcParams.update({<span class="st">"axes.spines.top"</span>: <span class="va">False</span>, <span class="st">"axes.spines.right"</span>: <span class="va">False</span>, <span class="st">"font.size"</span>: <span class="dv">10</span>})</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>TC <span class="op">=</span> <span class="fl">2.0</span> <span class="op">/</span> np.log(<span class="fl">1.0</span> <span class="op">+</span> np.sqrt(<span class="fl">2.0</span>))   <span class="co"># exact critical temperature (J = k_B = 1), Kramers-Wannier / Onsager</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"NumPy </span><span class="sc">{</span>np<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">;  exact T_c = 2/ln(1+sqrt 2) = </span><span class="sc">{</span>TC<span class="sc">:.6f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>NumPy 2.1.3;  exact T_c = 2/ln(1+sqrt 2) = 2.269185</code></pre>
+</div>
+</div>
+<hr>
+<section id="the-model-and-its-observables" class="level2">
+<h2 class="anchored" data-anchor-id="the-model-and-its-observables">1. The model and its observables</h2>
+<p>Spins <span class="math inline">\(s_i\)</span>, each <span class="math inline">\(\pm1\)</span>, sit on an <span class="math inline">\(N_x\times N_y\)</span> square lattice with periodic boundary conditions (a torus) with <span class="math display">\[N=N_xN_y \tag{1}\]</span> sites. With the coupling <span class="math inline">\(J\)</span> set to 1 and no external field, the energy is <span class="math display">\[
+H(\boldsymbol s) = -J\sum_{\langle i,j\rangle} s_i s_j , \tag{2}
+\]</span> where <span class="math inline">\(\langle i,j\rangle\)</span> runs over the nearest-neighbour bonds, twice as many as there are sites. We use units in which <span class="math inline">\(k_B\)</span> is one and write the inverse temperature as <span class="math display">\[\beta=\frac1T. \tag{3}\]</span> In equilibrium at temperature <span class="math inline">\(T\)</span> the configurations are distributed as <span class="math display">\[
+p(\boldsymbol s) = \frac{e^{-\beta H(\boldsymbol s)}}{Z}, \tag{4}
+\]</span> <span class="math display">\[
+Z=\sum_{\boldsymbol s} e^{-\beta H(\boldsymbol s)} . \tag{5}
+\]</span> For one configuration we measure the <strong>energy per spin</strong> and the <strong>magnetisation per spin</strong>, <span class="math display">\[
+e(\boldsymbol s)=\frac{H(\boldsymbol s)}{N}, \tag{6}
+\]</span> <span class="math display">\[
+m(\boldsymbol s) = \frac1N\sum_i s_i . \tag{7}
+\]</span> Thermal averages <span class="math inline">\(\langle\cdot\rangle\)</span> are averages over samples drawn from equation (4). The two <em>fluctuation</em> quantities follow from the variances, the specific heat per spin <span class="math display">\[
+c = \frac{N}{T^2}\left(\langle e^2\rangle-\langle e\rangle^2\right) \tag{8}
+\]</span> and the susceptibility per spin <span class="math display">\[
+\chi = \frac{N}{T}\left(\langle m^2\rangle-\langle |m|\rangle^2\right). \tag{9}
+\]</span> The susceptibility is built from <span class="math inline">\(|m|\)</span> rather than from <span class="math inline">\(m\)</span> for a reason that matters for every finite lattice. On a finite lattice the two ordered states, with <span class="math inline">\(m\)</span> close to <span class="math inline">\(+M\)</span> and to <span class="math inline">\(-M\)</span>, have equal probability, so the average <span class="math inline">\(\langle m\rangle\)</span> vanishes at <strong>every</strong> temperature, ordered or not. The useful finite-size order parameter is therefore <span class="math inline">\(\langle|m|\rangle\)</span>.</p>
+<p>We cannot sum over all <span class="math inline">\(2^N\)</span> configurations (<span class="math inline">\(2^{400}\)</span> for <span class="math inline">\(20\times20\)</span>), so we <strong>sample</strong> them.</p>
+<hr>
+</section>
+<section id="the-metropolis-algorithm" class="level2">
+<h2 class="anchored" data-anchor-id="the-metropolis-algorithm">2. The Metropolis algorithm</h2>
+<p>We build a Markov chain of configurations <span class="math inline">\(\boldsymbol s^{(0)}, \boldsymbol s^{(1)}, \dots\)</span> whose stationary distribution is <span class="math inline">\(p(\boldsymbol s)\)</span>. A sufficient condition is <strong>detailed balance</strong>: <span class="math display">\[
+p(\boldsymbol s)\,W(\boldsymbol s\to\boldsymbol s') = p(\boldsymbol s')\,W(\boldsymbol s'\to\boldsymbol s). \tag{10}
+\]</span> The Metropolis algorithm satisfies it with a very simple move. We propose to reverse one spin <span class="math inline">\(s_i\)</span>. Only the four bonds of site <span class="math inline">\(i\)</span> change, so with the local field <span class="math display">\[\phi_i=\sum_{j\in\mathrm{nn}(i)}s_j \tag{11}\]</span> the energy changes by <span class="math display">\[
+\Delta E = E(\boldsymbol s') - E(\boldsymbol s) = 2\,s_i\,\phi_i \in\{-8,-4,0,4,8\}. \tag{12}
+\]</span> The flip is accepted with probability <span class="math display">\[A=\min\left(1,e^{-\beta\Delta E}\right). \tag{13}\]</span> To see that this obeys detailed balance, take a move that raises the energy, with positive <span class="math inline">\(\Delta E\)</span>: the forward move is accepted with the probability of equation (13), which is then smaller than one, and the backward move always, so <span class="math display">\[
+\frac{W(\boldsymbol s\to\boldsymbol s')}{W(\boldsymbol s'\to\boldsymbol s)}=\frac{e^{-\beta\Delta E}}{1}=\frac{e^{-\beta E(\boldsymbol s')}}{e^{-\beta E(\boldsymbol s)}}=\frac{p(\boldsymbol s')}{p(\boldsymbol s)} . \tag{14}
+\]</span> The partition function <span class="math inline">\(Z\)</span> cancels in this ratio, which is why we never need it.</p>
+<p>Updating one spin at a time in a Python loop would be slow. The way around it is a <strong>checkerboard</strong> decomposition. Colour the lattice like a chessboard: all four neighbours of a black site are white, so the flips of all black sites are independent of each other and can be carried out <strong>at once</strong>, followed by all white sites. One <strong>sweep</strong> (black half plus white half) is one attempted flip per spin, called one <em>Monte Carlo step</em>. With periodic boundaries the chessboard colouring is consistent only if <span class="math inline">\(N_x\)</span> and <span class="math inline">\(N_y\)</span> are <strong>even</strong>.</p>
+<p>The same idea extends to many lattices at once: we update a whole <em>batch</em> of independent lattices (several chains × several temperatures) in one array operation on arrays of shape <code>(..., Ny, Nx)</code>.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T11:43:45.061575Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T11:43:45.061141Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T11:43:45.071915Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T11:43:45.071365Z&quot;}" data-execution_count="2">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> show_spins(ax, s):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Draw a spin configuration as a black/white image with a thin frame.</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    ax.imshow(s, cmap<span class="op">=</span><span class="st">"gray"</span>, vmin<span class="op">=-</span><span class="dv">1</span>, vmax<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    ax.set_xticks([])<span class="op">;</span> ax.set_yticks([])</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> sp <span class="kw">in</span> ax.spines.values():</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        sp.set_visible(<span class="va">True</span>)<span class="op">;</span> sp.set_color(UJGray)<span class="op">;</span> sp.set_linewidth(<span class="fl">0.6</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> checkerboard_masks(Ny, Nx):</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Boolean masks of the 'black' and 'white' sites of an Ny x Nx chessboard.</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> Nx <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span> <span class="kw">and</span> Ny <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>, <span class="st">"checkerboard updates with periodic boundaries need even Nx and Ny"</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    y, x <span class="op">=</span> np.indices((Ny, Nx))</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    black <span class="op">=</span> (x <span class="op">+</span> y) <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> black, <span class="op">~</span>black</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> local_field(s):</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Sum of the four nearest neighbours of every site; np.roll implements the periodic boundaries.</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (np.roll(s, <span class="dv">1</span>, axis<span class="op">=-</span><span class="dv">1</span>) <span class="op">+</span> np.roll(s, <span class="op">-</span><span class="dv">1</span>, axis<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>            <span class="op">+</span> np.roll(s, <span class="dv">1</span>, axis<span class="op">=-</span><span class="dv">2</span>) <span class="op">+</span> np.roll(s, <span class="op">-</span><span class="dv">1</span>, axis<span class="op">=-</span><span class="dv">2</span>))</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> metropolis_sweep(s, beta, masks, rng):</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># One Monte Carlo sweep (in place). s: float32 array (..., Ny, Nx) of +-1; beta broadcastable to s.</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> mask <span class="kw">in</span> masks:                                   <span class="co"># first all black sites, then all white sites</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>        dE <span class="op">=</span> <span class="fl">2.0</span> <span class="op">*</span> s <span class="op">*</span> local_field(s)                    <span class="co"># energy change if the spin is flipped</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>        accept <span class="op">=</span> rng.random(s.shape, dtype<span class="op">=</span>np.float32) <span class="op">&lt;</span> np.exp(<span class="op">-</span>beta <span class="op">*</span> dE)   <span class="co"># dE &lt;= 0 gives exp &gt;= 1: always accepted</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>        s[...] <span class="op">=</span> np.where(mask <span class="op">&amp;</span> accept, <span class="op">-</span>s, s)</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> s</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> energy_per_spin(s):</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># e = H/N = -(1/N) sum over bonds; each bond counted once via the right and down neighbours.</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    bonds <span class="op">=</span> s <span class="op">*</span> np.roll(s, <span class="op">-</span><span class="dv">1</span>, axis<span class="op">=-</span><span class="dv">1</span>) <span class="op">+</span> s <span class="op">*</span> np.roll(s, <span class="op">-</span><span class="dv">1</span>, axis<span class="op">=-</span><span class="dv">2</span>)</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="op">-</span>bonds.mean(axis<span class="op">=</span>(<span class="op">-</span><span class="dv">2</span>, <span class="op">-</span><span class="dv">1</span>))</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> magnetisation_per_spin(s):</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> s.mean(axis<span class="op">=</span>(<span class="op">-</span><span class="dv">2</span>, <span class="op">-</span><span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>The sampler is first tested where the answer is known exactly. On a small <span class="math inline">\(4\times4\)</span> lattice we can enumerate all 65 536 configurations and compute <span class="math inline">\(\langle e\rangle\)</span> and <span class="math inline">\(\langle|m|\rangle\)</span> <em>exactly</em>; the sampler must reproduce these values within its statistical error.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T11:43:45.075812Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T11:43:45.074779Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T11:43:48.455409Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T11:43:48.454466Z&quot;}" data-execution_count="3">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> exact_small(Ny, Nx, T):</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Exact averages by brute-force enumeration of all 2^(Nx*Ny) configurations.</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> Nx <span class="op">*</span> Ny</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    idx <span class="op">=</span> np.arange(<span class="dv">2</span><span class="op">**</span>n, dtype<span class="op">=</span>np.int64)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> (((idx[:, <span class="va">None</span>] <span class="op">&gt;&gt;</span> np.arange(n)) <span class="op">&amp;</span> <span class="dv">1</span>) <span class="op">*</span> <span class="dv">2</span> <span class="op">-</span> <span class="dv">1</span>).reshape(<span class="op">-</span><span class="dv">1</span>, Ny, Nx).astype(np.float32)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    e, m <span class="op">=</span> energy_per_spin(s), magnetisation_per_spin(s)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    w <span class="op">=</span> np.exp(<span class="op">-</span>n <span class="op">*</span> (e <span class="op">-</span> e.<span class="bu">min</span>()) <span class="op">/</span> T)                    <span class="co"># Boltzmann weights (shifted for numerical safety)</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    w <span class="op">/=</span> w.<span class="bu">sum</span>()</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (w <span class="op">*</span> e).<span class="bu">sum</span>(), (w <span class="op">*</span> np.<span class="bu">abs</span>(m)).<span class="bu">sum</span>()</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>masks4 <span class="op">=</span> checkerboard_masks(<span class="dv">4</span>, <span class="dv">4</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> T <span class="kw">in</span> (<span class="fl">1.5</span>, <span class="fl">2.5</span>, <span class="fl">3.5</span>):</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> np.ones((<span class="dv">2000</span>, <span class="dv">4</span>, <span class="dv">4</span>), np.float32)                 <span class="co"># 2000 independent chains</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">300</span>):</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        metropolis_sweep(s, <span class="fl">1.0</span> <span class="op">/</span> T, masks4, rng)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    e_mc, m_mc <span class="op">=</span> [], []</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">200</span>):                                  <span class="co"># 200 more sweeps, measuring after each</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>        metropolis_sweep(s, <span class="fl">1.0</span> <span class="op">/</span> T, masks4, rng)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        e_mc.append(energy_per_spin(s))<span class="op">;</span> m_mc.append(np.<span class="bu">abs</span>(magnetisation_per_spin(s)))</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    e_mc, m_mc <span class="op">=</span> np.array(e_mc), np.array(m_mc)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    e_ex, m_ex <span class="op">=</span> exact_small(<span class="dv">4</span>, <span class="dv">4</span>, T)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    err <span class="op">=</span> <span class="kw">lambda</span> a: a.mean(axis<span class="op">=</span><span class="dv">0</span>).std() <span class="op">/</span> np.sqrt(a.shape[<span class="dv">1</span>])   <span class="co"># error bar from the spread between chains</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"T = </span><span class="sc">{</span>T<span class="sc">}</span><span class="ss">:  &lt;e&gt; MC = </span><span class="sc">{</span>e_mc<span class="sc">.</span>mean()<span class="sc">:+.4f}</span><span class="ss"> +- </span><span class="sc">{</span>err(e_mc)<span class="sc">:.4f}</span><span class="ss">   exact = </span><span class="sc">{</span>e_ex<span class="sc">:+.4f}</span><span class="ss">   |"</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"  &lt;|m|&gt; MC = </span><span class="sc">{</span>m_mc<span class="sc">.</span>mean()<span class="sc">:.4f}</span><span class="ss"> +- </span><span class="sc">{</span>err(m_mc)<span class="sc">:.4f}</span><span class="ss">   exact = </span><span class="sc">{</span>m_ex<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>T = 1.5:  &lt;e&gt; MC = -1.9500 +- 0.0003   exact = -1.9506   |  &lt;|m|&gt; MC = 0.9860 +- 0.0001   exact = 0.9862</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>T = 2.5:  &lt;e&gt; MC = -1.3776 +- 0.0014   exact = -1.3791   |  &lt;|m|&gt; MC = 0.7643 +- 0.0007   exact = 0.7647</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>T = 3.5:  &lt;e&gt; MC = -0.7777 +- 0.0011   exact = -0.7762   |  &lt;|m|&gt; MC = 0.4887 +- 0.0006   exact = 0.4884</code></pre>
+</div>
+</div>
+<hr>
+</section>
+<section id="equilibration-time" class="level2">
+<h2 class="anchored" data-anchor-id="equilibration-time">3. Equilibration time</h2>
+<p>A chain starts from an arbitrary configuration, which is <em>not</em> typical for <span class="math inline">\(p(\boldsymbol s)\)</span>. We therefore discard the first sweeps (<strong>burn-in</strong>) until the observables stop drifting. Two starting points are natural: a <strong>cold start</strong>, with all spins up (the ground state, reached at zero temperature), and a <strong>hot start</strong>, with random spins (the state typical of infinite temperature). They lie at the two extremes, so when chains from both starts arrive at the same values, the chain has (very likely) forgotten where it began.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T11:43:48.463676Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T11:43:48.463003Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T11:43:52.898252Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T11:43:52.897546Z&quot;}" data-execution_count="4">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>Lx_demo <span class="op">=</span> <span class="dv">20</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>masks_demo <span class="op">=</span> checkerboard_masks(Lx_demo, Lx_demo)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>T_demo <span class="op">=</span> np.array([<span class="fl">1.8</span>, <span class="fl">2.27</span>, <span class="fl">3.0</span>], dtype<span class="op">=</span>np.float32)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>n_sweeps <span class="op">=</span> <span class="dv">1500</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>n_chains_demo <span class="op">=</span> <span class="dv">4</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>starts <span class="op">=</span> {<span class="st">"cold"</span>: np.ones((n_chains_demo, <span class="bu">len</span>(T_demo), Lx_demo, Lx_demo), np.float32),</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>          <span class="st">"hot"</span>:  rng.choice(np.array([<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>], np.float32), size<span class="op">=</span>(n_chains_demo, <span class="bu">len</span>(T_demo), Lx_demo, Lx_demo))}</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>series <span class="op">=</span> {}</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, s <span class="kw">in</span> starts.items():</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    beta <span class="op">=</span> (<span class="fl">1.0</span> <span class="op">/</span> T_demo)[<span class="va">None</span>, :, <span class="va">None</span>, <span class="va">None</span>]</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    m_t, e_t <span class="op">=</span> [], []</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(n_sweeps):</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>        metropolis_sweep(s, beta, masks_demo, rng)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>        m_t.append(magnetisation_per_spin(s))<span class="op">;</span> e_t.append(energy_per_spin(s))</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    series[name] <span class="op">=</span> (np.array(m_t), np.array(e_t), s.copy())      <span class="co"># arrays of shape (sweep, chain, T)</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">13</span>, <span class="fl">5.5</span>), sharex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k, T <span class="kw">in</span> <span class="bu">enumerate</span>(T_demo):</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> name, col <span class="kw">in</span> ((<span class="st">"cold"</span>, UJNavy), (<span class="st">"hot"</span>, DSOrange)):</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>        m_t, e_t, _ <span class="op">=</span> series[name]</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> c <span class="kw">in</span> <span class="bu">range</span>(n_chains_demo):</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>            axes[<span class="dv">0</span>, k].plot(np.<span class="bu">abs</span>(m_t[:, c, k]), color<span class="op">=</span>col, lw<span class="op">=</span><span class="fl">0.8</span>, alpha<span class="op">=</span><span class="fl">0.7</span>, label<span class="op">=</span><span class="ss">f"</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> start"</span> <span class="cf">if</span> c <span class="op">==</span> <span class="dv">0</span> <span class="cf">else</span> <span class="va">None</span>)</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>            axes[<span class="dv">1</span>, k].plot(e_t[:, c, k], color<span class="op">=</span>col, lw<span class="op">=</span><span class="fl">0.8</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>, k].set_title(<span class="ss">f"T = </span><span class="sc">{</span>T<span class="sc">:.2f}</span><span class="ss">"</span>, loc<span class="op">=</span><span class="st">"left"</span>)</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>, k].set_ylabel(<span class="vs">r"$|m|$"</span>)<span class="op">;</span> axes[<span class="dv">1</span>, k].set_ylabel(<span class="vs">r"$e$"</span>)<span class="op">;</span> axes[<span class="dv">1</span>, k].set_xlabel(<span class="st">"sweep"</span>)</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>, k].set_xscale(<span class="st">"log"</span>)<span class="op">;</span> axes[<span class="dv">1</span>, k].set_xscale(<span class="st">"log"</span>)</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>, <span class="dv">0</span>].legend(frameon<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>fig.suptitle(<span class="ss">f"</span><span class="sc">{</span>Lx_demo<span class="sc">}</span><span class="ss">x</span><span class="sc">{</span>Lx_demo<span class="sc">}</span><span class="ss"> lattice, </span><span class="sc">{</span>n_chains_demo<span class="sc">}</span><span class="ss"> chains per start"</span>, x<span class="op">=</span><span class="fl">0.01</span>, ha<span class="op">=</span><span class="st">"left"</span>)</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()<span class="op">;</span> plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="lab-010-ising-monte-carlo_files/figure-html/cell-5-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The three temperatures behave very differently. At the temperature 3.0, in the disordered phase, the curves from both starts merge after a few sweeps. At 1.8, in the ordered phase, a hot start must <em>coarsen</em>: domains of up and down spins grow and merge. Sometimes two domains wrap around the torus as <strong>stripes</strong>, separated by two flat domain walls. A flat wall costs energy but has no curvature that would make it shrink, so it can survive for a very long time, and such a chain sits at <span class="math inline">\(|m|\)</span> well below the ordered value with a slightly higher energy. Whether this happens depends on the random seed; a run with another seed (or more chains) shows this in the snapshots below. Close to <span class="math inline">\(T_c\)</span>, at 2.27, the fluctuations are large and slow, an effect called <strong>critical slowing down</strong>.</p>
+<p>For the dataset we use a <strong>cold start</strong>: below <span class="math inline">\(T_c\)</span> it is already close to equilibrium, and above <span class="math inline">\(T_c\)</span> it melts quickly.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T11:43:52.903842Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T11:43:52.902941Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T11:43:53.417463Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T11:43:53.415312Z&quot;}" data-execution_count="5">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">3</span> <span class="op">*</span> n_chains_demo, figsize<span class="op">=</span>(<span class="dv">13</span>, <span class="fl">2.6</span>))</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> r, name <span class="kw">in</span> <span class="bu">enumerate</span>((<span class="st">"cold"</span>, <span class="st">"hot"</span>)):</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    s_final <span class="op">=</span> series[name][<span class="dv">2</span>]</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(T_demo)):</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> c <span class="kw">in</span> <span class="bu">range</span>(n_chains_demo):</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>            ax <span class="op">=</span> axes[r, k <span class="op">*</span> n_chains_demo <span class="op">+</span> c]</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>            show_spins(ax, s_final[c, k])</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> c <span class="op">==</span> <span class="dv">0</span>: ax.set_title(<span class="ss">f"T=</span><span class="sc">{</span>T_demo[k]<span class="sc">:.2f}</span><span class="ss">"</span>, fontsize<span class="op">=</span><span class="dv">8</span>, loc<span class="op">=</span><span class="st">"left"</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    axes[r, <span class="dv">0</span>].set_ylabel(name, fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>fig.suptitle(<span class="ss">f"configurations after </span><span class="sc">{</span>n_sweeps<span class="sc">}</span><span class="ss"> sweeps (rows: cold / hot start)"</span>, x<span class="op">=</span><span class="fl">0.01</span>, ha<span class="op">=</span><span class="st">"left"</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="lab-010-ising-monte-carlo_files/figure-html/cell-6-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<hr>
+</section>
+<section id="decorrelation-of-stored-samples" class="level2">
+<h2 class="anchored" data-anchor-id="decorrelation-of-stored-samples">4. Decorrelation of stored samples</h2>
+<p>Even after equilibration, consecutive configurations of a Markov chain are <strong>correlated</strong>, because one sweep changes only part of the lattice. For an observable <span class="math inline">\(O\)</span> (here <span class="math inline">\(|m|\)</span>) the correlation is measured by the normalised autocorrelation function <span class="math display">\[
+C_O(t) = \frac{\langle O_{t_0}O_{t_0+t}\rangle - \langle O\rangle^2}{\langle O^2\rangle-\langle O\rangle^2}, \qquad C_O(0)=1, \tag{15}
+\]</span> and summarised by the <strong>integrated autocorrelation time</strong> <span class="math display">\[
+\tau_{\rm int} = \frac12 + \sum_{t\geq1} C_O(t). \tag{16}
+\]</span> Out of <span class="math inline">\(n\)</span> consecutive measurements only about <span class="math display">\[n_{\rm eff}\approx\frac{n}{2\tau_{\rm int}} \tag{17}\]</span> are effectively independent. We sum <span class="math inline">\(C_O(t)\)</span> up to the first time it drops below zero, because beyond that point the estimate is noise. Two ways of obtaining nearly independent samples follow: store a configuration only after at least about twice <span class="math inline">\(\tau_{\rm int}\)</span> sweeps, or run <strong>many independent chains</strong>. We do both.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T11:43:53.423592Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T11:43:53.422119Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T11:44:04.111463Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T11:44:04.110801Z&quot;}" data-execution_count="6">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> autocorrelation(x):</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># x: (time, chains). Normalised autocorrelation averaged over chains, computed with the FFT.</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> x <span class="op">-</span> x.mean(axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> x.shape[<span class="dv">0</span>]</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    f <span class="op">=</span> np.fft.rfft(x, n<span class="op">=</span><span class="dv">2</span> <span class="op">*</span> n, axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    acf <span class="op">=</span> np.fft.irfft(f <span class="op">*</span> np.conj(f), axis<span class="op">=</span><span class="dv">0</span>)[:n].mean(axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> acf <span class="op">/</span> acf[<span class="dv">0</span>]</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tau_int(acf):</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    cut <span class="op">=</span> np.argmax(acf <span class="op">&lt;</span> <span class="dv">0</span>) <span class="cf">if</span> np.<span class="bu">any</span>(acf <span class="op">&lt;</span> <span class="dv">0</span>) <span class="cf">else</span> <span class="bu">len</span>(acf)   <span class="co"># stop at the first negative value</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="fl">0.5</span> <span class="op">+</span> acf[<span class="dv">1</span>:cut].<span class="bu">sum</span>()</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>T_acf <span class="op">=</span> np.array([<span class="fl">1.8</span>, <span class="fl">2.1</span>, <span class="fl">2.27</span>, <span class="fl">2.5</span>, <span class="fl">3.0</span>], dtype<span class="op">=</span>np.float32)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>n_chains_acf, n_eq_acf, n_meas_acf <span class="op">=</span> <span class="dv">32</span>, <span class="dv">1000</span>, <span class="dv">3000</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> np.ones((n_chains_acf, <span class="bu">len</span>(T_acf), <span class="dv">20</span>, <span class="dv">20</span>), np.float32)</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>beta <span class="op">=</span> (<span class="fl">1.0</span> <span class="op">/</span> T_acf)[<span class="va">None</span>, :, <span class="va">None</span>, <span class="va">None</span>]</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n_eq_acf):</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    metropolis_sweep(s, beta, masks_demo, rng)</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>absm <span class="op">=</span> np.empty((n_meas_acf, n_chains_acf, <span class="bu">len</span>(T_acf)), np.float32)</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(n_meas_acf):</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    metropolis_sweep(s, beta, masks_demo, rng)</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    absm[t] <span class="op">=</span> np.<span class="bu">abs</span>(magnetisation_per_spin(s))</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="fl">6.5</span>, <span class="fl">3.6</span>))</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>acf_colours <span class="op">=</span> [UJNavy, UJBlue, DSOrange, <span class="st">"#E3A23B"</span>, UJGray]</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>acf_styles <span class="op">=</span> [<span class="st">"-"</span>, <span class="st">"--"</span>, <span class="st">"-"</span>, <span class="st">"--"</span>, <span class="st">":"</span>]</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>taus <span class="op">=</span> {}</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k, T <span class="kw">in</span> <span class="bu">enumerate</span>(T_acf):</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>    acf <span class="op">=</span> autocorrelation(absm[:, :, k])</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>    taus[T] <span class="op">=</span> tau_int(acf)</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>    ax.plot(acf[:<span class="dv">300</span>], color<span class="op">=</span>acf_colours[k], ls<span class="op">=</span>acf_styles[k], lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="vs">fr"$T=</span><span class="sc">{</span>T<span class="sc">:.2f}</span><span class="vs">$, $\tau_</span><span class="ch">{{</span><span class="vs">\rm int</span><span class="ch">}}</span><span class="vs">=</span><span class="sc">{</span>taus[T]<span class="sc">:.1f}</span><span class="vs">$"</span>)</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span>UJGray, lw<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"time lag $t$ (sweeps)"</span>)<span class="op">;</span> ax.set_ylabel(<span class="vs">r"$C_{|m|}(t)$"</span>)<span class="op">;</span> ax.legend(frameon<span class="op">=</span><span class="va">False</span>, fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"20x20: autocorrelation of |m|"</span>, loc<span class="op">=</span><span class="st">"left"</span>)<span class="op">;</span> plt.show()</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> T, tau <span class="kw">in</span> taus.items():</span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"T = </span><span class="sc">{</span>T<span class="sc">:.2f}</span><span class="ss">:  tau_int = </span><span class="sc">{</span>tau<span class="sc">:6.1f}</span><span class="ss"> sweeps"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="lab-010-ising-monte-carlo_files/figure-html/cell-7-output-1.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>T = 1.80:  tau_int =    1.3 sweeps
+T = 2.10:  tau_int =    7.2 sweeps
+T = 2.27:  tau_int =   14.8 sweeps
+T = 2.50:  tau_int =    8.2 sweeps
+T = 3.00:  tau_int =    1.7 sweeps</code></pre>
+</div>
+</div>
+<p>The autocorrelation time is largest close to <span class="math inline">\(T_c\)</span> — <strong>critical slowing down</strong>: near <span class="math inline">\(T_c\)</span> the correlated regions are large, and a local single-spin update needs many sweeps to change them. (Cluster algorithms such as Wolff’s avoid this; we stay with Metropolis because it is simple and is the algorithm of the Lecture Notes.)</p>
+<p>The dataset uses 20 independent chains per temperature and stores a configuration every <code>n_between</code> sweeps. Compare <code>n_between</code> with the values of <span class="math inline">\(\tau_{\rm int}\)</span> printed above: far from <span class="math inline">\(T_c\)</span> the stored samples of one chain are practically independent; close to <span class="math inline">\(T_c\)</span> they are not fully independent, but the 20 chains are.</p>
+<hr>
+</section>
+<section id="generating-the-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="generating-the-dataset">5. Generating the dataset</h2>
+<p>We sample a grid of temperatures from 1.0 to 3.5 in steps of 0.05. All temperatures and all chains are updated together as one array of shape <code>(chains, temperatures, Ny, Nx)</code>.</p>
+<p>One more detail concerns symmetry. The Ising energy is symmetric under a <strong>global spin flip</strong>, which reverses every spin, but a cold start puts every low-temperature chain into the state of positive magnetisation, and on our time scales it stays there. We restore the symmetry exactly by flipping each stored configuration with probability one half. Without this step a network could learn the trivial rule “black means ordered”.</p>
+<p>One sample of the data set is an <span class="math inline">\(N_y\times N_x\)</span> array of spins <span class="math inline">\(\pm1\)</span>, stored as 8-bit integers, together with the temperature at which it was drawn; Lab 011 derives its labels (ordered or disordered) from that temperature. For the <span class="math inline">\(20\times20\)</span> lattice the file holds 51 temperatures with 200 configurations each, 10 200 samples in all. The lattice size is set by <code>Nx</code> and <code>Ny</code>; both must be even.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T11:44:04.114325Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T11:44:04.114025Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T11:44:25.078919Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T11:44:25.078164Z&quot;}" data-execution_count="7">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>Nx, Ny <span class="op">=</span> <span class="dv">20</span>, <span class="dv">20</span>                                        <span class="co"># lattice size (even numbers)</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>temperatures <span class="op">=</span> np.<span class="bu">round</span>(np.arange(<span class="fl">1.0</span>, <span class="fl">3.5</span> <span class="op">+</span> <span class="fl">1e-9</span>, <span class="fl">0.05</span>), <span class="dv">2</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>n_chains   <span class="op">=</span> <span class="dv">20</span>                                        <span class="co"># independent chains per temperature</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>n_samples  <span class="op">=</span> <span class="dv">10</span>                                        <span class="co"># stored configurations per chain  -&gt; 200 per temperature</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>n_equil    <span class="op">=</span> <span class="dv">1000</span>                                      <span class="co"># burn-in sweeps</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>n_between  <span class="op">=</span> <span class="dv">20</span>                                        <span class="co"># sweeps between stored configurations</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_dataset(Nx, Ny, temperatures, n_chains, n_samples, n_equil, n_between, rng):</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    masks <span class="op">=</span> checkerboard_masks(Ny, Nx)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    beta <span class="op">=</span> (<span class="fl">1.0</span> <span class="op">/</span> temperatures.astype(np.float32))[<span class="va">None</span>, :, <span class="va">None</span>, <span class="va">None</span>]</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> np.ones((n_chains, <span class="bu">len</span>(temperatures), Ny, Nx), np.float32)       <span class="co"># cold start</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n_equil):</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>        metropolis_sweep(s, beta, masks, rng)</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    stored <span class="op">=</span> np.empty((n_samples, n_chains, <span class="bu">len</span>(temperatures), Ny, Nx), np.int8)</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(n_samples):</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n_between):</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>            metropolis_sweep(s, beta, masks, rng)</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>        stored[k] <span class="op">=</span> s</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    configs <span class="op">=</span> stored.transpose(<span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>).reshape(<span class="bu">len</span>(temperatures), n_samples <span class="op">*</span> n_chains, Ny, Nx)</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>    flip <span class="op">=</span> rng.choice(np.array([<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>], np.int8), size<span class="op">=</span>configs.shape[:<span class="dv">2</span>])  <span class="co"># random global spin flip</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> configs <span class="op">*</span> flip[:, :, <span class="va">None</span>, <span class="va">None</span>]</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>t0 <span class="op">=</span> time.time()</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>configs <span class="op">=</span> generate_dataset(Nx, Ny, temperatures, n_chains, n_samples, n_equil, n_between, rng)</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"configs: shape </span><span class="sc">{</span>configs<span class="sc">.</span>shape<span class="sc">}</span><span class="ss"> (temperatures, samples, Ny, Nx), dtype </span><span class="sc">{</span>configs<span class="sc">.</span>dtype<span class="sc">}</span><span class="ss">, "</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"generated in </span><span class="sc">{</span>time<span class="sc">.</span>time() <span class="op">-</span> t0<span class="sc">:.1f}</span><span class="ss"> s"</span>)</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">"data"</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> <span class="ss">f"data/ising_Nx</span><span class="sc">{</span>Nx<span class="sc">}</span><span class="ss">_Ny</span><span class="sc">{</span>Ny<span class="sc">}</span><span class="ss">.npz"</span></span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>np.savez_compressed(path, configs<span class="op">=</span>configs, T<span class="op">=</span>temperatures, Nx<span class="op">=</span>Nx, Ny<span class="op">=</span>Ny,</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>                    n_equil<span class="op">=</span>n_equil, n_between<span class="op">=</span>n_between, n_chains<span class="op">=</span>n_chains)</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"saved to </span><span class="sc">{</span>path<span class="sc">}</span><span class="ss">  (</span><span class="sc">{</span>os<span class="sc">.</span>path<span class="sc">.</span>getsize(path) <span class="op">/</span> <span class="fl">1e6</span><span class="sc">:.2f}</span><span class="ss"> MB)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>configs: shape (51, 200, 20, 20) (temperatures, samples, Ny, Nx), dtype int8, generated in 20.5 s</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>saved to data/ising_Nx20_Ny20.npz  (0.36 MB)</code></pre>
+</div>
+</div>
+<hr>
+</section>
+<section id="sample-configurations" class="level2">
+<h2 class="anchored" data-anchor-id="sample-configurations">6. Sample configurations</h2>
+<p>Each column of the figure shows three stored configurations at one temperature, from deep in the ordered phase (temperature 1.2) to the disordered phase (3.2), with the columns between 1.9 and 2.6 bracketing <span class="math inline">\(T_c\)</span>.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T11:44:25.087091Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T11:44:25.086250Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T11:44:26.102648Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T11:44:26.100210Z&quot;}" data-execution_count="8">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>show_T <span class="op">=</span> [<span class="fl">1.2</span>, <span class="fl">1.9</span>, <span class="fl">2.2</span>, <span class="fl">2.3</span>, <span class="fl">2.4</span>, <span class="fl">2.6</span>, <span class="fl">3.2</span>]</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">3</span>, <span class="bu">len</span>(show_T), figsize<span class="op">=</span>(<span class="dv">13</span>, <span class="fl">5.8</span>))</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k, T <span class="kw">in</span> <span class="bu">enumerate</span>(show_T):</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    i <span class="op">=</span> np.argmin(np.<span class="bu">abs</span>(temperatures <span class="op">-</span> T))</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> r <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>        ax <span class="op">=</span> axes[r, k]</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>        show_spins(ax, configs[i, r <span class="op">*</span> <span class="dv">37</span>])</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>, k].set_title(<span class="ss">f"T = </span><span class="sc">{</span>temperatures[i]<span class="sc">:.2f}</span><span class="ss">"</span> <span class="op">+</span> (<span class="st">"  (&lt; T_c)"</span> <span class="cf">if</span> temperatures[i] <span class="op">&lt;</span> TC <span class="cf">else</span> <span class="st">"  (&gt; T_c)"</span>),</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>                         fontsize<span class="op">=</span><span class="dv">9</span>, color<span class="op">=</span>UJNavy <span class="cf">if</span> temperatures[i] <span class="op">&lt;</span> TC <span class="cf">else</span> DSOrange)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>fig.suptitle(<span class="ss">f"</span><span class="sc">{</span>Nx<span class="sc">}</span><span class="ss">x</span><span class="sc">{</span>Ny<span class="sc">}</span><span class="ss"> samples (white = +1, black = -1); exact T_c = </span><span class="sc">{</span>TC<span class="sc">:.4f}</span><span class="ss">"</span>, x<span class="op">=</span><span class="fl">0.01</span>, ha<span class="op">=</span><span class="st">"left"</span>)</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="lab-010-ising-monte-carlo_files/figure-html/cell-9-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+Close to <span class="math inline">\(T_c\)</span> (columns 2.2–2.4) configurations from the two phases are hard to tell apart by eye: we see clusters of all sizes. This is the region the CNN of Lab 011 will <em>not</em> see during training.
+<hr>
+</section>
+<section id="thermodynamics-and-onsagers-exact-solution" class="level2">
+<h2 class="anchored" data-anchor-id="thermodynamics-and-onsagers-exact-solution">7. Thermodynamics and Onsager’s exact solution</h2>
+<p>The samples can now be compared with the exact results for the infinite lattice, with <span class="math inline">\(J\)</span> set to 1. With the reduced coupling <span class="math display">\[K=\beta J \tag{18}\]</span> and <span class="math display">\[\kappa = \frac{2\sinh 2K}{\cosh^2 2K}, \tag{19}\]</span> the free energy found by Onsager (1944) reads <span class="math display">\[
+-\beta f = \frac{\ln Z}{N} = \ln\left(2\cosh 2K\right) + \frac{1}{2\pi}\int_0^\pi d\phi\, \ln\frac{1+\sqrt{1-\kappa^2\sin^2\phi}}{2}. \tag{20}
+\]</span> The energy per spin is its derivative, <span class="math display">\[u = -\frac{\partial}{\partial\beta}\frac{\ln Z}{N}, \tag{21}\]</span> which evaluates to <span class="math display">\[
+u = -\coth 2K\left[1+\frac{2}{\pi}\left(2\tanh^2 2K-1\right)K_1(\kappa)\right], \tag{22}
+\]</span> <span class="math display">\[
+K_1(\kappa)=\int_0^{\pi/2}\frac{d\phi}{\sqrt{1-\kappa^2\sin^2\phi}}. \tag{23}
+\]</span> The spontaneous magnetisation was announced by Onsager in 1949 and proved by Yang in 1952: <span class="math display">\[
+M = \begin{cases}\left[1-\sinh^{-4}2K\right]^{1/8}, &amp; T&lt;T_c,\\[2pt] 0, &amp; T&gt;T_c.\end{cases} \tag{24}
+\]</span></p>
+<p>Equation (22) is checked against a numerical derivative of the free-energy integral, equation (20). SciPy’s <code>ellipk(m)</code> takes as its parameter the square of <span class="math inline">\(\kappa\)</span>.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T11:44:26.109750Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T11:44:26.109327Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T11:44:26.133643Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T11:44:26.131206Z&quot;}" data-execution_count="9">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lnZ_per_spin(T):</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    K <span class="op">=</span> <span class="fl">1.0</span> <span class="op">/</span> T</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    kap <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> np.sinh(<span class="dv">2</span> <span class="op">*</span> K) <span class="op">/</span> np.cosh(<span class="dv">2</span> <span class="op">*</span> K) <span class="op">**</span> <span class="dv">2</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    integrand <span class="op">=</span> <span class="kw">lambda</span> p: np.log(<span class="fl">0.5</span> <span class="op">*</span> (<span class="dv">1</span> <span class="op">+</span> np.sqrt(<span class="bu">max</span>(<span class="fl">0.0</span>, <span class="dv">1</span> <span class="op">-</span> kap<span class="op">**</span><span class="dv">2</span> <span class="op">*</span> np.sin(p) <span class="op">**</span> <span class="dv">2</span>))))</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    I, _ <span class="op">=</span> quad(integrand, <span class="dv">0</span>, np.pi, points<span class="op">=</span>[np.pi <span class="op">/</span> <span class="dv">2</span>], limit<span class="op">=</span><span class="dv">200</span>)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.log(<span class="dv">2</span> <span class="op">*</span> np.cosh(<span class="dv">2</span> <span class="op">*</span> K)) <span class="op">+</span> I <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> np.pi)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> u_exact(T):</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    K <span class="op">=</span> <span class="fl">1.0</span> <span class="op">/</span> np.asarray(T, <span class="bu">float</span>)</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    kap <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> np.sinh(<span class="dv">2</span> <span class="op">*</span> K) <span class="op">/</span> np.cosh(<span class="dv">2</span> <span class="op">*</span> K) <span class="op">**</span> <span class="dv">2</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="op">-</span><span class="dv">1</span> <span class="op">/</span> np.tanh(<span class="dv">2</span> <span class="op">*</span> K) <span class="op">*</span> (<span class="dv">1</span> <span class="op">+</span> <span class="dv">2</span> <span class="op">/</span> np.pi <span class="op">*</span> (<span class="dv">2</span> <span class="op">*</span> np.tanh(<span class="dv">2</span> <span class="op">*</span> K) <span class="op">**</span> <span class="dv">2</span> <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> ellipk(kap<span class="op">**</span><span class="dv">2</span>))</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> M_exact(T):</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    T <span class="op">=</span> np.asarray(T, <span class="bu">float</span>)</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> np.zeros_like(T)</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>    low <span class="op">=</span> T <span class="op">&lt;</span> TC</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>    out[low] <span class="op">=</span> (<span class="dv">1</span> <span class="op">-</span> np.sinh(<span class="dv">2</span> <span class="op">/</span> T[low]) <span class="op">**</span> <span class="op">-</span><span class="dv">4</span>) <span class="op">**</span> <span class="fl">0.125</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> out</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> T <span class="kw">in</span> (<span class="fl">1.5</span>, <span class="fl">2.0</span>, <span class="fl">2.6</span>, <span class="fl">3.5</span>):                        <span class="co"># u from the formula vs -d lnZ / d beta (central difference)</span></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>    b, h <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> T, <span class="fl">1e-5</span></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>    u_num <span class="op">=</span> <span class="op">-</span>(lnZ_per_spin(<span class="dv">1</span> <span class="op">/</span> (b <span class="op">+</span> h)) <span class="op">-</span> lnZ_per_spin(<span class="dv">1</span> <span class="op">/</span> (b <span class="op">-</span> h))) <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> h)</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"T = </span><span class="sc">{</span>T<span class="sc">}</span><span class="ss">:  formula u = </span><span class="sc">{</span>u_exact(T)<span class="sc">:+.8f}</span><span class="ss">   -d lnZ/d beta = </span><span class="sc">{</span>u_num<span class="sc">:+.8f}</span><span class="ss">"</span>)</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"u(T_c) from the formula: </span><span class="sc">{</span>u_exact(TC <span class="op">*</span> (<span class="dv">1</span> <span class="op">+</span> <span class="fl">1e-9</span>))<span class="sc">:.6f}</span><span class="ss">;  -sqrt(2) = </span><span class="sc">{</span><span class="op">-</span>np<span class="sc">.</span>sqrt(<span class="dv">2</span>)<span class="sc">:.6f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>T = 1.5:  formula u = -1.95111657   -d lnZ/d beta = -1.95111657
+T = 2.0:  formula u = -1.74556458   -d lnZ/d beta = -1.74556457
+T = 2.6:  formula u = -1.02829364   -d lnZ/d beta = -1.02829364
+T = 3.5:  formula u = -0.66012173   -d lnZ/d beta = -0.66012173
+u(T_c) from the formula: -1.414214;  -sqrt(2) = -1.414214</code></pre>
+</div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T11:44:26.140614Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T11:44:26.140230Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T11:44:26.884700Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T11:44:26.884097Z&quot;}" data-execution_count="10">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>cf <span class="op">=</span> configs.astype(np.float32)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> Nx <span class="op">*</span> Ny</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>e_s <span class="op">=</span> energy_per_spin(cf)                             <span class="co"># shape (temperatures, samples)</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>m_s <span class="op">=</span> magnetisation_per_spin(cf)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>E_mean, absM_mean <span class="op">=</span> e_s.mean(<span class="dv">1</span>), np.<span class="bu">abs</span>(m_s).mean(<span class="dv">1</span>)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>C_heat <span class="op">=</span> N <span class="op">*</span> e_s.var(<span class="dv">1</span>) <span class="op">/</span> temperatures<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>chi <span class="op">=</span> N <span class="op">*</span> ((m_s<span class="op">**</span><span class="dv">2</span>).mean(<span class="dv">1</span>) <span class="op">-</span> np.<span class="bu">abs</span>(m_s).mean(<span class="dv">1</span>) <span class="op">**</span> <span class="dv">2</span>) <span class="op">/</span> temperatures</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>Tf <span class="op">=</span> np.linspace(<span class="fl">1.0</span>, <span class="fl">3.5</span>, <span class="dv">600</span>)</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">4</span>, figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="fl">3.3</span>))</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>panels <span class="op">=</span> [(absM_mean, <span class="vs">r"$\langle|m|\rangle$"</span>, M_exact(Tf), <span class="st">"Onsager / Yang $M$"</span>),</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>          (E_mean, <span class="vs">r"$\langle e\rangle$"</span>, u_exact(Tf), <span class="st">"Onsager $u$"</span>),</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>          (C_heat, <span class="vs">r"$c$"</span>, <span class="va">None</span>, <span class="va">None</span>),</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>          (chi, <span class="vs">r"$\chi$"</span>, <span class="va">None</span>, <span class="va">None</span>)]</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, (y, lab, yex, exlab) <span class="kw">in</span> <span class="bu">zip</span>(axes, panels):</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    ax.plot(temperatures, y, <span class="st">"o"</span>, ms<span class="op">=</span><span class="dv">4</span>, color<span class="op">=</span>UJBlue, label<span class="op">=</span><span class="ss">f"MC </span><span class="sc">{</span>Nx<span class="sc">}</span><span class="ss">x</span><span class="sc">{</span>Ny<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> yex <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>        ax.plot(Tf, yex, color<span class="op">=</span>DSOrange, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span>exlab)</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>    ax.axvline(TC, color<span class="op">=</span>UJGray, ls<span class="op">=</span><span class="st">":"</span>, lw<span class="op">=</span><span class="fl">1.2</span>)</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>    ax.set_xlabel(<span class="st">"$T$"</span>)<span class="op">;</span> ax.set_ylabel(lab)</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>    ax.legend(frameon<span class="op">=</span><span class="va">False</span>, fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()<span class="op">;</span> plt.show()</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>i_c, i_chi <span class="op">=</span> np.argmax(C_heat), np.argmax(chi)</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"peak of c   at T = </span><span class="sc">{</span>temperatures[i_c]<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"peak of chi at T = </span><span class="sc">{</span>temperatures[i_chi]<span class="sc">:.2f}</span><span class="ss">      exact T_c = </span><span class="sc">{</span>TC<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="lab-010-ising-monte-carlo_files/figure-html/cell-11-output-1.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>peak of c   at T = 2.30
+peak of chi at T = 2.35      exact T_c = 2.2692</code></pre>
+</div>
+</div>
+Far from <span class="math inline">\(T_c\)</span> the Monte Carlo points lie on the exact curves: a <span class="math inline">\(20\times20\)</span> lattice is already “large” there, because the correlation length is short. Near <span class="math inline">\(T_c\)</span> the finite lattice deviates. <span class="math inline">\(\langle|m|\rangle\)</span> does not drop to zero at <span class="math inline">\(T_c\)</span> but has a smooth tail above it, whereas the exact <span class="math inline">\(M\)</span> of equation (24) has an infinite slope at <span class="math inline">\(T_c\)</span>, which no finite system can have. Likewise <span class="math inline">\(c\)</span> and <span class="math inline">\(\chi\)</span> have <strong>finite peaks</strong> instead of divergences; the peaks (at the temperatures 2.30 and 2.35 in the printed output) lie close to the exact critical temperature <span class="math display">\[T_c=\frac{2}{\ln\big(1+\sqrt2\big)}\approx2.2692, \tag{25}\]</span> but not exactly at it.
+<hr>
+</section>
+<section id="finite-size-effects" class="level2">
+<h2 class="anchored" data-anchor-id="finite-size-effects">8. Finite-size effects</h2>
+<p>A phase transition is a <strong>non-analyticity</strong> of <span class="math inline">\(\ln Z\)</span> (Lecture 4). For finite <span class="math inline">\(N\)</span>, <span class="math inline">\(Z\)</span> is a finite sum of exponentials of <span class="math inline">\(\beta\)</span>, an analytic function, so <strong>a finite lattice has no sharp transition</strong>. What we see are <em>pseudo-critical</em> features (peaks of <span class="math inline">\(c\)</span> and <span class="math inline">\(\chi\)</span>, the steepest drop of <span class="math inline">\(\langle|m|\rangle\)</span>) whose positions <span class="math inline">\(T^*(L)\)</span> approach <span class="math inline">\(T_c\)</span> as <span class="math inline">\(L\)</span> grows without bound, while the peaks grow.</p>
+<p>The mechanism is the divergence of the correlation length <span class="math inline">\(\xi(T)\)</span> at <span class="math inline">\(T_c\)</span>. On a lattice of size <span class="math inline">\(L\)</span> the critical behaviour is cut off when <span class="math display">\[\xi(T)\approx L, \tag{26}\]</span> so the transition is rounded over a window that shrinks as <span class="math inline">\(L\)</span> grows. Since <span class="math display">\[\xi\sim|T-T_c|^{-\nu}, \tag{27}\]</span> the window is <span class="math display">\[|T-T_c|\sim L^{-1/\nu}. \tag{28}\]</span></p>
+<p>The prediction is tested by computing <span class="math inline">\(\chi(T)\)</span> for the lattice sizes 10, 20 and 40 on a fine grid around <span class="math inline">\(T_c\)</span>, measuring after every sweep.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-10-14T11:44:26.888790Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-10-14T11:44:26.887779Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-10-14T11:45:38.085459Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-10-14T11:45:38.084932Z&quot;}" data-execution_count="11">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> chi_scan(L, temps, n_chains, n_eq, n_meas, rng):</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Measure &lt;|m|&gt; and chi on a temperature grid; measurements after every sweep (correlated, but averages are fine).</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    masks <span class="op">=</span> checkerboard_masks(L, L)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    beta <span class="op">=</span> (<span class="fl">1.0</span> <span class="op">/</span> temps.astype(np.float32))[<span class="va">None</span>, :, <span class="va">None</span>, <span class="va">None</span>]</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> np.ones((n_chains, <span class="bu">len</span>(temps), L, L), np.float32)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n_eq):</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>        metropolis_sweep(s, beta, masks, rng)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    m1, m2 <span class="op">=</span> np.zeros(<span class="bu">len</span>(temps)), np.zeros(<span class="bu">len</span>(temps))</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n_meas):</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>        metropolis_sweep(s, beta, masks, rng)</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>        m <span class="op">=</span> np.<span class="bu">abs</span>(magnetisation_per_spin(s))            <span class="co"># (chains, temps)</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>        m1 <span class="op">+=</span> m.mean(<span class="dv">0</span>)<span class="op">;</span> m2 <span class="op">+=</span> (m<span class="op">**</span><span class="dv">2</span>).mean(<span class="dv">0</span>)</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>    m1, m2 <span class="op">=</span> m1 <span class="op">/</span> n_meas, m2 <span class="op">/</span> n_meas</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> m1, L <span class="op">*</span> L <span class="op">*</span> (m2 <span class="op">-</span> m1<span class="op">**</span><span class="dv">2</span>) <span class="op">/</span> temps</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>T_fs <span class="op">=</span> np.<span class="bu">round</span>(np.arange(<span class="fl">1.9</span>, <span class="fl">2.9</span> <span class="op">+</span> <span class="fl">1e-9</span>, <span class="fl">0.04</span>), <span class="dv">2</span>)</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>fs <span class="op">=</span> {}</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>t0 <span class="op">=</span> time.time()</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> L, nch <span class="kw">in</span> ((<span class="dv">10</span>, <span class="dv">32</span>), (<span class="dv">20</span>, <span class="dv">16</span>), (<span class="dv">40</span>, <span class="dv">8</span>)):</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>    fs[L] <span class="op">=</span> chi_scan(L, T_fs, n_chains<span class="op">=</span>nch, n_eq<span class="op">=</span><span class="dv">1000</span>, n_meas<span class="op">=</span><span class="dv">2000</span>, rng<span class="op">=</span>rng)</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"finite-size scan done in </span><span class="sc">{</span>time<span class="sc">.</span>time() <span class="op">-</span> t0<span class="sc">:.0f}</span><span class="ss"> s"</span>)</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">3.6</span>))</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (L, (m1, ch)), col, mk <span class="kw">in</span> <span class="bu">zip</span>(fs.items(), (UJGray, UJBlue, DSOrange), (<span class="st">"s"</span>, <span class="st">"o"</span>, <span class="st">"^"</span>)):</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>].plot(T_fs, m1, <span class="st">"-"</span> <span class="op">+</span> mk, color<span class="op">=</span>col, ms<span class="op">=</span><span class="dv">4</span>, label<span class="op">=</span><span class="ss">f"L = </span><span class="sc">{</span>L<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].plot(T_fs, ch, <span class="st">"-"</span> <span class="op">+</span> mk, color<span class="op">=</span>col, ms<span class="op">=</span><span class="dv">4</span>, label<span class="op">=</span><span class="ss">f"L = </span><span class="sc">{</span>L<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>Tf2 <span class="op">=</span> np.linspace(<span class="fl">1.9</span>, <span class="fl">2.9</span>, <span class="dv">400</span>)</span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(Tf2, M_exact(Tf2), color<span class="op">=</span>UJNavy, lw<span class="op">=</span><span class="dv">2</span>, ls<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="vs">r"exact $L=\infty$"</span>)</span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, lab <span class="kw">in</span> <span class="bu">zip</span>(axes, (<span class="vs">r"$\langle|m|\rangle$"</span>, <span class="vs">r"$\chi$"</span>)):</span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>    ax.axvline(TC, color<span class="op">=</span>UJGray, ls<span class="op">=</span><span class="st">":"</span>, lw<span class="op">=</span><span class="fl">1.2</span>)<span class="op">;</span> ax.set_xlabel(<span class="st">"$T$"</span>)<span class="op">;</span> ax.set_ylabel(lab)<span class="op">;</span> ax.legend(frameon<span class="op">=</span><span class="va">False</span>, fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()<span class="op">;</span> plt.show()</span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">" L   T*(L) = argmax chi   chi_max    T*(L) - T_c"</span>)</span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> L, (m1, ch) <span class="kw">in</span> fs.items():</span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>    i <span class="op">=</span> np.argmax(ch)</span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>L<span class="sc">:3d}</span><span class="ss">   </span><span class="sc">{</span>T_fs[i]<span class="sc">:.2f}</span><span class="ss">               </span><span class="sc">{</span>ch[i]<span class="sc">:7.2f}</span><span class="ss">    </span><span class="sc">{</span>T_fs[i] <span class="op">-</span> TC<span class="sc">:+.3f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>finite-size scan done in 71 s</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="lab-010-ising-monte-carlo_files/figure-html/cell-12-output-2.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code> L   T*(L) = argmax chi   chi_max    T*(L) - T_c
+ 10   2.46                  2.64    +0.191
+ 20   2.38                  9.42    +0.111
+ 40   2.30                 31.62    +0.031</code></pre>
+</div>
+</div>
+<p>As <span class="math inline">\(L\)</span> grows, the drop of <span class="math inline">\(\langle|m|\rangle\)</span> becomes steeper and approaches the exact curve, and the peak of <span class="math inline">\(\chi\)</span> grows and moves toward <span class="math inline">\(T_c\)</span>: in the table above <span class="math inline">\(T^*(L)\)</span> goes from 2.46 to 2.38 to 2.30 for the lattice sizes 10, 20 and 40, while <span class="math inline">\(\chi_{\max}\)</span> rises from 2.64 to 31.62 (the grid spacing 0.04 limits the resolution of <span class="math inline">\(T^*(L)\)</span>).</p>
+Locating <span class="math inline">\(T_c\)</span> from finite data is therefore a <strong>finite-size extrapolation</strong>, not a single measurement. The CNN in Lab 011 faces exactly the same limitation: its estimate <span class="math inline">\(\bar T_c\)</span> is a pseudo-critical temperature of an <span class="math inline">\(L\times L\)</span> lattice. What the samples <strong>do not</strong> tell us is <em>why</em> there is a transition, or why it sits at the value of equation (25). That answer came from Onsager’s exact solution (Lecture 4 and Lab 012).
+<hr>
+</section>
+<section id="exercises" class="level2">
+<h2 class="anchored" data-anchor-id="exercises">9. Exercises</h2>
+<ol type="1">
+<li>Change <code>Nx, Ny</code> in Section 5 to a rectangular lattice, e.g.&nbsp;<span class="math inline">\(40\times10\)</span>. How do the snapshots and <span class="math inline">\(\langle|m|\rangle(T)\)</span> change? (Hint: the shorter side limits <span class="math inline">\(\xi\)</span>.)</li>
+<li>Start the dataset from a <strong>hot</strong> start at all temperatures and repeat Section 7. Which temperatures are affected, and why?</li>
+<li>Measure <span class="math inline">\(\tau_{\rm int}\)</span> close to <span class="math inline">\(T_c\)</span> for the lattice sizes 10, 20 and 40. How does it grow with <span class="math inline">\(L\)</span>?</li>
+<li>Implement the heat-bath (Glauber) rule <span class="math display">\[p(s_i=+1)=\frac{1}{1+e^{-2\beta\phi_i}} \tag{29}\]</span> instead of Metropolis, and check that the averages do not change.</li>
+</ol>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../notebooks/lecture-04/convolution-and-ising.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Convolution and the 2D Ising model</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../notebooks/lecture-04/lab-011-cnn-tc.html" class="pagination-link">
+        <span class="nav-page-text">Lab 011: Tc of the 2D Ising model from the confidence of a CNN</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">© 2026 Marcin Płodzień</div>   
+    <div class="nav-footer-right"><a href="https://chaos.if.uj.edu.pl/marcinplodzien/">Homepage</a> · <a href="mailto:marcin.plodzien@uj.edu.pl">Email</a> · <a href="https://orcid.org/0000-0002-0835-1644">ORCID</a> · <a href="https://scholar.google.com/citations?user=eC9nCmgAAAAJ&amp;hl=en">Scholar</a> · <a href="https://github.com/MarcinPlodzien">GitHub</a></div>
+  </div>
+</footer>
+
+
+
+</body></html>

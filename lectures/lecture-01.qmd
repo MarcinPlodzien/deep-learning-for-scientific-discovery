@@ -1,0 +1,35 @@
+---
+title: "1 · AI, Machine Learning and Scientific Discovery: Paradigms and Applications"
+code-tools: false
+toc: false
+---
+
+Science has always learnt its laws from data. Babylonian astronomers recorded the positions of the planets for centuries, Tycho Brahe measured the angles of Mars with large instruments, and Kepler tested hypothesis after hypothesis for years until three laws fitted those angles. Newton explained the three laws by a theory of gravitation that predicted far beyond the data, and Einstein reached a more general theory of gravity from principles and mathematics. We follow this line to the present, where a graph neural network trained on thirty years of trajectories of the Sun, planets and large moons, combined with a computer search over formulas, recovers Newton's law of gravity as an equation.
+
+We then place deep learning within artificial intelligence (AI) and machine learning and compare the three paradigms of supervised, unsupervised and reinforcement learning. The recipe that the whole course follows has five parts. The data come first, then a model whose architecture matches the shape of the data, a loss, an optimiser, and finally a test of what the model has learnt. A survey of discoveries driven by AI, from protein structures predicted by AlphaFold to matrix-multiplication algorithms found by AlphaTensor, shows the recipe in use and closes with its limits.
+
+## Slides
+
+[Download the slides (PDF)](../slides/lecture-01.pdf){.btn .btn-outline-primary}
+
+<iframe src="../slides/lecture-01.pdf" width="100%" height="620" style="border:1px solid #dde6ef; border-radius:6px;"></iframe>
+
+## Notebooks
+
+::: {.nb-item}
+[Lab 001: Python, Matplotlib and Pandas](../notebooks/lecture-01/lab-001-python-matplotlib-pandas.ipynb)
+
+We warm up with the Python tools that every later notebook uses, plotting with Matplotlib and handling tables with Pandas.
+:::
+
+::: {.nb-item}
+[Lab 002: NumPy](../notebooks/lecture-01/lab-002-numpy.ipynb)
+
+NumPy replaces explicit loops by operations on whole arrays. We use it to write numerical code that is short and fast.
+:::
+
+::: {.nb-item}
+[Lab 003: PyTorch tensors, devices and layers](../notebooks/lecture-01/lab-003-pytorch.ipynb)
+
+PyTorch stores data and parameters in tensors that live on a device and builds networks from layers. We introduce these objects before any network is trained.
+:::
