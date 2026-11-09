@@ -1,0 +1,106 @@
+---
+title: "7 · Time Series: Linear Models, Neural Networks and Neural ODEs"
+code-tools: false
+toc: false
+---
+
+A time series is one measured number per time step of a system whose full state stays hidden. Classical physics is deterministic, yet a forecast from such a record is limited by three facts. Only a projection of the state is measured, the law of motion is known only for simple systems, and chaos amplifies every small error. We describe the state and its flow in phase space, the Lorenz-63 model, the Mackey–Glass equation and the Santa Fe laser, the growth of small errors measured by Lyapunov exponents, and the theorem of Takens, which rebuilds a faithful picture of the hidden state from delayed values of one coordinate, with the delay chosen from the mutual information and the dimension from false nearest neighbours.
+
+On this basis we forecast. The autoregressive, moving-average and ARMA models are linear readouts of the past, nonlinear vector autoregression adds products of past values, and the Koopman operator explains why a good choice of such features can make nonlinear dynamics linear. Multilayer perceptrons, recurrent networks and LSTMs learn their own features. A neural ODE learns the vector field of the law of motion itself, and a physics-informed network adds a known law to the loss. Every model is scored by the forecast capacity, the squared correlation between forecast and target, as a function of the horizon.
+
+## Slides
+
+[Download the slides (PDF)](../slides/lecture-07.pdf){.btn .btn-outline-primary}
+[Lecture notes (PDF)](../notes/lecture-07.pdf){.btn .btn-outline-primary}
+
+<iframe src="../slides/lecture-07.pdf" width="100%" height="620" style="border:1px solid #dde6ef; border-radius:6px;"></iframe>
+
+## Notebooks
+
+::: {.nb-item}
+[Signals and their predictability](../notebooks/lecture-07/signals-and-predictability.ipynb)
+
+Lorenz-63, Mackey–Glass and the Santa Fe laser explored with the autocorrelation function, the power spectrum, delay embedding with the mutual information and false nearest neighbours, Lyapunov exponents and the prediction horizon.
+:::
+
+::: {.nb-item}
+[Linear models and NVAR](../notebooks/lecture-07/linear-models-and-nvar.ipynb)
+
+AR, MA, ARMA and ARIMA models, direct and recursive forecasts, and nonlinear vector autoregression, on all signals of the lecture.
+:::
+
+::: {.nb-item}
+[Multilayer perceptron forecaster](../notebooks/lecture-07/mlp-forecaster.ipynb)
+
+A network on a window of past values that forecasts 50 horizons at once, with its hyperparameters, seeds and training budget.
+:::
+
+::: {.nb-item}
+[Recurrent network forecaster](../notebooks/lecture-07/rnn-forecaster.ipynb)
+
+The Elman network, backpropagation through time, vanishing and exploding gradients and gradient clipping.
+:::
+
+::: {.nb-item}
+[LSTM forecaster](../notebooks/lecture-07/lstm-forecaster.ipynb)
+
+The LSTM cell, the gradient along the cell state, forget gates and memory times.
+:::
+
+::: {.nb-item}
+[Comparison of forecasting models](../notebooks/lecture-07/comparison-of-models.ipynb)
+
+All models of the lecture, together with the echo state network and the GRU, compared by their forecast capacity on the same signals.
+:::
+
+::: {.nb-item}
+[Koopman operator](../notebooks/lecture-07/koopman-operator.ipynb)
+
+Lifting a nonlinear map to observables on which the evolution is linear, dynamic mode decomposition and its relation to autoregression.
+:::
+
+::: {.nb-item}
+[Neural ordinary differential equations](../notebooks/lecture-07/neural-ode.ipynb)
+
+A network for the vector field, trained through an ODE solver or with the adjoint method, on a damped pendulum and on Lorenz-63, with the analysis of the learned field.
+:::
+
+::: {.nb-item}
+[Pendulum with unknown friction](../notebooks/lecture-07/pendulum-unknown-friction.ipynb)
+
+A known law with an unknown term learned by a network, and the term turned into a formula by sparse regression.
+:::
+
+::: {.nb-item}
+[Physics-informed neural networks](../notebooks/lecture-07/physics-informed-networks.ipynb)
+
+The residual of a known law in the loss, forward and inverse problems for an oscillator and for the heat equation.
+:::
+
+::: {.nb-item}
+[Forecasting the weather in central England](../notebooks/lecture-07/central-england-temperature.ipynb)
+
+A complete analysis of a measured record, the daily Central England Temperature since 1772, its exploration, the seasonal cycle and the anomaly, the delay embedding, the two reference forecasts of meteorology, persistence and climatology, and the forecasts of all models of the lecture. The exercises follow the same steps on other records.
+:::
+
+::: {.nb-item}
+[Forecasting the sunspot number](../notebooks/lecture-07/sunspots.ipynb)
+
+The monthly sunspot number since 1749, a nearly periodic record with irregular cycles: how it is measured, its exploration, the delay embedding, and the forecasts of all models of the lecture, compared with persistence.
+:::
+
+## Exercises
+
+The exercises apply the methods of the lecture to measured records. Each exercise notebook introduces its data set and the tasks, and the models are implemented by the students.
+
+::: {.nb-item}
+[Exercise: forecasting the S&P 500 index](../notebooks/lecture-07/exercise-sp500.ipynb)
+
+A stochastic record. The daily closing values of the index over ten years, prices and log returns, a calibration on a process with a known answer, and the question of how a forecaster reports that there is nothing to forecast.
+:::
+
+::: {.nb-item}
+[Exercise: forecasting El Niño](../notebooks/lecture-07/exercise-enso.ipynb)
+
+The Niño 3.4 temperature anomaly of the tropical Pacific since 1870, an irregular climate oscillation with a forecast horizon of a few months.
+:::

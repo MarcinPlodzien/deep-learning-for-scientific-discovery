@@ -1,0 +1,7 @@
+---
+title: "8 · Guest Lecture"
+code-tools: false
+toc: false
+---
+
+Lecture 8 was a guest lecture given by Tymoteusz Heightman.

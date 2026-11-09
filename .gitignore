@@ -1,0 +1,14 @@
+# Quarto caches
+.quarto/
+_freeze/
+*.quarto_ipynb
+# Python
+__pycache__/
+*.pyc
+# figures and data written when notebooks are run locally
+notebooks/**/figures/
+notebooks/**/data/
+notebooks/**/results/
+# NOTE: docs/ is intentionally committed (GitHub Pages serves it).
+
+/.quarto/

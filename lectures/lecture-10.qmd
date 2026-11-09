@@ -1,0 +1,36 @@
+---
+title: "10 · Reinforcement Learning: Values, Bellman Equations and Policy Gradients"
+code-tools: false
+toc: false
+---
+
+In supervised learning the data exist before training. An agent in reinforcement learning acts, its actions change the state of its environment, and the only feedback is a reward that often comes many steps later. We follow a rover on a small terrain on Mars that must reach a sample site and avoid a crater while the ground makes it slip. The value of a state is the average discounted return collected from it under a policy, and the Bellman equations relate the value of a state to the values of its neighbours. With a known model the equations are a linear system, and value iteration solves the optimality equations by repeating one averaging step until the values stop changing.
+
+Without a model the same averaging step is driven by sampled transitions. Temporal-difference learning and Q-learning estimate the values from experience, and the value spreads backwards from the goal one episode after another, while an exploration rule keeps the agent from settling on the first reward it finds. A second route learns the policy directly. The policy gradient raises the probability of actions that were followed by large returns, REINFORCE estimates it from whole episodes, and a baseline that subtracts what usually happens reduces the noise of the estimate, which a two-action example shows exactly. When the states are too many for a table, a neural network takes its place, a Q-network for the Lunar Lander and a policy network for the cart-pole.
+
+## Slides
+
+[Download the slides (PDF)](../slides/lecture-10.pdf){.btn .btn-outline-primary}
+[Lecture notes (PDF)](../notes/lecture-10.pdf){.btn .btn-outline-primary}
+
+<iframe src="../slides/lecture-10.pdf" width="100%" height="620" style="border:1px solid #dde6ef; border-radius:6px;"></iframe>
+
+## Notebooks
+
+::: {.nb-item}
+[Value functions and Bellman equations on a gridworld](../notebooks/lecture-10/gridworld-bellman.ipynb)
+
+The rover terrain as a Markov decision process, returns and values from Monte Carlo episodes, the Bellman equation solved as a linear system, policy improvement and value iteration, temporal-difference learning, Q-learning and exploration, and a qubit as a second small decision process.
+:::
+
+::: {.nb-item}
+[Policy gradient on the cart-pole](../notebooks/lecture-10/policy-gradient-cartpole.ipynb)
+
+The log-derivative trick and REINFORCE, the effect of a baseline computed exactly for two actions, and a policy network that learns to balance a pole, with and without a learned baseline.
+:::
+
+::: {.nb-item}
+[Deep Q-learning on the Lunar Lander](../notebooks/lecture-10/dqn-lunar-lander.ipynb)
+
+A network in place of the table of action values, Q-learning as regression on a moving target with a replay buffer and a target network, the learning curve, the learned control rule and videos of the lander before and after training.
+:::
