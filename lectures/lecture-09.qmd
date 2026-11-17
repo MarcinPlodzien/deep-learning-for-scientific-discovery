@@ -1,0 +1,66 @@
+---
+title: "9 · Decision Trees and Random Forests"
+code-tools: false
+toc: false
+---
+
+A decision tree predicts through a sequence of questions about measured features. A random forest combines many randomized trees. A small neural network provides a third method for comparison. We use scikit-learn to fit all three and inspect their predictions.
+
+The applications follow the same short workflow. Inspect the data, separate fitting, validation and test observations, fit the estimators, freeze their settings and evaluate their predictions. Classification predicts labels and probabilities. Regression predicts numbers. The image applications compare methods on the same MNIST pixels or the same galaxy representation.
+
+## Slides and notes
+
+[Download the slides (PDF)](../slides/lecture-09.pdf){.btn .btn-outline-primary}
+[Lecture notes and practice feedback (PDF)](../notes/lecture-09.pdf){.btn .btn-outline-primary}
+
+<iframe src="../slides/lecture-09.pdf" width="100%" height="620" style="border:1px solid #dde6ef; border-radius:6px;"></iframe>
+
+## Start here
+
+::: {.nb-item}
+[Decision trees with scikit-learn](../notebooks/lecture-09/tree-foundations.ipynb)
+
+Fit a short tree, inspect its questions and distinguish class probabilities from hard decisions. Continue with small classification and regression examples. The supplied galaxy measurement table needs no image download.
+:::
+
+::: {.nb-item}
+[Predicting a concentration response](../notebooks/lecture-09/concentration-response-tree.ipynb)
+
+A short regression application. Plot concentration and response, fit a tree, forest and network, compare their prediction errors and display their fitted curves. Inspect predictions beyond the measured concentration range.
+:::
+
+::: {.nb-item}
+[Three methods for handwritten digits](../notebooks/lecture-09/mnist-trees.ipynb)
+
+Compare a tree, forest and neural network on the same MNIST pixels and data split. Inspect confusion matrices and predictions on the same displayed images. The first run downloads about 12 MB.
+:::
+
+## Scientific images and measured tables
+
+::: {.nb-item}
+[A readable tree for galaxy images](../notebooks/lecture-09/galaxy-classification-tree.ipynb)
+
+Display the galaxies, fit a tree to measured roundness and concentration, inspect a prediction and choose depth using validation observations. The image cache requires a 2.7 GB first download if it is absent. The foundations notebook provides a route using measurements alone.
+:::
+
+::: {.nb-item}
+[Three methods for galaxy classification](../notebooks/lecture-09/galaxy-forests-networks.ipynb)
+
+Compare tree, forest and network on the same galaxy measurements, then repeat the comparison directly on reduced galaxy pixels. Display the same test galaxies with predictions from all three methods.
+:::
+
+::: {.nb-item}
+[Classification and regression with the same workflow](../notebooks/lecture-09/trees-forests-neural-networks.ipynb)
+
+Use the three scikit-learn model families on flower classification and numerical diabetes progression. Inspect fitting-only preprocessing, validation scores, baselines and test predictions.
+:::
+
+## Further practice
+
+- [Diabetes progression regression](../notebooks/lecture-09/diabetes-regression-tree.ipynb)
+- [Progression above a reference score](../notebooks/lecture-09/diabetes-progression-classes.ipynb)
+- [Iris flower classification](../notebooks/lecture-09/iris-classification-tree.ipynb)
+- [Random forests for classes and numbers](../notebooks/lecture-09/iris-diabetes-forests.ipynb)
+- [Breast-cancer cell-nucleus measurements](../notebooks/lecture-09/breast-cancer-tree.ipynb)
+
+Each application keeps the standard estimator interface visible. Small exercises ask students to predict an outcome before running a cell. Mathematical explanations and feedback are available in the notes.

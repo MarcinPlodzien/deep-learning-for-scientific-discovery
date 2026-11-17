@@ -1,0 +1,41 @@
+---
+title: "3 · Supervised Learning on Images: Convolutional Neural Networks"
+code-tools: false
+toc: false
+---
+
+We start from colour photographs of the CIFAR-10 data set (Canadian Institute for Advanced Research, ten classes). A dense network flattens each image into one long vector and loses the information about which pixels are neighbours. Convolution keeps it. A small kernel slides over the image and responds to the same local pattern wherever it appears, and stacking convolutional layers with pooling builds a hierarchy of features from edges to textures and parts of objects. We train convolutional neural networks (CNNs) on CIFAR-10 and control their overfitting with weight penalties, dropout and batch normalisation.
+
+A test accuracy says little about where a network looks or how far it can be trusted. Class activation maps and their gradient-based generalisation, Grad-CAM, show which regions of an image drive a decision. Adversarial examples show that a change of a few pixels, invisible to a human, can reverse it. Three experiments on a trained blood-cell network complete the picture. The network gives confident answers for satellite images and pure noise, its accuracy collapses when the staining of the cells changes, and it learns a shortcut from a marker added to the images.
+
+## Slides
+
+[Download the slides (PDF)](../slides/lecture-03.pdf){.btn .btn-outline-primary}
+
+<iframe src="../slides/lecture-03.pdf" width="100%" height="620" style="border:1px solid #dde6ef; border-radius:6px;"></iframe>
+
+## Notebooks
+
+::: {.nb-item}
+[Lab 013a: CNNs on MNIST and CIFAR-10 in PyTorch](../notebooks/lecture-03/lab-013a-cnn-pytorch.ipynb)
+
+We compute a convolution explicitly and with the library, then compare a dense network with a convolutional neural network (CNN) on CIFAR-10 and study capacity and regularisation. The trained kernels, the feature maps and class activation maps built from the feature maps and the weights show what the network has learnt, and a final section transfers a CIFAR-10 network to MNIST.
+:::
+
+::: {.nb-item}
+[Lab 013b: CNNs on MNIST and CIFAR-10 in JAX](../notebooks/lecture-03/lab-013b-cnn-jax.ipynb)
+
+The material of Lab 013a, section by section, written with JAX and Flax.
+:::
+
+::: {.nb-item}
+[Limits of deep networks](../notebooks/lecture-03/limits-of-deep-networks.ipynb)
+
+A blood-cell network with a high test accuracy is confronted with satellite images and noise, with a colour shift of the staining, and with images that carry a marker. Each experiment shows a different way in which a good test score fails to carry over.
+:::
+
+::: {.nb-item}
+[Class activation maps of a CIFAR-10 CNN](../notebooks/lecture-03/cam-cifar10.ipynb)
+
+We train the CNN with global average pooling that produces the class activation maps of the slides, derive the map from the last layers of the network, and display it on correctly and wrongly classified images. The trained weights are on this site ([cam_cifar_gap_cnn.pt](../weights/lecture-03/cam_cifar_gap_cnn.pt)).
+:::

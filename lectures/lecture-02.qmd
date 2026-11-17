@@ -1,0 +1,59 @@
+---
+title: "2 · Supervised Learning: the Recipe of Deep Learning"
+code-tools: false
+toc: false
+---
+
+A neural network is a function with many adjustable parameters, assembled from simple pieces. Each neuron forms a weighted sum of its inputs and passes it through a non-linear activation function, and a layer of neurons is a matrix product followed by these activations. The universal approximation theorem guarantees that such functions can approximate any continuous function on a bounded domain, given enough neurons. Training finds the parameters. We define a loss that measures the error of the network on the data and lower it by gradient descent, with the gradients computed by backpropagation, the chain rule organised so that a computer applies it automatically.
+
+The first complete example is the recognition of handwritten digits in the MNIST data set (Modified National Institute of Standards and Technology). We first train a network with a single output and the mean squared error, which treats the ten digits as points on a line. We then train a network with ten outputs and the categorical cross-entropy, which treats them as ten categories. The confusion matrices of the two networks show how the choice of the loss shapes what the network learns.
+
+## Slides
+
+[Download the slides (PDF)](../slides/lecture-02.pdf){.btn .btn-outline-primary}
+
+<iframe src="../slides/lecture-02.pdf" width="100%" height="620" style="border:1px solid #dde6ef; border-radius:6px;"></iframe>
+
+## Notebooks
+
+::: {.nb-item}
+[Lab 004: Automatic differentiation](../notebooks/lecture-02/lab-004-automatic-differentiation.ipynb)
+
+A computer can differentiate any program built from elementary operations, to the accuracy of floating-point arithmetic. We show how automatic differentiation does it and why it is the basis of training.
+:::
+
+::: {.nb-item}
+[Lab 005: The N-link pendulum with SymPy and automatic differentiation](../notebooks/lecture-02/lab-005-n-pendulum.ipynb)
+
+We derive the equations of motion of a pendulum with N links twice, symbolically with SymPy and numerically by automatic differentiation of the Lagrangian, and compare the two.
+:::
+
+::: {.nb-item}
+[Universal approximation from step functions](../notebooks/lecture-02/universal-approximation-steps.ipynb)
+
+A network with one hidden layer can approximate any continuous function on an interval, and the reason fits in one picture. Steps of the right heights placed along the interval form a staircase that follows the function, and a steep sigmoid neuron is such a step. We build the network from these steps, set its weights with sliders, and compare it with the same network trained by gradient descent.
+:::
+
+::: {.nb-item}
+[Lab 006: Universal approximation and the choice of minimiser](../notebooks/lecture-02/lab-006-uat-and-minimisers.ipynb)
+
+Networks of growing width fit a target function more closely, as the universal approximation theorem promises. How close a trained network actually gets depends on the optimiser, and we compare several.
+:::
+
+::: {.nb-item}
+[Lab 007: Building and training neural networks](../notebooks/lecture-02/lab-007-building-and-training.ipynb)
+
+We assemble a complete training loop in PyTorch, with data loading, the forward pass, the loss, backpropagation and the parameter update.
+:::
+
+::: {.nb-item}
+[Lab 008: Analysing a neural network](../notebooks/lecture-02/lab-008-analysing-networks.ipynb)
+
+After training, a network can be inspected. We read off its architecture and parameter counts and examine what its layers compute.
+:::
+
+::: {.nb-item}
+[Lab 009: MNIST, regression versus cross-entropy](../notebooks/lecture-02/lab-009-mnist.ipynb)
+
+We reproduce the two formulations of digit classification from the slides, a single output with the mean squared error and ten outputs with the categorical cross-entropy, together with their confusion matrices.
+:::
